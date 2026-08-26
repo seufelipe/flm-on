@@ -6,7 +6,7 @@ import { findCombos, withEndTimes, itineraryTransitions, fittingAdditions, type 
 import { groupByFilm } from "@/lib/groupings";
 import { TIMEFRAMES, formatTimeframeRange, timeframeForTime, type Timeframe } from "@/lib/timeframe";
 import { CINEMA_LABEL, CINEMA_LOCATION, CINEMA_ORDER } from "@/lib/cinemas";
-import { formatDayFriendly, formatDayDate, todayISO, nowTimeISO } from "@/lib/date";
+import { formatDayFriendly, formatDayDate, todayISO, nowTimeISO, nextBatchLabel } from "@/lib/date";
 import FilmCard from "./FilmCard";
 import ComboSuggestions from "./ComboSuggestions";
 import DayPlan from "./DayPlan";
@@ -64,21 +64,29 @@ function controlPositionClass(isFirst: boolean, isLast: boolean): string {
 export default function ScreeningBrowser({ screenings, days }: Props) {
   const [activeTimeframe, setActiveTimeframe] = useState<Timeframe | null>(null);
   const [activeCinema, setActiveCinema] = useState<CinemaId | null>(null);
-  // Defaults to "Any Day" (null) as usual, unless today's screenings have already fully passed —
-  // e.g. loading the page late in the evening once everything remaining is for tomorrow onward.
-  // In that case, landing on "Any Day" would just show a flat list with no day headers (a film's
-  // day header only appears once its visible screenings span more than one day) and no obvious
-  // explanation why. Pinning to the first day that actually still has something on gives the page
-  // the same "your day plan" framing it'd have on a normal day.
+  // Defaults to "Any Day" (null) as usual, with two exceptions where a specific day is pinned
+  // instead — both because "Any Day" would show the exact same set of films as the one day would,
+  // just without the framing (day headers, day-plan building) that comes from actually having a
+  // day in scope.
   const [activeDay, setActiveDay] = useState<string | null>(() => {
     const nowDate = todayISO();
     const nowTime = nowTimeISO();
+    const upcomingDays = days.filter((d) => d >= nowDate);
+    // 1. Only one day left to browse at all (e.g. the batch's date range is almost over) — same
+    // logic as the disabled/enabled split on the time picker: with a single option, there's
+    // nothing for "Any Day" to actually broaden the view to.
+    if (upcomingDays.length === 1) return upcomingDays[0];
+    // 2. Today's screenings have already fully passed — e.g. loading the page late in the
+    // evening once everything remaining is for tomorrow onward. Landing on "Any Day" there would
+    // just show a flat list with no day headers (a film's day header only appears once its
+    // visible screenings span more than one day) and no obvious explanation why, so pin to the
+    // first day that actually still has something on.
     const todayHasScreenings = screenings.some((s) => s.date === nowDate && s.time >= nowTime);
     if (todayHasScreenings) return null;
     // Today is excluded here (`d > nowDate`, not `>=`) — it's already confirmed empty above, and
     // "has any screening on that date at all" (with no time check) would otherwise match today's
     // now-fully-past screenings right back.
-    return days.find((d) => d > nowDate && screenings.some((s) => s.date === d)) ?? null;
+    return upcomingDays.find((d) => d > nowDate && screenings.some((s) => s.date === d)) ?? null;
   });
   const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set());
 
@@ -246,7 +254,7 @@ export default function ScreeningBrowser({ screenings, days }: Props) {
             <button
               onClick={() => setActiveDay(null)}
               style={{ zIndex: 0 }}
-              className={`relative shrink-0 border-4 px-3 py-1 flex items-center transition-transform ${controlPositionClass(true, visibleDays.length === 0)} ${controlSegmentClass(activeDay === null, false)}`}
+              className={`relative shrink-0 border-4 px-3 py-1 flex items-center transition-transform ${controlPositionClass(true, false)} ${controlSegmentClass(activeDay === null, false)}`}
             >
               <span className="font-bold uppercase text-sm tracking-wide">Any Day</span>
             </button>
@@ -255,12 +263,22 @@ export default function ScreeningBrowser({ screenings, days }: Props) {
                 key={day}
                 onClick={() => setActiveDay(activeDay === day ? null : day)}
                 style={{ zIndex: i + 1 }}
-                className={`relative shrink-0 border-4 px-3 py-1 flex flex-col items-start gap-0.5 transition-transform ${controlPositionClass(false, i === visibleDays.length - 1)} ${controlSegmentClass(activeDay === day, false)}`}
+                className={`relative shrink-0 border-4 px-3 py-1 flex flex-col items-start gap-0.5 transition-transform ${controlPositionClass(false, false)} ${controlSegmentClass(activeDay === day, false)}`}
               >
                 <span className="font-bold uppercase text-sm tracking-wide">{formatDayFriendly(day)}</span>
                 <span className="text-xs text-dim uppercase tracking-widest">{formatDayDate(day)}</span>
               </button>
             ))}
+            {/* Not a button — this is an announcement ("more data every Thursday"), not a
+                temporarily-unavailable control, so it skips the crossed-out/flush disabled
+                treatment used for genuinely ruled-out options like a past time slot. */}
+            <div
+              style={{ zIndex: visibleDays.length + 1 }}
+              className={`relative shrink-0 border-4 border-dim px-3 py-1 flex flex-col items-start gap-0.5 bg-surface text-dim translate-x-[3px] translate-y-[3px] cursor-default ${controlPositionClass(false, true)}`}
+            >
+              <span className="font-bold uppercase text-sm tracking-wide">Come back</span>
+              <span className="text-xs text-dim uppercase tracking-widest">{nextBatchLabel(now.date)}!</span>
+            </div>
           </div>
 
           <div className="shrink-0 flex">

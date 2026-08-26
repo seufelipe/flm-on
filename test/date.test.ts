@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { daysUntilThursday, upcomingDays } from "@/lib/date";
+import { daysUntilThursday, upcomingDays, nextBatchLabel } from "@/lib/date";
 
 describe("daysUntilThursday", () => {
   it("returns 0 on Thursday itself", () => {
@@ -42,5 +42,18 @@ describe("upcomingDays", () => {
 
   it("runs up to but excluding this week's Thursday on Monday", () => {
     expect(upcomingDays("2026-08-24")).toEqual(["2026-08-24", "2026-08-25", "2026-08-26"]);
+  });
+});
+
+describe("nextBatchLabel", () => {
+  it("says Tomorrow only when Thursday is literally the next day", () => {
+    expect(nextBatchLabel("2026-08-26")).toBe("Tomorrow"); // Wednesday
+  });
+
+  it("says Thursday for every other day, including Thursday itself", () => {
+    expect(nextBatchLabel("2026-08-27")).toBe("Thursday"); // Thursday — next batch is a week out
+    expect(nextBatchLabel("2026-08-24")).toBe("Thursday"); // Monday
+    expect(nextBatchLabel("2026-08-25")).toBe("Thursday"); // Tuesday
+    expect(nextBatchLabel("2026-08-28")).toBe("Thursday"); // Friday
   });
 });

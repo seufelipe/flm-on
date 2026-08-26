@@ -42,6 +42,13 @@ export function daysUntilThursday(dateISO: string): number {
   return (4 - dow + 7) % 7;
 }
 
+// Label for the day picker's trailing "come back" note — "Tomorrow" only when Thursday is
+// literally the next day, "Thursday" otherwise (including today being Thursday itself, where
+// the next batch is a week out, not tomorrow).
+export function nextBatchLabel(fromISO: string = todayISO()): "Tomorrow" | "Thursday" {
+  return daysUntilThursday(fromISO) === 1 ? "Tomorrow" : "Thursday";
+}
+
 // The days belonging to the current cinema-programme batch: from `from` up to *but excluding*
 // the next Thursday (that Thursday starts the next batch) — except when `from` itself is a
 // Thursday, which means a whole new batch is starting, so this returns the full week ahead.
