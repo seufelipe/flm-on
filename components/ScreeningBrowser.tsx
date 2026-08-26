@@ -236,7 +236,7 @@ export default function ScreeningBrowser({ screenings, days }: Props) {
         {comboScopeDay && effectiveSelectedKeys.size > 0 && (
           <DayPlan items={dayPlanItems} transitions={dayPlanTransitions} onRemove={toggleSelected} keyOf={keyOf} />
         )}
-        <div className="flex items-center justify-start md:justify-center gap-4 overflow-x-auto border-t-2 border-border bg-bg px-4 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
+        <div className="flex items-center justify-center-safe gap-4 overflow-x-auto border-t-2 border-border bg-bg px-4 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
           <div className="shrink-0 flex">
             <button
               onClick={() => setActiveDay(null)}
@@ -261,9 +261,9 @@ export default function ScreeningBrowser({ screenings, days }: Props) {
                 treatment used for genuinely ruled-out options like a past time slot. */}
             <div
               style={{ zIndex: visibleDays.length + 1 }}
-              className={`relative shrink-0 border-4 border-dim px-3 py-1 flex flex-col items-start gap-0.5 bg-surface text-dim translate-x-[3px] translate-y-[3px] cursor-default ${controlPositionClass(false, true)}`}
+              className={`relative shrink-0 border-4 border-dim px-3 py-1 flex flex-col items-start justify-center gap-0.5 bg-surface text-dim translate-x-[3px] translate-y-[3px] cursor-default ${controlPositionClass(false, true)}`}
             >
-              <span className="font-bold uppercase text-sm tracking-wide">Come back</span>
+              <span className="font-normal uppercase text-xs tracking-wide">Come back</span>
               <span className="text-xs text-dim uppercase tracking-widest">{nextBatchLabel(now.date)}!</span>
             </div>
           </div>

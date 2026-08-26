@@ -18,7 +18,7 @@ function transitionLabel(t: ItineraryTransition): string {
 export default function DayPlan({ items, transitions, onRemove, keyOf }: Props) {
   return (
     <div className="bg-surface border-t-4 border-border">
-      <div className="flex items-center justify-start md:justify-center gap-3 overflow-x-auto px-4 py-3">
+      <div className="flex items-center justify-center-safe gap-3 overflow-x-auto px-6 py-3">
         <span className="shrink-0 font-bold whitespace-nowrap">Your plan</span>
         {items.map((s, i) => {
           const transition = i > 0 ? transitions[i - 1] : null;

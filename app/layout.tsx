@@ -5,7 +5,7 @@ import "./globals.css";
 const elmsSans = Elms_Sans({ subsets: ["latin"], variable: "--font-elms-sans", display: "swap" });
 
 export const metadata: Metadata = {
-  title: "FLM ON — Dublin Cinema Planner",
+  title: "FLM ON · See what’s on, make a plan. Updated every Thursday morning",
   description: "Now showing this week at Light House Cinema + IFI.",
 };
 
