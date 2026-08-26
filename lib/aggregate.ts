@@ -1,0 +1,138 @@
+import { adapters } from "./scrapers";
+import type { Screening } from "./scrapers/types";
+import * as cache from "./cache";
+import { resolveLetterboxdUrl } from "./letterboxd";
+import { cleanFilmTitle, loadTitleOverrides } from "./titles";
+
+export interface AdapterError {
+  cinema: string;
+  message: string;
+}
+
+export interface DayResult {
+  screenings: Screening[];
+  errors: AdapterError[];
+  stale: boolean;
+  fetchedAt?: number;
+}
+
+async function getCinemaRange(
+  adapter: (typeof adapters)[number],
+  dates: string[],
+): Promise<{ screenings: Screening[]; error?: string; stale: boolean; fetchedAt?: number }> {
+  const fromCache = new Map<string, Screening[]>();
+  const missing: string[] = [];
+  let latestFetchedAt: number | undefined;
+
+  for (const date of dates) {
+    const fresh = cache.getFresh(adapter.id, date);
+    if (fresh) {
+      fromCache.set(date, fresh.screenings);
+      if (!latestFetchedAt || fresh.fetchedAt > latestFetchedAt) latestFetchedAt = fresh.fetchedAt;
+    } else {
+      missing.push(date);
+    }
+  }
+
+  if (missing.length === 0) {
+    return { screenings: dates.flatMap((d) => fromCache.get(d) ?? []), stale: false, fetchedAt: latestFetchedAt };
+  }
+
+  try {
+    const result = await adapter.fetchScreenings({ days: missing });
+    if (result.error && result.screenings.length === 0) {
+      const fallbacks = await Promise.all(missing.map((d) => cache.loadFallbackFromFile(adapter.id, d)));
+      const anyFallback = fallbacks.some(Boolean);
+      if (anyFallback) {
+        missing.forEach((d, i) => {
+          const fb = fallbacks[i];
+          if (fb) {
+            fromCache.set(d, fb.screenings);
+            if (!latestFetchedAt || fb.fetchedAt > latestFetchedAt) latestFetchedAt = fb.fetchedAt;
+          }
+        });
+        return { screenings: dates.flatMap((d) => fromCache.get(d) ?? []), error: result.error, stale: true, fetchedAt: latestFetchedAt };
+      }
+      return { screenings: dates.flatMap((d) => fromCache.get(d) ?? []), error: result.error, stale: false, fetchedAt: latestFetchedAt };
+    }
+
+    const now = Date.now();
+    for (const date of missing) {
+      // Cache an empty slice too — a cinema that never has data for a given date (e.g. Light
+      // House beyond today) shouldn't be re-fetched on every single subsequent request.
+      const slice = result.screenings.filter((s) => s.date === date);
+      cache.set(adapter.id, date, slice);
+      fromCache.set(date, slice);
+    }
+    return { screenings: dates.flatMap((d) => fromCache.get(d) ?? []), error: result.error, stale: false, fetchedAt: now };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Unknown error";
+    const fallbacks = await Promise.all(missing.map((d) => cache.loadFallbackFromFile(adapter.id, d)));
+    const anyFallback = fallbacks.some(Boolean);
+    if (anyFallback) {
+      missing.forEach((d, i) => {
+        const fb = fallbacks[i];
+        if (fb) {
+          fromCache.set(d, fb.screenings);
+          if (!latestFetchedAt || fb.fetchedAt > latestFetchedAt) latestFetchedAt = fb.fetchedAt;
+        }
+      });
+      return { screenings: dates.flatMap((d) => fromCache.get(d) ?? []), error: message, stale: true, fetchedAt: latestFetchedAt };
+    }
+    return { screenings: dates.flatMap((d) => fromCache.get(d) ?? []), error: message, stale: false, fetchedAt: latestFetchedAt };
+  }
+}
+
+async function withLetterboxdLinks(screenings: Screening[]): Promise<Screening[]> {
+  const unique = new Map<string, { title: string; year?: number }>();
+  for (const s of screenings) {
+    unique.set(`${s.filmTitle}|${s.year ?? ""}`, { title: s.filmTitle, year: s.year });
+  }
+
+  const resolved = new Map<string, string | undefined>();
+  await Promise.all(
+    Array.from(unique.entries()).map(async ([key, { title, year }]) => {
+      resolved.set(key, await resolveLetterboxdUrl(title, year));
+    }),
+  );
+
+  return screenings.map((s) => ({
+    ...s,
+    letterboxdUrl: resolved.get(`${s.filmTitle}|${s.year ?? ""}`),
+  }));
+}
+
+export async function getShowtimesForRange(dates: string[]): Promise<DayResult> {
+  const results = await Promise.all(adapters.map((a) => getCinemaRange(a, dates)));
+
+  const titleOverrides = await loadTitleOverrides();
+  const screenings = results
+    .flatMap((r) => r.screenings)
+    .map((s) => ({ ...s, filmTitle: cleanFilmTitle(s.filmTitle, titleOverrides) }));
+  const errors: AdapterError[] = results
+    .map((r, i) => (r.error ? { cinema: adapters[i].name, message: r.error } : undefined))
+    .filter((e): e is AdapterError => Boolean(e));
+  const stale = results.some((r) => r.stale);
+  const fetchedAt = results.reduce<number | undefined>(
+    (latest, r) => (r.fetchedAt && (!latest || r.fetchedAt > latest) ? r.fetchedAt : latest),
+    undefined,
+  );
+
+  const withLinks = await withLetterboxdLinks(screenings);
+  withLinks.sort((a, b) => a.date.localeCompare(b.date) || a.time.localeCompare(b.time));
+
+  if (!stale) {
+    await cache.persistToFile();
+  }
+
+  return { screenings: withLinks, errors, stale, fetchedAt };
+}
+
+export async function refreshShowtimesForRange(dates: string[]): Promise<DayResult> {
+  for (const a of adapters) {
+    for (const date of dates) {
+      cache.invalidate(a.id, date);
+    }
+  }
+  return getShowtimesForRange(dates);
+}

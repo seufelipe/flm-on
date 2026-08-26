@@ -1,1 +1,212 @@
 @AGENTS.md
+
+# FLM ON — Dublin cinema showtime planner
+
+Personal single-user app (no auth, no accounts) that combines showtimes from the user's two
+favourite Dublin cinemas — **Light House Cinema** and **IFI** — into one place, with tools to
+plan a day at the cinema — anything from a double bill up to a full day of back-to-back
+screenings. Built iteratively through direct conversation with the user; this file exists so a
+future session can pick back up without re-deriving the reasoning below.
+
+Public deployment (see decision #9) runs on a **weekly curated data pipeline**, not live
+per-visitor scraping: a manually-run script fetches the week's showtimes, the user reviews a
+plain-text report, and confirming promotes it to the one committed data file the deployed app
+reads statically.
+
+## Stack
+
+Next.js 16 (App Router) + TypeScript, Tailwind v4, cheerio for HTML parsing, vitest for tests.
+No database — `data/showtimes.json` (the published week) plus `data/title-overrides.json` and
+`data/letterboxd-overrides.json` (curated corrections) are committed; everything else in `data/`
+is gitignored runtime cache/staging.
+
+## Architecture
+
+- `lib/scrapers/lighthouse.ts`, `lib/scrapers/ifi.ts` — `CinemaAdapter` implementations (real
+  scrapers, not dummy data — Phase 1 used hand-written dummy adapters to build the UI risk-free,
+  Phase 2 swapped in these).
+- `lib/scrapers/index.ts` — the adapter registry (`adapters: CinemaAdapter[]`). Adding a cinema
+  later is one new adapter file + one array entry — deliberately not an in-app settings UI.
+- `lib/aggregate.ts` — `getShowtimesForRange` / `refreshShowtimesForRange`. Fetches each
+  adapter's *missing* dates in one batched call (not a per-day loop), then splits and caches the
+  result per `(cinema, date)` — including caching an **explicit empty array** for dates a cinema
+  has nothing on, so they aren't re-fetched every single page load.
+- `lib/cache.ts` — in-memory Map + `data/cache.json` file fallback, 6h TTL. Only exercised by
+  `scripts/fetch-batch.ts` and local dev now — the deployed app doesn't call the live pipeline at
+  all (see decision #9).
+- `lib/titles.ts` — `cleanFilmTitle`, applied to every screening in `lib/aggregate.ts` before
+  Letterboxd resolution. Strips known prefixes (e.g. `"ARCHIVE AT LUNCHTIME:"`) and applies
+  one-off manual corrections, both from `data/title-overrides.json`.
+- `lib/letterboxd.ts` — resolves each film's Letterboxd page (see decision below), cached
+  separately and indefinitely in `data/letterboxd-cache.json` (no TTL — a match doesn't change).
+  `data/letterboxd-overrides.json` is checked first and always wins, for manually fixing a bad
+  auto-match without it recurring every week.
+- `lib/clash.ts` — `findCombos`: valid double-bill pairs (same day, different film, gap between
+  `MAX_COMBO_GAP_MINUTES` and a minimum that depends on whether the pair is cross-cinema
+  (`WALK_BUFFER_MINUTES`, enough time to walk between buildings) or same-cinema
+  (`SAME_CINEMA_BUFFER_MINUTES`, just enough to move between screens). `itineraryTransitions`:
+  gap/overlap/too-tight status between consecutive items in an already-built day plan (no
+  `MAX_COMBO_GAP_MINUTES` cap — a plan the user built on purpose can have a long gap on purpose).
+  `fittingAdditions`: which not-yet-selected screenings could be added to a day plan — checks each
+  candidate against its actual neighbors by start time once inserted, not a flat pairwise check
+  against every selected screening (see decision #5).
+- `lib/groupings.ts` — `groupByFilm`: groups screenings by title across cinemas *and* dates
+  (case/whitespace-insensitively — the two cinemas don't scrape titles in matching case), so the
+  same film shows as one card with multiple date/cinema/time pills, not duplicate rows.
+- `components/ScreeningBrowser.tsx` — the interactive core (client component). Owns Day/Cinema/
+  Time filters as single-select segmented controls (each a nullable value, `null` = "any" —
+  an explicit "Any Day"/"Anywhere"/"Any Time" segment rather than an implicit all-deselected
+  state) and the day-plan selection state (`selectedKeys: Set<string>` — any number of screenings,
+  not just a pair; see decision #5).
+- `components/ComboSuggestions.tsx` — the "Suggested plans" browsing list shown before anything is
+  selected (`effectiveSelectedKeys.size === 0`); clicking a suggestion adds its first leg to the
+  plan. `components/DayPlan.tsx` — replaces that list once anything is selected: a continuous
+  vertical rule (stacked `border-l-2` blocks) down the chosen screenings sorted chronologically,
+  each film's time range + duration, with the gap (or an accent-coloured overlap/too-tight warning,
+  via `itineraryTransitions` in `lib/clash.ts`) inline on the line between each consecutive pair;
+  a row's `×` button removes it.
+- `scripts/fetch-batch.ts` (`npm run fetch:batch`) — runs the live scrape pipeline for
+  `upcomingDays()` (`lib/date.ts` — the full week when run on a Thursday, capped at the upcoming
+  Thursday otherwise), writes `data/staging-batch.json`, prints a plain-text report (cleaned
+  titles, casing mismatches, Letterboxd matches/misses) to review.
+- `scripts/confirm-batch.ts` (`npm run fetch:confirm`) — promotes staging to `data/showtimes.json`,
+  the one file that's actually committed and pushed. Only writes the file — git stays manual.
+- `app/page.tsx` — server component, reads `data/showtimes.json` directly (no live fetch, no
+  `force-dynamic` — see decision #9). Static per deploy.
+
+## Decisions worth knowing before changing anything
+
+1. **Light House's multi-day data comes from `/ajax/films-by-day/{n}` — deliberately fetched
+   despite `robots.txt` disallowing `/ajax/*`.** (Reversed 2026-08-24; originally this adapter
+   only ever returned "today" out of respect for that disallow.) The site's `/films` page only
+   ever renders *today* in static HTML — the other 9 day-tabs (`n` = 1..9, confirmed live via
+   network capture) are empty `<ul></ul>` placeholders filled client-side by that exact endpoint,
+   same `div.film` markup as the main page. Revisited with the user for the public release's
+   weekly-batch pipeline (decision #9): this is now a single deliberate fetch once a week from a
+   manual script, not continuous per-visitor scraping, so the calculus changed. If this ever goes
+   back to a live per-request model, revisit again — the original reasoning (continuous automated
+   access against an explicit disallow) would apply again.
+
+2. **IFI's listing page only shows films screening *today*.** Multi-day data comes from
+   following each of those films' own event pages (unrestricted by robots.txt, ~5 days forward).
+   Known accepted gap: a film whose run starts later this week without a screening today is never
+   discovered at all, since nothing links to it. Not fixed — would need a different discovery
+   mechanism than "start from today's listing."
+
+3. **`app/page.tsx` is static (`○ (Static)` in `next build` output), not `force-dynamic`.**
+   (Reversed 2026-08-24 along with decision #9 — it used to require `force-dynamic` because it
+   called the live scrape pipeline on every request.) Now it just reads the committed
+   `data/showtimes.json`, so content only changes on redeploy and Next's normal static rendering
+   is correct. Don't reintroduce `force-dynamic` unless `app/page.tsx` goes back to calling the
+   live pipeline at request time.
+
+4. **Letterboxd links are resolved by guessing the slug, not searching.** Letterboxd's
+   `/search/...` endpoint sits behind a Cloudflare bot challenge (verified: 403,
+   `cf-mitigated: challenge`, even with full browser headers). Individual `/film/{slug}/` pages
+   are not blocked and aren't disallowed by robots.txt. We slugify the title, try a `-{year}`
+   suffix first when the year is known, and verify the resolved page's own `og:title` year before
+   accepting — that's the actual implementation of "use year to minimize mismatch." Trailing
+   annotations like "(4K Restoration)" are stripped before slugifying (cinema listings add these,
+   Letterboxd titles don't have them).
+
+5. **Day-plan building (suggestions + click-to-select) only activates when the Day filter is
+   narrowed to a specific date (`activeDay !== null`)** — a plan is inherently single-day; the
+   "Any Day" segment disables it entirely. Selecting a showtime auto-narrows the Day filter to
+   that date if not already scoped to it, so planning starts immediately without a separate manual
+   step; deselecting leaves the day filter alone. Selection state is `selectedKeys: Set<string>`
+   (generalized 2026-08-24 from a single `selectedKey` — originally just double-bill pairs, now any
+   number of screenings for a full day). Watch out if touching this: there was a real bug where
+   changing the day filter left *stale* selections driving the plan for the wrong day — fixed by
+   `effectiveSelectedKeys` in `ScreeningBrowser.tsx`, which drops any selected key whose screening's
+   date doesn't match the day currently in scope. That guard predates the `Set` generalization (it
+   originally guarded a single key) and still applies the same way to each key in the set.
+   `allDayCombos` (whole day, ignoring the cinema filter) still exists solely to feed the
+   pre-selection `ComboSuggestions` list (`visibleCombos`, narrowed to the active cinema so it
+   doesn't suggest a pair referencing a hidden cinema) — it is **not** what drives the pill hints
+   once you've started picking. Those come from `fittingAdditions` (`lib/clash.ts`), added
+   2026-08-24 after a real UX bug: the original hint logic (`partnersOf`/`gapForPartner`) checked
+   each candidate against every selected screening *independently* ("does it pair with #1, or with
+   #2?"), so a 3rd pick could get hinted for fitting neatly after #1 while actually overlapping #2
+   — correct for a 2nd pick (only one thing to compare against) but wrong beyond that, since a
+   pick has to fit both its actual neighbors once inserted into the sorted plan, not just one
+   selected screening in isolation. `fittingAdditions(itinerary, candidates)` finds each
+   candidate's immediate predecessor/successor by start time in the current plan and requires
+   *both* adjacent transitions to be valid (same buffer/cap rules as `findCombos`); a candidate
+   with only one applicable neighbor (inserting before the first item or after the last) only
+   needs that one side to pass.
+
+6. **A screening's identity key is its `bookingUrl`, not `cinema|film|time`.** Real listings can
+   have two distinct bookable sessions for the same film at the same time (e.g. different
+   formats) — `bookingUrl` is the one field guaranteed unique per session. (They currently render
+   as visually near-identical pills with no format label — a known minor gap, not fixed.)
+
+7. **Visual design moved from brutalist to "chunky"** (reversed 2026-08-25, user's explicit
+   request, referencing inkwellgames.com): warm cream page background (`--color-bg`) with a
+   near-white card surface (`--color-surface`), warm near-black ink for borders/text
+   (`--color-fg`/`--color-border`, not pure black), rounded corners (`--radius-card`/`--radius-btn`/
+   `--radius-group`), and hard (non-blurred, offset) layered shadows (`--shadow-card`/
+   `--shadow-btn-primary`/`--shadow-btn-secondary`/`--shadow-group`) instead of the old flat/
+   square-cornered/shadowless look. Font is Elms Sans (`next/font/google`, a geometric sans with a
+   real Black/900 cut) instead of the system sans stack. See the `@theme` block in
+   `app/globals.css` for all tokens. **The accent-reservation rule itself is unchanged**: the one
+   functional accent color (`#e10600`) is still used only for actionable/important things — never
+   decoratively — only its visual treatment changed (flat fill → chunky button with
+   `--shadow-btn-primary`). Segmented filter-bar controls (Day/Cinema/Time in
+   `ScreeningBrowser.tsx`) intentionally do *not* give each segment its own rounded corners/shadow
+   — they're a mutually-exclusive single control, so only the group's outer wrapper is rounded/
+   shadowed (`overflow-hidden` clips the flat-edged children); giving each segment its own shadow
+   would visually collide at the tight gaps needed for the horizontally-scrolling mobile bar and
+   break the "one unified control" reading. Don't reintroduce the old sharp-corners/no-shadow reset
+   without asking first.
+
+8. **No film-count / progress-style UI.** A "here are X films" counter with a struck-through
+   previous count was tried and explicitly rejected — the user said counters "add pressure" they
+   want to avoid. Don't reintroduce running counts, badges, or similar in the main UI without
+   asking first.
+
+9. **Public release runs on a weekly curated pipeline, not live per-visitor scraping.** Decided
+   2026-08-24 when preparing for public deployment: live-scraping on every request meant any
+   anonymous visitor could trigger a scrape (via the now-removed "Refresh now" button), and there
+   was no chance to catch scraper mistakes — mangled titles, wrong Letterboxd matches — before
+   real users saw them. Now: `npm run fetch:batch` (intended to run on Thursdays, when both
+   cinemas' programmes turn over — `upcomingDays()` gives a full 7-day week in that case, capped
+   at the upcoming Thursday if run any other day) cleans titles, resolves Letterboxd links, and
+   writes `data/staging-batch.json` plus a plain-text report. The user reads the
+   report, and `npm run fetch:confirm` promotes staging to `data/showtimes.json` — the one file
+   that's committed and pushed; `app/page.tsx` reads it statically, no runtime fetch. This also
+   drove decisions #1 and #3 above. `app/actions.ts` and `components/RefreshButton.tsx` were
+   deleted — nothing left for a visitor to refresh.
+
+## Known gaps
+
+- No automated tests for the interactive UI layer — only `lib/` unit tests (`test/*.test.ts`)
+  against scraper parsing and combo logic, run via `npx vitest run`.
+- IFI listing-discovery gap (#2 above).
+- Duplicate-session pills aren't visually distinguished (#6 above).
+- No alerting if a cinema's HTML structure changes — scrapers degrade to cached data via
+  try/catch, but nothing flags a *silent* long-term failure.
+- Nothing enforces the Thursday cadence — if the weekly `fetch:batch`/`fetch:confirm` run is
+  skipped, the public site just keeps serving last week's `data/showtimes.json` with no warning.
+- IFI titles often scrape in ALL CAPS while Light House's don't — `fetch:batch`'s report flags
+  these as `[CASING DIFFERS]` so a `data/title-overrides.json` correction can be added, but
+  nothing catches a *new* casing mismatch automatically.
+
+## Running it
+
+- `npm run dev` — dev server
+- `npx vitest run` — unit tests
+- `npm run build` — production build (see decision #3 for what to check)
+- `npm run fetch:batch` — weekly scrape into `data/staging-batch.json` + review report (decision #9)
+- `npm run fetch:confirm` — promote staging to the committed `data/showtimes.json`
+
+## Data files (`data/`)
+
+Committed:
+- `showtimes.json` — the published week the app actually reads. Only file that gets pushed.
+- `title-overrides.json` — `{ stripPrefixes: string[], corrections: Record<string,string> }`.
+- `letterboxd-overrides.json` — `Record<"title|year", string | null>`, checked before auto-resolve.
+
+Gitignored (runtime cache/staging, regenerated by scripts or local dev):
+- `cache.json` — live-scrape cache, 6h TTL, includes explicit empty entries per date.
+- `letterboxd-cache.json` — long-lived Letterboxd auto-match cache, no TTL.
+- `staging-batch.json` — this week's not-yet-confirmed fetch, written by `fetch:batch`.

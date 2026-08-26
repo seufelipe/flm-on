@@ -1,26 +1,64 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-bg: #fcf0ed;
+  --color-surface: #fafafa;
+  --color-fg: #2f2525;
+  --color-accent: #fdc732;
+  --color-accent-ink: #8a6600;
+  --color-border: #2f2525;
+  --color-dim: #7a6f6b;
+  --color-shadow: #bdbdbd;
+  --font-sans:
+    var(--font-elms-sans), ui-rounded, "SF Pro Rounded", "Segoe UI", system-ui, sans-serif;
+
+  --radius-card: 16px;
+  --radius-btn: 10px;
+  --radius-group: 18px;
+  --radius-sm: 8px;
+
+  --shadow-card: 3.2px 3.2px 0 0 var(--color-shadow), 3.2px 3.2px 0 3.2px var(--color-border);
+  --shadow-btn-secondary: 3px 3px 0 0 var(--color-border);
+  --shadow-group: 4px 4px 0 0 var(--color-border);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  body {
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  a {
+    color: inherit;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.pill-crossed-out {
+  position: relative;
+}
+
+.pill-crossed-out::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(100% + 16px);
+  height: 3px;
+  border-radius: 999px;
+  background: var(--color-border);
+  opacity: 0.85;
+  transform: translate(-50%, -50%) rotate(-14deg);
+  pointer-events: none;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+  }
 }

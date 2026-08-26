@@ -6,9 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "vitest run",
+    "fetch:batch": "tsx scripts/fetch-batch.ts",
+    "fetch:confirm": "tsx scripts/confirm-batch.ts"
   },
   "dependencies": {
+    "cheerio": "^1.2.0",
     "next": "16.3.2",
     "react": "19.2.8",
     "react-dom": "19.2.8"
@@ -21,6 +25,8 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.2",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "tsx": "^4",
+    "typescript": "^5",
+    "vitest": "^4.1.11"
   }
 }
