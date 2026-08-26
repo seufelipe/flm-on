@@ -182,10 +182,6 @@ export default function ScreeningBrowser({ screenings, days }: Props) {
 
   const dayPlanTransitions = useMemo(() => itineraryTransitions(dayPlanItems), [dayPlanItems]);
 
-  const dayPlanHeading = comboScopeDay
-    ? `Your day plan for ${formatDayFriendly(comboScopeDay)} ${formatDayDate(comboScopeDay)}`
-    : "Your day plan";
-
   function toggleSelected(s: TimedScreening) {
     const k = keyOf(s);
     const isRemoving = selectedKeys.has(k);
@@ -208,7 +204,7 @@ export default function ScreeningBrowser({ screenings, days }: Props) {
 
   return (
     <div>
-      <div className="pb-24">
+      <div className="pb-40">
         <div className="flex flex-col gap-8">
           {filmGroups.length === 0 && (
             <p className="bg-surface border-4 border-border rounded-card shadow-card p-8 font-bold">
@@ -234,22 +230,13 @@ export default function ScreeningBrowser({ screenings, days }: Props) {
             <ComboSuggestions combos={visibleCombos} onSelect={toggleSelected} keyOf={keyOf} />
           </div>
         )}
-
-        {comboScopeDay && effectiveSelectedKeys.size > 0 && (
-          <div className="mt-10">
-            <DayPlan
-              heading={dayPlanHeading}
-              items={dayPlanItems}
-              transitions={dayPlanTransitions}
-              onRemove={toggleSelected}
-              keyOf={keyOf}
-            />
-          </div>
-        )}
       </div>
 
-      <div className="no-print fixed bottom-0 left-0 right-0 z-20 border-t-2 border-border bg-bg">
-        <div className="flex items-center justify-start md:justify-center gap-4 overflow-x-auto px-4 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
+      <div className="no-print fixed bottom-0 left-0 right-0 z-20 flex flex-col">
+        {comboScopeDay && effectiveSelectedKeys.size > 0 && (
+          <DayPlan items={dayPlanItems} transitions={dayPlanTransitions} onRemove={toggleSelected} keyOf={keyOf} />
+        )}
+        <div className="flex items-center justify-start md:justify-center gap-4 overflow-x-auto border-t-2 border-border bg-bg px-4 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
           <div className="shrink-0 flex">
             <button
               onClick={() => setActiveDay(null)}
