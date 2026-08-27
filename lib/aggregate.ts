@@ -1,7 +1,7 @@
 import { adapters } from "./scrapers";
 import type { Screening } from "./scrapers/types";
 import * as cache from "./cache";
-import { resolveLetterboxdUrl } from "./letterboxd";
+import { resolveLetterboxd, type LetterboxdMatch } from "./letterboxd";
 import { cleanFilmTitle, loadTitleOverrides } from "./titles";
 
 export interface AdapterError {
@@ -83,23 +83,31 @@ async function getCinemaRange(
   }
 }
 
+// Resolves each film's Letterboxd page and — since cinema listings mis-report years (IFI tags
+// everything with the current season, Light House stamps re-releases with this year) — adopts the
+// year from the resolved Letterboxd page as the source of truth, keeping the scraped year only as
+// a fallback for films with no match.
 async function withLetterboxdLinks(screenings: Screening[]): Promise<Screening[]> {
   const unique = new Map<string, { title: string; year?: number }>();
   for (const s of screenings) {
     unique.set(`${s.filmTitle}|${s.year ?? ""}`, { title: s.filmTitle, year: s.year });
   }
 
-  const resolved = new Map<string, string | undefined>();
+  const resolved = new Map<string, LetterboxdMatch>();
   await Promise.all(
     Array.from(unique.entries()).map(async ([key, { title, year }]) => {
-      resolved.set(key, await resolveLetterboxdUrl(title, year));
+      resolved.set(key, await resolveLetterboxd(title, year));
     }),
   );
 
-  return screenings.map((s) => ({
-    ...s,
-    letterboxdUrl: resolved.get(`${s.filmTitle}|${s.year ?? ""}`),
-  }));
+  return screenings.map((s) => {
+    const match = resolved.get(`${s.filmTitle}|${s.year ?? ""}`);
+    return {
+      ...s,
+      letterboxdUrl: match?.url,
+      year: match?.year ?? s.year,
+    };
+  });
 }
 
 export async function getShowtimesForRange(dates: string[]): Promise<DayResult> {

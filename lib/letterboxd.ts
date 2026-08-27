@@ -50,8 +50,29 @@ async function fetchFilmPageYear(slug: string): Promise<{ ok: boolean; year?: nu
   }
 }
 
-type LetterboxdCache = Record<string, string | null>;
+function slugFromUrl(url: string): string | undefined {
+  return url.match(/letterboxd\.com\/film\/([^/]+)/)?.[1];
+}
+
+export interface LetterboxdMatch {
+  url?: string;
+  // The year from the resolved Letterboxd page's `og:title` — treated as the source of truth for
+  // a film's year, since cinema listings are unreliable (IFI tags everything with the season year,
+  // Light House stamps re-releases with the current year).
+  year?: number;
+}
+
+// A cache entry is the resolved URL plus the year read off that page. Legacy entries were a bare
+// URL string (or null); those are migrated on read, and re-resolve to pick up a year.
+type CacheEntry = { url: string | null; year: number | null };
+type LetterboxdCache = Record<string, CacheEntry | string | null>;
 type LetterboxdOverrides = Record<string, string | null>;
+
+function normaliseEntry(raw: CacheEntry | string | null): CacheEntry | null {
+  if (raw === null) return null;
+  if (typeof raw === "string") return { url: raw, year: null };
+  return raw;
+}
 
 let memoryCache: LetterboxdCache | undefined;
 let memoryOverrides: LetterboxdOverrides | undefined;
@@ -90,32 +111,47 @@ async function loadOverrides(): Promise<LetterboxdOverrides> {
   return memoryOverrides;
 }
 
-export async function resolveLetterboxdUrl(title: string, year?: number): Promise<string | undefined> {
+export async function resolveLetterboxd(title: string, year?: number): Promise<LetterboxdMatch> {
   const key = cacheKey(title, year);
-
   const overrides = await loadOverrides();
+  const cache = await loadCache();
+
+  const cached = normaliseEntry(cache[key] ?? null);
+
   if (key in overrides) {
-    return overrides[key] ?? undefined;
+    const url = overrides[key] ?? undefined;
+    if (!url) return {};
+    // Reuse the cached year only if it belongs to this exact override URL.
+    if (cached && cached.url === url && cached.year !== null) {
+      return { url, year: cached.year };
+    }
+    const slug = slugFromUrl(url);
+    const resolvedYear = slug ? (await fetchFilmPageYear(slug)).year : undefined;
+    cache[key] = { url, year: resolvedYear ?? null };
+    await saveCache(cache);
+    return { url, year: resolvedYear };
   }
 
-  const cache = await loadCache();
-  if (key in cache) {
-    return cache[key] ?? undefined;
+  if (key in cache && cached !== null && cached.year !== null) {
+    return { url: cached.url ?? undefined, year: cached.year ?? undefined };
+  }
+  if (key in cache && cached === null) {
+    return {};
   }
 
   const baseSlug = slugify(cleanTitleForMatching(title));
   const candidates = year ? [`${baseSlug}-${year}`, baseSlug] : [baseSlug];
 
-  let resolved: string | undefined;
+  let match: LetterboxdMatch = {};
   for (const slug of candidates) {
     const page = await fetchFilmPageYear(slug);
     if (!page.ok) continue;
     if (year && page.year && Math.abs(page.year - year) > 1) continue;
-    resolved = `https://letterboxd.com/film/${slug}/`;
+    match = { url: `https://letterboxd.com/film/${slug}/`, year: page.year };
     break;
   }
 
-  cache[key] = resolved ?? null;
+  cache[key] = match.url ? { url: match.url, year: match.year ?? null } : null;
   await saveCache(cache);
-  return resolved;
+  return match;
 }

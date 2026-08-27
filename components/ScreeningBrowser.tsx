@@ -221,6 +221,7 @@ export default function ScreeningBrowser({ screenings, days }: Props) {
               keyOf={keyOf}
               onSelect={toggleSelected}
               showCinema={activeCinema === null}
+              daySpecified={activeDay !== null}
             />
           ))}
         </div>

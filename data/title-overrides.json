@@ -1,4 +1,14 @@
 {
-  "stripPrefixes": ["ARCHIVE AT LUNCHTIME:"],
-  "corrections": {}
+  "stripPrefixes": ["ARCHIVE AT LUNCHTIME:", "CINEMA BOOK CLUB:"],
+  "stripAnnotations": [
+    "\\d{1,3}(?:st|nd|rd|th)\\s+anniversary",
+    "\\d+k(?:\\s+digital)?\\s+restoration",
+    "digital\\s+restoration"
+  ],
+  "corrections": {
+    "Archive at Lunchtime August 2026: Programme 1": "Horse Plays",
+    "Archive at Lunchtime August 2026: Programme 2": "Horse Plays",
+    "Archive at Lunchtime August 2026: Double Bill": "Horse Plays",
+    "Archive at Lunchtime September 2026: Programme 1": "The Irish Riviera"
+  }
 }

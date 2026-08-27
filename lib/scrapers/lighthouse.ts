@@ -146,6 +146,7 @@ export const lighthouseAdapter: CinemaAdapter = {
           date: film.date,
           time: t.time,
           bookingUrl: t.bookingUrl,
+          filmPageUrl: `${BASE_URL}/film/${film.slug}`,
         })),
       );
 

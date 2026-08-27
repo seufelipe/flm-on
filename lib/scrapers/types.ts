@@ -11,6 +11,7 @@ export interface Screening {
   date: string; // ISO YYYY-MM-DD
   time: string; // "HH:MM" 24h
   bookingUrl: string;
+  filmPageUrl?: string; // the cinema's own film detail page (not the booking flow)
   letterboxdUrl?: string;
 }
 

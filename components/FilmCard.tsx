@@ -13,6 +13,7 @@ interface Props {
   keyOf: (s: TimedScreening) => string;
   onSelect: (s: TimedScreening) => void;
   showCinema: boolean;
+  daySpecified: boolean;
 }
 
 export default function FilmCard({
@@ -23,12 +24,26 @@ export default function FilmCard({
   keyOf,
   onSelect,
   showCinema,
+  daySpecified,
 }: Props) {
-  // Only worth a day sub-header when the film's currently-visible screenings actually span more
-  // than one day — with a single day in view (e.g. one Day filter chip active) it would just
-  // repeat what the filter chip already says.
+  // Day sub-headers are redundant only when a specific Day chip is active — then every visible
+  // screening is that day and the chip already says so. With "Any Day" in view, always show them,
+  // even for a film with a single session, so you can tell when it's actually on.
   const dayGroups = groupScreeningsByDay(group.screenings);
-  const showDayHeaders = dayGroups.length > 1;
+  const showDayHeaders = !daySpecified || dayGroups.length > 1;
+
+  // One film-page link per cinema currently in view (a film at both cinemas gets both), in the
+  // order the cinemas first appear in the screening list.
+  const cinemaPageLinks = Array.from(
+    group.screenings
+      .reduce((acc, s) => {
+        if (s.filmPageUrl && !acc.has(s.cinema)) {
+          acc.set(s.cinema, { label: CINEMA_LABEL[s.cinema] ?? s.cinemaName, url: s.filmPageUrl });
+        }
+        return acc;
+      }, new Map<string, { label: string; url: string }>())
+      .values(),
+  );
 
   function handleKeyDown(e: React.KeyboardEvent, s: TimedScreening) {
     if (e.key === "Enter" || e.key === " ") {
@@ -83,26 +98,54 @@ export default function FilmCard({
     );
   }
 
+  const hasMetaLine =
+    group.cert !== undefined ||
+    group.durationMins !== undefined ||
+    group.letterboxdUrl !== undefined;
+
   return (
     <div className="bg-surface border-4 border-border rounded-card p-8">
-      <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 mb-3">
-        <span className="text-2xl md:text-3xl font-black uppercase tracking-tight">{group.filmTitle}</span>
-        {group.year && <span className="text-sm text-dim">({group.year})</span>}
-        {group.cert && <span className="text-xs border border-current px-1">{group.cert}</span>}
-        {group.durationMins !== undefined && (
-          <span className="text-xs text-dim">
-            {group.durationMins}min{group.durationEstimated ? " (est.)" : ""}
-          </span>
-        )}
-        {group.letterboxdUrl && (
-          <a
-            href={group.letterboxdUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="no-print underline underline-offset-2 text-sm"
-          >
-            Letterboxd
-          </a>
+      <div className="mb-16">
+        <div className="flex items-start justify-between gap-4">
+          <h3 className="text-2xl md:text-3xl tracking-tight">
+            <span className="font-black uppercase">{group.filmTitle}</span>
+            {group.year !== undefined && <span className="font-normal text-dim ml-3">{group.year}</span>}
+          </h3>
+          {cinemaPageLinks.length > 0 && (
+            <div className="no-print flex flex-wrap justify-end gap-2 shrink-0">
+              {cinemaPageLinks.map((link) => (
+                <a
+                  key={link.url}
+                  href={link.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="border-2 border-border rounded-btn bg-surface text-fg px-3 py-1.5 text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-transform active:translate-x-[2px] active:translate-y-[2px]"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
+        {hasMetaLine && (
+          <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 mt-2">
+            {group.cert && <span className="text-xs border border-current px-1">{group.cert}</span>}
+            {group.durationMins !== undefined && (
+              <span className="text-xs text-dim">
+                {group.durationMins}min{group.durationEstimated ? " (est.)" : ""}
+              </span>
+            )}
+            {group.letterboxdUrl && (
+              <a
+                href={group.letterboxdUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="no-print underline underline-offset-2 text-sm"
+              >
+                Letterboxd
+              </a>
+            )}
+          </div>
         )}
       </div>
       {showDayHeaders ? (

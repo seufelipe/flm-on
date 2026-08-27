@@ -35,12 +35,20 @@ is gitignored runtime cache/staging.
   `scripts/fetch-batch.ts` and local dev now — the deployed app doesn't call the live pipeline at
   all (see decision #9).
 - `lib/titles.ts` — `cleanFilmTitle`, applied to every screening in `lib/aggregate.ts` before
-  Letterboxd resolution. Strips known prefixes (e.g. `"ARCHIVE AT LUNCHTIME:"`) and applies
-  one-off manual corrections, both from `data/title-overrides.json`.
-- `lib/letterboxd.ts` — resolves each film's Letterboxd page (see decision below), cached
-  separately and indefinitely in `data/letterboxd-cache.json` (no TTL — a match doesn't change).
-  `data/letterboxd-overrides.json` is checked first and always wins, for manually fixing a bad
-  auto-match without it recurring every week.
+  Letterboxd resolution. From `data/title-overrides.json`: exact-match `corrections`, then
+  `stripPrefixes` (programme strands — `"ARCHIVE AT LUNCHTIME:"`, `"CINEMA BOOK CLUB:"`), then
+  `stripAnnotations` (regex sources for trailing re-release tags — `4K Restoration`, `Nth
+  Anniversary` — matched at end of title, bare / dash-prefixed / in `(…)`). The cleaned title is
+  what the UI shows *and* what Letterboxd resolution + its cache/override keys use, so editing
+  these files shifts `letterboxd-overrides.json` keys too.
+- `lib/letterboxd.ts` — `resolveLetterboxd(title, year)` → `{ url?, year? }`: resolves each film's
+  Letterboxd page (see decision #4) *and* returns that page's `og:title` year, which
+  `lib/aggregate.ts` then adopts as the film's real year (cinema-reported years are unreliable —
+  decisions #2, #4 — so the scraped year is only a fallback for NOT-FOUND films). Cached
+  indefinitely in `data/letterboxd-cache.json` as `{ url, year }` per `title|year` key (no TTL — a
+  match doesn't change; legacy bare-string entries are migrated on read and re-resolve once to
+  pick up a year). `data/letterboxd-overrides.json` is checked first and always wins; an override
+  gives only a URL, so its page is fetched once for the year.
 - `lib/clash.ts` — `findCombos`: valid double-bill pairs (same day, different film, gap between
   `MAX_COMBO_GAP_MINUTES` and a minimum that depends on whether the pair is cross-cinema
   (`WALK_BUFFER_MINUTES`, enough time to walk between buildings) or same-cinema
@@ -58,6 +66,13 @@ is gitignored runtime cache/staging.
   an explicit "Any Day"/"Anywhere"/"Any Time" segment rather than an implicit all-deselected
   state) and the day-plan selection state (`selectedKeys: Set<string>` — any number of screenings,
   not just a pair; see decision #5).
+- `components/FilmCard.tsx` — one film's card. Header line 1: title (black) + year inline
+  (title-sized but `font-normal`, `text-dim`, no parens), with the cinema film-page links
+  top-right as chips (`your plan`-style: `border-2`/`rounded-btn`, one per cinema currently in
+  view, from `Screening.filmPageUrl` — each cinema's own detail page, `ifi.ie/films/{slug}` /
+  `lighthousecinema.ie/film/{slug}`, kept separate from `bookingUrl`). Line 2: cert, duration,
+  Letterboxd link. Screening pills are grouped by day then timeframe; the day sub-header shows
+  unless a specific Day chip is active (`daySpecified` — then the chip already says the day).
 - `components/ComboSuggestions.tsx` — the "Suggested plans" browsing list shown before anything is
   selected (`effectiveSelectedKeys.size === 0`); clicking a suggestion adds its first leg to the
   plan. `components/DayPlan.tsx` — replaces that list once anything is selected: a continuous
@@ -87,11 +102,36 @@ is gitignored runtime cache/staging.
    back to a live per-request model, revisit again — the original reasoning (continuous automated
    access against an explicit disallow) would apply again.
 
-2. **IFI's listing page only shows films screening *today*.** Multi-day data comes from
-   following each of those films' own event pages (unrestricted by robots.txt, ~5 days forward).
-   Known accepted gap: a film whose run starts later this week without a screening today is never
-   discovered at all, since nothing links to it. Not fixed — would need a different discovery
-   mechanism than "start from today's listing."
+2. **IFI's `/whats-on` page is date-scoped via `?date=YYYY-MM-DD` and renders every screening
+   for that day inline.** (Rewritten 2026-08-27 — IFI relaunched on an Astro site and the old
+   `now-showing-coming-soon/` URL + per-event-page walk started 404ing; nothing IFI showed up in
+   that day's batch until this was fixed.) The adapter now fetches one `/whats-on?date=` page per
+   requested date (concurrency 4), parsing `article.screening-card` → title, `.screening-card__
+   runtime`, `.age-rating img[alt]` for cert, `.tags .tag` (first tag = 4-digit year, second =
+   director) for `year`, the "Learn more" CTA (`.screening-card__ctas a[href*="/films/"]`) for the
+   `filmPageUrl` (→ `https://ifi.ie/films/{slug}`), and one `a.screening-card__screening` per
+   bookable session (`href` = `shop.ifi.ie/performance/{id}/`, unique per session — decision #6).
+   This closed the old "listing only shows today" gap: a film whose run starts mid-week is now
+   discovered directly. `robots.txt` allows `*` on `/whats-on`. `resolveDateLabel`/`parseEventPage`
+   are gone.
+
+   Caveat on IFI's `year`: it's often the *programme/season* year (2026) rather than the film's
+   production year — e.g. `+Sons` (a 2025 doc) is tagged 2026. It's still fed to Letterboxd
+   resolution as the slug-guess hint, but the *displayed* year then comes from the matched page
+   (decision #4), so `+Sons` ends up showing 2025. A wrong hint that finds no page yields NOT FOUND
+   (visible in the batch report, fixable via override) rather than a confident wrong link — which
+   is what the *yearless* bare-slug guess used to produce for IFI (e.g. `/film/the-odyssey/` → the
+   1997 miniseries).
+
+   Caveat on IFI's `title`: the new site titles a recurring-strand session by the *strand*, not
+   the film — e.g. `Archive at Lunchtime August 2026: Programme 1` is really the "Horse Plays"
+   archive strand (the old site named it properly). The only reliable signal for the real name is
+   the poster image filename (`…/Archive-at-Lunchtime_-Horse-Plays.jpg`) or the first line of the
+   synopsis, and even the image is a bare placeholder some months. Handled reactively via
+   `corrections` in `data/title-overrides.json` (Aug's three entries → `"Horse Plays"`, Sept →
+   `"The Irish Riviera"`; where a month has several programmes they collapse to one `groupByFilm`
+   card). This is manual per month; a proper strand-aware model is still wanted (same open question
+   as Light House's `CINEMA BOOK CLUB:` / IFI `Mystery Matinee`).
 
 3. **`app/page.tsx` is static (`○ (Static)` in `next build` output), not `force-dynamic`.**
    (Reversed 2026-08-24 along with decision #9 — it used to require `force-dynamic` because it
@@ -107,7 +147,21 @@ is gitignored runtime cache/staging.
    suffix first when the year is known, and verify the resolved page's own `og:title` year before
    accepting — that's the actual implementation of "use year to minimize mismatch." Trailing
    annotations like "(4K Restoration)" are stripped before slugifying (cinema listings add these,
-   Letterboxd titles don't have them).
+   Letterboxd titles don't have them) — both in `cleanTitleForMatching` here and, since
+   2026-08-27, structurally in `cleanFilmTitle` via `stripAnnotations`.
+
+   Since 2026-08-27 the year on the *matched* page (its `og:title`) is also what the UI shows for
+   that film — the cinema-reported year is used only for the slug guess and as a fallback when
+   there's no match. So `Kiki's Delivery Service` shows 1989, not Light House's "2026"; a repertory
+   pin in `letterboxd-overrides.json` fixes both the link and the displayed year in one go.
+
+   **Light House stamps re-releases with the *current* year** ("Released: …-2026" on a 1986
+   Tarkovsky restoration), which defeats the `og:title` year check and — worse — can match a
+   *different* real film of the same name that genuinely is from this year (e.g. `The Sacrifice`
+   auto-resolved to `the-sacrifice-2026`, a different 2026 film, instead of `the-sacrifice`). These
+   are pinned in `data/letterboxd-overrides.json` (keyed on the *wrong* year LH reports, e.g.
+   `"The Sacrifice|2026"`, `"Sunset Boulevard|2025"`). When reviewing a batch, sanity-check any
+   repertory/restoration title's link, not just the NOT FOUND list.
 
 5. **Day-plan building (suggestions + click-to-select) only activates when the Day filter is
    narrowed to a specific date (`activeDay !== null`)** — a plan is inherently single-day; the
@@ -181,7 +235,6 @@ is gitignored runtime cache/staging.
 
 - No automated tests for the interactive UI layer — only `lib/` unit tests (`test/*.test.ts`)
   against scraper parsing and combo logic, run via `npx vitest run`.
-- IFI listing-discovery gap (#2 above).
 - Duplicate-session pills aren't visually distinguished (#6 above).
 - No alerting if a cinema's HTML structure changes — scrapers degrade to cached data via
   try/catch, but nothing flags a *silent* long-term failure.
@@ -203,10 +256,11 @@ is gitignored runtime cache/staging.
 
 Committed:
 - `showtimes.json` — the published week the app actually reads. Only file that gets pushed.
-- `title-overrides.json` — `{ stripPrefixes: string[], corrections: Record<string,string> }`.
+- `title-overrides.json` — `{ stripPrefixes: string[], stripAnnotations: string[] (regex sources),
+  corrections: Record<string,string> }`.
 - `letterboxd-overrides.json` — `Record<"title|year", string | null>`, checked before auto-resolve.
 
 Gitignored (runtime cache/staging, regenerated by scripts or local dev):
 - `cache.json` — live-scrape cache, 6h TTL, includes explicit empty entries per date.
-- `letterboxd-cache.json` — long-lived Letterboxd auto-match cache, no TTL.
+- `letterboxd-cache.json` — long-lived Letterboxd auto-match cache (`{ url, year }` per key), no TTL.
 - `staging-batch.json` — this week's not-yet-confirmed fetch, written by `fetch:batch`.
