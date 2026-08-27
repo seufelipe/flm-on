@@ -114,6 +114,9 @@ export default function ScreeningBrowser({ screenings, days }: Props) {
   // it's being viewed after its batch was fetched (e.g. fetched Thursday, viewed the following
   // Monday) — a day chip for a date that's already passed isn't a day you can still plan.
   const visibleDays = useMemo(() => days.filter((d) => d >= now.date), [days, now]);
+  // The "Come back tomorrow" note only appears the day before the next weekly batch; when it's
+  // hidden the last day button becomes the group's right end and takes the rounded corner.
+  const showBatchNote = nextBatchLabel(now.date) === "Tomorrow";
 
   const timed = useMemo(() => withEndTimes(upcomingScreenings), [upcomingScreenings]);
 
@@ -251,22 +254,25 @@ export default function ScreeningBrowser({ screenings, days }: Props) {
                 key={day}
                 onClick={() => setActiveDay(activeDay === day ? null : day)}
                 style={{ zIndex: i + 1 }}
-                className={`relative shrink-0 border-4 px-3 py-1 flex flex-col items-start gap-0.5 transition-transform ${controlPositionClass(false, false)} ${controlSegmentClass(activeDay === day, false)}`}
+                className={`relative shrink-0 border-4 px-3 py-1 flex flex-col items-start gap-0.5 transition-transform ${controlPositionClass(false, !showBatchNote && i === visibleDays.length - 1)} ${controlSegmentClass(activeDay === day, false)}`}
               >
                 <span className="font-bold uppercase text-sm tracking-wide">{formatDayFriendly(day)}</span>
                 <span className="text-xs text-dim uppercase tracking-widest">{formatDayDate(day)}</span>
               </button>
             ))}
-            {/* Not a button — this is an announcement ("more data every Thursday"), not a
+            {/* Not a button — this is an announcement ("more data tomorrow"), not a
                 temporarily-unavailable control, so it skips the crossed-out/flush disabled
-                treatment used for genuinely ruled-out options like a past time slot. */}
-            <div
-              style={{ zIndex: visibleDays.length + 1 }}
-              className={`relative shrink-0 border-4 border-dim px-3 py-1 flex flex-col items-start justify-center gap-0.5 bg-surface text-dim translate-x-[3px] translate-y-[3px] cursor-default ${controlPositionClass(false, true)}`}
-            >
-              <span className="font-normal uppercase text-xs tracking-wide">Come back</span>
-              <span className="text-xs text-dim uppercase tracking-widest">{nextBatchLabel(now.date)}!</span>
-            </div>
+                treatment used for genuinely ruled-out options like a past time slot. Only shown
+                the day before the next batch — earlier in the week it just reads as clutter. */}
+            {showBatchNote && (
+              <div
+                style={{ zIndex: visibleDays.length + 1 }}
+                className={`relative shrink-0 border-4 border-dim px-3 py-1 flex flex-col items-start justify-center gap-0.5 bg-surface text-dim translate-x-[3px] translate-y-[3px] cursor-default ${controlPositionClass(false, true)}`}
+              >
+                <span className="font-normal uppercase text-xs tracking-wide">Come back</span>
+                <span className="text-xs text-dim uppercase tracking-widest">Tomorrow!</span>
+              </div>
+            )}
           </div>
 
           <div className="shrink-0 flex">
