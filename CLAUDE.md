@@ -247,6 +247,23 @@ is gitignored runtime cache/staging.
    drove decisions #1 and #3 above. `app/actions.ts` and `components/RefreshButton.tsx` were
    deleted — nothing left for a visitor to refresh.
 
+10. **Installable to the home screen as "flm on" (lowercase), with generated icons.** Added
+    2026-08-27. The document `<title>`, `metadata.appleWebApp.title` (iOS home-screen label), and
+    `app/manifest.ts` `name`/`short_name` are all the lowercase `flm on`; the old descriptive
+    string moved to `description`. `app/manifest.ts` needs `export const dynamic = "force-static"`
+    (like every route, because of `output: "export"`) and uses **relative** URLs (`start_url: "."`,
+    `src: "icon-192.png"`) so it resolves correctly both at the domain root locally and under the
+    `/flm-on/` GitHub Pages basePath without env plumbing — Next only auto-prefixes basePath onto
+    the file-convention icon `<link>`s, not manifest strings.
+
+    Icons are the FLM ON wordmark (Elms Sans 900, "flm" cream over "on" gold) on a cream-framed
+    ink card on the gold accent field — the three brand colours, chunky. They're **generated,
+    committed PNGs**, not runtime routes: `npm run gen:icons` (`scripts/gen-icons.tsx`) renders
+    them with `next/og` + the bundled `scripts/elms-sans-900.ttf` and `sharp`, writing
+    `app/icon.png` / `app/apple-icon.png` (Next auto-links these), `app/favicon.ico` (a PNG in a
+    hand-rolled ICO container — sharp can't emit `.ico`), and `public/icon-{192,512,maskable}.png`
+    (referenced by the manifest). Re-run it if the palette or wordmark changes.
+
 ## Known gaps
 
 - No automated tests for the interactive UI layer — only `lib/` unit tests (`test/*.test.ts`)
@@ -267,6 +284,7 @@ is gitignored runtime cache/staging.
 - `npm run build` — production build (see decision #3 for what to check)
 - `npm run fetch:batch` — weekly scrape into `data/staging-batch.json` + review report (decision #9)
 - `npm run fetch:confirm` — promote staging to the committed `data/showtimes.json`
+- `npm run gen:icons` — regenerate the app icons + favicon from `scripts/gen-icons.tsx` (see PWA note below)
 
 ## Data files (`data/`)
 
