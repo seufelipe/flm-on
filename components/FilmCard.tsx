@@ -3,6 +3,7 @@ import type { TimedScreening } from "@/lib/clash";
 import { groupScreeningsByDay, type FilmGroup } from "@/lib/groupings";
 import { groupScreeningsByTimeframe } from "@/lib/timeframe";
 import { CINEMA_LABEL } from "@/lib/cinemas";
+import { certColor } from "@/lib/certs";
 import { formatDayFriendly, formatDayDate } from "@/lib/date";
 
 interface Props {
@@ -14,6 +15,24 @@ interface Props {
   onSelect: (s: TimedScreening) => void;
   showCinema: boolean;
   daySpecified: boolean;
+}
+
+// Age cert styled after the official IFCO classification symbol — a colour-coded circle with a
+// white label and a hard dark edge, thick dark border. Fixed circle size; the label shrinks for
+// the 3-character certs ("12A", "15A") so the disc stays round. Unknown certs (no colour) fall
+// back to a neutral fill. See lib/certs.ts for the palette.
+function Cert({ cert }: { cert: string }) {
+  const color = certColor(cert);
+  return (
+    <span
+      className={`cert-badge inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-[3px] border-border font-black uppercase leading-none text-white ${
+        cert.length > 2 ? "text-[0.66rem] tracking-tight" : "text-sm"
+      }`}
+      style={{ background: color ?? "var(--color-dim)" }}
+    >
+      {cert}
+    </span>
+  );
 }
 
 export default function FilmCard({
@@ -130,8 +149,8 @@ export default function FilmCard({
           )}
         </div>
         {hasMetaLine && (
-          <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 mt-2">
-            {group.cert && <span className="text-xs border border-current px-1">{group.cert}</span>}
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2">
+            {group.cert && <Cert cert={group.cert} />}
             {group.durationMins !== undefined && (
               <span className="text-xs text-dim">
                 {group.durationMins}min{group.durationEstimated ? " (est.)" : ""}

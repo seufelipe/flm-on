@@ -35,6 +35,13 @@
   }
 }
 
+/* White cert label with a hard dark outline, like the official IFCO symbol — keeps it legible
+   on the lighter fills (orange, green) where plain white would wash out. */
+.cert-badge {
+  -webkit-text-stroke: 1.5px var(--color-border);
+  paint-order: stroke fill;
+}
+
 .pill-crossed-out {
   position: relative;
 }
@@ -61,5 +68,12 @@
   body {
     background: #fff;
     color: #000;
+  }
+
+  /* Colour fills rarely print; drop the outline and show the cert as plain dark-on-white. */
+  .cert-badge {
+    -webkit-text-stroke: 0;
+    color: #000 !important;
+    background: #fff !important;
   }
 }
