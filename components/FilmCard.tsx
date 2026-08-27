@@ -142,7 +142,7 @@ export default function FilmCard({
                   rel="noreferrer"
                   className="border-2 border-border rounded-btn bg-surface text-fg px-3 py-1.5 text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-transform active:translate-x-[2px] active:translate-y-[2px]"
                 >
-                  {link.label}
+                  {link.label} <span aria-hidden="true">↗</span>
                 </a>
               ))}
             </div>
@@ -163,7 +163,7 @@ export default function FilmCard({
                 rel="noreferrer"
                 className="no-print underline underline-offset-2 text-sm"
               >
-                Letterboxd
+                Letterboxd <span aria-hidden="true">↗</span>
               </a>
             )}
           </div>
@@ -174,7 +174,7 @@ export default function FilmCard({
           {dayGroups.map((dg) => (
             <div key={dg.date}>
               <p className="text-xs font-bold uppercase text-dim tracking-widest mb-3">
-                {formatDayFriendly(dg.date)} · {formatDayDate(dg.date)}
+                {formatDayFriendly(dg.date)}, {formatDayDate(dg.date)}
               </p>
               {renderScreeningsRow(dg.screenings)}
             </div>
