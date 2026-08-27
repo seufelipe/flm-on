@@ -22,25 +22,26 @@ function keyOf(s: Screening): string {
   return s.bookingUrl;
 }
 
-// Each segment keeps its own border and shadow (same elevation language as the film chips) but
-// sits flush against its neighbors — a negative margin equal to the border width pulls each
-// segment's left border exactly onto the previous one's right border, so they merge into a single
-// shared line instead of doubling up or leaving a gap. Because they're flush, an *inactive*
-// segment's own shadow renders mostly hidden under its right-hand neighbor (only its bottom sliver
-// shows, and those slivers line up into one continuous strip under the whole row) — the same net
-// look as a single shared group shadow. The *active* segment drops its shadow and translates by
-// that same offset instead, so it visibly sinks relative to its still-raised neighbors — the same
-// accent fill + flush treatment as a selected film chip (FilmCard.tsx), for one consistent
-// "selected" language across the app.
+// Each segment keeps its own border and the two-tone stacked shadow (--shadow-chip, same
+// elevation language as the film chips) but sits flush against its neighbors — a negative margin
+// equal to the border width (2px, `-ml-0.5`) pulls each segment's left border exactly onto the
+// previous one's right border, so they merge into a single shared line instead of doubling up or
+// leaving a gap. Because they're flush, an *inactive* segment's own shadow renders mostly hidden
+// under its right-hand neighbor (only its bottom strip shows, and those strips line up into one
+// continuous stacked-card shadow under the whole row). Hovering an inactive segment gives it the
+// half-press (--shadow-chip-half + 2px translate); the *active* one drops its shadow entirely and
+// translates the full 4px shadow offset, so it visibly sinks flush against its still-raised
+// neighbors — the same accent fill + press treatment as a selected film chip (FilmCard.tsx), for
+// one consistent "selected" language across the app.
 //
 // There's deliberately no "disabled" variant: a segment the user can't act on (a time window
 // that's already passed, a filter with only one possible value) is removed from the row rather
 // than shown greyed-out — see ControlGroup below.
 function controlSegmentClass(active: boolean): string {
   if (active) {
-    return "border-border bg-accent text-fg translate-x-[3px] translate-y-[3px]";
+    return "border-border bg-accent text-fg translate-x-[4px] translate-y-[4px]";
   }
-  return "border-border bg-surface text-fg shadow-btn-secondary active:translate-x-[3px] active:translate-y-[3px] active:shadow-none";
+  return "border-border bg-surface text-fg shadow-chip hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-chip-half active:translate-x-[4px] active:translate-y-[4px] active:shadow-none";
 }
 
 // Only the group's two end segments round outward — everything in between stays square so the
@@ -55,11 +56,12 @@ function controlSegmentClass(active: boolean): string {
 // z-index ordering restores "later sibling wins" for all of them, active or not.
 function controlPositionClass(isFirst: boolean, isLast: boolean): string {
   const radius = isFirst && isLast ? "rounded-[10px]" : isFirst ? "rounded-l-[10px]" : isLast ? "rounded-r-[10px]" : "";
-  const overlap = isFirst ? "" : "-ml-1";
+  const overlap = isFirst ? "" : "-ml-0.5";
   return `${radius} ${overlap}`;
 }
 
-const SEGMENT_BASE = "relative shrink-0 border-4 px-3 py-1 flex flex-col items-start gap-0.5 transition-transform";
+const SEGMENT_BASE =
+  "relative shrink-0 border-2 px-3 py-1 flex flex-col items-start gap-0.5 transition-[translate,box-shadow] duration-100";
 
 // One filter control (Day / Time / Place). The point of this component is what it does when
 // there's nothing to choose:
@@ -112,7 +114,7 @@ function ControlGroup<T>({
       <button
         onClick={onAny}
         style={{ zIndex: 0 }}
-        className={`relative shrink-0 border-4 px-3 py-1 flex items-center transition-transform cursor-pointer ${controlPositionClass(true, false)} ${controlSegmentClass(anyActive)}`}
+        className={`relative shrink-0 border-2 px-3 py-1 flex items-center transition-[translate,box-shadow] duration-100 cursor-pointer ${controlPositionClass(true, false)} ${controlSegmentClass(anyActive)}`}
       >
         <span className="font-bold uppercase text-sm tracking-wide">{anyLabel}</span>
       </button>
@@ -349,7 +351,7 @@ export default function ScreeningBrowser({ screenings, days }: Props) {
                    Only shown the day before the next batch — earlier it just reads as clutter. */
                 <div
                   style={{ zIndex: visibleDays.length + 1 }}
-                  className={`relative shrink-0 border-4 border-dim px-3 py-1 flex flex-col items-start justify-center gap-0.5 bg-surface text-dim translate-x-[3px] translate-y-[3px] cursor-default ${controlPositionClass(false, true)}`}
+                  className={`relative shrink-0 border-2 border-dim px-3 py-1 flex flex-col items-start justify-center gap-0.5 bg-surface text-dim translate-x-[4px] translate-y-[4px] cursor-default ${controlPositionClass(false, true)}`}
                 >
                   <span className="font-normal uppercase text-xs tracking-wide">Come back</span>
                   <span className="text-xs text-dim uppercase tracking-widest">Tomorrow!</span>
