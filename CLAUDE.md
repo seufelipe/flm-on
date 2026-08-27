@@ -256,9 +256,10 @@ is gitignored runtime cache/staging.
     `/flm-on/` GitHub Pages basePath without env plumbing — Next only auto-prefixes basePath onto
     the file-convention icon `<link>`s, not manifest strings.
 
-    The icon is the page's cream background (`--color-bg`) with a single gold accent disc wearing
-    the same chunky treatment as the buttons — ink border + the two-tone offset shadow
-    (`--shadow-chip`: a grey block wrapped in an ink ring). They're **generated, committed PNGs**,
+    The icon is the page's cream background (`--color-bg`) with a single near-white surface disc
+    (`--color-surface`) wearing a lighter version of the buttons' chunky treatment — ink border +
+    a slightly-tightened two-tone offset shadow (`--shadow-chip`: a grey block wrapped in an ink
+    ring). They're **generated, committed PNGs**,
     not runtime routes: `npm run gen:icons` (`scripts/gen-icons.tsx`) builds a plain SVG (no
     font) and rasterises it with `sharp`, writing `app/icon.png` / `app/apple-icon.png` (Next
     auto-links these), `app/favicon.ico` (a PNG in a hand-rolled ICO container — sharp can't emit

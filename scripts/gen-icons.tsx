@@ -11,15 +11,15 @@
  *   public/icon-512.png      manifest, purpose "any"
  *   public/icon-maskable.png 512, manifest, purpose "maskable" (content inside the safe circle)
  *
- * Design: the page's cream background (--color-bg) with a single gold accent disc, carrying the
- * same chunky treatment as the buttons — ink border + the two-tone offset shadow (--shadow-chip:
- * a grey block wrapped in an ink ring).
+ * Design: the page's cream background (--color-bg) with a single near-white surface disc,
+ * carrying the same chunky treatment as the buttons — ink border + the two-tone offset shadow
+ * (--shadow-chip: a grey block wrapped in an ink ring).
  */
 import { writeFileSync } from "fs";
 import path from "path";
 
 const BG = "#fcf0ed"; // --color-bg
-const GOLD = "#fdc732"; // --color-accent
+const SURFACE = "#fafafa"; // --color-surface
 const GREY = "#bdbdbd"; // --color-shadow
 const INK = "#2f2525"; // --color-fg
 
@@ -32,8 +32,8 @@ function svg(discFraction: number): string {
   const d = Math.round(C * discFraction);
   const r = d / 2;
   const border = Math.round(d * 0.05); // ~ buttons' border-2 on a ~40px pill
-  const offset = Math.round(d * 0.1); // ~ --shadow-chip 4px offset
-  const ring = Math.round(d * 0.05); // ~ --shadow-chip 2px ink ring
+  const offset = Math.round(d * 0.07); // slightly tighter than --shadow-chip's 4px offset
+  const ring = Math.round(d * 0.038); // slightly tighter than --shadow-chip's 2px ink ring
 
   // Centre the whole mark (disc + its down-right shadow) in the canvas.
   const spanMin = -r - border / 2;
@@ -45,7 +45,7 @@ function svg(discFraction: number): string {
   <rect width="${C}" height="${C}" fill="${BG}"/>
   <circle cx="${cx + offset}" cy="${cy + offset}" r="${r + ring}" fill="${INK}"/>
   <circle cx="${cx + offset}" cy="${cy + offset}" r="${r}" fill="${GREY}"/>
-  <circle cx="${cx}" cy="${cy}" r="${r - border / 2}" fill="${GOLD}" stroke="${INK}" stroke-width="${border}"/>
+  <circle cx="${cx}" cy="${cy}" r="${r - border / 2}" fill="${SURFACE}" stroke="${INK}" stroke-width="${border}"/>
 </svg>`;
 }
 
