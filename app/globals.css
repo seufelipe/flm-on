@@ -23,9 +23,10 @@
   --shadow-group: 4px 4px 0 0 var(--color-border);
 
   /* Two-tone stacked-card shadow (grey block wrapped in the border colour), same recipe as
-     --shadow-card. -half is the mid-press elevation used on hover. */
+     --shadow-card. The total reach (offset + ring spread) is 6px for -chip and 3px for -half,
+     so a pressed element translated by that amount lands exactly where its shadow edge was. */
   --shadow-chip: 4px 4px 0 0 var(--color-shadow), 4px 4px 0 2px var(--color-border);
-  --shadow-chip-half: 2px 2px 0 0 var(--color-shadow), 2px 2px 0 2px var(--color-border);
+  --shadow-chip-half: 2px 2px 0 0 var(--color-shadow), 2px 2px 0 1px var(--color-border);
 }
 
 @layer base {

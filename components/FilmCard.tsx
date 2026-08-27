@@ -85,10 +85,10 @@ export default function FilmCard({
         onKeyDown={(e) => handleKeyDown(e, s)}
         className={`border-2 border-border rounded-btn px-3 py-2 flex items-center gap-2 font-bold transition-[translate,box-shadow] duration-100 ${
           isSelected
-            ? "cursor-pointer bg-accent text-fg translate-x-[4px] translate-y-[4px]"
+            ? "cursor-pointer bg-accent text-fg translate-x-[6px] translate-y-[6px]"
             : dimPill
-              ? "cursor-default bg-surface text-fg pill-crossed-out translate-x-[4px] translate-y-[4px]"
-              : "cursor-pointer bg-surface text-fg shadow-chip hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-chip-half active:translate-x-[4px] active:translate-y-[4px] active:shadow-none"
+              ? "cursor-default bg-surface text-fg pill-crossed-out translate-x-[6px] translate-y-[6px]"
+              : "cursor-pointer bg-surface text-fg shadow-chip hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-chip-half active:translate-x-[6px] active:translate-y-[6px] active:shadow-none"
         } ${dimPill ? "opacity-40" : ""}`}
       >
         {showCinema && (

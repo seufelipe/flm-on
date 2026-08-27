@@ -29,19 +29,19 @@ function keyOf(s: Screening): string {
 // leaving a gap. Because they're flush, an *inactive* segment's own shadow renders mostly hidden
 // under its right-hand neighbor (only its bottom strip shows, and those strips line up into one
 // continuous stacked-card shadow under the whole row). Hovering an inactive segment gives it the
-// half-press (--shadow-chip-half + 2px translate); the *active* one drops its shadow entirely and
-// translates the full 4px shadow offset, so it visibly sinks flush against its still-raised
-// neighbors — the same accent fill + press treatment as a selected film chip (FilmCard.tsx), for
-// one consistent "selected" language across the app.
+// half-press (--shadow-chip-half + 3px translate); the *active* one drops its shadow entirely and
+// translates by the shadow's full 6px reach, so it lands exactly where its shadow edge was and
+// sinks flush against its still-raised neighbors — the same accent fill + press treatment as a
+// selected film chip (FilmCard.tsx), for one consistent "selected" language across the app.
 //
 // There's deliberately no "disabled" variant: a segment the user can't act on (a time window
 // that's already passed, a filter with only one possible value) is removed from the row rather
 // than shown greyed-out — see ControlGroup below.
 function controlSegmentClass(active: boolean): string {
   if (active) {
-    return "border-border bg-accent text-fg translate-x-[4px] translate-y-[4px]";
+    return "border-border bg-accent text-fg translate-x-[6px] translate-y-[6px]";
   }
-  return "border-border bg-surface text-fg shadow-chip hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-chip-half active:translate-x-[4px] active:translate-y-[4px] active:shadow-none";
+  return "border-border bg-surface text-fg shadow-chip hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-chip-half active:translate-x-[6px] active:translate-y-[6px] active:shadow-none";
 }
 
 // Only the group's two end segments round outward — everything in between stays square so the
@@ -351,7 +351,7 @@ export default function ScreeningBrowser({ screenings, days }: Props) {
                    Only shown the day before the next batch — earlier it just reads as clutter. */
                 <div
                   style={{ zIndex: visibleDays.length + 1 }}
-                  className={`relative shrink-0 border-2 border-dim px-3 py-1 flex flex-col items-start justify-center gap-0.5 bg-surface text-dim translate-x-[4px] translate-y-[4px] cursor-default ${controlPositionClass(false, true)}`}
+                  className={`relative shrink-0 border-2 border-dim px-3 py-1 flex flex-col items-start justify-center gap-0.5 bg-surface text-dim translate-x-[6px] translate-y-[6px] cursor-default ${controlPositionClass(false, true)}`}
                 >
                   <span className="font-normal uppercase text-xs tracking-wide">Come back</span>
                   <span className="text-xs text-dim uppercase tracking-widest">Tomorrow!</span>
