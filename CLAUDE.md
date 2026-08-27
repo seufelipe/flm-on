@@ -198,20 +198,36 @@ is gitignored runtime cache/staging.
    request, referencing inkwellgames.com): warm cream page background (`--color-bg`) with a
    near-white card surface (`--color-surface`), warm near-black ink for borders/text
    (`--color-fg`/`--color-border`, not pure black), rounded corners (`--radius-card`/`--radius-btn`/
-   `--radius-group`), and hard (non-blurred, offset) layered shadows (`--shadow-card`/
-   `--shadow-btn-primary`/`--shadow-btn-secondary`/`--shadow-group`) instead of the old flat/
+   `--radius-group`), and hard (non-blurred, offset) layered shadows instead of the old flat/
    square-cornered/shadowless look. Font is Elms Sans (`next/font/google`, a geometric sans with a
    real Black/900 cut) instead of the system sans stack. See the `@theme` block in
    `app/globals.css` for all tokens. **The accent-reservation rule itself is unchanged**: the one
-   functional accent color (`#e10600`) is still used only for actionable/important things — never
-   decoratively — only its visual treatment changed (flat fill → chunky button with
-   `--shadow-btn-primary`). Segmented filter-bar controls (Day/Cinema/Time in
-   `ScreeningBrowser.tsx`) intentionally do *not* give each segment its own rounded corners/shadow
-   — they're a mutually-exclusive single control, so only the group's outer wrapper is rounded/
-   shadowed (`overflow-hidden` clips the flat-edged children); giving each segment its own shadow
-   would visually collide at the tight gaps needed for the horizontally-scrolling mobile bar and
-   break the "one unified control" reading. Don't reintroduce the old sharp-corners/no-shadow reset
-   without asking first.
+   functional accent color (`--color-accent`, a warm gold `#fdc732`) is used only for
+   actionable/important things and the current selection — never decoratively.
+
+   **Shadow tokens**: `--shadow-card`/`--shadow-card-lg` (cards), `--shadow-btn-secondary` (flat
+   offset, used on a few standalone buttons like DayPlan's Clear), `--shadow-group`, and
+   `--shadow-chip`/`--shadow-chip-half` — the two-tone "stacked card" shadow (grey block wrapped
+   in a 2px border ring, same recipe as `--shadow-card`), added 2026-08-27. `--shadow-chip` is
+   the resting elevation of the screening pills (`FilmCard.tsx`) *and* every filter-bar segment
+   (`ScreeningBrowser.tsx`); its total reach is 6px (4px offset + 2px ring), so pressed/selected
+   elements translate a matching 6px to land flush where the shadow edge was, and hover gives a
+   half-press (`--shadow-chip-half`, 3px reach, `translate 3px`).
+
+   **Segmented filter-bar controls** (Day/Cinema/Time in `ScreeningBrowser.tsx`): each segment
+   *does* carry its own `border-2` + `--shadow-chip`, but the segments sit flush — a `-ml-0.5`
+   negative margin (= the border width) pulls each segment's left border exactly onto the
+   previous one's right border so they merge into one shared line, and only the group's two end
+   segments round outward (`controlPositionClass`). An inactive segment's shadow is then mostly
+   hidden under its right-hand neighbor; the visible bottom strips line up into one continuous
+   stacked-card shadow under the whole control, so it still reads as a single unified control,
+   not a strip of separate chips. Every segment needs an explicit `relative` + ascending inline
+   `z-index` in DOM order (see the comment on `controlPositionClass`) because the active/pressed
+   segment's `translate` creates a stacking context. There is deliberately **no** "disabled"
+   segment variant — a segment the user can't act on is removed from the row (or, when it's the
+   sole remaining option, shown as a non-interactive selected-styled segment); see `ControlGroup`.
+   Don't collapse this back to a single wrapper-only border/shadow, or reintroduce a greyed-out
+   disabled state, without asking first.
 
 8. **No film-count / progress-style UI.** A "here are X films" counter with a struck-through
    previous count was tried and explicitly rejected — the user said counters "add pressure" they
