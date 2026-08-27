@@ -320,7 +320,13 @@ export default function ScreeningBrowser({ screenings, days }: Props) {
 
       <div className="no-print fixed bottom-0 left-0 right-0 z-20 flex flex-col">
         {comboScopeDay && effectiveSelectedKeys.size > 0 && (
-          <DayPlan items={dayPlanItems} transitions={dayPlanTransitions} onRemove={toggleSelected} keyOf={keyOf} />
+          <DayPlan
+            items={dayPlanItems}
+            transitions={dayPlanTransitions}
+            onRemove={toggleSelected}
+            onClear={() => setSelectedKeys(new Set())}
+            keyOf={keyOf}
+          />
         )}
         <div className="flex items-center justify-center-safe gap-4 overflow-x-auto border-t-2 border-border bg-bg px-4 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
           <ControlGroup

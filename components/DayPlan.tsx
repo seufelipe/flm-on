@@ -1,11 +1,13 @@
 import { Fragment } from "react";
 import { type ItineraryTransition, type TimedScreening } from "@/lib/clash";
 import { CINEMA_LABEL } from "@/lib/cinemas";
+import { formatDayFriendly } from "@/lib/date";
 
 interface Props {
   items: TimedScreening[];
   transitions: ItineraryTransition[];
   onRemove: (s: TimedScreening) => void;
+  onClear: () => void;
   keyOf: (s: TimedScreening) => string;
 }
 
@@ -15,11 +17,33 @@ function transitionLabel(t: ItineraryTransition): string {
   return `${t.gapMins}min`;
 }
 
-export default function DayPlan({ items, transitions, onRemove, keyOf }: Props) {
+// Rough door-to-door span of the plan: first film's start to last film's end, i.e. every
+// screening's runtime plus the gaps between them. Rounded to 5 min and shown with a ~ prefix.
+function formatSpan(mins: number): string {
+  const rounded = Math.round(mins / 5) * 5;
+  const h = Math.floor(rounded / 60);
+  const m = rounded % 60;
+  if (h === 0) return `${m}m`;
+  return m === 0 ? `${h}h` : `${h}h ${m}m`;
+}
+
+export default function DayPlan({ items, transitions, onRemove, onClear, keyOf }: Props) {
+  // A plan is single-day, so every item shares a date — take the day from the first. Just the
+  // day name ("Monday", "Today"), which is the first token formatDayFriendly returns.
+  const dayLabel = items.length > 0 ? formatDayFriendly(items[0].date).split(/[,\s]/)[0] : null;
+  const spanMins =
+    items.length > 0
+      ? Math.max(...items.map((s) => s.endMins)) - Math.min(...items.map((s) => s.startMins))
+      : 0;
   return (
     <div className="bg-surface border-t-4 border-border">
       <div className="flex items-center justify-center-safe gap-3 overflow-x-auto px-6 py-3">
-        <span className="shrink-0 font-bold whitespace-nowrap">Your plan</span>
+        <span className="shrink-0 whitespace-nowrap leading-tight">
+          <span className="block font-bold">Your plan</span>
+          {dayLabel && (
+            <span className="block text-xs font-bold uppercase tracking-wide text-dim">for {dayLabel}</span>
+          )}
+        </span>
         {items.map((s, i) => {
           const transition = i > 0 ? transitions[i - 1] : null;
           const flagged = transition?.overlap || transition?.tooTight;
@@ -56,6 +80,19 @@ export default function DayPlan({ items, transitions, onRemove, keyOf }: Props) 
             </Fragment>
           );
         })}
+        <span className="shrink-0 whitespace-nowrap text-xs font-bold uppercase tracking-wide text-dim leading-tight">
+          <span className="block">
+            {items.length} {items.length === 1 ? "film" : "films"}
+          </span>
+          <span className="block">~{formatSpan(spanMins)}</span>
+        </span>
+        <button
+          type="button"
+          onClick={onClear}
+          className="shrink-0 border-2 border-border rounded-btn bg-surface text-fg px-3 py-1.5 text-xs font-bold uppercase tracking-wide cursor-pointer whitespace-nowrap transition-transform active:translate-x-[2px] active:translate-y-[2px]"
+        >
+          Clear
+        </button>
       </div>
     </div>
   );
