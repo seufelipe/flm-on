@@ -89,7 +89,7 @@ export default function DayPlan({ items, transitions, onRemove, onClear, keyOf }
         <button
           type="button"
           onClick={onClear}
-          className="shrink-0 border-2 border-border rounded-btn bg-surface text-fg px-3 py-1.5 text-xs font-bold uppercase tracking-wide cursor-pointer whitespace-nowrap transition-transform active:translate-x-[2px] active:translate-y-[2px]"
+          className="shrink-0 border-2 border-border rounded-btn bg-surface text-fg px-3 py-1.5 text-xs font-bold uppercase tracking-wide cursor-pointer whitespace-nowrap shadow-btn-secondary transition-transform active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
         >
           Clear
         </button>
