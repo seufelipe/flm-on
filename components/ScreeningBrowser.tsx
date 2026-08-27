@@ -254,7 +254,6 @@ export default function ScreeningBrowser({ screenings, days }: Props) {
   }, [dayPlanItems, timed, comboScopeDay, effectiveSelectedKeys]);
 
   const partnersOf = useMemo(() => new Set(additionHints.keys()), [additionHints]);
-  const gapForPartner = additionHints;
 
   const visible = timed.filter(
     (s) =>
@@ -302,7 +301,6 @@ export default function ScreeningBrowser({ screenings, days }: Props) {
               group={group}
               selectedKeys={effectiveSelectedKeys}
               partnersOf={partnersOf}
-              gapForPartner={gapForPartner}
               keyOf={keyOf}
               onSelect={toggleSelected}
               showCinema={activeCinema === null}

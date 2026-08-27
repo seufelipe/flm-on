@@ -10,7 +10,6 @@ interface Props {
   group: FilmGroup;
   selectedKeys: Set<string>;
   partnersOf: Set<string>;
-  gapForPartner: Map<string, number>;
   keyOf: (s: TimedScreening) => string;
   onSelect: (s: TimedScreening) => void;
   showCinema: boolean;
@@ -39,7 +38,6 @@ export default function FilmCard({
   group,
   selectedKeys,
   partnersOf,
-  gapForPartner,
   keyOf,
   onSelect,
   showCinema,
@@ -75,7 +73,6 @@ export default function FilmCard({
     const k = keyOf(s);
     const isSelected = selectedKeys.has(k);
     const isPartner = partnersOf.has(k);
-    const gapMins = gapForPartner.get(k);
     // Once a plan is underway, pills that wouldn't fit (not selected, not a valid next pick) fade
     // out — a film can have screenings all over the day and only some of them are still viable.
     const dimPill = selectedKeys.size > 0 && !isSelected && !isPartner;
@@ -98,7 +95,6 @@ export default function FilmCard({
           <span className="text-xs font-bold uppercase tracking-widest">{CINEMA_LABEL[s.cinema] ?? s.cinemaName}</span>
         )}
         <span className="font-bold">{s.time}</span>
-        {isPartner && gapMins !== undefined && <span className="text-xs font-bold text-accent-ink">+{gapMins}min</span>}
       </div>
     );
   }
