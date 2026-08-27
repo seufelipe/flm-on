@@ -106,13 +106,15 @@ export default function FilmCard({
   return (
     <div className="bg-surface border-4 border-border rounded-card p-8">
       <div className="mb-16">
-        <div className="flex items-start justify-between gap-4">
-          <h3 className="text-2xl md:text-3xl tracking-tight">
+        {/* On narrow screens there isn't room for the title and the cinema chips on one line, so
+            the chips stack above the title (order-1); from `md` up they sit top-right. */}
+        <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between md:gap-4">
+          <h3 className="order-2 md:order-1 text-2xl md:text-3xl tracking-tight">
             <span className="font-black uppercase">{group.filmTitle}</span>
             {group.year !== undefined && <span className="font-normal text-dim ml-3">{group.year}</span>}
           </h3>
           {cinemaPageLinks.length > 0 && (
-            <div className="no-print flex flex-wrap justify-end gap-2 shrink-0">
+            <div className="order-1 md:order-2 no-print flex flex-wrap gap-2 shrink-0 md:justify-end">
               {cinemaPageLinks.map((link) => (
                 <a
                   key={link.url}
