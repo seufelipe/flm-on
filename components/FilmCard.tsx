@@ -87,7 +87,7 @@ export default function FilmCard({
           isSelected
             ? "cursor-pointer bg-accent text-fg translate-x-[3px] translate-y-[3px]"
             : dimPill
-              ? "cursor-not-allowed bg-surface text-fg pill-crossed-out translate-x-[3px] translate-y-[3px]"
+              ? "cursor-default bg-surface text-fg pill-crossed-out translate-x-[3px] translate-y-[3px]"
               : "cursor-pointer bg-surface text-fg shadow-btn-secondary active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
         } ${dimPill ? "opacity-40" : ""}`}
       >
