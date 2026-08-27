@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import type { CinemaId, Screening } from "@/lib/scrapers/types";
 import { findCombos, withEndTimes, itineraryTransitions, fittingAdditions, type TimedScreening } from "@/lib/clash";
 import { groupByFilm } from "@/lib/groupings";
@@ -32,17 +32,15 @@ function keyOf(s: Screening): string {
 // that same offset instead, so it visibly sinks relative to its still-raised neighbors — the same
 // accent fill + flush treatment as a selected film chip (FilmCard.tsx), for one consistent
 // "selected" language across the app.
-function controlSegmentClass(active: boolean, disabled: boolean): string {
-  if (disabled) {
-    // Solid muted tones rather than opacity — opacity would fade the segment's own border to a
-    // half-strength blend of whatever's underneath (the overlapping neighbor, at these flush
-    // seams), which reads as a rendering glitch rather than a deliberate "disabled" look.
-    return "border-dim bg-surface text-dim translate-x-[3px] translate-y-[3px] cursor-not-allowed";
-  }
+//
+// There's deliberately no "disabled" variant: a segment the user can't act on (a time window
+// that's already passed, a filter with only one possible value) is removed from the row rather
+// than shown greyed-out — see ControlGroup below.
+function controlSegmentClass(active: boolean): string {
   if (active) {
-    return "border-border bg-accent text-fg translate-x-[3px] translate-y-[3px] cursor-pointer";
+    return "border-border bg-accent text-fg translate-x-[3px] translate-y-[3px]";
   }
-  return "border-border bg-surface text-fg shadow-btn-secondary cursor-pointer active:translate-x-[3px] active:translate-y-[3px] active:shadow-none";
+  return "border-border bg-surface text-fg shadow-btn-secondary active:translate-x-[3px] active:translate-y-[3px] active:shadow-none";
 }
 
 // Only the group's two end segments round outward — everything in between stays square so the
@@ -59,6 +57,78 @@ function controlPositionClass(isFirst: boolean, isLast: boolean): string {
   const radius = isFirst && isLast ? "rounded-[10px]" : isFirst ? "rounded-l-[10px]" : isLast ? "rounded-r-[10px]" : "";
   const overlap = isFirst ? "" : "-ml-1";
   return `${radius} ${overlap}`;
+}
+
+const SEGMENT_BASE = "relative shrink-0 border-4 px-3 py-1 flex flex-col items-start gap-0.5 transition-transform";
+
+// One filter control (Day / Time / Place). The point of this component is what it does when
+// there's nothing to choose:
+//   - 0 options  → the whole control disappears.
+//   - 1 option   → that single option is shown as a selected-looking segment with no "Any X"
+//                  toggle beside it. One choice isn't a choice — but the row should still say
+//                  what you're looking at, so it's shown, just not as something to press.
+//   - 2+ options → the usual "Any X" segment plus one segment per option.
+// `trailing` is an extra node rendered flush after the options (the Day row's "come back
+// tomorrow" note); when present it takes the group's right-hand rounded corner.
+function ControlGroup<T>({
+  options,
+  anyLabel,
+  anyActive,
+  isActive,
+  onAny,
+  onToggle,
+  renderLabel,
+  keyFor,
+  trailing,
+}: {
+  options: T[];
+  anyLabel: string;
+  anyActive: boolean;
+  isActive: (opt: T) => boolean;
+  onAny: () => void;
+  onToggle: (opt: T) => void;
+  renderLabel: (opt: T) => ReactNode;
+  keyFor: (opt: T) => string;
+  trailing?: ReactNode;
+}) {
+  if (options.length === 0) return null;
+
+  if (options.length === 1) {
+    return (
+      <div className="shrink-0 flex">
+        <div
+          style={{ zIndex: 0 }}
+          className={`${SEGMENT_BASE} cursor-default ${controlPositionClass(true, !trailing)} ${controlSegmentClass(true)}`}
+        >
+          {renderLabel(options[0])}
+        </div>
+        {trailing}
+      </div>
+    );
+  }
+
+  return (
+    <div className="shrink-0 flex">
+      <button
+        onClick={onAny}
+        style={{ zIndex: 0 }}
+        className={`relative shrink-0 border-4 px-3 py-1 flex items-center transition-transform cursor-pointer ${controlPositionClass(true, false)} ${controlSegmentClass(anyActive)}`}
+      >
+        <span className="font-bold uppercase text-sm tracking-wide">{anyLabel}</span>
+      </button>
+      {options.map((opt, i) => (
+        <button
+          key={keyFor(opt)}
+          onClick={() => onToggle(opt)}
+          style={{ zIndex: i + 1 }}
+          className={`${SEGMENT_BASE} cursor-pointer ${controlPositionClass(false, !trailing && i === options.length - 1)} ${controlSegmentClass(isActive(opt))}`}
+        >
+          {renderLabel(opt)}
+        </button>
+      ))}
+      {trailing}
+    </div>
+  );
 }
 
 export default function ScreeningBrowser({ screenings, days }: Props) {
@@ -118,6 +188,18 @@ export default function ScreeningBrowser({ screenings, days }: Props) {
   // hidden the last day button becomes the group's right end and takes the rounded corner.
   const showBatchNote = nextBatchLabel(now.date) === "Tomorrow";
 
+  // A time window is only offered while it's still ahead of us — and only *dropped* for being
+  // past when today is the pinned day (a future day's "Early" hasn't happened yet). If that
+  // leaves a single window, ControlGroup shows it as a plain selected segment.
+  const usableTimeframes = useMemo(
+    () => TIMEFRAMES.filter((tf) => !(activeDay === now.date && nowMins >= tf.endMins)),
+    [activeDay, now.date, nowMins],
+  );
+  // Mirror of effectiveSelectedKeys: an activeTimeframe that's no longer in usableTimeframes
+  // (the day rolled past it) is treated as "Any Time" so it doesn't keep silently filtering.
+  const effectiveTimeframe =
+    activeTimeframe !== null && usableTimeframes.some((tf) => tf.id === activeTimeframe) ? activeTimeframe : null;
+
   const timed = useMemo(() => withEndTimes(upcomingScreenings), [upcomingScreenings]);
 
   // Day-plan building only makes sense pinned to one specific day — otherwise "pairs well" would
@@ -176,7 +258,7 @@ export default function ScreeningBrowser({ screenings, days }: Props) {
 
   const visible = timed.filter(
     (s) =>
-      (activeTimeframe === null || timeframeForTime(s.time) === activeTimeframe) &&
+      (effectiveTimeframe === null || timeframeForTime(s.time) === effectiveTimeframe) &&
       (activeCinema === null || s.cinema === activeCinema) &&
       (activeDay === null || s.date === activeDay),
   );
@@ -241,89 +323,68 @@ export default function ScreeningBrowser({ screenings, days }: Props) {
           <DayPlan items={dayPlanItems} transitions={dayPlanTransitions} onRemove={toggleSelected} keyOf={keyOf} />
         )}
         <div className="flex items-center justify-center-safe gap-4 overflow-x-auto border-t-2 border-border bg-bg px-4 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
-          <div className="shrink-0 flex">
-            <button
-              onClick={() => setActiveDay(null)}
-              style={{ zIndex: 0 }}
-              className={`relative shrink-0 border-4 px-3 py-1 flex items-center transition-transform ${controlPositionClass(true, false)} ${controlSegmentClass(activeDay === null, false)}`}
-            >
-              <span className="font-bold uppercase text-sm tracking-wide">Any Day</span>
-            </button>
-            {visibleDays.map((day, i) => (
-              <button
-                key={day}
-                onClick={() => setActiveDay(activeDay === day ? null : day)}
-                style={{ zIndex: i + 1 }}
-                className={`relative shrink-0 border-4 px-3 py-1 flex flex-col items-start gap-0.5 transition-transform ${controlPositionClass(false, !showBatchNote && i === visibleDays.length - 1)} ${controlSegmentClass(activeDay === day, false)}`}
-              >
+          <ControlGroup
+            options={visibleDays}
+            anyLabel="Any Day"
+            anyActive={activeDay === null}
+            isActive={(day) => activeDay === day}
+            onAny={() => setActiveDay(null)}
+            onToggle={(day) => setActiveDay(activeDay === day ? null : day)}
+            keyFor={(day) => day}
+            renderLabel={(day) => (
+              <>
                 <span className="font-bold uppercase text-sm tracking-wide">{formatDayFriendly(day)}</span>
                 <span className="text-xs text-dim uppercase tracking-widest">{formatDayDate(day)}</span>
-              </button>
-            ))}
-            {/* Not a button — this is an announcement ("more data tomorrow"), not a
-                temporarily-unavailable control, so it skips the crossed-out/flush disabled
-                treatment used for genuinely ruled-out options like a past time slot. Only shown
-                the day before the next batch — earlier in the week it just reads as clutter. */}
-            {showBatchNote && (
-              <div
-                style={{ zIndex: visibleDays.length + 1 }}
-                className={`relative shrink-0 border-4 border-dim px-3 py-1 flex flex-col items-start justify-center gap-0.5 bg-surface text-dim translate-x-[3px] translate-y-[3px] cursor-default ${controlPositionClass(false, true)}`}
-              >
-                <span className="font-normal uppercase text-xs tracking-wide">Come back</span>
-                <span className="text-xs text-dim uppercase tracking-widest">Tomorrow!</span>
-              </div>
+              </>
             )}
-          </div>
-
-          <div className="shrink-0 flex">
-            <button
-              onClick={() => setActiveTimeframe(null)}
-              style={{ zIndex: 0 }}
-              className={`relative shrink-0 border-4 px-3 py-1 flex items-center transition-transform ${controlPositionClass(true, false)} ${controlSegmentClass(activeTimeframe === null, false)}`}
-            >
-              <span className="font-bold uppercase text-sm tracking-wide">Any Time</span>
-            </button>
-            {TIMEFRAMES.map((tf, i) => {
-              // Only meaningful once the day filter is pinned to today — a future day's "early"
-              // screenings haven't happened yet, so they're not unavailable in the same sense.
-              const disabled = activeDay === now.date && nowMins >= tf.endMins;
-              return (
-                <button
-                  key={tf.id}
-                  onClick={() => setActiveTimeframe(activeTimeframe === tf.id ? null : tf.id)}
-                  disabled={disabled}
-                  style={{ zIndex: i + 1 }}
-                  className={`relative shrink-0 border-4 px-3 py-1 flex flex-col items-start gap-0.5 transition-transform ${controlPositionClass(false, i === TIMEFRAMES.length - 1)} ${controlSegmentClass(activeTimeframe === tf.id, disabled)}`}
+            trailing={
+              showBatchNote ? (
+                /* Not a button — this is an announcement ("more data tomorrow"), not a
+                   temporarily-unavailable control, so it keeps the flush/translated look even
+                   though genuinely ruled-out options are now removed rather than shown disabled.
+                   Only shown the day before the next batch — earlier it just reads as clutter. */
+                <div
+                  style={{ zIndex: visibleDays.length + 1 }}
+                  className={`relative shrink-0 border-4 border-dim px-3 py-1 flex flex-col items-start justify-center gap-0.5 bg-surface text-dim translate-x-[3px] translate-y-[3px] cursor-default ${controlPositionClass(false, true)}`}
                 >
-                  <span className="font-bold uppercase text-sm tracking-wide">{tf.label}</span>
-                  <span className="text-xs text-dim uppercase tracking-widest">{formatTimeframeRange(tf)}</span>
-                </button>
-              );
-            })}
-          </div>
+                  <span className="font-normal uppercase text-xs tracking-wide">Come back</span>
+                  <span className="text-xs text-dim uppercase tracking-widest">Tomorrow!</span>
+                </div>
+              ) : undefined
+            }
+          />
 
-          {cinemasPresent.length > 1 && (
-            <div className="shrink-0 flex">
-              <button
-                onClick={() => setActiveCinema(null)}
-                style={{ zIndex: 0 }}
-                className={`relative shrink-0 border-4 px-3 py-1 flex items-center transition-transform ${controlPositionClass(true, false)} ${controlSegmentClass(activeCinema === null, false)}`}
-              >
-                <span className="font-bold uppercase text-sm tracking-wide">Anywhere</span>
-              </button>
-              {cinemasPresent.map((id, i) => (
-                <button
-                  key={id}
-                  onClick={() => setActiveCinema(activeCinema === id ? null : id)}
-                  style={{ zIndex: i + 1 }}
-                  className={`relative shrink-0 border-4 px-3 py-1 flex flex-col items-start gap-0.5 transition-transform ${controlPositionClass(false, i === cinemasPresent.length - 1)} ${controlSegmentClass(activeCinema === id, false)}`}
-                >
-                  <span className="font-bold uppercase text-sm tracking-wide">{CINEMA_LABEL[id]}</span>
-                  <span className="text-xs text-dim uppercase tracking-widest">{CINEMA_LOCATION[id]}</span>
-                </button>
-              ))}
-            </div>
-          )}
+          <ControlGroup
+            options={usableTimeframes}
+            anyLabel="Any Time"
+            anyActive={effectiveTimeframe === null}
+            isActive={(tf) => effectiveTimeframe === tf.id}
+            onAny={() => setActiveTimeframe(null)}
+            onToggle={(tf) => setActiveTimeframe(effectiveTimeframe === tf.id ? null : tf.id)}
+            keyFor={(tf) => tf.id}
+            renderLabel={(tf) => (
+              <>
+                <span className="font-bold uppercase text-sm tracking-wide">{tf.label}</span>
+                <span className="text-xs text-dim uppercase tracking-widest">{formatTimeframeRange(tf)}</span>
+              </>
+            )}
+          />
+
+          <ControlGroup
+            options={cinemasPresent}
+            anyLabel="Anywhere"
+            anyActive={activeCinema === null}
+            isActive={(id) => activeCinema === id}
+            onAny={() => setActiveCinema(null)}
+            onToggle={(id) => setActiveCinema(activeCinema === id ? null : id)}
+            keyFor={(id) => id}
+            renderLabel={(id) => (
+              <>
+                <span className="font-bold uppercase text-sm tracking-wide">{CINEMA_LABEL[id]}</span>
+                <span className="text-xs text-dim uppercase tracking-widest">{CINEMA_LOCATION[id]}</span>
+              </>
+            )}
+          />
         </div>
       </div>
     </div>
