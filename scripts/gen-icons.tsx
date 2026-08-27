@@ -1,7 +1,7 @@
 /**
  * Regenerates the app icons from a single source design.
  *
- *   npx tsx scripts/gen-icons.tsx
+ *   npm run gen:icons
  *
  * Outputs (committed):
  *   app/icon.png             512, browser tab / rel="icon"
@@ -11,66 +11,42 @@
  *   public/icon-512.png      manifest, purpose "any"
  *   public/icon-maskable.png 512, manifest, purpose "maskable" (content inside the safe circle)
  *
- * Design: the FLM ON wordmark (Elms Sans 900, "flm" cream over "on" gold) on a cream-framed
- * ink card, sitting on the gold accent field — the app's three brand colours, chunky.
+ * Design: the page's cream background (--color-bg) with a single gold accent disc, carrying the
+ * same chunky treatment as the buttons — ink border + the two-tone offset shadow (--shadow-chip:
+ * a grey block wrapped in an ink ring).
  */
-import { ImageResponse } from "next/og";
-import { readFileSync, writeFileSync } from "fs";
+import { writeFileSync } from "fs";
 import path from "path";
 
-const elms = readFileSync(path.join(process.cwd(), "scripts/elms-sans-900.ttf"));
-
-const BG = "#fdc732"; // --color-accent
-const CREAM = "#fafafa"; // --color-surface
+const BG = "#fcf0ed"; // --color-bg
+const GOLD = "#fdc732"; // --color-accent
+const GREY = "#bdbdbd"; // --color-shadow
 const INK = "#2f2525"; // --color-fg
 
-function Line({ text, size, color, ls }: { text: string; size: number; color: string; ls: number }) {
-  return (
-    <div style={{ display: "flex", height: Math.round(size * 0.72), alignItems: "center", fontSize: size, letterSpacing: ls, color }}>
-      {text}
-    </div>
-  );
-}
+/**
+ * `discFraction` — disc diameter as a fraction of the 512 canvas. Smaller for the maskable
+ * variant so the disc + its offset shadow stay inside the safe circle.
+ */
+function svg(discFraction: number): string {
+  const C = 512;
+  const d = Math.round(C * discFraction);
+  const r = d / 2;
+  const border = Math.round(d * 0.05); // ~ buttons' border-2 on a ~40px pill
+  const offset = Math.round(d * 0.1); // ~ --shadow-chip 4px offset
+  const ring = Math.round(d * 0.05); // ~ --shadow-chip 2px ink ring
 
-/** `inset` = gold margin around the card as a fraction of the 512 canvas. */
-function Icon({ inset }: { inset: number }) {
-  const pad = Math.round(512 * inset);
-  const w = 512 - pad * 2;
-  return (
-    <div style={{ width: "100%", height: "100%", display: "flex", background: BG, position: "relative" }}>
-      <div
-        style={{
-          position: "absolute",
-          left: pad,
-          top: pad,
-          width: w,
-          height: w,
-          background: INK,
-          border: `16px solid ${CREAM}`,
-          borderRadius: 70,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontFamily: "Elms Sans",
-        }}
-      >
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-          <Line text="flm" size={168} color={CREAM} ls={-7} />
-          <Line text="on" size={168} color={BG} ls={2} />
-        </div>
-      </div>
-    </div>
-  );
-}
+  // Centre the whole mark (disc + its down-right shadow) in the canvas.
+  const spanMin = -r - border / 2;
+  const spanMax = offset + r + ring + border / 2;
+  const cx = Math.round((C - (spanMax + spanMin)) / 2);
+  const cy = cx;
 
-async function render(inset: number, size: number): Promise<Buffer> {
-  const sharp = (await import("sharp")).default;
-  const res = new ImageResponse(<Icon inset={inset} />, {
-    width: 512,
-    height: 512,
-    fonts: [{ name: "Elms Sans", data: elms, weight: 900, style: "normal" }],
-  });
-  return sharp(Buffer.from(await res.arrayBuffer())).resize(size, size).png().toBuffer();
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${C}" height="${C}" viewBox="0 0 ${C} ${C}">
+  <rect width="${C}" height="${C}" fill="${BG}"/>
+  <circle cx="${cx + offset}" cy="${cy + offset}" r="${r + ring}" fill="${INK}"/>
+  <circle cx="${cx + offset}" cy="${cy + offset}" r="${r}" fill="${GREY}"/>
+  <circle cx="${cx}" cy="${cy}" r="${r - border / 2}" fill="${GOLD}" stroke="${INK}" stroke-width="${border}"/>
+</svg>`;
 }
 
 /** Minimal ICO container wrapping a single PNG (valid for sizes <= 256). */
@@ -90,18 +66,20 @@ function pngToIco(png: Buffer, size: number): Buffer {
 }
 
 (async () => {
+  const sharp = (await import("sharp")).default;
   const root = process.cwd();
-  // Standalone icon: a little gold breathing room around the framed card.
-  const standalone = 0.09;
-  // Maskable: more inset so the card + text stay inside the safe circle after a round mask.
-  const maskable = 0.16;
+  const png = (source: string, size: number) =>
+    sharp(Buffer.from(source)).resize(size, size).png().toBuffer();
 
-  writeFileSync(path.join(root, "app/icon.png"), await render(standalone, 512));
-  writeFileSync(path.join(root, "app/apple-icon.png"), await render(standalone, 180));
-  writeFileSync(path.join(root, "public/icon-192.png"), await render(standalone, 192));
-  writeFileSync(path.join(root, "public/icon-512.png"), await render(standalone, 512));
-  writeFileSync(path.join(root, "public/icon-maskable.png"), await render(maskable, 512));
-  writeFileSync(path.join(root, "app/favicon.ico"), pngToIco(await render(standalone, 64), 64));
+  const standalone = svg(0.66);
+  const maskable = svg(0.5);
+
+  writeFileSync(path.join(root, "app/icon.png"), await png(standalone, 512));
+  writeFileSync(path.join(root, "app/apple-icon.png"), await png(standalone, 180));
+  writeFileSync(path.join(root, "public/icon-192.png"), await png(standalone, 192));
+  writeFileSync(path.join(root, "public/icon-512.png"), await png(standalone, 512));
+  writeFileSync(path.join(root, "public/icon-maskable.png"), await png(maskable, 512));
+  writeFileSync(path.join(root, "app/favicon.ico"), pngToIco(await png(standalone, 64), 64));
 
   console.log("icons written");
 })();

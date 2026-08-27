@@ -256,13 +256,15 @@ is gitignored runtime cache/staging.
     `/flm-on/` GitHub Pages basePath without env plumbing — Next only auto-prefixes basePath onto
     the file-convention icon `<link>`s, not manifest strings.
 
-    Icons are the FLM ON wordmark (Elms Sans 900, "flm" cream over "on" gold) on a cream-framed
-    ink card on the gold accent field — the three brand colours, chunky. They're **generated,
-    committed PNGs**, not runtime routes: `npm run gen:icons` (`scripts/gen-icons.tsx`) renders
-    them with `next/og` + the bundled `scripts/elms-sans-900.ttf` and `sharp`, writing
-    `app/icon.png` / `app/apple-icon.png` (Next auto-links these), `app/favicon.ico` (a PNG in a
-    hand-rolled ICO container — sharp can't emit `.ico`), and `public/icon-{192,512,maskable}.png`
-    (referenced by the manifest). Re-run it if the palette or wordmark changes.
+    The icon is the page's cream background (`--color-bg`) with a single gold accent disc wearing
+    the same chunky treatment as the buttons — ink border + the two-tone offset shadow
+    (`--shadow-chip`: a grey block wrapped in an ink ring). They're **generated, committed PNGs**,
+    not runtime routes: `npm run gen:icons` (`scripts/gen-icons.tsx`) builds a plain SVG (no
+    font) and rasterises it with `sharp`, writing `app/icon.png` / `app/apple-icon.png` (Next
+    auto-links these), `app/favicon.ico` (a PNG in a hand-rolled ICO container — sharp can't emit
+    `.ico`), and `public/icon-{192,512,maskable}.png` (referenced by the manifest). The maskable
+    variant uses a smaller disc so it + its shadow stay inside the safe circle. Re-run it if the
+    palette changes.
 
 ## Known gaps
 
