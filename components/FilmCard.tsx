@@ -83,7 +83,7 @@ export default function FilmCard({
         tabIndex={0}
         onClick={() => onSelect(s)}
         onKeyDown={(e) => handleKeyDown(e, s)}
-        className={`border-4 border-border rounded-btn px-3 py-2 flex items-center gap-2 font-bold transition-[translate,box-shadow] duration-100 ${
+        className={`border-2 border-border rounded-btn px-3 py-2 flex items-center gap-2 font-bold transition-[translate,box-shadow] duration-100 ${
           isSelected
             ? "cursor-pointer bg-accent text-fg translate-x-[4px] translate-y-[4px]"
             : dimPill
