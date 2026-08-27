@@ -21,6 +21,11 @@
   --shadow-card-lg: 6px 6px 0 0 var(--color-shadow), 6px 6px 0 6px var(--color-border);
   --shadow-btn-secondary: 3px 3px 0 0 var(--color-border);
   --shadow-group: 4px 4px 0 0 var(--color-border);
+
+  /* Two-tone stacked-card shadow (grey block wrapped in the border colour), same recipe as
+     --shadow-card. -half is the mid-press elevation used on hover. */
+  --shadow-chip: 4px 4px 0 0 var(--color-shadow), 4px 4px 0 4px var(--color-border);
+  --shadow-chip-half: 2px 2px 0 0 var(--color-shadow), 2px 2px 0 2px var(--color-border);
 }
 
 @layer base {
