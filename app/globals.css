@@ -66,22 +66,52 @@
   pointer-events: none;
 }
 
-/* Curated film label (components/FilmLabel.tsx) — the whole SVG square spins around its
-   centre; the concentric ring is unaffected, so only the circular text visibly rotates. */
-@keyframes flm-label-spin {
+/* Curated film label (components/FilmLabel.tsx) — a fixed-width dark sticker after the
+   title whose text scrolls on a seamless loop (two copies, translate -50%). Width lives
+   here (not a Tailwind w-* utility) so the reduced-motion `width: auto` override wins. */
+.flm-marquee {
+  display: inline-flex;
+  width: 4.5rem;
+  overflow: hidden;
+  padding-block: 0.25rem;
+  /* `middle` sits ~3px low against the all-caps title (x-height vs cap-height); nudge up.
+     Slight tilt so it reads as a sticker slapped on the card. */
+  vertical-align: middle;
+  transform: translateY(-3px) rotate(-3deg);
+}
+
+.flm-marquee-track {
+  display: flex;
+  flex: none;
+  width: max-content;
+  animation: flm-marquee 4.5s linear infinite;
+}
+
+.flm-marquee-item {
+  white-space: nowrap;
+  padding-right: 1.5em;
+}
+
+@keyframes flm-marquee {
+  from {
+    transform: translateX(-50%);
+  }
   to {
-    transform: rotate(360deg);
+    transform: translateX(0);
   }
 }
 
-.flm-label-spin {
-  transform-origin: center;
-  animation: flm-label-spin 16s linear infinite;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .flm-label-spin {
+  .flm-marquee {
+    width: auto;
+  }
+
+  .flm-marquee-track {
     animation: none;
+  }
+
+  .flm-marquee-item + .flm-marquee-item {
+    display: none;
   }
 }
 

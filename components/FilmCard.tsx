@@ -128,9 +128,9 @@ export default function FilmCard({
             the chips stack above the title (order-1); from `md` up they sit top-right. */}
         <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between md:gap-4">
           <h3 className="order-2 md:order-1 text-2xl md:text-3xl tracking-tight">
-            {label && <FilmLabel text={label} />}
             <span className="font-black uppercase">{group.filmTitle}</span>
             {group.year !== undefined && <span className="font-normal text-dim ml-3">{group.year}</span>}
+            {label && <FilmLabel text={label} />}
           </h3>
           {cinemaPageLinks.length > 0 && (
             <div className="order-1 md:order-2 no-print flex flex-wrap gap-2 shrink-0 md:justify-end">
