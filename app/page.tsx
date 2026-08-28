@@ -4,6 +4,7 @@ import type { Screening } from "@/lib/scrapers/types";
 import ScreeningBrowser from "@/components/ScreeningBrowser";
 
 const DATA_FILE = path.join(process.cwd(), "data", "showtimes.json");
+const LABELS_FILE = path.join(process.cwd(), "data", "film-labels.json");
 
 interface ShowtimesData {
   generatedAt: string;
@@ -20,8 +21,20 @@ async function loadShowtimes(): Promise<ShowtimesData> {
   }
 }
 
+// Curated editorial tags, keyed by normalized film title. Read at build time (static export);
+// editing data/film-labels.json + rebuilding is enough — no re-scrape. See CLAUDE.md #11.
+async function loadFilmLabels(): Promise<Record<string, string>> {
+  try {
+    const raw = await fs.readFile(LABELS_FILE, "utf-8");
+    return JSON.parse(raw) as Record<string, string>;
+  } catch {
+    return {};
+  }
+}
+
 export default async function Home() {
   const { generatedAt, days, screenings } = await loadShowtimes();
+  const labels = await loadFilmLabels();
 
   return (
     <main className="max-w-4xl mx-auto w-full px-4 py-8 flex-1">
@@ -32,7 +45,7 @@ export default async function Home() {
         </p>
       </header>
 
-      <ScreeningBrowser screenings={screenings} days={days} />
+      <ScreeningBrowser screenings={screenings} days={days} labels={labels} />
 
       <div className="no-print flex items-center justify-between mt-16 pt-4 border-t-2 border-border gap-4">
         <p className="text-xs text-dim">

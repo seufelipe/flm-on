@@ -59,6 +59,21 @@ async function main() {
     console.log(`- ${titleLabel}${f.year ? ` (${f.year})` : ""} — Letterboxd: ${letterboxd}`);
   }
 
+  // Curated editorial tags (data/film-labels.json) — not part of the published showtimes,
+  // read straight at build time. List every film's exact key so a label can be pasted in
+  // during this review without guessing the apostrophe/casing.
+  let labels: Record<string, string> = {};
+  try {
+    labels = JSON.parse(await fs.readFile(path.join(process.cwd(), "data", "film-labels.json"), "utf-8"));
+  } catch {
+    labels = {};
+  }
+  console.log("\nLabels (edit data/film-labels.json — read at build, no re-fetch needed):\n");
+  for (const f of films) {
+    const key = f.filmTitle.trim().toLowerCase();
+    console.log(`  ${key}  →  ${labels[key] ?? "—"}`);
+  }
+
   console.log(`\nWrote ${STAGING_FILE}`);
   console.log("Review the report above, then run `npm run fetch:confirm` to publish.");
 }

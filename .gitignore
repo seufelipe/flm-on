@@ -39,6 +39,7 @@ yarn-error.log*
 !/data/showtimes.json
 !/data/title-overrides.json
 !/data/letterboxd-overrides.json
+!/data/film-labels.json
 
 # vercel
 .vercel

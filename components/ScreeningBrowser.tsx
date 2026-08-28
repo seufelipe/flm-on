@@ -14,6 +14,9 @@ import DayPlan from "./DayPlan";
 interface Props {
   screenings: Screening[];
   days: string[];
+  // Curated editorial tags keyed by FilmGroup.key (filmTitle.trim().toLowerCase()); see
+  // data/film-labels.json and CLAUDE.md decision #11.
+  labels?: Record<string, string>;
 }
 
 // bookingUrl is the one field guaranteed unique per actual bookable session — real listings can
@@ -133,7 +136,7 @@ function ControlGroup<T>({
   );
 }
 
-export default function ScreeningBrowser({ screenings, days }: Props) {
+export default function ScreeningBrowser({ screenings, days, labels }: Props) {
   const [activeTimeframe, setActiveTimeframe] = useState<Timeframe | null>(null);
   const [activeCinema, setActiveCinema] = useState<CinemaId | null>(null);
   // Defaults to "Any Day" (null) as usual, with two exceptions where a specific day is pinned
@@ -307,6 +310,7 @@ export default function ScreeningBrowser({ screenings, days }: Props) {
               onSelect={toggleSelected}
               showCinema={activeCinema === null}
               daySpecified={activeDay !== null}
+              label={labels?.[group.key]}
             />
           ))}
         </div>

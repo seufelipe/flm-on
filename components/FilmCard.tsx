@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import FilmLabel from "@/components/FilmLabel";
 import type { TimedScreening } from "@/lib/clash";
 import { groupScreeningsByDay, type FilmGroup } from "@/lib/groupings";
 import { groupScreeningsByTimeframe } from "@/lib/timeframe";
@@ -14,6 +15,7 @@ interface Props {
   onSelect: (s: TimedScreening) => void;
   showCinema: boolean;
   daySpecified: boolean;
+  label?: string;
 }
 
 // Age cert styled after the official IFCO classification symbol — a colour-coded circle with a
@@ -42,6 +44,7 @@ export default function FilmCard({
   onSelect,
   showCinema,
   daySpecified,
+  label,
 }: Props) {
   // Day sub-headers are redundant only when a specific Day chip is active — then every visible
   // screening is that day and the chip already says so. With "Any Day" in view, always show them,
@@ -125,6 +128,7 @@ export default function FilmCard({
             the chips stack above the title (order-1); from `md` up they sit top-right. */}
         <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between md:gap-4">
           <h3 className="order-2 md:order-1 text-2xl md:text-3xl tracking-tight">
+            {label && <FilmLabel text={label} />}
             <span className="font-black uppercase">{group.filmTitle}</span>
             {group.year !== undefined && <span className="font-normal text-dim ml-3">{group.year}</span>}
           </h3>

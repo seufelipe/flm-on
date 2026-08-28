@@ -66,6 +66,25 @@
   pointer-events: none;
 }
 
+/* Curated film label (components/FilmLabel.tsx) — the whole SVG square spins around its
+   centre; the concentric ring is unaffected, so only the circular text visibly rotates. */
+@keyframes flm-label-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.flm-label-spin {
+  transform-origin: center;
+  animation: flm-label-spin 16s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flm-label-spin {
+    animation: none;
+  }
+}
+
 @media print {
   .no-print {
     display: none !important;
