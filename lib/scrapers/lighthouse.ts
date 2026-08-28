@@ -49,7 +49,31 @@ interface ParsedFilm {
   slug: string;
   cert?: string;
   durationMins?: number;
-  times: { time: string; bookingUrl: string }[];
+  times: { time: string; bookingUrl: string; tags: string[] }[];
+}
+
+// Each `.time` div holds, next to the booking `<a>`, an `<em class="additional">` listing any
+// per-session descriptors — "Parent and Baby", "Dubbed", "Subtitled", "Open Captioned". They sit
+// as one or more inner `<em class="tooltip">` (comma-separated text in the flat case). On the JS-
+// enhanced /films page each tooltip also gets an injected `.tooltip-balloon` child repeating the
+// text — cheerio parses raw HTML so it won't see that, but strip it defensively anyway.
+function parseSessionTags($: cheerio.CheerioAPI, $timeDiv: ReturnType<cheerio.CheerioAPI>): string[] {
+  const $additional = $timeDiv.find("em.additional").first();
+  if (!$additional.length) return [];
+
+  const inner = $additional.children("em");
+  const rawParts = inner.length
+    ? inner.toArray().map((el) => {
+        const $el = $(el).clone();
+        $el.find(".tooltip-balloon").remove();
+        return $el.text();
+      })
+    : [$additional.text()];
+
+  return rawParts
+    .flatMap((part) => part.split(","))
+    .map((t) => t.trim())
+    .filter(Boolean);
 }
 
 function parseFilmElements($: cheerio.CheerioAPI, filmElements: ReturnType<cheerio.CheerioAPI>): ParsedFilm[] {
@@ -65,12 +89,15 @@ function parseFilmElements($: cheerio.CheerioAPI, filmElements: ReturnType<cheer
 
     const { cert, durationMins } = parseCertDuration($el.find(".shortened-aside").text());
 
-    const times: { time: string; bookingUrl: string }[] = [];
-    $el.find(".times .picktime .time a").each((_, timeEl) => {
-      const $time = $(timeEl);
-      const time = $time.text().trim();
-      const bookingUrl = ($time.attr("href") ?? "").trim();
-      if (time && bookingUrl) times.push({ time, bookingUrl });
+    const times: { time: string; bookingUrl: string; tags: string[] }[] = [];
+    $el.find(".times .picktime .time").each((_, timeEl) => {
+      const $timeDiv = $(timeEl);
+      const $link = $timeDiv.find("a").first();
+      const time = $link.text().trim();
+      const bookingUrl = ($link.attr("href") ?? "").trim();
+      if (time && bookingUrl) {
+        times.push({ time, bookingUrl, tags: parseSessionTags($, $timeDiv) });
+      }
     });
 
     if (times.length > 0) {
@@ -147,6 +174,7 @@ export const lighthouseAdapter: CinemaAdapter = {
           time: t.time,
           bookingUrl: t.bookingUrl,
           filmPageUrl: `${BASE_URL}/film/${film.slug}`,
+          screeningTags: t.tags.length ? t.tags : undefined,
         })),
       );
 

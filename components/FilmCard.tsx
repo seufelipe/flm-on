@@ -5,6 +5,8 @@ import { isMysteryFilm } from "@/lib/mystery";
 import type { TimedScreening } from "@/lib/clash";
 import { groupScreeningsByDay, type FilmGroup } from "@/lib/groupings";
 import { groupScreeningsByTimeframe } from "@/lib/timeframe";
+import { ScreeningTagMarks, ScreeningTagLabel } from "@/components/ScreeningTags";
+import { displayScreeningTags, screeningTagsTooltip } from "@/lib/screeningTags";
 import { CINEMA_LABEL } from "@/lib/cinemas";
 import { certColor } from "@/lib/certs";
 import { formatDayFriendly, formatDayDate } from "@/lib/date";
@@ -28,7 +30,7 @@ function Cert({ cert }: { cert: string }) {
   const color = certColor(cert);
   return (
     <span
-      className={`cert-badge inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-[3px] border-border font-black uppercase leading-none text-white ${
+      className={`cert-badge inline-flex h-9 w-9 shrink-0 cursor-default items-center justify-center rounded-full border-[3px] border-border font-black uppercase leading-none text-white ${
         cert.length > 2 ? "text-[0.66rem] tracking-tight" : "text-sm"
       }`}
       style={{ background: color ?? "var(--color-dim)" }}
@@ -86,6 +88,7 @@ export default function FilmCard({
         key={k}
         role="button"
         tabIndex={0}
+        title={screeningTagsTooltip(s.screeningTags)}
         onClick={() => onSelect(s)}
         onKeyDown={(e) => handleKeyDown(e, s)}
         className={`border-2 border-border rounded-btn px-3 py-2 flex items-center gap-2 font-bold transition-[translate,box-shadow] duration-100 ${
@@ -100,6 +103,7 @@ export default function FilmCard({
           <span className="text-xs font-bold uppercase tracking-widest">{CINEMA_LABEL[s.cinema] ?? s.cinemaName}</span>
         )}
         <span className="font-bold">{s.time}</span>
+        <ScreeningTagMarks tags={s.screeningTags} />
       </div>
     );
   }
@@ -122,6 +126,13 @@ export default function FilmCard({
   // or runtime would narrow the guess, so both are suppressed and the title is redacted.
   const isMystery = isMysteryFilm(group.filmTitle);
 
+  // Special-screening descriptors across all of this film's sessions (usually just "Parent and
+  // Baby" on the recurring Sat/Wed morning slot). Named once as a sticker after the title; the
+  // individual pills carry only the bare mark. A card shows at most one sticker — the
+  // screening label wins over a curated editorial label if a film somehow has both.
+  const sessionTags = Array.from(new Set(group.screenings.flatMap((s) => s.screeningTags ?? [])));
+  const hasScreeningLabel = displayScreeningTags(sessionTags).length > 0;
+
   const hasMetaLine =
     group.cert !== undefined ||
     (group.durationMins !== undefined && !isMystery) ||
@@ -142,7 +153,8 @@ export default function FilmCard({
             {!isMystery && group.year !== undefined && (
               <span className="font-normal text-dim ml-3">{group.year}</span>
             )}
-            {label && <FilmLabel text={label} />}
+            {label && !hasScreeningLabel && <FilmLabel text={label} />}
+            <ScreeningTagLabel tags={sessionTags} />
           </h3>
           {cinemaPageLinks.length > 0 && (
             <div className="order-1 md:order-2 no-print flex flex-wrap gap-2 shrink-0 md:justify-end">

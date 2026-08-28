@@ -13,6 +13,10 @@ export interface Screening {
   bookingUrl: string;
   filmPageUrl?: string; // the cinema's own film detail page (not the booking flow)
   letterboxdUrl?: string;
+  // Raw per-session descriptors the cinema attaches to a specific showtime — "Parent and Baby",
+  // "Dubbed", "Subtitled", "Open Captioned". Stored verbatim; lib/screeningTags.ts decides which
+  // ones surface in the UI and how they're labelled. Undefined for an ordinary screening.
+  screeningTags?: string[];
 }
 
 export interface AdapterResult {

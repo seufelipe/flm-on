@@ -74,6 +74,21 @@ async function main() {
     console.log(`  ${key}  →  ${labels[key] ?? "—"}`);
   }
 
+  // Per-session descriptors the cinema attaches to a specific showtime (Light House's
+  // em.additional — "Parent and Baby", "Dubbed", "Subtitled"). Only a subset surfaces in the UI
+  // (see lib/screeningTags.ts); this lists every tagged session so a new/unexpected value shows up.
+  const tagged = screenings
+    .filter((s) => s.screeningTags?.length)
+    .sort((a, b) => `${a.date}T${a.time}`.localeCompare(`${b.date}T${b.time}`));
+  console.log(`\nSpecial screenings (${tagged.length}):\n`);
+  if (tagged.length === 0) {
+    console.log("  none");
+  } else {
+    for (const s of tagged) {
+      console.log(`  ${s.date} ${s.time}  ${s.cinemaName}  ${s.filmTitle}  →  ${s.screeningTags!.join(", ")}`);
+    }
+  }
+
   console.log(`\nWrote ${STAGING_FILE}`);
   console.log("Review the report above, then run `npm run fetch:confirm` to publish.");
 }

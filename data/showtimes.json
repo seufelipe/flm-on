@@ -770,7 +770,8 @@
       "time": "11:00",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39889&showtimeId=1001-39889&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/kikis-delivery-service-4k-restoration",
-      "letterboxdUrl": "https://letterboxd.com/film/kikis-delivery-service/"
+      "letterboxdUrl": "https://letterboxd.com/film/kikis-delivery-service/",
+      "screeningTags": ["Dubbed", "Parent and Baby"]
     },
     {
       "cinema": "ifi",
@@ -1867,7 +1868,8 @@
       "time": "18:30",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39643&showtimeId=1001-39643&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/cinema-book-club-mrs-doubtfire",
-      "letterboxdUrl": "https://letterboxd.com/film/mrs-doubtfire/"
+      "letterboxdUrl": "https://letterboxd.com/film/mrs-doubtfire/",
+      "screeningTags": ["Cinema Book Club"]
     },
     {
       "cinema": "ifi",
@@ -2335,7 +2337,8 @@
       "time": "11:00",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41045&showtimeId=1001-41045&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/kikis-delivery-service-4k-restoration",
-      "letterboxdUrl": "https://letterboxd.com/film/kikis-delivery-service/"
+      "letterboxdUrl": "https://letterboxd.com/film/kikis-delivery-service/",
+      "screeningTags": ["Dubbed", "Parent and Baby"]
     },
     {
       "cinema": "lighthouse",
