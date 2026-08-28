@@ -7,6 +7,7 @@ const overrides: TitleOverrides = {
     "\\d{1,3}(?:st|nd|rd|th)\\s+anniversary",
     "\\d+k(?:\\s+digital)?\\s+restoration",
     "digital\\s+restoration",
+    "(?:january|february|march|april|may|june|july|august|september|october|november|december)\\s+\\d{4}",
   ],
   corrections: { "WEIRD RAW TITLE": "Weird Raw Title" },
 };
@@ -44,6 +45,10 @@ describe("cleanFilmTitle", () => {
 
   it("strips a programme-strand prefix from a repertory screening", () => {
     expect(cleanFilmTitle("Cinema Book Club: Mrs. Doubtfire", overrides)).toBe("Mrs. Doubtfire");
+  });
+
+  it("strips a trailing month + year that a recurring strand appends", () => {
+    expect(cleanFilmTitle("Mystery Matinee August 2026", overrides)).toBe("Mystery Matinee");
   });
 
   it("does not touch a title that merely contains a digit", () => {

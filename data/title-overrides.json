@@ -3,7 +3,8 @@
   "stripAnnotations": [
     "\\d{1,3}(?:st|nd|rd|th)\\s+anniversary",
     "\\d+k(?:\\s+digital)?\\s+restoration",
-    "digital\\s+restoration"
+    "digital\\s+restoration",
+    "(?:january|february|march|april|may|june|july|august|september|october|november|december)\\s+\\d{4}"
   ],
   "corrections": {
     "Archive at Lunchtime August 2026: Programme 1": "Horse Plays",

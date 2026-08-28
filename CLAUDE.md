@@ -37,8 +37,9 @@ is gitignored runtime cache/staging.
 - `lib/titles.ts` — `cleanFilmTitle`, applied to every screening in `lib/aggregate.ts` before
   Letterboxd resolution. From `data/title-overrides.json`: exact-match `corrections`, then
   `stripPrefixes` (programme strands — `"ARCHIVE AT LUNCHTIME:"`, `"CINEMA BOOK CLUB:"`), then
-  `stripAnnotations` (regex sources for trailing re-release tags — `4K Restoration`, `Nth
-  Anniversary` — matched at end of title, bare / dash-prefixed / in `(…)`). The cleaned title is
+  `stripAnnotations` (regex sources for trailing tags that aren't part of the name — `4K
+  Restoration`, `Nth Anniversary`, and a `Month YYYY` suffix that recurring strands append —
+  matched at end of title, bare / dash-prefixed / in `(…)`). The cleaned title is
   what the UI shows *and* what Letterboxd resolution + its cache/override keys use, so editing
   these files shifts `letterboxd-overrides.json` keys too.
 - `lib/letterboxd.ts` — `resolveLetterboxd(title, year)` → `{ url?, year? }`: resolves each film's
@@ -287,6 +288,21 @@ is gitignored runtime cache/staging.
     `--color-accent`, and per decision #8 it must not become a count/badge. Keyed on title alone (not `Title|Year`
     like `letterboxd-overrides.json`) deliberately — labels are per-film and the
     cinema-reported year is unreliable.
+
+12. **The IFI "Mystery Matinee" strand is rendered as a redacted card.** Added 2026-08-28.
+    The whole point of the strand is that the film isn't announced, so its card leans into
+    that: `lib/mystery.ts` `isMysteryFilm(title)` (`/^mystery matinee\b/i`, matched on the
+    *cleaned* title) gates `FilmCard.tsx` to (a) drop the year and duration entirely — they'd
+    narrow the guess, and IFI's values for both are placeholders anyway — and (b) render the
+    title via `components/MysteryTitle.tsx`, a client component that covers each word with a
+    solid `--color-fg` block (transparent text underneath, so it stays in the DOM for AT) and
+    toggles to plain text on click, the way a review site hides a spoiler. Decorative, so per
+    decision #7 the blocks are `--color-fg`, never accent. The trailing month/year on the raw
+    listing (`Mystery Matinee August 2026`) is stripped by a new `stripAnnotations` regex
+    (`(?:january|…|december)\s+\d{4}`) in `data/title-overrides.json`, so future months need no
+    per-month correction — unlike the `Archive at Lunchtime` strand, whose real name lives only
+    in the poster filename. `DayPlan`/`ComboSuggestions` still show the runtime for a Mystery
+    Matinee added to a plan — the gap math needs it — only the card hides it.
 
 ## Known gaps
 

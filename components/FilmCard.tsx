@@ -1,5 +1,7 @@
 import { Fragment } from "react";
 import FilmLabel from "@/components/FilmLabel";
+import MysteryTitle from "@/components/MysteryTitle";
+import { isMysteryFilm } from "@/lib/mystery";
 import type { TimedScreening } from "@/lib/clash";
 import { groupScreeningsByDay, type FilmGroup } from "@/lib/groupings";
 import { groupScreeningsByTimeframe } from "@/lib/timeframe";
@@ -116,9 +118,13 @@ export default function FilmCard({
     );
   }
 
+  // The Mystery Matinee strand keeps the film secret until you're in the room — showing its year
+  // or runtime would narrow the guess, so both are suppressed and the title is redacted.
+  const isMystery = isMysteryFilm(group.filmTitle);
+
   const hasMetaLine =
     group.cert !== undefined ||
-    group.durationMins !== undefined ||
+    (group.durationMins !== undefined && !isMystery) ||
     group.letterboxdUrl !== undefined;
 
   return (
@@ -128,8 +134,14 @@ export default function FilmCard({
             the chips stack above the title (order-1); from `md` up they sit top-right. */}
         <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between md:gap-4">
           <h3 className="order-2 md:order-1 text-2xl md:text-3xl tracking-tight">
-            <span className="font-black uppercase">{group.filmTitle}</span>
-            {group.year !== undefined && <span className="font-normal text-dim ml-3">{group.year}</span>}
+            {isMystery ? (
+              <MysteryTitle text={group.filmTitle} />
+            ) : (
+              <span className="font-black uppercase">{group.filmTitle}</span>
+            )}
+            {!isMystery && group.year !== undefined && (
+              <span className="font-normal text-dim ml-3">{group.year}</span>
+            )}
             {label && <FilmLabel text={label} />}
           </h3>
           {cinemaPageLinks.length > 0 && (
@@ -151,7 +163,7 @@ export default function FilmCard({
         {hasMetaLine && (
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2">
             {group.cert && <Cert cert={group.cert} />}
-            {group.durationMins !== undefined && (
+            {group.durationMins !== undefined && !isMystery && (
               <span className="text-xs text-dim">
                 {group.durationMins}min{group.durationEstimated ? " (est.)" : ""}
               </span>
