@@ -1,7 +1,9 @@
 import { Fragment } from "react";
 import { type ItineraryTransition, type TimedScreening } from "@/lib/clash";
 import { ScreeningTagMarks } from "@/components/ScreeningTags";
+import { FilmFormatMarks } from "@/components/FilmFormats";
 import { screeningTagsTooltip } from "@/lib/screeningTags";
+import { filmFormatsTooltip } from "@/lib/formats";
 import { CINEMA_LABEL } from "@/lib/cinemas";
 import { formatDayFriendly } from "@/lib/date";
 
@@ -71,7 +73,11 @@ export default function DayPlan({ items, transitions, onRemove, onClear, keyOf }
               <button
                 type="button"
                 aria-label={`Remove ${s.filmTitle} from your day plan`}
-                title={screeningTagsTooltip(s.screeningTags)}
+                title={
+                  [screeningTagsTooltip(s.screeningTags), filmFormatsTooltip(s.screeningTags)]
+                    .filter(Boolean)
+                    .join(" · ") || undefined
+                }
                 onClick={() => onRemove(s)}
                 className="shrink-0 border-2 border-border rounded-btn bg-surface text-fg px-3 py-1.5 flex items-baseline gap-2 cursor-pointer transition-transform active:translate-x-[2px] active:translate-y-[2px]"
               >
@@ -80,6 +86,7 @@ export default function DayPlan({ items, transitions, onRemove, onClear, keyOf }
                   {CINEMA_LABEL[s.cinema]} {s.time}
                 </span>
                 <ScreeningTagMarks tags={s.screeningTags} />
+                <FilmFormatMarks tags={s.screeningTags} />
               </button>
             </Fragment>
           );

@@ -20,6 +20,16 @@ describe("displayScreeningTags", () => {
     ]);
   });
 
+  it("leaves film-format tags alone — those are handled by lib/formats.ts, not here", () => {
+    expect(displayScreeningTags(["35mm", "70mm"])).toEqual([]);
+  });
+
+  it("surfaces the Mystery Matinee strand (attached by ScreeningBrowser, not the scraper)", () => {
+    const [m] = displayScreeningTags(["Mystery Matinee"]);
+    expect(m.label).toBe("mystery matinee");
+    expect(m.symbol).toContain("☻");
+  });
+
   it("surfaces the curated-strand screenings (book club, silver screen)", () => {
     const [bookClub] = displayScreeningTags(["Cinema Book Club"]);
     expect(bookClub.label).toBe("cinema book club");

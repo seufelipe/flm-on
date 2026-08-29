@@ -53,6 +53,15 @@ const KNOWN: Record<string, KnownTag> = {
     description:
       "A matinee for over-65s, with complimentary tea or coffee, a short introduction and a chat.",
   },
+  // The IFI's recurring strand where the film is kept secret until the lights go down. Not a
+  // scraped descriptor — lib/mystery.ts detects it from the title and ScreeningBrowser attaches
+  // this tag so it flows through the same mark / sticker / Highlights path as the rest.
+  "mystery matinee": {
+    symbol: MARK,
+    label: "mystery matinee",
+    title: "Mystery Matinee",
+    description: "The film isn't announced — you find out what you're watching once it starts.",
+  },
 };
 
 export type ScreeningTagDisplay = KnownTag;

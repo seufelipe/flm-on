@@ -10,6 +10,8 @@ import { formatDayFriendly, formatDayDate, todayISO, nowTimeISO, nextBatchLabel 
 import { isShortFilm } from "@/lib/duration";
 import { isKidFriendly } from "@/lib/certs";
 import { displayScreeningTags } from "@/lib/screeningTags";
+import { displayFilmFormats } from "@/lib/formats";
+import { isMysteryFilm } from "@/lib/mystery";
 import {
   DEFAULT_PREFERENCES,
   isDefault,
@@ -192,7 +194,17 @@ export default function ScreeningBrowser({ screenings, days, labels }: Props) {
     return h * 60 + m;
   }, [now]);
   const upcomingScreenings = useMemo(
-    () => screenings.filter((s) => s.date > now.date || (s.date === now.date && s.time >= now.time)),
+    () =>
+      screenings
+        .filter((s) => s.date > now.date || (s.date === now.date && s.time >= now.time))
+        // The Mystery Matinee strand isn't tagged by the scraper (it's title-detected — see
+        // lib/mystery.ts); attach the tag here so it rides the same mark / sticker / Highlights
+        // path as the scraped special screenings.
+        .map((s) =>
+          isMysteryFilm(s.filmTitle)
+            ? { ...s, screeningTags: [...(s.screeningTags ?? []), "Mystery Matinee"] }
+            : s,
+        ),
     [screenings, now],
   );
 
@@ -210,6 +222,7 @@ export default function ScreeningBrowser({ screenings, days, labels }: Props) {
           !(prefs.kidsOnly && !isKidFriendly(s.cert)) &&
           (!highlightsOnly ||
             displayScreeningTags(s.screeningTags).length > 0 ||
+            displayFilmFormats(s.screeningTags).length > 0 ||
             labels?.[s.filmTitle.trim().toLowerCase()] !== undefined),
       ),
     [upcomingScreenings, prefs, labels, highlightsOnly],

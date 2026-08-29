@@ -39,6 +39,16 @@ describe("ifi parseWhatsonDay", () => {
     expect(screenings.find((s) => s.filmTitle === "The Odyssey")?.year).toBe(2026);
   });
 
+  it("reads per-session format icons from svg[data-icon] into screeningTags", () => {
+    const odyssey = screenings.find((s) => s.filmTitle === "The Odyssey" && s.time === "15:00");
+    expect(odyssey?.screeningTags).toEqual(["70mm"]);
+  });
+
+  it("leaves screeningTags undefined for a session with no notable icons", () => {
+    const tony = screenings.find((s) => s.filmTitle === "Tony");
+    expect(tony?.screeningTags).toBeUndefined();
+  });
+
   it("returns nothing for a day with no screenings", () => {
     expect(parseWhatsonDay(fixture("ifi-whatson-empty.html"), "2026-12-25")).toEqual([]);
   });

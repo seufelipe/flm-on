@@ -1,8 +1,6 @@
 {
-  "generatedAt": "2026-08-27T09:35:31.646Z",
+  "generatedAt": "2026-08-29T10:43:04.344Z",
   "days": [
-    "2026-08-27",
-    "2026-08-28",
     "2026-08-29",
     "2026-08-30",
     "2026-08-31",
@@ -10,742 +8,6 @@
     "2026-09-02"
   ],
   "screenings": [
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Stop! That! Train!",
-      "cert": "15A",
-      "durationMins": 90,
-      "year": 2026,
-      "date": "2026-08-27",
-      "time": "12:00",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40043&showtimeId=1001-40043&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/stop-that-train",
-      "letterboxdUrl": "https://letterboxd.com/film/stop-that-train/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "The Sacrifice",
-      "cert": "16",
-      "durationMins": 149,
-      "year": 1986,
-      "date": "2026-08-27",
-      "time": "12:30",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40784&showtimeId=1001-40784&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/the-sacrifice-4k-restoration",
-      "letterboxdUrl": "https://letterboxd.com/film/the-sacrifice/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Horse Plays",
-      "durationMins": 32,
-      "year": 2026,
-      "date": "2026-08-27",
-      "time": "12:40",
-      "bookingUrl": "https://shop.ifi.ie/performance/111239/",
-      "filmPageUrl": "https://ifi.ie/films/archive-at-lunchtime-august-2026-programme-2"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Lady",
-      "cert": "15A",
-      "durationMins": 97,
-      "year": 2026,
-      "date": "2026-08-27",
-      "time": "12:45",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40766&showtimeId=1001-40766&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/lady",
-      "letterboxdUrl": "https://letterboxd.com/film/lady-2026/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Tony",
-      "cert": "15A",
-      "durationMins": 106,
-      "year": 2026,
-      "date": "2026-08-27",
-      "time": "13:10",
-      "bookingUrl": "https://shop.ifi.ie/performance/113263/",
-      "filmPageUrl": "https://ifi.ie/films/tony",
-      "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Teenage Sex and Death at Camp Miasma",
-      "cert": "16",
-      "durationMins": 112,
-      "year": 2026,
-      "date": "2026-08-27",
-      "time": "13:15",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40648&showtimeId=1001-40648&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/teenage-sex-and-death-at-camp-miasma",
-      "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "An Irish Atlantic Rainforest",
-      "durationMins": 91,
-      "year": 2026,
-      "date": "2026-08-27",
-      "time": "13:30",
-      "bookingUrl": "https://shop.ifi.ie/performance/113272/",
-      "filmPageUrl": "https://ifi.ie/films/an-irish-atlantic-rainforest",
-      "letterboxdUrl": "https://letterboxd.com/film/an-irish-atlantic-rainforest/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "The Odyssey",
-      "cert": "15A",
-      "durationMins": 172,
-      "year": 2026,
-      "date": "2026-08-27",
-      "time": "13:40",
-      "bookingUrl": "https://shop.ifi.ie/performance/113269/",
-      "filmPageUrl": "https://ifi.ie/films/the-odyssey",
-      "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Coyote vs. Acme",
-      "cert": "PG",
-      "durationMins": 103,
-      "year": 2026,
-      "date": "2026-08-27",
-      "time": "14:10",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40016&showtimeId=1001-40016&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/coyote-vs-acme",
-      "letterboxdUrl": "https://letterboxd.com/film/coyote-vs-acme/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Amores perros",
-      "cert": "18",
-      "durationMins": 153,
-      "year": 2000,
-      "date": "2026-08-27",
-      "time": "15:10",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40771&showtimeId=1001-40771&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/amores-perros-4k-restoration",
-      "letterboxdUrl": "https://letterboxd.com/film/amores-perros/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "+Sons",
-      "cert": "15A",
-      "durationMins": 119,
-      "year": 2025,
-      "date": "2026-08-27",
-      "time": "15:30",
-      "bookingUrl": "https://shop.ifi.ie/performance/113265/",
-      "filmPageUrl": "https://ifi.ie/films/sons",
-      "letterboxdUrl": "https://letterboxd.com/film/sons-2025/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "The End of Oak Street",
-      "cert": "15A",
-      "durationMins": 100,
-      "year": 2026,
-      "date": "2026-08-27",
-      "time": "15:40",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40042&showtimeId=1001-40042&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/the-end-of-oak-street",
-      "letterboxdUrl": "https://letterboxd.com/film/the-end-of-oak-street/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "The Invite",
-      "cert": "16",
-      "durationMins": 107,
-      "year": 2026,
-      "date": "2026-08-27",
-      "time": "15:40",
-      "bookingUrl": "https://shop.ifi.ie/performance/113271/",
-      "filmPageUrl": "https://ifi.ie/films/the-invite",
-      "letterboxdUrl": "https://letterboxd.com/film/the-invite-2026/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Teenage Sex and Death at Camp Miasma",
-      "cert": "16",
-      "durationMins": 112,
-      "year": 2026,
-      "date": "2026-08-27",
-      "time": "15:45",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39912&showtimeId=1001-39912&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/teenage-sex-and-death-at-camp-miasma",
-      "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Sunset Boulevard",
-      "cert": "PG",
-      "durationMins": 110,
-      "year": 1950,
-      "date": "2026-08-27",
-      "time": "16:30",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40762&showtimeId=1001-40762&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/sunset-boulevard-75th-anniversary-4k-restoration",
-      "letterboxdUrl": "https://letterboxd.com/film/sunset-boulevard/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Teenage Sex and Death at Camp Miasma",
-      "cert": "16",
-      "durationMins": 111,
-      "year": 2026,
-      "date": "2026-08-27",
-      "time": "17:15",
-      "bookingUrl": "https://shop.ifi.ie/performance/113267/",
-      "filmPageUrl": "https://ifi.ie/films/teenage-sex-and-death-at-camp-miasma",
-      "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Tony",
-      "cert": "15A",
-      "durationMins": 106,
-      "year": 2026,
-      "date": "2026-08-27",
-      "time": "18:00",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39917&showtimeId=1001-39917&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/tony",
-      "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "+Sons",
-      "cert": "15A",
-      "durationMins": 119,
-      "year": 2025,
-      "date": "2026-08-27",
-      "time": "18:00",
-      "bookingUrl": "https://shop.ifi.ie/performance/113264/",
-      "filmPageUrl": "https://ifi.ie/films/sons",
-      "letterboxdUrl": "https://letterboxd.com/film/sons-2025/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Tony",
-      "cert": "15A",
-      "durationMins": 106,
-      "year": 2026,
-      "date": "2026-08-27",
-      "time": "18:10",
-      "bookingUrl": "https://shop.ifi.ie/performance/113262/",
-      "filmPageUrl": "https://ifi.ie/films/tony",
-      "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Coyote vs. Acme",
-      "cert": "PG",
-      "durationMins": 103,
-      "year": 2026,
-      "date": "2026-08-27",
-      "time": "18:20",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40044&showtimeId=1001-40044&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/coyote-vs-acme",
-      "letterboxdUrl": "https://letterboxd.com/film/coyote-vs-acme/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Amyl and the Sniffers: Truth or Consequence",
-      "cert": "15A",
-      "durationMins": 74,
-      "year": 2026,
-      "date": "2026-08-27",
-      "time": "19:00",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40020&showtimeId=1001-40020&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/amyl-and-the-sniffers-truth-or-consequence",
-      "letterboxdUrl": "https://letterboxd.com/film/truth-or-consequence/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "The Odyssey",
-      "cert": "15A",
-      "durationMins": 172,
-      "year": 2026,
-      "date": "2026-08-27",
-      "time": "19:45",
-      "bookingUrl": "https://shop.ifi.ie/performance/113268/",
-      "filmPageUrl": "https://ifi.ie/films/the-odyssey",
-      "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Tony",
-      "cert": "15A",
-      "durationMins": 106,
-      "year": 2026,
-      "date": "2026-08-27",
-      "time": "20:30",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40772&showtimeId=1001-40772&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/tony",
-      "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Lady",
-      "cert": "15A",
-      "durationMins": 97,
-      "year": 2026,
-      "date": "2026-08-27",
-      "time": "20:30",
-      "bookingUrl": "https://shop.ifi.ie/performance/113270/",
-      "filmPageUrl": "https://ifi.ie/films/lady",
-      "letterboxdUrl": "https://letterboxd.com/film/lady-2026/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Teenage Sex and Death at Camp Miasma",
-      "cert": "16",
-      "durationMins": 112,
-      "year": 2026,
-      "date": "2026-08-27",
-      "time": "20:40",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39914&showtimeId=1001-39914&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/teenage-sex-and-death-at-camp-miasma",
-      "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Teenage Sex and Death at Camp Miasma",
-      "cert": "16",
-      "durationMins": 111,
-      "year": 2026,
-      "date": "2026-08-27",
-      "time": "20:40",
-      "bookingUrl": "https://shop.ifi.ie/performance/113266/",
-      "filmPageUrl": "https://ifi.ie/films/teenage-sex-and-death-at-camp-miasma",
-      "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Stop! That! Train!",
-      "cert": "15A",
-      "durationMins": 90,
-      "year": 2026,
-      "date": "2026-08-27",
-      "time": "20:50",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39915&showtimeId=1001-39915&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/stop-that-train",
-      "letterboxdUrl": "https://letterboxd.com/film/stop-that-train/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Bitter Christmas",
-      "cert": "15A",
-      "durationMins": 111,
-      "year": 2026,
-      "date": "2026-08-28",
-      "time": "12:00",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39655&showtimeId=1001-39655&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/bitter-christmas",
-      "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Horse Plays",
-      "durationMins": 33,
-      "year": 2026,
-      "date": "2026-08-28",
-      "time": "12:00",
-      "bookingUrl": "https://shop.ifi.ie/performance/111240/",
-      "filmPageUrl": "https://ifi.ie/films/archive-at-lunchtime-august-2026-programme-1"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "I Want Your Sex",
-      "cert": "18",
-      "durationMins": 90,
-      "year": 2026,
-      "date": "2026-08-28",
-      "time": "12:50",
-      "bookingUrl": "https://shop.ifi.ie/performance/112301/",
-      "filmPageUrl": "https://ifi.ie/films/i-want-your-sex",
-      "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Tony",
-      "cert": "15A",
-      "durationMins": 106,
-      "year": 2026,
-      "date": "2026-08-28",
-      "time": "13:00",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40992&showtimeId=1001-40992&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/tony",
-      "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Bitter Christmas",
-      "cert": "15A",
-      "durationMins": 111,
-      "year": 2026,
-      "date": "2026-08-28",
-      "time": "13:00",
-      "bookingUrl": "https://shop.ifi.ie/performance/112298/",
-      "filmPageUrl": "https://ifi.ie/films/bitter-christmas",
-      "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Guggi",
-      "cert": "12A",
-      "durationMins": 78,
-      "year": 2026,
-      "date": "2026-08-28",
-      "time": "13:10",
-      "bookingUrl": "https://shop.ifi.ie/performance/113324/",
-      "filmPageUrl": "https://ifi.ie/films/guggi",
-      "letterboxdUrl": "https://letterboxd.com/film/guggi/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Coyote vs. Acme",
-      "cert": "PG",
-      "durationMins": 103,
-      "year": 2026,
-      "date": "2026-08-28",
-      "time": "13:15",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39623&showtimeId=1001-39623&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/coyote-vs-acme",
-      "letterboxdUrl": "https://letterboxd.com/film/coyote-vs-acme/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Teenage Sex and Death at Camp Miasma",
-      "cert": "16",
-      "durationMins": 112,
-      "year": 2026,
-      "date": "2026-08-28",
-      "time": "13:30",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39614&showtimeId=1001-39614&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/teenage-sex-and-death-at-camp-miasma",
-      "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Stop! That! Train!",
-      "cert": "15A",
-      "durationMins": 90,
-      "year": 2026,
-      "date": "2026-08-28",
-      "time": "14:15",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39615&showtimeId=1001-39615&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/stop-that-train",
-      "letterboxdUrl": "https://letterboxd.com/film/stop-that-train/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "De Gaulle Part One: Resistance",
-      "cert": "15A",
-      "durationMins": 160,
-      "year": 2026,
-      "date": "2026-08-28",
-      "time": "14:50",
-      "bookingUrl": "https://shop.ifi.ie/performance/112297/",
-      "filmPageUrl": "https://ifi.ie/films/de-gaulle-resistance",
-      "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "The Odyssey",
-      "cert": "15A",
-      "durationMins": 172,
-      "year": 2026,
-      "date": "2026-08-28",
-      "time": "15:00",
-      "bookingUrl": "https://shop.ifi.ie/performance/112926/",
-      "filmPageUrl": "https://ifi.ie/films/the-odyssey",
-      "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Bitter Christmas",
-      "cert": "15A",
-      "durationMins": 111,
-      "year": 2026,
-      "date": "2026-08-28",
-      "time": "15:30",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39612&showtimeId=1001-39612&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/bitter-christmas",
-      "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "The Invite",
-      "cert": "16",
-      "durationMins": 107,
-      "year": 2026,
-      "date": "2026-08-28",
-      "time": "15:35",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41046&showtimeId=1001-41046&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/the-invite",
-      "letterboxdUrl": "https://letterboxd.com/film/the-invite-2026/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Tony",
-      "cert": "15A",
-      "durationMins": 106,
-      "year": 2026,
-      "date": "2026-08-28",
-      "time": "15:45",
-      "bookingUrl": "https://shop.ifi.ie/performance/113363/",
-      "filmPageUrl": "https://ifi.ie/films/tony",
-      "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Kiki’s Delivery Service",
-      "cert": "PG",
-      "durationMins": 103,
-      "year": 1989,
-      "date": "2026-08-28",
-      "time": "16:00",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39888&showtimeId=1001-39888&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/kikis-delivery-service-4k-restoration",
-      "letterboxdUrl": "https://letterboxd.com/film/kikis-delivery-service/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "I Want Your Sex",
-      "cert": "18",
-      "durationMins": 90,
-      "year": 2026,
-      "date": "2026-08-28",
-      "time": "16:15",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39610&showtimeId=1001-39610&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/i-want-your-sex",
-      "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Coyote vs. Acme",
-      "cert": "PG",
-      "durationMins": 103,
-      "year": 2026,
-      "date": "2026-08-28",
-      "time": "18:00",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39622&showtimeId=1001-39622&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/coyote-vs-acme",
-      "letterboxdUrl": "https://letterboxd.com/film/coyote-vs-acme/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Teenage Sex and Death at Camp Miasma",
-      "cert": "16",
-      "durationMins": 112,
-      "year": 2026,
-      "date": "2026-08-28",
-      "time": "18:00",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40078&showtimeId=1001-40078&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/teenage-sex-and-death-at-camp-miasma",
-      "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "I Want Your Sex",
-      "cert": "18",
-      "durationMins": 90,
-      "year": 2026,
-      "date": "2026-08-28",
-      "time": "18:00",
-      "bookingUrl": "https://shop.ifi.ie/performance/112302/",
-      "filmPageUrl": "https://ifi.ie/films/i-want-your-sex",
-      "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Tony",
-      "cert": "15A",
-      "durationMins": 106,
-      "year": 2026,
-      "date": "2026-08-28",
-      "time": "18:15",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40990&showtimeId=1001-40990&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/tony",
-      "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Tony",
-      "cert": "15A",
-      "durationMins": 106,
-      "year": 2026,
-      "date": "2026-08-28",
-      "time": "18:15",
-      "bookingUrl": "https://shop.ifi.ie/performance/113395/",
-      "filmPageUrl": "https://ifi.ie/films/tony",
-      "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Kiki’s Delivery Service",
-      "cert": "PG",
-      "durationMins": 103,
-      "year": 1989,
-      "date": "2026-08-28",
-      "time": "18:30",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39537&showtimeId=1001-39537&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/kikis-delivery-service-4k-restoration",
-      "letterboxdUrl": "https://letterboxd.com/film/kikis-delivery-service/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Guggi",
-      "cert": "12A",
-      "durationMins": 78,
-      "year": 2026,
-      "date": "2026-08-28",
-      "time": "18:30",
-      "bookingUrl": "https://shop.ifi.ie/performance/112148/",
-      "filmPageUrl": "https://ifi.ie/films/guggi",
-      "letterboxdUrl": "https://letterboxd.com/film/guggi/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "De Gaulle Part One: Resistance",
-      "cert": "15A",
-      "durationMins": 160,
-      "year": 2026,
-      "date": "2026-08-28",
-      "time": "20:10",
-      "bookingUrl": "https://shop.ifi.ie/performance/112296/",
-      "filmPageUrl": "https://ifi.ie/films/de-gaulle-resistance",
-      "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Bitter Christmas",
-      "cert": "15A",
-      "durationMins": 111,
-      "year": 2026,
-      "date": "2026-08-28",
-      "time": "20:30",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39611&showtimeId=1001-39611&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/bitter-christmas",
-      "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Teenage Sex and Death at Camp Miasma",
-      "cert": "16",
-      "durationMins": 112,
-      "year": 2026,
-      "date": "2026-08-28",
-      "time": "20:30",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39613&showtimeId=1001-39613&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/teenage-sex-and-death-at-camp-miasma",
-      "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Colony",
-      "cert": "16",
-      "durationMins": 123,
-      "year": 2026,
-      "date": "2026-08-28",
-      "time": "20:35",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40660&showtimeId=1001-40660&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/colony",
-      "letterboxdUrl": "https://letterboxd.com/film/colony-2026/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Teenage Sex and Death at Camp Miasma",
-      "cert": "16",
-      "durationMins": 111,
-      "year": 2026,
-      "date": "2026-08-28",
-      "time": "20:40",
-      "bookingUrl": "https://shop.ifi.ie/performance/112300/",
-      "filmPageUrl": "https://ifi.ie/films/teenage-sex-and-death-at-camp-miasma",
-      "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "I Want Your Sex",
-      "cert": "18",
-      "durationMins": 90,
-      "year": 2026,
-      "date": "2026-08-28",
-      "time": "20:50",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39608&showtimeId=1001-39608&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/i-want-your-sex",
-      "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Bitter Christmas",
-      "cert": "15A",
-      "durationMins": 111,
-      "year": 2026,
-      "date": "2026-08-28",
-      "time": "20:50",
-      "bookingUrl": "https://shop.ifi.ie/performance/112295/",
-      "filmPageUrl": "https://ifi.ie/films/bitter-christmas",
-      "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
-    },
     {
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
@@ -763,15 +25,18 @@
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
       "filmTitle": "Kiki’s Delivery Service",
-      "cert": "PG",
+      "cert": "G",
       "durationMins": 103,
       "year": 1989,
       "date": "2026-08-29",
       "time": "11:00",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39889&showtimeId=1001-39889&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/kikis-delivery-service-4k-restoration",
-      "letterboxdUrl": "https://letterboxd.com/film/kikis-delivery-service/",
-      "screeningTags": ["Dubbed", "Parent and Baby"]
+      "screeningTags": [
+        "Dubbed",
+        "Parent and Baby"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/kikis-delivery-service/"
     },
     {
       "cinema": "ifi",
@@ -826,7 +91,7 @@
     {
       "cinema": "ifi",
       "cinemaName": "IFI",
-      "filmTitle": "De Gaulle Part One: Resistance",
+      "filmTitle": "De Gaulle Part One: Résistance",
       "cert": "15A",
       "durationMins": 160,
       "year": 2026,
@@ -899,6 +164,9 @@
       "time": "13:40",
       "bookingUrl": "https://shop.ifi.ie/performance/112398/",
       "filmPageUrl": "https://ifi.ie/films/i-want-your-sex",
+      "screeningTags": [
+        "Open Captioned"
+      ],
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
     },
     {
@@ -938,19 +206,25 @@
       "time": "15:05",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39618&showtimeId=1001-39618&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/bitter-christmas",
+      "screeningTags": [
+        "Subtitled"
+      ],
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
       "filmTitle": "Kiki’s Delivery Service",
-      "cert": "PG",
+      "cert": "G",
       "durationMins": 103,
       "year": 1989,
       "date": "2026-08-29",
       "time": "15:15",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39538&showtimeId=1001-39538&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/kikis-delivery-service-4k-restoration",
+      "screeningTags": [
+        "Subtitled"
+      ],
       "letterboxdUrl": "https://letterboxd.com/film/kikis-delivery-service/"
     },
     {
@@ -1016,6 +290,9 @@
       "time": "17:20",
       "bookingUrl": "https://shop.ifi.ie/performance/112406/",
       "filmPageUrl": "https://ifi.ie/films/the-odyssey",
+      "screeningTags": [
+        "70mm"
+      ],
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
@@ -1034,7 +311,7 @@
     {
       "cinema": "ifi",
       "cinemaName": "IFI",
-      "filmTitle": "De Gaulle Part One: Resistance",
+      "filmTitle": "De Gaulle Part One: Résistance",
       "cert": "15A",
       "durationMins": 160,
       "year": 2026,
@@ -1087,13 +364,16 @@
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
       "filmTitle": "Kiki’s Delivery Service",
-      "cert": "PG",
+      "cert": "G",
       "durationMins": 103,
       "year": 1989,
       "date": "2026-08-29",
       "time": "19:45",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39682&showtimeId=1001-39682&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/kikis-delivery-service-4k-restoration",
+      "screeningTags": [
+        "Subtitled"
+      ],
       "letterboxdUrl": "https://letterboxd.com/film/kikis-delivery-service/"
     },
     {
@@ -1266,7 +546,7 @@
     {
       "cinema": "ifi",
       "cinemaName": "IFI",
-      "filmTitle": "De Gaulle Part One: Resistance",
+      "filmTitle": "De Gaulle Part One: Résistance",
       "cert": "15A",
       "durationMins": 160,
       "year": 2026,
@@ -1317,13 +597,16 @@
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
       "filmTitle": "Kiki’s Delivery Service",
-      "cert": "PG",
+      "cert": "G",
       "durationMins": 103,
       "year": 1989,
       "date": "2026-08-30",
       "time": "13:30",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39539&showtimeId=1001-39539&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/kikis-delivery-service-4k-restoration",
+      "screeningTags": [
+        "Dubbed"
+      ],
       "letterboxdUrl": "https://letterboxd.com/film/kikis-delivery-service/"
     },
     {
@@ -1408,13 +691,16 @@
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
       "filmTitle": "Kiki’s Delivery Service",
-      "cert": "PG",
+      "cert": "G",
       "durationMins": 103,
       "year": 1989,
       "date": "2026-08-30",
       "time": "16:00",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39667&showtimeId=1001-39667&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/kikis-delivery-service-4k-restoration",
+      "screeningTags": [
+        "Subtitled"
+      ],
       "letterboxdUrl": "https://letterboxd.com/film/kikis-delivery-service/"
     },
     {
@@ -1428,6 +714,9 @@
       "time": "16:00",
       "bookingUrl": "https://shop.ifi.ie/performance/112927/",
       "filmPageUrl": "https://ifi.ie/films/the-odyssey",
+      "screeningTags": [
+        "70mm"
+      ],
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
@@ -1511,7 +800,7 @@
     {
       "cinema": "ifi",
       "cinemaName": "IFI",
-      "filmTitle": "De Gaulle Part One: Resistance",
+      "filmTitle": "De Gaulle Part One: Résistance",
       "cert": "15A",
       "durationMins": 160,
       "year": 2026,
@@ -1610,6 +899,9 @@
       "time": "12:20",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41003&showtimeId=1001-41003&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-odyssey",
+      "screeningTags": [
+        "35mm"
+      ],
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
@@ -1679,13 +971,16 @@
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
       "filmTitle": "Kiki’s Delivery Service",
-      "cert": "PG",
+      "cert": "G",
       "durationMins": 103,
       "year": 1989,
       "date": "2026-08-31",
       "time": "13:35",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39892&showtimeId=1001-39892&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/kikis-delivery-service-4k-restoration",
+      "screeningTags": [
+        "Dubbed"
+      ],
       "letterboxdUrl": "https://letterboxd.com/film/kikis-delivery-service/"
     },
     {
@@ -1704,7 +999,7 @@
     {
       "cinema": "ifi",
       "cinemaName": "IFI",
-      "filmTitle": "De Gaulle Part One: Resistance",
+      "filmTitle": "De Gaulle Part One: Résistance",
       "cert": "15A",
       "durationMins": 160,
       "year": 2026,
@@ -1738,6 +1033,9 @@
       "time": "15:25",
       "bookingUrl": "https://shop.ifi.ie/performance/112928/",
       "filmPageUrl": "https://ifi.ie/films/the-odyssey",
+      "screeningTags": [
+        "70mm"
+      ],
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
@@ -1816,6 +1114,9 @@
       "time": "18:10",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41028&showtimeId=1001-41028&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/tony",
+      "screeningTags": [
+        "Open Captioned"
+      ],
       "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
     },
     {
@@ -1835,13 +1136,16 @@
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
       "filmTitle": "Kiki’s Delivery Service",
-      "cert": "PG",
+      "cert": "G",
       "durationMins": 103,
       "year": 1989,
       "date": "2026-08-31",
       "time": "18:15",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40520&showtimeId=1001-40520&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/kikis-delivery-service-4k-restoration",
+      "screeningTags": [
+        "Subtitled"
+      ],
       "letterboxdUrl": "https://letterboxd.com/film/kikis-delivery-service/"
     },
     {
@@ -1868,8 +1172,10 @@
       "time": "18:30",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39643&showtimeId=1001-39643&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/cinema-book-club-mrs-doubtfire",
-      "letterboxdUrl": "https://letterboxd.com/film/mrs-doubtfire/",
-      "screeningTags": ["Cinema Book Club"]
+      "screeningTags": [
+        "Cinema Book Club"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/mrs-doubtfire/"
     },
     {
       "cinema": "ifi",
@@ -1887,7 +1193,7 @@
     {
       "cinema": "ifi",
       "cinemaName": "IFI",
-      "filmTitle": "De Gaulle Part One: Resistance",
+      "filmTitle": "De Gaulle Part One: Résistance",
       "cert": "15A",
       "durationMins": 160,
       "year": 2026,
@@ -1947,6 +1253,9 @@
       "time": "20:45",
       "bookingUrl": "https://shop.ifi.ie/performance/112457/",
       "filmPageUrl": "https://ifi.ie/films/bitter-christmas",
+      "screeningTags": [
+        "Open Captioned"
+      ],
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
@@ -2082,7 +1391,7 @@
     {
       "cinema": "ifi",
       "cinemaName": "IFI",
-      "filmTitle": "De Gaulle Part One: Resistance",
+      "filmTitle": "De Gaulle Part One: Résistance",
       "cert": "15A",
       "durationMins": 160,
       "year": 2026,
@@ -2103,19 +1412,25 @@
       "time": "15:00",
       "bookingUrl": "https://shop.ifi.ie/performance/113385/",
       "filmPageUrl": "https://ifi.ie/films/the-odyssey",
+      "screeningTags": [
+        "70mm"
+      ],
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
       "filmTitle": "Kiki’s Delivery Service",
-      "cert": "PG",
+      "cert": "G",
       "durationMins": 103,
       "year": 1989,
       "date": "2026-09-01",
       "time": "15:30",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40519&showtimeId=1001-40519&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/kikis-delivery-service-4k-restoration",
+      "screeningTags": [
+        "Subtitled"
+      ],
       "letterboxdUrl": "https://letterboxd.com/film/kikis-delivery-service/"
     },
     {
@@ -2155,6 +1470,9 @@
       "time": "15:40",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41008&showtimeId=1001-41008&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/teenage-sex-and-death-at-camp-miasma",
+      "screeningTags": [
+        "Open Captioned"
+      ],
       "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
     },
     {
@@ -2238,7 +1556,7 @@
     {
       "cinema": "ifi",
       "cinemaName": "IFI",
-      "filmTitle": "De Gaulle Part One: Resistance",
+      "filmTitle": "De Gaulle Part One: Résistance",
       "cert": "15A",
       "durationMins": 160,
       "year": 2026,
@@ -2330,15 +1648,18 @@
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
       "filmTitle": "Kiki’s Delivery Service",
-      "cert": "PG",
+      "cert": "G",
       "durationMins": 103,
       "year": 1989,
       "date": "2026-09-02",
       "time": "11:00",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41045&showtimeId=1001-41045&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/kikis-delivery-service-4k-restoration",
-      "letterboxdUrl": "https://letterboxd.com/film/kikis-delivery-service/",
-      "screeningTags": ["Dubbed", "Parent and Baby"]
+      "screeningTags": [
+        "Dubbed",
+        "Parent and Baby"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/kikis-delivery-service/"
     },
     {
       "cinema": "lighthouse",
@@ -2466,6 +1787,9 @@
       "time": "14:50",
       "bookingUrl": "https://shop.ifi.ie/performance/113386/",
       "filmPageUrl": "https://ifi.ie/films/the-odyssey",
+      "screeningTags": [
+        "70mm"
+      ],
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
@@ -2622,12 +1946,15 @@
       "time": "18:30",
       "bookingUrl": "https://shop.ifi.ie/performance/112969/",
       "filmPageUrl": "https://ifi.ie/films/i-want-your-sex",
+      "screeningTags": [
+        "Open Captioned"
+      ],
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
     },
     {
       "cinema": "ifi",
       "cinemaName": "IFI",
-      "filmTitle": "De Gaulle Part One: Resistance",
+      "filmTitle": "De Gaulle Part One: Résistance",
       "cert": "15A",
       "durationMins": 160,
       "year": 2026,

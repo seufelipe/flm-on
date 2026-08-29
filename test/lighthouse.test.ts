@@ -33,8 +33,9 @@ describe("lighthouse parseFilmsPage", () => {
     const matinee = tony?.times.find((t) => t.time === "15:45");
     // Nested <em class="tooltip"> children, comma-separated in the markup.
     expect(matinee?.tags).toEqual(["Dubbed", "Parent and Baby"]);
-    // A flat text em.additional (no inner tooltip) still parses.
-    expect(tony?.times.find((t) => t.time === "20:30")?.tags).toEqual(["Subtitled"]);
+    // A flat text em.additional (no inner tooltip) still parses, splitting on commas — here a
+    // format descriptor (35mm) rides alongside the caption tag.
+    expect(tony?.times.find((t) => t.time === "20:30")?.tags).toEqual(["Subtitled", "35mm"]);
   });
 
   it("leaves tags empty for an ordinary session", () => {

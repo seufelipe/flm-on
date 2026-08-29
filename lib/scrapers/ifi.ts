@@ -28,8 +28,25 @@ const SITE_BASE = "https://ifi.ie";
 
 type DayScreening = Pick<
   Screening,
-  "filmTitle" | "cert" | "durationMins" | "year" | "date" | "time" | "bookingUrl" | "filmPageUrl"
+  | "filmTitle"
+  | "cert"
+  | "durationMins"
+  | "year"
+  | "date"
+  | "time"
+  | "bookingUrl"
+  | "filmPageUrl"
+  | "screeningTags"
 >;
+
+// IFI marks a session with small SVG icons (`svg[data-icon="…"]`) inside each booking link.
+// Map the ones worth carrying into `screeningTags`; ignore the ubiquitous `wheelchair` and the
+// `runtime` clock. "70mm" surfaces as a film format (lib/formats.ts); "Open Captioned" is
+// carried for parity with Light House but not currently shown (lib/screeningTags.ts).
+const ICON_TAGS: Record<string, string> = {
+  "70mm": "70mm",
+  "open-captioned": "Open Captioned",
+};
 
 // The redesigned /whats-on page (Astro, 2026) is date-scoped via `?date=YYYY-MM-DD` and renders
 // every screening for that day inline as `article.screening-card` — no per-event page walk. Each
@@ -64,9 +81,29 @@ export function parseWhatsonDay(html: string, date: string): DayScreening[] {
       const $a = $(a);
       const bookingUrl = ($a.attr("href") ?? "").trim();
       const time = $a.find(".screening-card__time").text().trim();
-      if (bookingUrl && time) {
-        screenings.push({ filmTitle, cert, durationMins, year, date, time, bookingUrl, filmPageUrl });
-      }
+      if (!bookingUrl || !time) return;
+
+      const iconTags = Array.from(
+        new Set(
+          $a
+            .find("svg[data-icon]")
+            .toArray()
+            .map((svg) => ICON_TAGS[$(svg).attr("data-icon") ?? ""])
+            .filter((t): t is string => Boolean(t)),
+        ),
+      );
+
+      screenings.push({
+        filmTitle,
+        cert,
+        durationMins,
+        year,
+        date,
+        time,
+        bookingUrl,
+        filmPageUrl,
+        screeningTags: iconTags.length ? iconTags : undefined,
+      });
     });
   });
 

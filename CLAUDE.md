@@ -96,14 +96,25 @@ is gitignored runtime cache/staging.
   decision #11) rendered as a `<MarqueeSticker>` after a film's title + year. Decorative.
 - `components/ScreeningTags.tsx` + `lib/screeningTags.ts` — special-screening markers.
   `displayScreeningTags` filters `Screening.screeningTags` (raw per-session descriptors from the
-  scraper) to the surfaced set — Parent & Baby, Relaxed, Cinema Book Club, Silver Screen — →
-  `{ symbol, label, title, description }` (`title`/`description` are curated from Light House's
-  own `data-tooltip` text).
+  scraper, plus a synthetic `Mystery Matinee` attached render-time by `ScreeningBrowser` —
+  decision #12) to the surfaced set — Parent & Baby, Relaxed, Cinema Book Club, Silver Screen,
+  Mystery Matinee — → `{ symbol, label, title, description }` (`title`/`description` curated from
+  Light House's own `data-tooltip` text).
   `<ScreeningTagMarks>` renders the bare `☻` on a pill / `DayPlan` row; `<ScreeningTagLabel>`
   renders a `☻ parent & baby` `<MarqueeSticker>` after the film title. The
   `title="<name> — <description>"` hover tooltip (`screeningTagsTooltip`) goes on the **whole**
   pill / plan-row button (not the glyph); the sticker carries its own (also its accessible name).
   `font-variant-emoji: text` (symbol carries U+FE0E) keeps the smiley flat. Decision #13.
+- `components/FilmFormats.tsx` + `lib/formats.ts` — film-format markers (35mm / 70mm / IMAX),
+  a sibling of the special-screening pair riding the same `Screening.screeningTags` field.
+  `displayFilmFormats` maps the gauge tokens to `{ id, label, ratio, title, description }`.
+  `<FilmFormatTag>` renders a small solid `--color-fg` box holding the label on the `FilmCard`
+  meta line (after duration, before Letterboxd), sized to the format — same width, height
+  stepping up 35mm → 70mm → IMAX (`ratio` = width/height, so a smaller ratio is taller).
+  `<FilmFormatMarks>` renders a bare ratio-shaped rectangle after the time on a pill / `DayPlan`
+  row (the format analogue of the `☻` mark). `filmFormatsTooltip` is merged into the pill /
+  plan-row `title` alongside `screeningTagsTooltip`. Decorative → never accent (decision #7).
+  All three formats also count toward the Highlights toggle. Decision #15.
 - `components/ComboSuggestions.tsx` — the "Suggested plans" browsing list shown before anything is
   selected (`effectiveSelectedKeys.size === 0`); clicking a suggestion adds its first leg to the
   plan. `components/DayPlan.tsx` — replaces that list once anything is selected: a continuous
@@ -329,6 +340,12 @@ is gitignored runtime cache/staging.
     per-month correction — unlike the `Archive at Lunchtime` strand, whose real name lives only
     in the poster filename. `DayPlan`/`ComboSuggestions` still show the runtime for a Mystery
     Matinee added to a plan — the gap math needs it — only the card hides it.
+    It also **counts as a special screening** (decision #13): `ScreeningBrowser` attaches a
+    synthetic `"Mystery Matinee"` to `screeningTags` for any `isMysteryFilm` screening (in the
+    `upcomingScreenings` memo — render-time only, like the redaction, not in `showtimes.json`),
+    so it gets the `☻` mark + "☻ mystery matinee" sticker and passes the Highlights filter
+    through the same `displayScreeningTags` path as the rest. `KNOWN["mystery matinee"]` lives in
+    `lib/screeningTags.ts`.
 
 13. **Special screenings get a per-session marker.** Added 2026-08-28. Light House runs
     **Parent & Baby** screenings (Wed/Sat mornings — babies welcome, volume down, lights up).
@@ -341,8 +358,9 @@ is gitignored runtime cache/staging.
     round-trip (same as decision #11's labels, but this one *is* in `showtimes.json`).
     `lib/screeningTags.ts` `displayScreeningTags` is the gate on what actually shows: the
     special-audience / curated-event strands — `Parent and Baby`, `Relaxed`/`Autism Friendly`
-    (→ one `relaxed`), `Cinema Book Club`, `Silver Screen`. Format notes (`Subtitled` / `Dubbed`
-    / `Open Captioned` / `35mm`) are captured but deliberately not surfaced — widening is a
+    (→ one `relaxed`), `Cinema Book Club`, `Silver Screen`, `Mystery Matinee` (the last attached
+    render-time by `ScreeningBrowser`, not scraped — see decision #12). Caption/language notes (`Subtitled` /
+    `Dubbed` / `Open Captioned`) are captured but deliberately not surfaced — widening is a
     one-line edit to the `KNOWN` map (each entry also carries a `title` + `description`, cleaned
     up from Light House's `data-tooltip` text, shown as a `title=` hover tooltip — on the whole
     pill / plan-row button, and on the sticker itself). Rendered by `components/ScreeningTags.tsx`: a **bare `☻`
@@ -358,8 +376,9 @@ is gitignored runtime cache/staging.
     `classic!` label). The `kiki's delivery service → classic!` `film-labels.json` entry was
     removed since P&B outranks it.
     `scripts/fetch-batch.ts` prints a "Special screenings" section so a new/unexpected
-    descriptor surfaces in the weekly review. **IFI is not wired up** — no `screeningTags` on IFI
-    screenings at all. Its "Archive at Lunchtime" strand isn't tagged per-session (only a
+    descriptor surfaces in the weekly review. **IFI is only wired up for per-session formats**
+    (decision #15 — `svg[data-icon]` on each booking link); its special-audience strands still
+    aren't tagged. The "Archive at Lunchtime" strand isn't tagged per-session (only a
     ubiquitous `wheelchair` icon); the sole signal is the `filmPageUrl` slug
     `ifi.ie/films/archive-at-lunchtime-*`, which would need slug-based derivation in the IFI
     adapter — deliberately not done. The current `data/showtimes.json` was hand-patched for the
@@ -367,6 +386,30 @@ is gitignored runtime cache/staging.
     Mrs. Doubtfire / Cinema Book Club 2026-08-31 18:30); future weeks come from the scraper.
     Light House's full `em.additional` vocabulary seen so far: `Subtitled`, `Dubbed`,
     `Open Captioned`, `Parent and Baby`, `Cinema Book Club`, `Silver Screen`, `35mm`.
+
+15. **Film formats — 35mm / 70mm / IMAX.** Added 2026-08-29. A sibling concept to the
+    special-screening markers (#13), sharing the same `Screening.screeningTags` carrier but with
+    its own module (`lib/formats.ts`) and components (`components/FilmFormats.tsx`). Sources:
+    Light House already emits `35mm` in `em.additional`; the IFI adapter now reads
+    `svg[data-icon]` on each `a.screening-card__screening` (`70mm` → format; `open-captioned`
+    carried for parity but unsurfaced; `wheelchair`/`runtime` ignored) via the `ICON_TAGS` map.
+    IMAX has no source — neither cinema is an IMAX venue — but the mapping (with aliases
+    `imax 70mm` / `15/70` / `1570`) is in place. `displayFilmFormats` mirrors
+    `displayScreeningTags`. Render: `<FilmFormatTag>` — a solid `--color-fg` box holding the
+    label on the `FilmCard` meta line (after duration, before Letterboxd); all formats share a
+    width, `height = width / ratio`, and `ratio` descends 35mm (1.5) → 70mm (1.2) → IMAX
+    (0.95) so a bigger format is a taller box ("bigger format = taller", user's framing — not
+    literal projection ratios). `<FilmFormatMarks>` — a bare ratio-shaped rectangle after the
+    time on a pill / `DayPlan` row, the format analogue of the `☻` mark. `filmFormatsTooltip`
+    is merged into the pill / plan-row `title` next to `screeningTagsTooltip`. Decorative → never
+    accent (#7), not a count (#8). All three formats count toward the **Highlights** toggle
+    (`preferred` memo in `ScreeningBrowser`). Formats are a *tag*, not a marquee sticker, so the
+    "one sticker max" rule is unaffected — a 70mm Parent & Baby screening shows both. The card
+    tag is styled as a single frame of film strip — a `--color-bg` radial-gradient tiled down
+    each edge (`Perforations` in `FilmFormats.tsx`) so the sprocket holes fill the box height
+    whatever the ratio. First real data landed 2026-08-29: "The Odyssey" plays 35mm at Light
+    House and 70mm at IFI in the same week, so its card shows both boxes and each pill carries
+    its own mark.
 
 14. **Settings panel — persisted viewing preferences (localStorage).** Added 2026-08-29. The
     app's **only** persisted state and its first `localStorage` / `useEffect` /
@@ -428,8 +471,12 @@ is gitignored runtime cache/staging.
   against scraper parsing and combo logic, run via `npx vitest run`.
 - Duplicate-session pills aren't visually distinguished (#6 above).
 - IFI special screenings (Parent & Baby, relaxed, captioned) aren't tagged — only Light House is
-  wired up (#13). No automatic check for a new/unhandled `em.additional` value beyond the
-  `fetch:batch` report.
+  wired up (#13). IFI *formats* are read from `svg[data-icon]` (#15), but only `70mm` /
+  `open-captioned` are mapped; a new `data-icon` value is silently dropped (surfaces in the
+  `fetch:batch` report only if it maps to something). No automatic check for a new/unhandled
+  `em.additional` value beyond that report.
+- No IMAX data source — the format is mapped (#15) but neither cinema is an IMAX venue, so the
+  IMAX box has never actually rendered against real data.
 - No alerting if a cinema's HTML structure changes — scrapers degrade to cached data via
   try/catch, but nothing flags a *silent* long-term failure.
 - Nothing enforces the Thursday cadence — if the weekly `fetch:batch`/`fetch:confirm` run is
@@ -437,6 +484,10 @@ is gitignored runtime cache/staging.
 - IFI titles often scrape in ALL CAPS while Light House's don't — `fetch:batch`'s report flags
   these as `[CASING DIFFERS]` so a `data/title-overrides.json` correction can be added, but
   nothing catches a *new* casing mismatch automatically.
+- `letterboxd-overrides.json` keys are `"exact title|year"` — if a cinema quietly changes a
+  title's punctuation/accents (IFI relabelled "De Gaulle … Resistance" → "…Résistance"
+  2026-08-29) the old key stops matching and the film silently drops to NOT FOUND until a new
+  key is added. Sanity-check the report's NOT FOUND list against what *used* to resolve.
 
 ## Running it
 
@@ -451,7 +502,9 @@ is gitignored runtime cache/staging.
 
 Committed:
 - `showtimes.json` — the published week the app actually reads. Only file that gets pushed.
-  A screening may carry `screeningTags: string[]` (raw per-session descriptors, decision #13).
+  A screening may carry `screeningTags: string[]` (raw per-session descriptors — special
+  screenings from Light House per decision #13, plus film-format tokens like `35mm` / `70mm`
+  from both cinemas per decision #15).
 - `title-overrides.json` — `{ stripPrefixes: string[], stripAnnotations: string[] (regex sources),
   corrections: Record<string,string> }`.
 - `letterboxd-overrides.json` — `Record<"title|year", string | null>`, checked before auto-resolve.
