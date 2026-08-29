@@ -20,6 +20,11 @@ interface Props {
   showCinema: boolean;
   daySpecified: boolean;
   label?: string;
+  // One `{ label, url }` per cinema this film plays at — fixed to the film's full set of
+  // screenings (respecting only the persisted preferences), NOT the Day/Cinema/Time filter bar,
+  // so a film at both cinemas keeps both links even while browsing one. The session pills below
+  // still follow the filter bar. Falls back to deriving from the visible screenings.
+  cinemaLinks?: { label: string; url: string }[];
 }
 
 // Age cert styled after the official IFCO classification symbol — a colour-coded circle with a
@@ -49,6 +54,7 @@ export default function FilmCard({
   showCinema,
   daySpecified,
   label,
+  cinemaLinks,
 }: Props) {
   // Day sub-headers are redundant only when a specific Day chip is active — then every visible
   // screening is that day and the chip already says so. With "Any Day" in view, always show them,
@@ -56,18 +62,20 @@ export default function FilmCard({
   const dayGroups = groupScreeningsByDay(group.screenings);
   const showDayHeaders = !daySpecified || dayGroups.length > 1;
 
-  // One film-page link per cinema currently in view (a film at both cinemas gets both), in the
-  // order the cinemas first appear in the screening list.
-  const cinemaPageLinks = Array.from(
-    group.screenings
-      .reduce((acc, s) => {
-        if (s.filmPageUrl && !acc.has(s.cinema)) {
-          acc.set(s.cinema, { label: CINEMA_LABEL[s.cinema] ?? s.cinemaName, url: s.filmPageUrl });
-        }
-        return acc;
-      }, new Map<string, { label: string; url: string }>())
-      .values(),
-  );
+  // Prefer the caller's fixed set (every cinema the film plays at); otherwise derive from the
+  // visible screenings — one link per cinema, in the order they first appear.
+  const cinemaPageLinks =
+    cinemaLinks ??
+    Array.from(
+      group.screenings
+        .reduce((acc, s) => {
+          if (s.filmPageUrl && !acc.has(s.cinema)) {
+            acc.set(s.cinema, { label: CINEMA_LABEL[s.cinema] ?? s.cinemaName, url: s.filmPageUrl });
+          }
+          return acc;
+        }, new Map<string, { label: string; url: string }>())
+        .values(),
+    );
 
   function handleKeyDown(e: React.KeyboardEvent, s: TimedScreening) {
     if (e.key === "Enter" || e.key === " ") {
@@ -164,7 +172,7 @@ export default function FilmCard({
                   href={link.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="border-2 border-border rounded-btn bg-surface text-fg px-3 py-1.5 text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-transform active:translate-x-[2px] active:translate-y-[2px]"
+                  className="border-2 border-dim rounded-btn bg-surface text-dim px-3 py-1.5 text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-transform active:translate-x-[2px] active:translate-y-[2px]"
                 >
                   {link.label} <span aria-hidden="true">↗</span>
                 </a>

@@ -70,8 +70,11 @@ export function formatDayFriendly(dateISO: string): string {
   return new Intl.DateTimeFormat("en-IE", { weekday: "long", timeZone: "UTC" }).format(dt);
 }
 
+// Hand-rolled rather than Intl `month: "short"` — Node's CLDR abbreviates September as "Sept"
+// while browsers still say "Sep", which hydration-mismatches this string on the day picker.
+const MONTHS_SHORT = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
 export function formatDayDate(dateISO: string): string {
-  const [y, m, d] = dateISO.split("-").map(Number);
-  const dt = new Date(Date.UTC(y, m - 1, d));
-  return new Intl.DateTimeFormat("en-IE", { day: "numeric", month: "short", timeZone: "UTC" }).format(dt);
+  const [, m, d] = dateISO.split("-").map(Number);
+  return `${d} ${MONTHS_SHORT[m - 1]}`;
 }

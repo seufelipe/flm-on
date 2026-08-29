@@ -66,12 +66,23 @@ is gitignored runtime cache/staging.
   Time filters as single-select segmented controls (each a nullable value, `null` = "any" —
   an explicit "Any Day"/"Anywhere"/"Any Time" segment rather than an implicit all-deselected
   state) and the day-plan selection state (`selectedKeys: Set<string>` — any number of screenings,
-  not just a pair; see decision #5).
+  not just a pair; see decision #5). Also holds the persisted preferences (decision #14) and
+  applies them as the `preferred` pre-filter ahead of everything else.
+- `components/PreferencesButton.tsx` + `components/SettingsPanel.tsx` + `lib/preferences.ts` +
+  `lib/duration.ts` — the header preferences button and the overlay it opens (modal / bottom
+  sheet), and the persisted state behind it; see decision #14. `PreferencesButton` shares the
+  `lib/preferences.ts` store with `ScreeningBrowser` via `useSyncExternalStore` (no prop drilling).
+- `components/controlSegment.ts` — `SEGMENT_BASE` + `controlSegmentClass(active)`, the
+  accent-fill / hard-press "selected" segment styling shared by the filter-bar `ControlGroup`
+  and the `SettingsPanel` toggles.
 - `components/FilmCard.tsx` — one film's card. Header line 1: title (black) + year inline
   (title-sized but `font-normal`, `text-dim`, no parens), with the cinema film-page links
-  top-right as chips (`your plan`-style: `border-2`/`rounded-btn`, one per cinema currently in
-  view, from `Screening.filmPageUrl` — each cinema's own detail page, `ifi.ie/films/{slug}` /
-  `lighthousecinema.ie/film/{slug}`, kept separate from `bookingUrl`). Line 2: cert, duration,
+  top-right as `text-dim`/`border-dim` chips (`border-2`/`rounded-btn`, from `Screening.filmPageUrl`
+  — each cinema's own detail page, `ifi.ie/films/{slug}` / `lighthousecinema.ie/film/{slug}`,
+  kept separate from `bookingUrl`). The links are the `cinemaLinks` prop — **one per cinema the
+  film plays at across its whole preferred set, fixed regardless of the Day/Cinema/Time filter
+  bar** (a film at both cinemas keeps both links while you browse one); only the session pills
+  follow the filter bar. Line 2: cert, duration,
   Letterboxd link. Screening pills are grouped by day then timeframe; the day sub-header shows
   unless a specific Day chip is active (`daySpecified` — then the chip already says the day).
   A special-screening session shows a bare `☻` mark after the time; a marquee sticker after the
@@ -356,6 +367,60 @@ is gitignored runtime cache/staging.
     Mrs. Doubtfire / Cinema Book Club 2026-08-31 18:30); future weeks come from the scraper.
     Light House's full `em.additional` vocabulary seen so far: `Subtitled`, `Dubbed`,
     `Open Captioned`, `Parent and Baby`, `Cinema Book Club`, `Silver Screen`, `35mm`.
+
+14. **Settings panel — persisted viewing preferences (localStorage).** Added 2026-08-29. The
+    app's **only** persisted state and its first `localStorage` / `useEffect` /
+    `useSyncExternalStore` usage. `lib/preferences.ts`: `Preferences` (`cinemas` /
+    `timeframes` maps + `hideShortFilms` + `kidsOnly`; **`hideShortFilms` defaults on** — the
+    archive-at-lunchtime strands are noise for most visits), `STORAGE_KEY = "flm-on:preferences"`,
+    and `normalize` — a pure deep-merge-onto-`DEFAULT_PREFERENCES` that coerces bad types and
+    drops unknown keys; that function is the forward-compat / migration seam (a breaking change
+    would branch on a stored `version`). Read via `useSyncExternalStore(subscribePreferences,
+    preferencesSnapshot, () => PREFERENCES_SERVER_SNAPSHOT)` so SSR and the first client render
+    agree (both use `DEFAULT_PREFERENCES`) with no hydration warning; a `storage` listener also
+    syncs across tabs. **Model: standing pre-filter** — the `preferred` memo in `ScreeningBrowser` carves the
+    dataset down before anything else derives from it (`cinemasPresent`, `visibleDays`,
+    `usableTimeframes`, `timed`, combos all read `preferred`), so turning a cinema/time off just
+    shrinks a `ControlGroup`'s option list and it collapses on its own. When a preference pins a
+    group to a single value the corresponding filter-bar `ControlGroup` is **not rendered at all**
+    (`cinemaFilterUseful` / `timeFilterUseful` gates) — there's nothing for it to narrow past your
+    own preference. (This is a *controls-only* rule — the film chips still label each pill with
+    its cinema.) No disabled segment
+    (decision #7). New `effectiveCinema` / `effectiveDay` guards generalise the existing
+    `effectiveTimeframe` "revert a now-impossible selection to any". `lib/duration.ts`
+    `isShortFilm` / `SHORT_FILM_MAX_MINS = 40` — **per-screening**, so a film with a mix (e.g.
+    "Horse Plays": four ~32-min programmes + one 65-min double bill) keeps only its long
+    session; unknown runtime is never short. `kidsOnly` (also panel "General", also `preferred`)
+    → `lib/certs.ts` `isKidFriendly` — IFCO `G`/`PG`/`12A` only; `15A`+ and **no listed cert**
+    are excluded (Lighthouse doesn't upper-case its cert string, so normalize in the helper).
+
+    **"Highlights" is a filter-bar toggle, not a saved preference** — a `useState` in
+    `ScreeningBrowser` (ephemeral, resets on reload), a standalone segment after the Cinema
+    control. On → `preferred` keeps only screenings that are a surfaced special screening
+    (`displayScreeningTags(...).length > 0`) **or** whose film carries a `data/film-labels.json`
+    label (so `preferred` also reads the `labels` prop). It's a browsing lens flipped often, so
+    it lives in the always-visible bar; the saved preferences live in a panel behind a header
+    button. The empty-state reset clears both.
+
+    UI: a **header button** (`components/PreferencesButton.tsx`, top-right of the `<h1>`; an
+    inline horizontal-sliders SVG, `PreferenceIcon` — the filters convention, not a gear; a
+    `--color-fg` dot when prefs ≠ default — binary, not a count, decision #8) opens
+    `components/SettingsPanel.tsx` — a CSS-responsive centered modal (`sm:`) / bottom sheet with
+    a gap to the viewport so its shadow shows, scrim + Escape + body-scroll-lock. Each option is
+    a **toggle button in the same accent-fill / hard-press style as the filter-bar segments**
+    (`components/controlSegment.ts` — `SEGMENT_BASE` + `controlSegmentClass`, extracted from
+    `ScreeningBrowser` and shared), grouped inline (`flex flex-wrap`). **Cinemas and Times each
+    require ≥1 on** — the last remaining one locks (`aria-disabled`, `cursor-default`, click is a
+    no-op; still shows the selected accent fill, not a greyed disabled look). Hide-shorts /
+    highlights / an edge case can still empty the view, so a "nothing within your current view"
+    empty state with a one-tap Reset (clears prefs **and** the highlights toggle) stays as a
+    fallback.
+    `prefsLoaded` (rides in the snapshot) holds the film list for the one frame between the
+    server snapshot and the first real read rather than rendering everything and shrinking it.
+
+    Also fixed here (pre-existing, same component): `lib/date.ts` `formatDayDate` was
+    `Intl … month: "short"`, which hydration-mismatched ("1 Sept" server vs "1 Sep" browser —
+    CLDR drift); it's now a hand-rolled `<day> <Mon>`.
 
 ## Known gaps
 

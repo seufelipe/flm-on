@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { daysUntilThursday, upcomingDays, nextBatchLabel } from "@/lib/date";
+import { daysUntilThursday, upcomingDays, nextBatchLabel, formatDayDate } from "@/lib/date";
 
 describe("daysUntilThursday", () => {
   it("returns 0 on Thursday itself", () => {
@@ -42,6 +42,14 @@ describe("upcomingDays", () => {
 
   it("runs up to but excluding this week's Thursday on Monday", () => {
     expect(upcomingDays("2026-08-24")).toEqual(["2026-08-24", "2026-08-25", "2026-08-26"]);
+  });
+});
+
+describe("formatDayDate", () => {
+  it("is a stable '<day> <Mon>' with no ICU month-abbreviation drift", () => {
+    expect(formatDayDate("2026-08-29")).toBe("29 Aug");
+    expect(formatDayDate("2026-09-01")).toBe("1 Sep");
+    expect(formatDayDate("2026-01-05")).toBe("5 Jan");
   });
 });
 

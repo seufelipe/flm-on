@@ -1,12 +1,24 @@
 "use client";
 
-import { useMemo, useState, type ReactNode } from "react";
+import { useMemo, useState, useSyncExternalStore, type ReactNode } from "react";
 import type { CinemaId, Screening } from "@/lib/scrapers/types";
 import { findCombos, withEndTimes, itineraryTransitions, fittingAdditions, type TimedScreening } from "@/lib/clash";
 import { groupByFilm } from "@/lib/groupings";
 import { TIMEFRAMES, formatTimeframeRange, timeframeForTime, type Timeframe } from "@/lib/timeframe";
 import { CINEMA_LABEL, CINEMA_LOCATION, CINEMA_ORDER } from "@/lib/cinemas";
 import { formatDayFriendly, formatDayDate, todayISO, nowTimeISO, nextBatchLabel } from "@/lib/date";
+import { isShortFilm } from "@/lib/duration";
+import { isKidFriendly } from "@/lib/certs";
+import { displayScreeningTags } from "@/lib/screeningTags";
+import {
+  DEFAULT_PREFERENCES,
+  isDefault,
+  preferencesSnapshot,
+  PREFERENCES_SERVER_SNAPSHOT,
+  subscribePreferences,
+  writePreferences,
+} from "@/lib/preferences";
+import { SEGMENT_BASE, controlSegmentClass } from "./controlSegment";
 import FilmCard from "./FilmCard";
 import ComboSuggestions from "./ComboSuggestions";
 import DayPlan from "./DayPlan";
@@ -25,28 +37,16 @@ function keyOf(s: Screening): string {
   return s.bookingUrl;
 }
 
-// Each segment keeps its own border and the two-tone stacked shadow (--shadow-chip, same
-// elevation language as the film chips) but sits flush against its neighbors — a negative margin
-// equal to the border width (2px, `-ml-0.5`) pulls each segment's left border exactly onto the
-// previous one's right border, so they merge into a single shared line instead of doubling up or
-// leaving a gap. Because they're flush, an *inactive* segment's own shadow renders mostly hidden
-// under its right-hand neighbor (only its bottom strip shows, and those strips line up into one
-// continuous stacked-card shadow under the whole row). Hovering an inactive segment gives it the
-// half-press (--shadow-chip-half + 3px translate); the *active* one drops its shadow entirely and
-// translates by the shadow's full 6px reach, so it lands exactly where its shadow edge was and
-// sinks flush against its still-raised neighbors — the same accent fill + press treatment as a
-// selected film chip (FilmCard.tsx), for one consistent "selected" language across the app.
+// controlSegmentClass / SEGMENT_BASE live in components/controlSegment.ts — shared with the
+// settings toggles (SettingsPanel) for one "selected" language. Filter-bar segments additionally
+// sit flush against each other:
 //
-// There's deliberately no "disabled" variant: a segment the user can't act on (a time window
-// that's already passed, a filter with only one possible value) is removed from the row rather
-// than shown greyed-out — see ControlGroup below.
-function controlSegmentClass(active: boolean): string {
-  if (active) {
-    return "border-border bg-accent text-fg translate-x-[6px] translate-y-[6px]";
-  }
-  return "border-border bg-surface text-fg shadow-chip hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-chip-half active:translate-x-[6px] active:translate-y-[6px] active:shadow-none";
-}
-
+// A negative margin equal to the border width (2px, `-ml-0.5`) pulls each segment's left border
+// exactly onto the previous one's right border, so they merge into a single shared line. Because
+// they're flush, an *inactive* segment's own --shadow-chip renders mostly hidden under its
+// right-hand neighbor (only its bottom strip shows, and those strips line up into one continuous
+// stacked-card shadow under the whole row).
+//
 // Only the group's two end segments round outward — everything in between stays square so the
 // row reads as one continuous shape, not a strip of individually rounded chips.
 //
@@ -57,14 +57,15 @@ function controlSegmentClass(active: boolean): string {
 // left neighbor leaves nothing to overlap, but wrong on its right side, where it now bleeds over
 // a later sibling that should be layered on top of it. Giving every segment the same explicit
 // z-index ordering restores "later sibling wins" for all of them, active or not.
+//
+// There's deliberately no "disabled" variant: a segment the user can't act on (a time window
+// that's already passed, a filter with only one possible value) is removed from the row rather
+// than shown greyed-out — see ControlGroup below.
 function controlPositionClass(isFirst: boolean, isLast: boolean): string {
   const radius = isFirst && isLast ? "rounded-[10px]" : isFirst ? "rounded-l-[10px]" : isLast ? "rounded-r-[10px]" : "";
   const overlap = isFirst ? "" : "-ml-0.5";
   return `${radius} ${overlap}`;
 }
-
-const SEGMENT_BASE =
-  "relative shrink-0 border-2 px-3 py-1 flex flex-col items-start gap-0.5 transition-[translate,box-shadow] duration-100";
 
 // One filter control (Day / Time / Place). The point of this component is what it does when
 // there's nothing to choose:
@@ -165,6 +166,21 @@ export default function ScreeningBrowser({ screenings, days, labels }: Props) {
   });
   const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set());
 
+  // Persisted viewing preferences (localStorage) — the app's only stored state, via
+  // useSyncExternalStore so SSR and the first client render agree (both "show everything") with
+  // no hydration warning. `prefsLoaded` is false for exactly the frame between the server
+  // snapshot and the first real read, and the film list holds until it's true rather than
+  // rendering everything and visibly shrinking. See CLAUDE.md decision #14.
+  const { prefs, loaded: prefsLoaded } = useSyncExternalStore(
+    subscribePreferences,
+    preferencesSnapshot,
+    () => PREFERENCES_SERVER_SNAPSHOT,
+  );
+
+  // A browsing lens, not a saved preference — show only special screenings and labelled films.
+  // Ephemeral (resets on reload), lives in the filter bar next to Day/Cinema/Time. See #14.
+  const [highlightsOnly, setHighlightsOnly] = useState(false);
+
   // Whole days before today are dropped (the committed showtimes.json can still list them if
   // it's being viewed a day or more after its weekly batch was fetched), and today's sessions
   // that have already started are dropped too — if it's evening, this morning's screenings for
@@ -180,36 +196,76 @@ export default function ScreeningBrowser({ screenings, days, labels }: Props) {
     [screenings, now],
   );
 
-  const cinemasPresent = useMemo(
-    () => CINEMA_ORDER.filter((id) => upcomingScreenings.some((s) => s.cinema === id)),
-    [upcomingScreenings],
+  // Standing pre-filter: the persisted preferences carve down the whole dataset here, before the
+  // Day/Cinema/Time filter bar (and everything else) derives from it. Turning a cinema or time
+  // window off doesn't grey a filter segment out — the option list feeding that ControlGroup
+  // just shrinks, and it collapses / disappears on its own (CLAUDE.md decisions #7, #14).
+  const preferred = useMemo(
+    () =>
+      upcomingScreenings.filter(
+        (s) =>
+          prefs.cinemas[s.cinema] &&
+          prefs.timeframes[timeframeForTime(s.time)] &&
+          !(prefs.hideShortFilms && isShortFilm(s.durationMins)) &&
+          !(prefs.kidsOnly && !isKidFriendly(s.cert)) &&
+          (!highlightsOnly ||
+            displayScreeningTags(s.screeningTags).length > 0 ||
+            labels?.[s.filmTitle.trim().toLowerCase()] !== undefined),
+      ),
+    [upcomingScreenings, prefs, labels, highlightsOnly],
   );
+
+  const cinemasPresent = useMemo(
+    () => CINEMA_ORDER.filter((id) => preferred.some((s) => s.cinema === id)),
+    [preferred],
+  );
+
+  // When the preferences pin a group to a single value there's nothing left for that filter to
+  // do (it can't broaden past your own preference), so it drops out of the filter bar entirely
+  // rather than showing as a lone non-interactive segment.
+  const cinemaFilterUseful = CINEMA_ORDER.filter((id) => prefs.cinemas[id]).length > 1;
+  const timeFilterUseful = TIMEFRAMES.filter((tf) => prefs.timeframes[tf.id]).length > 1;
 
   // `days` comes from the committed showtimes.json, which can still list days before today if
   // it's being viewed after its batch was fetched (e.g. fetched Thursday, viewed the following
-  // Monday) — a day chip for a date that's already passed isn't a day you can still plan.
-  const visibleDays = useMemo(() => days.filter((d) => d >= now.date), [days, now]);
+  // Monday) — a day chip for a date that's already passed isn't a day you can still plan. Also
+  // drop days the preferences have emptied out entirely.
+  const visibleDays = useMemo(
+    () => days.filter((d) => d >= now.date && preferred.some((s) => s.date === d)),
+    [days, now, preferred],
+  );
   // The "Come back tomorrow" note only appears the day before the next weekly batch; when it's
   // hidden the last day button becomes the group's right end and takes the rounded corner.
   const showBatchNote = nextBatchLabel(now.date) === "Tomorrow";
 
+  // Mirror of effectiveTimeframe (below): an activeCinema/activeDay that the preferences (or the
+  // day rolling past) have removed from its option list is treated as "any" so a now-impossible
+  // filter value doesn't keep silently narrowing the view.
+  const effectiveCinema =
+    activeCinema !== null && cinemasPresent.includes(activeCinema) ? activeCinema : null;
+  const effectiveDay = activeDay !== null && visibleDays.includes(activeDay) ? activeDay : null;
+
   // A time window is only offered while it's still ahead of us — and only *dropped* for being
-  // past when today is the pinned day (a future day's "Early" hasn't happened yet). If that
-  // leaves a single window, ControlGroup shows it as a plain selected segment.
+  // past when today is the pinned day (a future day's "Early" hasn't happened yet) — plus
+  // whatever the preferences allow. If that leaves a single window, ControlGroup shows it as a
+  // plain selected segment.
   const usableTimeframes = useMemo(
-    () => TIMEFRAMES.filter((tf) => !(activeDay === now.date && nowMins >= tf.endMins)),
-    [activeDay, now.date, nowMins],
+    () =>
+      TIMEFRAMES.filter(
+        (tf) => prefs.timeframes[tf.id] && !(effectiveDay === now.date && nowMins >= tf.endMins),
+      ),
+    [prefs, effectiveDay, now.date, nowMins],
   );
   // Mirror of effectiveSelectedKeys: an activeTimeframe that's no longer in usableTimeframes
-  // (the day rolled past it) is treated as "Any Time" so it doesn't keep silently filtering.
+  // (the day rolled past it, or a preference turned it off) is treated as "Any Time".
   const effectiveTimeframe =
     activeTimeframe !== null && usableTimeframes.some((tf) => tf.id === activeTimeframe) ? activeTimeframe : null;
 
-  const timed = useMemo(() => withEndTimes(upcomingScreenings), [upcomingScreenings]);
+  const timed = useMemo(() => withEndTimes(preferred), [preferred]);
 
   // Day-plan building only makes sense pinned to one specific day — otherwise "pairs well" would
   // be comparing showtimes across different dates, which isn't a realistic plan.
-  const comboScopeDay = activeDay;
+  const comboScopeDay = effectiveDay;
 
   // Combos across the whole day (ignoring the cinema filter) drive the "pairs well" pill hints,
   // so building a plan across both cinemas still gets correct hints even while the browsing view
@@ -217,16 +273,16 @@ export default function ScreeningBrowser({ screenings, days, labels }: Props) {
   // screens), not only cross-cinema ones.
   const allDayCombos = useMemo(() => {
     if (!comboScopeDay) return [];
-    return findCombos(upcomingScreenings.filter((s) => s.date === comboScopeDay));
-  }, [upcomingScreenings, comboScopeDay]);
+    return findCombos(preferred.filter((s) => s.date === comboScopeDay));
+  }, [preferred, comboScopeDay]);
 
   // The initial "Suggested double bills" browsing list (shown before anything is picked) is
   // further narrowed to the active cinema filter — otherwise it'd suggest a pair referencing a
   // cinema the user has filtered out of view.
   const visibleCombos = useMemo(() => {
-    if (activeCinema === null) return allDayCombos;
-    return allDayCombos.filter((c) => c.a.cinema === activeCinema && c.b.cinema === activeCinema);
-  }, [allDayCombos, activeCinema]);
+    if (effectiveCinema === null) return allDayCombos;
+    return allDayCombos.filter((c) => c.a.cinema === effectiveCinema && c.b.cinema === effectiveCinema);
+  }, [allDayCombos, effectiveCinema]);
 
   // Selections only count if they still belong to the day currently in scope — otherwise
   // switching days (e.g. picking a different day chip while a screening from the old day is
@@ -263,11 +319,31 @@ export default function ScreeningBrowser({ screenings, days, labels }: Props) {
   const visible = timed.filter(
     (s) =>
       (effectiveTimeframe === null || timeframeForTime(s.time) === effectiveTimeframe) &&
-      (activeCinema === null || s.cinema === activeCinema) &&
-      (activeDay === null || s.date === activeDay),
+      (effectiveCinema === null || s.cinema === effectiveCinema) &&
+      (effectiveDay === null || s.date === effectiveDay),
   );
 
   const filmGroups = useMemo(() => groupByFilm(visible), [visible]);
+
+  // Cinema film-page links for each card — one per cinema the film plays at across its *whole*
+  // set of preferred screenings, not just what the Day/Cinema/Time filter bar currently shows.
+  // Keyed like FilmGroup.key; order = first appearance (preferred is date/time sorted).
+  const filmCinemaLinks = useMemo(() => {
+    const byFilm = new Map<string, Map<CinemaId, { label: string; url: string }>>();
+    for (const s of preferred) {
+      if (!s.filmPageUrl) continue;
+      const key = s.filmTitle.trim().toLowerCase();
+      let cinemas = byFilm.get(key);
+      if (!cinemas) {
+        cinemas = new Map();
+        byFilm.set(key, cinemas);
+      }
+      if (!cinemas.has(s.cinema)) {
+        cinemas.set(s.cinema, { label: CINEMA_LABEL[s.cinema] ?? s.cinemaName, url: s.filmPageUrl });
+      }
+    }
+    return new Map(Array.from(byFilm, ([key, cinemas]) => [key, Array.from(cinemas.values())]));
+  }, [preferred]);
 
   const dayPlanTransitions = useMemo(() => itineraryTransitions(dayPlanItems), [dayPlanItems]);
 
@@ -293,32 +369,56 @@ export default function ScreeningBrowser({ screenings, days, labels }: Props) {
 
   return (
     <div>
-      <div className="pb-40">
-        <div className="flex flex-col gap-8">
-          {filmGroups.length === 0 && (
-            <p className="bg-surface border-4 border-border rounded-card shadow-card p-8 font-bold">
-              No screenings match this filter.
-            </p>
-          )}
-          {filmGroups.map((group) => (
-            <FilmCard
-              key={group.key}
-              group={group}
-              selectedKeys={effectiveSelectedKeys}
-              partnersOf={partnersOf}
-              keyOf={keyOf}
-              onSelect={toggleSelected}
-              showCinema={activeCinema === null}
-              daySpecified={activeDay !== null}
-              label={labels?.[group.key]}
-            />
-          ))}
-        </div>
+      {/* Held until preferences load (one frame) so the list doesn't render everything and then
+          visibly shrink to a restricted view — see CLAUDE.md decision #14. min-height keeps the
+          footer from jumping during that frame. */}
+      <div className="pb-40 min-h-[60vh]">
+        {prefsLoaded && (
+          <>
+            <div className="flex flex-col gap-8">
+              {filmGroups.length === 0 && (
+                <p className="bg-surface border-4 border-border rounded-card shadow-card p-8 font-bold">
+                  {preferred.length === 0 && (!isDefault(prefs) || highlightsOnly) ? (
+                    <>
+                      Nothing on this week within your current view.{" "}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          writePreferences(DEFAULT_PREFERENCES);
+                          setHighlightsOnly(false);
+                        }}
+                        className="underline underline-offset-2 cursor-pointer"
+                      >
+                        Reset
+                      </button>
+                    </>
+                  ) : (
+                    "No screenings match this filter."
+                  )}
+                </p>
+              )}
+              {filmGroups.map((group) => (
+                <FilmCard
+                  key={group.key}
+                  group={group}
+                  selectedKeys={effectiveSelectedKeys}
+                  partnersOf={partnersOf}
+                  keyOf={keyOf}
+                  onSelect={toggleSelected}
+                  showCinema={effectiveCinema === null}
+                  daySpecified={effectiveDay !== null}
+                  label={labels?.[group.key]}
+                  cinemaLinks={filmCinemaLinks.get(group.key)}
+                />
+              ))}
+            </div>
 
-        {comboScopeDay && effectiveSelectedKeys.size === 0 && visibleCombos.length > 0 && (
-          <div className="mt-10">
-            <ComboSuggestions combos={visibleCombos} onSelect={toggleSelected} keyOf={keyOf} />
-          </div>
+            {comboScopeDay && effectiveSelectedKeys.size === 0 && visibleCombos.length > 0 && (
+              <div className="mt-10">
+                <ComboSuggestions combos={visibleCombos} onSelect={toggleSelected} keyOf={keyOf} />
+              </div>
+            )}
+          </>
         )}
       </div>
 
@@ -336,10 +436,10 @@ export default function ScreeningBrowser({ screenings, days, labels }: Props) {
           <ControlGroup
             options={visibleDays}
             anyLabel="Any Day"
-            anyActive={activeDay === null}
-            isActive={(day) => activeDay === day}
+            anyActive={effectiveDay === null}
+            isActive={(day) => effectiveDay === day}
             onAny={() => setActiveDay(null)}
-            onToggle={(day) => setActiveDay(activeDay === day ? null : day)}
+            onToggle={(day) => setActiveDay(effectiveDay === day ? null : day)}
             keyFor={(day) => day}
             renderLabel={(day) => (
               <>
@@ -364,37 +464,53 @@ export default function ScreeningBrowser({ screenings, days, labels }: Props) {
             }
           />
 
-          <ControlGroup
-            options={usableTimeframes}
-            anyLabel="Any Time"
-            anyActive={effectiveTimeframe === null}
-            isActive={(tf) => effectiveTimeframe === tf.id}
-            onAny={() => setActiveTimeframe(null)}
-            onToggle={(tf) => setActiveTimeframe(effectiveTimeframe === tf.id ? null : tf.id)}
-            keyFor={(tf) => tf.id}
-            renderLabel={(tf) => (
-              <>
-                <span className="font-bold uppercase text-sm tracking-wide">{tf.label}</span>
-                <span className="text-xs text-dim uppercase tracking-widest">{formatTimeframeRange(tf)}</span>
-              </>
-            )}
-          />
+          {timeFilterUseful && (
+            <ControlGroup
+              options={usableTimeframes}
+              anyLabel="Any Time"
+              anyActive={effectiveTimeframe === null}
+              isActive={(tf) => effectiveTimeframe === tf.id}
+              onAny={() => setActiveTimeframe(null)}
+              onToggle={(tf) => setActiveTimeframe(effectiveTimeframe === tf.id ? null : tf.id)}
+              keyFor={(tf) => tf.id}
+              renderLabel={(tf) => (
+                <>
+                  <span className="font-bold uppercase text-sm tracking-wide">{tf.label}</span>
+                  <span className="text-xs text-dim uppercase tracking-widest">{formatTimeframeRange(tf)}</span>
+                </>
+              )}
+            />
+          )}
 
-          <ControlGroup
-            options={cinemasPresent}
-            anyLabel="Anywhere"
-            anyActive={activeCinema === null}
-            isActive={(id) => activeCinema === id}
-            onAny={() => setActiveCinema(null)}
-            onToggle={(id) => setActiveCinema(activeCinema === id ? null : id)}
-            keyFor={(id) => id}
-            renderLabel={(id) => (
-              <>
-                <span className="font-bold uppercase text-sm tracking-wide">{CINEMA_LABEL[id]}</span>
-                <span className="text-xs text-dim uppercase tracking-widest">{CINEMA_LOCATION[id]}</span>
-              </>
-            )}
-          />
+          {cinemaFilterUseful && (
+            <ControlGroup
+              options={cinemasPresent}
+              anyLabel="Anywhere"
+              anyActive={effectiveCinema === null}
+              isActive={(id) => effectiveCinema === id}
+              onAny={() => setActiveCinema(null)}
+              onToggle={(id) => setActiveCinema(effectiveCinema === id ? null : id)}
+              keyFor={(id) => id}
+              renderLabel={(id) => (
+                <>
+                  <span className="font-bold uppercase text-sm tracking-wide">{CINEMA_LABEL[id]}</span>
+                  <span className="text-xs text-dim uppercase tracking-widest">{CINEMA_LOCATION[id]}</span>
+                </>
+              )}
+            />
+          )}
+
+          {/* A binary browsing lens — not the "Any X + options" shape, so a standalone toggle
+              segment rather than a ControlGroup. Same accent-fill press language as the rest. */}
+          <button
+            type="button"
+            aria-pressed={highlightsOnly}
+            onClick={() => setHighlightsOnly((v) => !v)}
+            className={`${SEGMENT_BASE} rounded-[10px] cursor-pointer ${controlSegmentClass(highlightsOnly)}`}
+          >
+            <span className="font-bold uppercase text-sm tracking-wide">Highlights</span>
+            <span className="text-xs text-dim uppercase tracking-widest">special, etc</span>
+          </button>
         </div>
       </div>
     </div>

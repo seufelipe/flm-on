@@ -77,7 +77,7 @@
   /* `middle` sits ~3px low against the all-caps title (x-height vs cap-height); nudge up.
      Slight tilt so it reads as a sticker slapped on the card. */
   vertical-align: middle;
-  transform: translateY(-3px) rotate(-3deg);
+  transform: translateY(-3px) rotate(3deg);
 }
 
 .flm-marquee-track {
@@ -94,10 +94,10 @@
 
 @keyframes flm-marquee {
   from {
-    transform: translateX(-50%);
+    transform: translateX(0);
   }
   to {
-    transform: translateX(0);
+    transform: translateX(-50%);
   }
 }
 

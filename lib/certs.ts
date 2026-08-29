@@ -20,3 +20,13 @@ export const CERT_COLORS: Record<string, string> = {
 export function certColor(cert: string): string | undefined {
   return CERT_COLORS[cert.toUpperCase()];
 }
+
+// The IFCO tiers a parent would take young kids to, for the settings-panel "Kid-friendly"
+// toggle. 15A ("under 15 admitted with an adult") is deliberately excluded. A film with no
+// listed cert counts as not kid-friendly — can't confirm it's safe. Lighthouse doesn't
+// upper-case its scraped cert string, so normalize here.
+const KID_FRIENDLY_CERTS = new Set(["G", "PG", "12A", "12"]);
+
+export function isKidFriendly(cert: string | undefined): boolean {
+  return cert !== undefined && KID_FRIENDLY_CERTS.has(cert.toUpperCase());
+}

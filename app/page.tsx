@@ -2,6 +2,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import type { Screening } from "@/lib/scrapers/types";
 import ScreeningBrowser from "@/components/ScreeningBrowser";
+import PreferencesButton from "@/components/PreferencesButton";
 
 const DATA_FILE = path.join(process.cwd(), "data", "showtimes.json");
 const LABELS_FILE = path.join(process.cwd(), "data", "film-labels.json");
@@ -38,11 +39,14 @@ export default async function Home() {
 
   return (
     <main className="max-w-4xl mx-auto w-full px-4 py-8 flex-1">
-      <header className="mb-8 border-b-4 border-border pb-4">
-        <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter">FLM ON</h1>
-        <p className="font-bold text-dim uppercase text-sm tracking-widest">
-          See what&rsquo;s on, make a plan. Updated every Thursday morning
-        </p>
+      <header className="mb-8 border-b-4 border-border pb-4 flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter">FLM ON</h1>
+          <p className="font-bold text-dim uppercase text-sm tracking-widest">
+            See what&rsquo;s on, make a plan. Updated every Thursday morning
+          </p>
+        </div>
+        <PreferencesButton />
       </header>
 
       <ScreeningBrowser screenings={screenings} days={days} labels={labels} />
