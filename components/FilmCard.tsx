@@ -105,7 +105,7 @@ export default function FilmCard({
         }
         onClick={() => onSelect(s)}
         onKeyDown={(e) => handleKeyDown(e, s)}
-        className={`border-2 border-border rounded-btn px-3 py-2 flex items-center gap-2 font-bold transition-[translate,box-shadow] duration-100 ${
+        className={`shrink-0 border-2 border-border rounded-btn px-3 py-2 flex items-center gap-2 font-bold transition-[translate,box-shadow] duration-100 ${
           isSelected
             ? "cursor-pointer bg-accent text-fg translate-x-[6px] translate-y-[6px]"
             : dimPill
@@ -125,11 +125,21 @@ export default function FilmCard({
 
   function renderScreeningsRow(screenings: TimedScreening[]) {
     const timeframeGroups = groupScreeningsByTimeframe(screenings);
+    // One non-wrapping row that scrolls sideways on overflow rather than stacking the pills onto
+    // several lines (keeps each film card short on mobile). `-mx-8 px-8` cancels the card's `p-8`
+    // so the strip is full-bleed — pills sit flush with the rest of the content at rest but scroll
+    // right up to the card's inner edge, instead of stopping short inside a band of padding. The
+    // vertical `pb-2.5 -mb-2.5` (added by `overflow-x-auto` also clipping the y-axis) keeps the
+    // pills' chunky down-right shadow inside the scroll box without adding visual gap. `relative`
+    // is load-bearing: the pills' `.sr-only` spans are `position:absolute`, so without a
+    // positioned ancestor here their containing block would be the viewport and they'd escape
+    // this row's clip — sitting out at their un-scrolled x-offset and giving the whole page a
+    // phantom horizontal scroll.
     return (
-      <div className="flex flex-wrap items-center gap-4">
+      <div className="relative flex flex-nowrap items-center gap-4 overflow-x-auto scrollbar-none -mx-8 px-8 pb-2.5 -mb-2.5">
         {timeframeGroups.map((tg) => (
           <Fragment key={tg.timeframe.id}>
-            <span className="text-xs font-bold uppercase text-dim tracking-widest">{tg.timeframe.label}</span>
+            <span className="shrink-0 text-xs font-bold uppercase text-dim tracking-widest">{tg.timeframe.label}</span>
             {tg.screenings.map(renderPill)}
           </Fragment>
         ))}

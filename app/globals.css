@@ -29,6 +29,16 @@
   --shadow-chip-half: 2px 2px 0 0 var(--color-shadow), 2px 2px 0 1px var(--color-border);
 }
 
+/* Horizontal-scroll rows (the screening pills in components/FilmCard.tsx) — the pills clipped
+   at the container edge are affordance enough; a native scrollbar under every card fights the
+   chunky look. Touch/trackpad/shift-wheel scrolling still work. */
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @layer base {
   body {
     background: var(--color-bg);

@@ -85,6 +85,15 @@ is gitignored runtime cache/staging.
   follow the filter bar. Line 2: cert, duration,
   Letterboxd link. Screening pills are grouped by day then timeframe; the day sub-header shows
   unless a specific Day chip is active (`daySpecified` — then the chip already says the day).
+  Each day's pill row is a single non-wrapping `overflow-x-auto` strip (`scrollbar-none`, a
+  `@utility` in `globals.css`) — pills scroll sideways rather than stacking, so a card stays
+  short on mobile. `-mx-8 px-8` cancels the card's `p-8` so the strip is full-bleed: pills line
+  up with the rest of the content at rest but scroll right up to the card's inner border edge
+  instead of stopping short inside a band of padding. The row is `relative` on purpose: the
+  pills' `.sr-only` spans are `position:absolute` and would otherwise resolve their containing
+  block to the viewport, escape the row's clip, and give the whole page a phantom horizontal
+  scrollbar. `pb-2.5 -mb-2.5` keeps the chunky pill shadow inside the scroll box without adding
+  visual gap.
   A special-screening session shows a bare `☻` mark after the time; a marquee sticker after the
   title names it once ("☻ parent & baby") — see decision #13.
 - `components/MarqueeSticker.tsx` — the small fixed-width dark sticker whose text scrolls on a

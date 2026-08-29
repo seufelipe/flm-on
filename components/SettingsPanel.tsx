@@ -72,7 +72,7 @@ export default function SettingsPanel({ prefs, onChange, onClose }: Props) {
   const timeframesOn = TIMEFRAMES.filter((tf) => prefs.timeframes[tf.id]).length;
 
   return (
-    <div className="no-print fixed inset-0 z-50 flex items-end justify-center p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] sm:items-center sm:p-4">
+    <div className="no-print fixed inset-0 z-50 flex items-end justify-center p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] sm:items-center sm:p-4 sm:pb-4">
       <button
         type="button"
         aria-label="Close preferences"
