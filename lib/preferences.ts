@@ -19,7 +19,9 @@ export interface Preferences {
 }
 
 export const DEFAULT_PREFERENCES: Preferences = {
-  cinemas: { lighthouse: true, ifi: true, cineworld: true },
+  // Cineworld is off by default — Light House + IFI are the everyday view; Cineworld's
+  // non-standard programming (classics, IMAX, foreign-language) is opt-in.
+  cinemas: { lighthouse: true, ifi: true, cineworld: false },
   timeframes: { early: true, mid: true, late: true },
   hideShortFilms: true,
   kidsOnly: false,

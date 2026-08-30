@@ -18,16 +18,16 @@ describe("normalize", () => {
 
   it("merges a partial blob onto the defaults", () => {
     const out = normalize({ cinemas: { ifi: false } });
-    expect(out.cinemas).toEqual({ lighthouse: true, ifi: false, cineworld: true });
+    expect(out.cinemas).toEqual({ lighthouse: true, ifi: false, cineworld: false });
     expect(out.timeframes).toEqual(DEFAULT_PREFERENCES.timeframes);
     expect(out.hideShortFilms).toBe(DEFAULT_PREFERENCES.hideShortFilms);
     expect(out.kidsOnly).toBe(false);
     expect(out.language).toBe("any");
   });
 
-  it("defaults a newly-added cinema on for a blob saved before it existed", () => {
+  it("takes a cinema's default (Cineworld off) for a blob saved before it existed", () => {
     const out = normalize({ cinemas: { lighthouse: true, ifi: false } });
-    expect(out.cinemas.cineworld).toBe(true);
+    expect(out.cinemas.cineworld).toBe(false);
   });
 
   it("coerces non-boolean values to their default", () => {

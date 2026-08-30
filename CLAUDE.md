@@ -520,7 +520,9 @@ is gitignored runtime cache/staging.
     deep-merge-onto-`DEFAULT_PREFERENCES` that coerces bad types and drops unknown keys; that
     function is the forward-compat / migration seam (a breaking change would branch on a stored
     `version`). Adding the `cineworld` cinema (decision #16) needed no migration — `normalize`
-    maps over `CINEMA_ORDER`, so a blob saved before it existed picks the new key up defaulted-on. Read via `useSyncExternalStore(subscribePreferences,
+    maps over `CINEMA_ORDER`, so a blob saved before it existed picks the new key up at its
+    default. **Cineworld defaults *off*** — Light House + IFI are the everyday view; Cineworld
+    is opt-in. Read via `useSyncExternalStore(subscribePreferences,
     preferencesSnapshot, () => PREFERENCES_SERVER_SNAPSHOT)` so SSR and the first client render
     agree (both use `DEFAULT_PREFERENCES`) with no hydration warning; a `storage` listener also
     syncs across tabs. **Model: standing pre-filter** — the `preferred` memo in `ScreeningBrowser` carves the
@@ -588,6 +590,8 @@ is gitignored runtime cache/staging.
       … }]`. `filmPageUrl` = `https://www.cineworld.ie/movies/{id}-{slug}/`.
     - `scheduledMovies` exists but is unused — the schedule call already returns only movies that
       play in the window.
+
+    Cineworld is also **off by default** in the preferences (decision #14) — opt-in.
 
     **Non-standard filter (`isNotableTagSet` / `normaliseTags`)**: a multiplex would bury the two
     arthouse cinemas (~257 showtimes in a 3-week sample), so the adapter keeps a screening only
