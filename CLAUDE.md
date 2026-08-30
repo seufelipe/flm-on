@@ -113,10 +113,15 @@ is gitignored runtime cache/staging.
   A special-screening session shows a bare `☻` mark after the time; a marquee sticker after the
   title names it once ("☻ parent & baby") — see decision #13.
 - `components/MarqueeSticker.tsx` — the small fixed-width dark sticker whose text scrolls on a
-  seamless loop (two copies + a `translateX(-50%)` loop via the `flm-marquee` keyframe in
-  `app/globals.css`; reduced-motion → static full-width). `--color-fg` sticker, `--color-bg`
-  text, never accent. Used by `FilmNotes`. (The film-format tag uses the same two-copy-loop
-  trick vertically — `flm-filmstrip` — see `components/FilmFormats.tsx`.)
+  seamless loop (two identical copies; the `flm-marquee` keyframe in `app/globals.css` translates
+  the track by exactly one copy's width). `"use client"`: it measures the copy width in a layout
+  effect (re-measuring on `ariaLabel` / web-font load) and sets `--flm-marquee-shift` (exact px —
+  a `translateX(-50%)` of a `max-content` flex track rounds a fraction of a pixel off, a visible
+  stutter at speed) and `--flm-marquee-duration` (~40px/s, 4s floor — a fixed duration whips a
+  long note by). Always scrolls, even a short note. SSR falls back to the old `-50%`/`4.5s` via
+  CSS-var defaults. `--color-fg` sticker, `--color-bg` text, never accent. Reduced-motion →
+  static full-width. Used by `FilmNotes`. (The film-format tag uses the same two-copy-loop trick
+  vertically — `flm-filmstrip` — see `components/FilmFormats.tsx`.)
 - `components/FilmNotes.tsx` — the **one** `<MarqueeSticker>` after a film's title + year,
   carrying its special-screening name(s) *and* its curated editorial label
   (`data/film-labels.json`, decision #11) together, joined by ` · ` ("☻ parent & baby ·
