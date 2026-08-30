@@ -17,6 +17,9 @@ const LABELS_FILE = path.join(process.cwd(), "data", "film-labels.json");
 // its films get a curated `classic!` label pre-filled here for the user to review.
 const BIG_SCREEN_CLASSICS_TAG = "big screen classics";
 const CLASSIC_LABEL = "classic!";
+// Which stripped title annotations are worth pre-filling as a label — a re-release / event note,
+// not a recurring-strand month/year marker.
+const LABELWORTHY_ANNOTATION = /\b(?:anniversary|restoration)\b/i;
 
 interface FilmSummary {
   filmTitle: string;
@@ -50,7 +53,7 @@ async function main() {
   const days = upcomingDays();
 
   console.log(`Fetching ${days[0]} .. ${days[days.length - 1]} (${days.length} days)...\n`);
-  const { screenings, errors } = await refreshShowtimesForRange(days);
+  const { screenings, errors, titleAnnotations } = await refreshShowtimesForRange(days);
 
   const hidden = await loadHiddenFilms();
   if (hidden.titleSubstrings.length > 0) {
@@ -86,20 +89,29 @@ async function main() {
     labels = {};
   }
 
-  // Pre-fill `classic!` for any Big Screen Classics film that doesn't already have a label, then
-  // write data/film-labels.json back (sorted) — the user reviews the diff before committing.
-  const bscKeys = new Set(
-    screenings
-      .filter((s) => (s.screeningTags ?? []).some((t) => t.trim().toLowerCase() === BIG_SCREEN_CLASSICS_TAG))
-      .map((s) => s.filmTitle.trim().toLowerCase()),
-  );
-  const prefilled = [...bscKeys].filter((key) => !(key in labels)).sort();
-  if (prefilled.length > 0) {
-    for (const key of prefilled) labels[key] = CLASSIC_LABEL;
+  // Pre-fill labels for films that don't have one yet, then write data/film-labels.json back
+  // (sorted) — the user reviews the diff before committing. Two sources, most specific first:
+  //   - a stripped trailing annotation ("25th Anniversary", "4K Restoration") → that phrase
+  //   - Big Screen Classics (Cineworld strand) with no annotation → "classic!"
+  const prefill: Record<string, string> = {};
+  for (const [key, annotation] of Object.entries(titleAnnotations)) {
+    if (!(key in labels) && LABELWORTHY_ANNOTATION.test(annotation)) prefill[key] = annotation;
+  }
+  for (const s of screenings) {
+    const key = s.filmTitle.trim().toLowerCase();
+    if (key in labels || key in prefill) continue;
+    if ((s.screeningTags ?? []).some((t) => t.trim().toLowerCase() === BIG_SCREEN_CLASSICS_TAG)) {
+      prefill[key] = CLASSIC_LABEL;
+    }
+  }
+  if (Object.keys(prefill).length > 0) {
+    Object.assign(labels, prefill);
     const sorted = Object.fromEntries(Object.entries(labels).sort(([a], [b]) => a.localeCompare(b)));
     await fs.writeFile(LABELS_FILE, JSON.stringify(sorted, null, 2) + "\n", "utf-8");
-    console.log(`\nPre-filled data/film-labels.json with "${CLASSIC_LABEL}" (review the diff):`);
-    for (const key of prefilled) console.log(`  ${key}`);
+    console.log("\nPre-filled data/film-labels.json (review the diff):");
+    for (const [key, value] of Object.entries(prefill).sort(([a], [b]) => a.localeCompare(b))) {
+      console.log(`  ${key}  →  ${value}`);
+    }
   }
 
   console.log("\nLabels (edit data/film-labels.json — read at build, no re-fetch needed):\n");

@@ -2,7 +2,7 @@ import { adapters } from "./scrapers";
 import type { Screening } from "./scrapers/types";
 import * as cache from "./cache";
 import { resolveLetterboxd, type LetterboxdMatch } from "./letterboxd";
-import { cleanFilmTitle, loadTitleOverrides } from "./titles";
+import { cleanFilmTitle, titleAnnotation, loadTitleOverrides } from "./titles";
 import { loadHiddenFilms, isHiddenFilm } from "./hidden";
 import { loadLanguageOverrides, languageOverrideFor } from "./languageOverrides";
 
@@ -16,6 +16,9 @@ export interface DayResult {
   errors: AdapterError[];
   stale: boolean;
   fetchedAt?: number;
+  // Trailing annotations `cleanFilmTitle` stripped, keyed by the cleaned title lower-cased —
+  // scripts/fetch-batch.ts pre-fills these as editorial labels (decision #11). Not persisted.
+  titleAnnotations: Record<string, string>;
 }
 
 async function getCinemaRange(
@@ -139,6 +142,18 @@ export async function getShowtimesForRange(dates: string[]): Promise<DayResult> 
     .flatMap((r) => r.screenings)
     .map((s) => ({ ...s, filmTitle: cleanFilmTitle(s.filmTitle, titleOverrides) }))
     .filter((s) => !isHiddenFilm(s.filmTitle, hiddenFilms));
+
+  // Trailing annotations (`(4K Restoration)`, `25th Anniversary`) stripped from raw titles,
+  // keyed by the cleaned title — fed to the batch report's label pre-fill.
+  const titleAnnotations: Record<string, string> = {};
+  for (const r of results) {
+    for (const s of r.screenings) {
+      const cleaned = cleanFilmTitle(s.filmTitle, titleOverrides);
+      if (isHiddenFilm(cleaned, hiddenFilms)) continue;
+      const annotation = titleAnnotation(s.filmTitle, titleOverrides);
+      if (annotation) titleAnnotations[cleaned.trim().toLowerCase()] ??= annotation;
+    }
+  }
   const errors: AdapterError[] = results
     .map((r, i) => (r.error ? { cinema: adapters[i].name, message: r.error } : undefined))
     .filter((e): e is AdapterError => Boolean(e));
@@ -155,7 +170,7 @@ export async function getShowtimesForRange(dates: string[]): Promise<DayResult> 
     await cache.persistToFile();
   }
 
-  return { screenings: withLinks, errors, stale, fetchedAt };
+  return { screenings: withLinks, errors, stale, fetchedAt, titleAnnotations };
 }
 
 export async function refreshShowtimesForRange(dates: string[]): Promise<DayResult> {

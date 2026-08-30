@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { cleanFilmTitle, type TitleOverrides } from "@/lib/titles";
+import { cleanFilmTitle, titleAnnotation, type TitleOverrides } from "@/lib/titles";
 
 const overrides: TitleOverrides = {
   stripPrefixes: ["ARCHIVE AT LUNCHTIME:", "CINEMA BOOK CLUB:"],
@@ -59,5 +59,30 @@ describe("cleanFilmTitle", () => {
 
   it("does not touch a title that merely contains a digit", () => {
     expect(cleanFilmTitle("Blade Runner 2049", overrides)).toBe("Blade Runner 2049");
+  });
+});
+
+describe("titleAnnotation", () => {
+  it("reports the stripped trailing annotation, lower-cased", () => {
+    expect(titleAnnotation("The Fast and the Furious: 25th Anniversary", overrides)).toBe(
+      "25th anniversary",
+    );
+    expect(titleAnnotation("Trainspotting (4K Restoration)", overrides)).toBe("4k restoration");
+    expect(titleAnnotation("Amores perros - 4K Restoration", overrides)).toBe("4k restoration");
+  });
+
+  it("reports a combined annotation as one phrase", () => {
+    expect(titleAnnotation("Sunset Boulevard (75th Anniversary 4K Restoration)", overrides)).toBe(
+      "75th anniversary 4k restoration",
+    );
+  });
+
+  it("is undefined when nothing is stripped or a correction handled the title", () => {
+    expect(titleAnnotation("A Normal Film", overrides)).toBeUndefined();
+    expect(titleAnnotation("WEIRD RAW TITLE", overrides)).toBeUndefined();
+  });
+
+  it("also reports a non-labelworthy annotation (fetch-batch filters to anniversary/restoration)", () => {
+    expect(titleAnnotation("Mystery Matinee August 2026", overrides)).toBe("august 2026");
   });
 });

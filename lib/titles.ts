@@ -32,8 +32,19 @@ export async function loadTitleOverrides(): Promise<TitleOverrides> {
   return cached;
 }
 
-function stripTrailingAnnotations(title: string, patterns: string[]): string {
-  if (!patterns.length) return title;
+// Trims surrounding parens / dash / colon / space off a captured annotation match so the bare
+// phrase is left: " (4K Restoration)" → "4K Restoration", ": 25th Anniversary" → "25th Anniversary".
+function bareAnnotation(match: string): string {
+  return match.replace(/^[\s:()–—-]+/, "").replace(/[\s:()–—-]+$/, "").trim();
+}
+
+// Strips the trailing annotation(s) and also reports what was removed (lower-cased, for use as a
+// pre-filled `film-labels.json` label — see scripts/fetch-batch.ts / CLAUDE.md #11).
+function stripTrailingAnnotations(
+  title: string,
+  patterns: string[],
+): { title: string; annotation?: string } {
+  if (!patterns.length) return { title };
   const body = patterns.join("|");
   // A trailing "(…)" whose contents are entirely annotation text (plus connective filler).
   const parenthetical = new RegExp(`\\s*\\((?:${body}|[\\s,&]|and)+\\)\\s*$`, "i");
@@ -42,26 +53,31 @@ function stripTrailingAnnotations(title: string, patterns: string[]): string {
   const tail = new RegExp(`\\s*(?:[-–—:]\\s*)?(?:${body})\\s*$`, "i");
 
   let out = title.trim();
+  const removed: string[] = [];
   let prev: string;
   do {
     prev = out;
-    out = out.replace(parenthetical, "").trim();
-    out = out.replace(tail, "").trim();
+    for (const re of [parenthetical, tail]) {
+      const m = out.match(re);
+      if (m) {
+        removed.unshift(bareAnnotation(m[0]));
+        out = out.replace(re, "").trim();
+      }
+    }
     // A lone trailing separator left behind once the annotation after it is gone
     // ("The Fast and the Furious:" → "The Fast and the Furious").
     out = out.replace(/\s*[-–—:]\s*$/, "").trim();
   } while (out !== prev && out.length > 0);
 
-  return out.length ? out : title.trim();
+  if (!out.length) return { title: title.trim() };
+  const annotation = removed.join(" ").trim().toLowerCase();
+  return { title: out, annotation: annotation || undefined };
 }
 
-// Cinema listings sometimes prefix a title with a programme strand, e.g.
-// "ARCHIVE AT LUNCHTIME: Some Film" — that's not part of the actual film title — or append a
-// re-release annotation like "(4K Restoration)".
-export function cleanFilmTitle(raw: string, overrides: TitleOverrides): string {
+function cleanTitleParts(raw: string, overrides: TitleOverrides): { title: string; annotation?: string } {
   const trimmed = raw.trim();
   if (trimmed in overrides.corrections) {
-    return overrides.corrections[trimmed];
+    return { title: overrides.corrections[trimmed] };
   }
 
   let title = trimmed;
@@ -75,7 +91,19 @@ export function cleanFilmTitle(raw: string, overrides: TitleOverrides): string {
     }
   }
 
-  title = stripTrailingAnnotations(title, overrides.stripAnnotations ?? []);
+  const { title: stripped, annotation } = stripTrailingAnnotations(title, overrides.stripAnnotations ?? []);
+  return { title: stripped || trimmed, annotation };
+}
 
-  return title || trimmed;
+// Cinema listings sometimes prefix a title with a programme strand, e.g.
+// "ARCHIVE AT LUNCHTIME: Some Film" — that's not part of the actual film title — or append a
+// re-release annotation like "(4K Restoration)".
+export function cleanFilmTitle(raw: string, overrides: TitleOverrides): string {
+  return cleanTitleParts(raw, overrides).title;
+}
+
+// The trailing annotation `cleanFilmTitle` removes ("25th anniversary", "4k restoration"), lower-
+// cased — scripts/fetch-batch.ts pre-fills it as the film's editorial label for review.
+export function titleAnnotation(raw: string, overrides: TitleOverrides): string | undefined {
+  return cleanTitleParts(raw, overrides).annotation;
 }

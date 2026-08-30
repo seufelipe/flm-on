@@ -42,9 +42,11 @@ is gitignored runtime cache/staging.
   `stripPrefixes` (programme strands — `"ARCHIVE AT LUNCHTIME:"`, `"CINEMA BOOK CLUB:"`), then
   `stripAnnotations` (regex sources for trailing tags that aren't part of the name — `4K
   Restoration`, `Nth Anniversary`, and a `Month YYYY` suffix that recurring strands append —
-  matched at end of title, bare / dash-prefixed / in `(…)`). The cleaned title is
+  matched at end of title, bare / dash- or colon-prefixed / in `(…)`). The cleaned title is
   what the UI shows *and* what Letterboxd resolution + its cache/override keys use, so editing
-  these files shifts `letterboxd-overrides.json` keys too. (Note: `letterboxd-overrides.json` /
+  these files shifts `letterboxd-overrides.json` keys too. `titleAnnotation()` reports what
+  `stripAnnotations` removed (lower-cased) — `scripts/fetch-batch.ts` pre-fills an
+  anniversary/restoration annotation as the film's `film-labels.json` label (decision #11). (Note: `letterboxd-overrides.json` /
   `letterboxd-cache.json` keys are `title|year`, and `year` is the *scraped* year — often empty
   for a repertory foreign title, so the key can be `"I (Ai)|"` with a trailing bar.)
 - `lib/hidden.ts` — `loadHiddenFilms` / `isHiddenFilm`, an editorial blocklist from
@@ -374,10 +376,12 @@ is gitignored runtime cache/staging.
     part of `showtimes.json` and the scrape/`fetch:confirm` pipeline never touches it, so
     editing a label just needs a rebuild, not a re-scrape. `scripts/fetch-batch.ts` prints
     a "Labels" section listing every film's exact key + current label so one can be pasted
-    in during the weekly review without guessing the apostrophe/casing — and, since decision
-    #16, it also **writes** the file: any Cineworld "Big Screen Classics" film with no label
-    yet gets `classic!` pre-filled (the file is rewritten sorted), for the user to review in
-    the diff. Rendered by
+    in during the weekly review without guessing the apostrophe/casing — and it also **writes**
+    the file (rewritten sorted), pre-filling a label for any film that doesn't have one, for the
+    user to review in the diff. Two sources, most specific first: a trailing annotation
+    `cleanFilmTitle` stripped — `"25th anniversary"`, `"4k restoration"` (`titleAnnotation` in
+    `lib/titles.ts` → `DayResult.titleAnnotations`, filtered to `/anniversary|restoration/`);
+    then Cineworld "Big Screen Classics" (decision #16) → `classic!`. Rendered by
     `components/FilmLabel.tsx` (a `<MarqueeSticker>`) after the title + year
     — decorative, so per decision #7 it uses `--color-fg`/`--color-bg`, never
     `--color-accent`, and per decision #8 it must not become a count/badge. Keyed on title alone (not `Title|Year`
