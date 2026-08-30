@@ -124,9 +124,19 @@ async function withLetterboxdLinks(screenings: Screening[]): Promise<Screening[]
       screeningTags = [...(screeningTags ?? []), language];
     }
 
+    // Original-language title: Letterboxd's `originalname` (native script, canonical) wins, with
+    // the cinema's own (Cineworld) as the fallback. Shown only when it's genuinely different
+    // from the display title.
+    const originalCandidate = match?.originalTitle ?? s.originalTitle;
+    const originalTitle =
+      originalCandidate && !titlesEquivalent(originalCandidate, s.filmTitle)
+        ? originalCandidate
+        : undefined;
+
     return {
       ...s,
       screeningTags,
+      originalTitle,
       letterboxdUrl: match?.url,
       year: match?.year ?? s.year,
     };
@@ -140,14 +150,7 @@ export async function getShowtimesForRange(dates: string[]): Promise<DayResult> 
   const hiddenFilms = await loadHiddenFilms();
   const screenings = results
     .flatMap((r) => r.screenings)
-    .map((s) => {
-      const filmTitle = cleanFilmTitle(s.filmTitle, titleOverrides);
-      // Drop the original title once the display title is cleaned/corrected to match it (an
-      // annotation strip, or an override that lands on the same words).
-      const originalTitle =
-        s.originalTitle && !titlesEquivalent(s.originalTitle, filmTitle) ? s.originalTitle : undefined;
-      return { ...s, filmTitle, originalTitle };
-    })
+    .map((s) => ({ ...s, filmTitle: cleanFilmTitle(s.filmTitle, titleOverrides) }))
     .filter((s) => !isHiddenFilm(s.filmTitle, hiddenFilms));
 
   // Trailing annotations (`(4K Restoration)`, `25th Anniversary`) stripped from raw titles,

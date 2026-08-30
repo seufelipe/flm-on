@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { parsePrimaryLanguage } from "@/lib/letterboxd";
+import { parsePrimaryLanguage, parseOriginalTitle } from "@/lib/letterboxd";
 
 // Snippets mirror Letterboxd's real details-panel markup (server HTML, `hidden="until-found"`).
 const multiLang = `
@@ -46,5 +46,24 @@ describe("parsePrimaryLanguage", () => {
   it("does not mistake 'Spoken Languages' for the primary", () => {
     const spokenOnly = `<h3><span>Spoken Languages</span></h3> <div class="text-sluglist"> <a href="/films/language/german/" class="text-slug">German</a> </div>`;
     expect(parsePrimaryLanguage(spokenOnly)).toBeUndefined();
+  });
+});
+
+describe("parseOriginalTitle", () => {
+  it("reads the masthead <h2 class=originalname>, stripping the inner <em> and decoding entities", () => {
+    expect(
+      parseOriginalTitle(
+        `<h2 class="originalname" lang="ja"><em class="quoted-creative-work-title">ドライブ・マイ・カー</em></h2>`,
+      ),
+    ).toBe("ドライブ・マイ・カー");
+    expect(
+      parseOriginalTitle(
+        `<h2 class="originalname" lang="fr">La bataille de Gaulle: L&#039;âge de fer</h2>`,
+      ),
+    ).toBe("La bataille de Gaulle: L'âge de fer");
+  });
+
+  it("returns undefined when the film has no original-name heading", () => {
+    expect(parseOriginalTitle(`<h1 class="headline-1 primaryname"><span>Trainspotting</span></h1>`)).toBeUndefined();
   });
 });

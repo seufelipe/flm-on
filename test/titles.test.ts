@@ -99,4 +99,10 @@ describe("titlesEquivalent", () => {
       titlesEquivalent("La Bataille de Gaulle - partie 1 : L'Âge de Fer", "De Gaulle: Résistance"),
     ).toBe(false);
   });
+
+  it("keeps a native-script title distinct from an English one (doesn't collapse to empty)", () => {
+    expect(titlesEquivalent("기생충", "Parasite")).toBe(false);
+    expect(titlesEquivalent("ஐ", "I (Ai)")).toBe(false);
+    expect(titlesEquivalent("기생충", " 기생충 ")).toBe(true);
+  });
 });

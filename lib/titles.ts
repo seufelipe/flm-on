@@ -108,15 +108,16 @@ export function titleAnnotation(raw: string, overrides: TitleOverrides): string 
   return cleanTitleParts(raw, overrides).annotation;
 }
 
-// Whether two titles are effectively the same — case, whitespace, punctuation and
-// parentheticals ignored. Used to decide whether an original-language title is worth showing
-// next to the display title (FilmCard) or is just the same thing.
+// Whether two titles are effectively the same — case, whitespace, ASCII punctuation and
+// parentheticals ignored. Accented Latin and non-Latin scripts (U+00C0+) are kept, so a
+// native-script original title ("기생충") doesn't collapse to "" and read as equal to an English
+// display title. Used to decide whether an original-language title is worth showing on the card.
 export function titlesEquivalent(a: string, b: string): boolean {
   const norm = (s: string) =>
     s
       .toLowerCase()
       .replace(/\([^)]*\)/g, " ")
-      .replace(/[^a-z0-9]+/g, " ")
+      .replace(/[^0-9a-zÀ-￿]+/g, " ")
       .trim();
   return norm(a) === norm(b);
 }

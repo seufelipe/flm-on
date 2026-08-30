@@ -56,14 +56,15 @@ is gitignored runtime cache/staging.
   after `cleanFilmTitle`, before Letterboxd — a hidden film (case-insensitive substring match on
   the cleaned title, e.g. `"harry potter"`) never reaches the staged or published showtimes,
   from any cinema. `scripts/fetch-batch.ts` echoes the active patterns.
-- `lib/letterboxd.ts` — `resolveLetterboxd(title, year)` → `{ url?, year?, language? }`: resolves
-  each film's Letterboxd page (see decision #4) *and* returns that page's `og:title` year (which
-  `lib/aggregate.ts` adopts as the film's real year — cinema-reported years are unreliable,
-  decisions #2, #4) *and* its "Primary Language" (`parsePrimaryLanguage`, non-English only —
-  decision #17). Cached indefinitely in `data/letterboxd-cache.json` as `{ url, year, language }`
-  per `title|year` key (no TTL; legacy bare-string / `{url,year}` entries migrate on read and
-  re-resolve once to backfill). `data/letterboxd-overrides.json` is checked first and always
-  wins; an override gives only a URL, so its page is fetched once for the year + language.
+- `lib/letterboxd.ts` — `resolveLetterboxd(title, year)` → `{ url?, year?, language?, originalTitle? }`:
+  resolves each film's Letterboxd page (see decision #4) and reads that page's `og:title` year
+  (which `lib/aggregate.ts` adopts as the film's real year — decisions #2, #4), its "Primary
+  Language" (`parsePrimaryLanguage`, non-English only — decision #17), and its original-language
+  title (`parseOriginalTitle` — `<h2 class="originalname">`, native script). Cached indefinitely
+  in `data/letterboxd-cache.json` as `{ url, year, language, originalTitle }` per `title|year`
+  key (no TTL; an entry with any field missing re-resolves once to backfill — the cache is
+  gitignored). `data/letterboxd-overrides.json` is checked first and always wins; an override
+  gives only a URL, so its page is fetched once for the rest.
 - `lib/clash.ts` — `findCombos`: valid double-bill pairs (same day, different film, gap between
   `MAX_COMBO_GAP_MINUTES` and a minimum that depends on whether the pair is cross-cinema
   (`WALK_BUFFER_MINUTES`, enough time to walk between buildings) or same-cinema
@@ -93,7 +94,8 @@ is gitignored runtime cache/staging.
 - `components/FilmCard.tsx` — one film's card. Header line 1: `[original title] TITLE [year]` —
   the black uppercase name flanked by the `<TitleMeta>` bits (title-sized but `font-normal`,
   `text-dim`, natural case): the year after, and the original-language title *before* it when
-  `FilmGroup.originalTitle` is set (Cineworld only — see decision #16). With the cinema film-page links
+  `FilmGroup.originalTitle` is set (Letterboxd `originalname`, native script — decisions #4/#17
+  — or Cineworld as a fallback). With the cinema film-page links
   top-right as `text-dim`/`border-dim` chips (`border-2`/`rounded-btn`, from `Screening.filmPageUrl`
   — each cinema's own detail page, `ifi.ie/films/{slug}` / `lighthousecinema.ie/film/{slug}`,
   kept separate from `bookingUrl`). The links are the `cinemaLinks` prop — **one per cinema the
@@ -248,11 +250,12 @@ is gitignored runtime cache/staging.
    pin in `letterboxd-overrides.json` fixes both the link and the displayed year in one go.
 
    Since 2026-08-31 the same page fetch also yields the film's **"Primary Language"**
-   (`parsePrimaryLanguage`) — how every non-English film gets marked (decision #17).
-   `resolveLetterboxd` returns `{ url?, year?, language? }` and the `letterboxd-cache.json` entry
-   is `{ url, year, language }`; a legacy `{ url, year }` entry (no `language`) is treated as
-   "not checked" and re-resolves once, so the first batch after this change re-fetches that
-   week's films.
+   (`parsePrimaryLanguage`, decision #17) and its **original title** (`parseOriginalTitle` —
+   `<h2 class="originalname">`, native script, present only when it differs from the display
+   name; shown dimmed before the title on the card — decisions #16, FilmCard). `resolveLetterboxd`
+   returns `{ url?, year?, language?, originalTitle? }` and the `letterboxd-cache.json` entry is
+   `{ url, year, language, originalTitle }`; an entry missing any field is treated as "not
+   checked" and re-resolves once (the cache is gitignored, so this churn is invisible).
 
    **Light House stamps re-releases with the *current* year** ("Released: …-2026" on a 1986
    Tarkovsky restoration), which defeats the `og:title` year check and — worse — can match a
@@ -607,11 +610,12 @@ is gitignored runtime cache/staging.
     so `groupByFilm` merges it onto the base film. Re-releases get a current-year `release` (same
     as Light House — decision #4; fix via `letterboxd-overrides.json`). Foreign titles carry a
     trailing `(Tamil)` etc. that duplicates the language tag — stripped in the adapter. The
-    `movies` API's `originalTitle` becomes `Screening.originalTitle` (shown dimmed before the
-    name on the card) when `titlesEquivalent` says it's genuinely different from the English
-    title — the adapter gates it against the raw title, `lib/aggregate.ts` re-gates against the
-    cleaned/corrected one. Repertory foreign titles often have no `release`/`certificate` at all
-    → year/cert `undefined`, so the
+    `movies` API's `originalTitle` is carried on `Screening.originalTitle` as a **fallback** —
+    the card's original title normally comes from Letterboxd's `originalname` (decision #4,
+    native script, canonical); Cineworld's only fills in when the film isn't on Letterboxd.
+    `lib/aggregate.ts` picks whichever and shows it only if `titlesEquivalent` says it's
+    genuinely different from the display title. Repertory foreign titles often have no
+    `release`/`certificate` at all → year/cert `undefined`, so the
     `letterboxd-overrides.json` key has an empty year (`"I (Ai)|"`). A film that's genuinely
     interesting but plays Cineworld only as a plain digital showing is dropped with no override
     path yet (see Known gaps). Films the user never wants shown, from any cinema (e.g. Harry
