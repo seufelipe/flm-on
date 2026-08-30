@@ -112,15 +112,15 @@
 }
 
 /* Film-format tag (components/FilmFormats.tsx) — the label rides a two-copy vertical reel that
-   loops like a projector: the frame sits still and readable, then a quick downward pulldown
-   advances to the next (identical) frame. translateY(-100%) of the reel is exactly one frame and
-   frame 2 == frame 1, so the 100% → 0% wrap is invisible. Rails (perforations) don't move. */
+   scrolls upward on a continuous seamless loop, so the box reads as a strip of film running
+   through a gate. translateY(-100%) of the reel is exactly one frame and frame 2 == frame 1, so
+   the wrap back to 0 is invisible. Rails (perforations) don't move. */
 .flm-filmstrip-reel {
   position: absolute;
   inset: 0;
   display: flex;
   flex-direction: column;
-  animation: flm-filmstrip 3.2s cubic-bezier(0.6, 0, 0.25, 1) infinite;
+  animation: flm-filmstrip 3s linear infinite;
 }
 
 .flm-filmstrip-frame {
@@ -133,13 +133,11 @@
 }
 
 @keyframes flm-filmstrip {
-  0%,
-  55% {
-    transform: translateY(-100%);
-  }
-  75%,
-  100% {
+  from {
     transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
   }
 }
 

@@ -422,8 +422,8 @@ is gitignored runtime cache/staging.
     tag is styled as a single frame of film strip — a `--color-bg` radial-gradient tiled down
     each edge (`Perforations` in `FilmFormats.tsx`) so the sprocket holes fill the box height
     whatever the ratio — and the label rides a two-copy vertical reel (`.flm-filmstrip-*` in
-    `globals.css`) scrolling downward on a seamless loop, so it reads as a frame advancing
-    through a projector gate (the rails stay put); reduced-motion / print freeze it centred.
+    `globals.css`) scrolling upward on a continuous seamless loop, so it reads as a strip of film
+    running through a projector gate (the rails stay put); reduced-motion / print freeze it centred.
     First real data landed 2026-08-29: "The Odyssey" plays 35mm at Light House and 70mm at IFI
     in the same week, so its card shows both boxes and each pill carries its own mark.
 
