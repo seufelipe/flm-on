@@ -115,22 +115,22 @@ is gitignored runtime cache/staging.
 - `components/MarqueeSticker.tsx` — the small fixed-width dark sticker whose text scrolls on a
   seamless loop (two copies + a `translateX(-50%)` loop via the `flm-marquee` keyframe in
   `app/globals.css`; reduced-motion → static full-width). `--color-fg` sticker, `--color-bg`
-  text, never accent. Shared by `FilmLabel` and `ScreeningTagLabel`. (The film-format tag uses
-  the same two-copy-loop trick vertically — `flm-filmstrip` — see `components/FilmFormats.tsx`.)
-- `components/FilmLabel.tsx` — a curated editorial tag (from `data/film-labels.json`, see
-  decision #11) rendered as a `<MarqueeSticker>` after a film's title + year. Decorative.
+  text, never accent. Used by `FilmNotes`. (The film-format tag uses the same two-copy-loop
+  trick vertically — `flm-filmstrip` — see `components/FilmFormats.tsx`.)
+- `components/FilmNotes.tsx` — the **one** `<MarqueeSticker>` after a film's title + year,
+  carrying its special-screening name(s) *and* its curated editorial label
+  (`data/film-labels.json`, decision #11) together, joined by ` · ` ("☻ parent & baby ·
+  4k restoration"). Relaxed the old "one note per card" rule (decision #13). Decorative.
 - `components/ScreeningTags.tsx` + `lib/screeningTags.ts` — special-screening markers.
   `displayScreeningTags` filters `Screening.screeningTags` (raw per-session descriptors from the
   scraper, plus a synthetic `Mystery Matinee` attached render-time by `ScreeningBrowser` —
   decision #12) to the surfaced set — Parent & Baby, Relaxed, Cinema Book Club, Silver Screen,
-  Mystery Matinee — → `{ symbol, label, title, description, mark? }` (`title`/`description`
-  curated from Light House's own `data-tooltip` text). `mark: false` (only Mystery Matinee) means
-  it still counts as a surfaced special — Highlights filter, tooltip, "one sticker max"
-  suppression — but `<ScreeningTagMarks>` / `<ScreeningTagLabel>` skip it, so no glyph shows.
-  `<ScreeningTagMarks>` renders the bare `☻` on a pill / `DayPlan` row; `<ScreeningTagLabel>`
-  renders a `☻ parent & baby` `<MarqueeSticker>` after the film title. The
-  `title="<name> — <description>"` hover tooltip (`screeningTagsTooltip`) goes on the **whole**
-  pill / plan-row button (not the glyph); the sticker carries its own (also its accessible name).
+  Big Screen Classics, Mystery Matinee — → `{ symbol, label, title, description, mark? }`
+  (`title`/`description` curated). `mark: false` (Mystery Matinee, Big Screen Classics) means it
+  still counts as a surfaced special — Highlights filter, tooltip — but renders no `☻` glyph and
+  no `FilmNotes` segment. `<ScreeningTagMarks>` renders the bare `☻` on a pill / `DayPlan` row;
+  the card-side name is `FilmNotes`' job. The `title="<name> — <description>"` hover tooltip
+  (`screeningTagsTooltip`) goes on the **whole** pill / plan-row button (not the glyph).
   `font-variant-emoji: text` (symbol carries U+FE0E) keeps the smiley flat. Decision #13.
 - `components/FilmFormats.tsx` + `lib/formats.ts` — film-format markers (35mm / 70mm / IMAX),
   a sibling of the special-screening pair riding the same `Screening.screeningTags` field.
@@ -382,12 +382,12 @@ is gitignored runtime cache/staging.
     `cleanFilmTitle` stripped — `"25th anniversary"`, `"4k restoration"` (`titleAnnotation` in
     `lib/titles.ts` → `DayResult.titleAnnotations`, filtered to `/anniversary|restoration/`);
     then Cineworld "Big Screen Classics" (decision #16) → `classic!`. Rendered by
-    `components/FilmLabel.tsx` (a `<MarqueeSticker>`) after the title + year
-    — decorative, so per decision #7 it uses `--color-fg`/`--color-bg`, never
-    `--color-accent`, and per decision #8 it must not become a count/badge. Keyed on title alone (not `Title|Year`
-    like `letterboxd-overrides.json`) deliberately — labels are per-film and the
-    cinema-reported year is unreliable. A card shows **one** sticker max — a special-screening
-    label (decision #13) takes precedence over this one.
+    `components/FilmNotes.tsx` (a `<MarqueeSticker>`) after the title + year, in the *same*
+    sticker as the special-screening name(s), joined by ` · ` (decision #13) — decorative, so
+    per decision #7 it uses `--color-fg`/`--color-bg`, never `--color-accent`, and per decision
+    #8 it must not become a count/badge. Keyed on title alone (not `Title|Year` like
+    `letterboxd-overrides.json`) deliberately — labels are per-film and the cinema-reported year
+    is unreliable.
 
 12. **The IFI "Mystery Matinee" strand is rendered as a redacted card.** Added 2026-08-28.
     The whole point of the strand is that the film isn't announced, so its card leans into
@@ -428,18 +428,18 @@ is gitignored runtime cache/staging.
     `Dubbed` / `Open Captioned`) are captured but deliberately not surfaced — widening is a
     one-line edit to the `KNOWN` map (each entry also carries a `title` + `description`, cleaned
     up from Light House's `data-tooltip` text, shown as a `title=` hover tooltip — on the whole
-    pill / plan-row button, and on the sticker itself). Rendered by `components/ScreeningTags.tsx`: a **bare `☻`
-    mark** (`<ScreeningTagMarks>`) after the time on the `FilmCard` pill and the `DayPlan` row,
-    and the name spelled out once per card as a `<MarqueeSticker>` after the title
-    (`<ScreeningTagLabel>` → "☻ parent & baby", same sticker treatment as `FilmLabel`).
-    Rationale (user): the slot is the same every week, so once the sticker names it you
-    recognise the mark alone — no need to repeat the words on every pill. The mark is `☻`
-    (U+263B, filled — reads better small than the outline `☺`) at `1.4em`, forced flat with
-    `font-variant-emoji: text` (the symbol also carries U+FE0E); never accent. **A card shows
-    at most one sticker** — `FilmCard` suppresses the curated `FilmLabel` when a screening
-    label is present (so `Cinema Book Club: Mrs. Doubtfire` shows "☻ cinema book club", not its
-    `classic!` label). The `kiki's delivery service → classic!` `film-labels.json` entry was
-    removed since P&B outranks it.
+    pill / plan-row button, and on the sticker itself). Rendered: a **bare `☻` mark**
+    (`<ScreeningTagMarks>` in `components/ScreeningTags.tsx`) after the time on the `FilmCard`
+    pill and the `DayPlan` row, and the name spelled out once per card by `components/FilmNotes.tsx`
+    ("☻ parent & baby"). Rationale (user): the slot is the same every week, so once the sticker
+    names it you recognise the mark alone — no need to repeat the words on every pill. The mark
+    is `☻` (U+263B, filled — reads better small than the outline `☺`) at `1.4em`, forced flat
+    with `font-variant-emoji: text` (the symbol also carries U+FE0E); never accent.
+    **The card sticker holds multiple notes** (reversed 2026-08-31 — was "one sticker max"):
+    `<FilmNotes>` joins every surfaced special-screening name *and* the curated editorial label
+    (decision #11) into one `<MarqueeSticker>` separated by ` · ` — a Parent & Baby screening of
+    a 4K restoration shows "☻ parent & baby · 4k restoration". `mark: false` tags still
+    contribute nothing.
     `scripts/fetch-batch.ts` prints a "Special screenings" section (plus, since decision #16, an
     "unrecognised screening tags" section) so a new/unexpected descriptor surfaces in the weekly
     review. **Cineworld** maps its `Showtime.Event.*` / `Showtime.Accessibility.AutismFriendly`
@@ -473,9 +473,9 @@ is gitignored runtime cache/staging.
     `<FilmFormatMarks>` — a bare ratio-shaped rectangle after the time on a pill / `DayPlan` row,
     the format analogue of the `☻` mark. `filmFormatsTooltip` is merged into the pill / plan-row
     `title` next to `screeningTagsTooltip`. Not a count (#8). All formats count toward the
-    **Highlights** toggle (`preferred` memo in `ScreeningBrowser`). Formats are a *tag*, not a
-    marquee sticker, so the "one sticker max" rule is unaffected — a 70mm Parent & Baby screening
-    shows both.
+    **Highlights** toggle (`preferred` memo in `ScreeningBrowser`). Formats are a *tag*, not part
+    of the `FilmNotes` marquee sticker (decision #13) — a 70mm Parent & Baby screening shows the
+    format box and the "☻ parent & baby" sticker independently.
 
     **Print (`print: true`) vs digital.** 35mm / 70mm are struck from an actual print: the card
     box is styled as a single frame of film strip — a `--color-fg` box, `--color-bg` radial-
@@ -620,8 +620,8 @@ is gitignored runtime cache/staging.
     outlined `--color-dim` chip on the `FilmCard` meta line right after the duration;
     `<LanguageMarks>` — the **per-showtime `ST` / `Dub`** (`captionMark`) after the time on a
     pill / `DayPlan` row (the language isn't repeated on every pill). `languageTooltip` merges
-    into the pill/row `title`. A **tag, not a marquee sticker** (decision #13's "one sticker max"
-    untouched); informational → never accent (decision #7). A language screening **counts toward
+    into the pill/row `title`. A **tag, not part of the `FilmNotes` marquee sticker**
+    (decision #13); informational → never accent (decision #7). A language screening **counts toward
     the Highlights ("☻ Specials, etc") filter**. Preference **`hideDubbed`** (default off,
     General group in `SettingsPanel`) drops dubbed sessions — usually the kids' matinee version.
 

@@ -1,14 +1,14 @@
 import { Fragment } from "react";
-import FilmLabel from "@/components/FilmLabel";
+import FilmNotes from "@/components/FilmNotes";
 import MysteryTitle from "@/components/MysteryTitle";
 import { isMysteryFilm } from "@/lib/mystery";
 import type { TimedScreening } from "@/lib/clash";
 import { groupScreeningsByDay, type FilmGroup } from "@/lib/groupings";
 import { groupScreeningsByTimeframe } from "@/lib/timeframe";
-import { ScreeningTagMarks, ScreeningTagLabel } from "@/components/ScreeningTags";
+import { ScreeningTagMarks } from "@/components/ScreeningTags";
 import { FilmFormatTag, FilmFormatMarks } from "@/components/FilmFormats";
 import { LanguageTag, LanguageMarks } from "@/components/ScreeningLanguage";
-import { displayScreeningTags, screeningTagsTooltip } from "@/lib/screeningTags";
+import { screeningTagsTooltip } from "@/lib/screeningTags";
 import { displayFilmFormats, filmFormatsTooltip } from "@/lib/formats";
 import { displayLanguage, languageTooltip } from "@/lib/languages";
 import { CINEMA_LABEL } from "@/lib/cinemas";
@@ -171,13 +171,10 @@ export default function FilmCard({
   // or runtime would narrow the guess, so both are suppressed and the title is redacted.
   const isMystery = isMysteryFilm(group.filmTitle);
 
-  // Special-screening descriptors across all of this film's sessions (usually just "Parent and
-  // Baby" on the recurring Sat/Wed morning slot). Named once as a sticker after the title; the
-  // individual pills carry only the bare mark. A card shows at most one sticker — the
-  // screening label wins over a curated editorial label if a film somehow has both. `mark: false`
-  // tags (Mystery Matinee) render no sticker, so they don't suppress a curated label either.
+  // Descriptors across all of this film's visible sessions. The special-screening name(s) and
+  // the curated editorial label are named together in one `<FilmNotes>` sticker after the title;
+  // the individual pills carry only the bare ☻ mark.
   const sessionTags = Array.from(new Set(group.screenings.flatMap((s) => s.screeningTags ?? [])));
-  const hasScreeningLabel = displayScreeningTags(sessionTags).some((t) => t.mark !== false);
   const sessionFormats = displayFilmFormats(sessionTags);
   // Only the language name goes on the card (per-film); the subtitled/dubbed state is per-showtime
   // and lives on the pills, so it doesn't count towards showing the meta line.
@@ -208,8 +205,7 @@ export default function FilmCard({
             {!isMystery && group.year !== undefined && (
               <span className="font-normal text-dim ml-3">{group.year}</span>
             )}
-            {label && !hasScreeningLabel && <FilmLabel text={label} />}
-            <ScreeningTagLabel tags={sessionTags} />
+            <FilmNotes tags={sessionTags} label={label} />
           </h3>
           {cinemaPageLinks.length > 0 && (
             <div className="order-1 md:order-2 no-print flex flex-wrap gap-2 shrink-0 md:justify-end">

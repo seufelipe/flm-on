@@ -3,8 +3,9 @@ import type { ReactNode } from "react";
 // A small fixed-width dark sticker whose text scrolls on a seamless loop — two copies on one
 // track, translated -50% (the `flm-marquee` keyframe in app/globals.css, the project's only CSS
 // animation). Reduced-motion falls back to a static full-width label. `--color-fg` sticker /
-// `--color-bg` text, never accent (CLAUDE.md decision #7). Used by FilmLabel (editorial tags,
-// decision #11) and the "parent & baby" screening label (decision #13).
+// `--color-bg` text, never accent (CLAUDE.md decision #7). Used by FilmNotes — the film-card
+// sticker that carries the special-screening name(s) and the curated editorial label together
+// (decisions #11, #13).
 export default function MarqueeSticker({
   text,
   ariaLabel,
