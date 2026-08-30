@@ -3,6 +3,7 @@ import type { TimedScreening } from "./clash";
 export interface FilmGroup {
   key: string;
   filmTitle: string;
+  originalTitle?: string;
   year?: number;
   cert?: string;
   durationMins?: number;
@@ -24,6 +25,7 @@ export function groupByFilm(screenings: TimedScreening[]): FilmGroup[] {
       group = {
         key,
         filmTitle: s.filmTitle,
+        originalTitle: s.originalTitle,
         year: s.year,
         cert: s.cert,
         durationMins: s.durationMins,
@@ -33,6 +35,7 @@ export function groupByFilm(screenings: TimedScreening[]): FilmGroup[] {
       };
       groups.set(key, group);
     }
+    group.originalTitle = group.originalTitle ?? s.originalTitle;
     group.cert = group.cert ?? s.cert;
     group.year = group.year ?? s.year;
     group.durationMins = group.durationMins ?? s.durationMins;

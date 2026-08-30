@@ -78,6 +78,13 @@ describe("cineworld parseCineworldSchedule", () => {
     expect(ai[0].screeningTags).toEqual(["Tamil", "Subtitled"]);
   });
 
+  it("carries a genuinely different original title, drops one that's just the English title", () => {
+    const dg = screenings.find((s) => s.filmTitle === "De Gaulle: Résistance");
+    expect(dg?.originalTitle).toBe("La Bataille de Gaulle - partie 1 : L'Âge de Fer");
+    expect(screenings.find((s) => s.filmTitle === "I (Ai)")?.originalTitle).toBeUndefined();
+    expect(screenings.find((s) => s.filmTitle === "The Odyssey")?.originalTitle).toBeUndefined();
+  });
+
   it("folds a ': The IMAX Experience' companion movie onto the base title with a synthetic IMAX tag", () => {
     const odyssey = screenings.filter((s) => s.filmTitle === "The Odyssey");
     expect(odyssey.length).toBe(4);

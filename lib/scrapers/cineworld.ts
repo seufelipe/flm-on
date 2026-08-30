@@ -1,6 +1,7 @@
 import { addDaysISO } from "@/lib/date";
 import { mapWithConcurrency } from "@/lib/concurrency";
 import { isLanguageName } from "@/lib/languages";
+import { titlesEquivalent } from "@/lib/titles";
 import type { CinemaAdapter, Screening } from "./types";
 
 // Cineworld Dublin (Parnell St) — a 16-screen multiplex. It's on the app for its *non-standard*
@@ -180,6 +181,12 @@ export function parseCineworldSchedule(
     const year = movie ? releaseYear(movie) : undefined;
     const certificate = movie ? cert(movie) : undefined;
     const filmPageUrl = `${MOVIE_BASE}/${movieId}-${slugify(rawTitle)}/`;
+    // Carry the original-language title only when it's genuinely a different title
+    // (De Gaulle → "La Bataille de Gaulle …"), not just the English title again.
+    const originalTitle =
+      movie?.originalTitle && !titlesEquivalent(movie.originalTitle, rawTitle)
+        ? movie.originalTitle
+        : undefined;
 
     for (const [date, showtimes] of Object.entries(perDate)) {
       if (!wanted.has(date)) continue;
@@ -196,6 +203,7 @@ export function parseCineworldSchedule(
           cinema: "cineworld",
           cinemaName: "Cineworld Dublin",
           filmTitle: title,
+          originalTitle,
           cert: certificate,
           durationMins,
           year,

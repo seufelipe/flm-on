@@ -2,7 +2,7 @@ import { adapters } from "./scrapers";
 import type { Screening } from "./scrapers/types";
 import * as cache from "./cache";
 import { resolveLetterboxd, type LetterboxdMatch } from "./letterboxd";
-import { cleanFilmTitle, titleAnnotation, loadTitleOverrides } from "./titles";
+import { cleanFilmTitle, titleAnnotation, titlesEquivalent, loadTitleOverrides } from "./titles";
 import { loadHiddenFilms, isHiddenFilm } from "./hidden";
 import { loadLanguageOverrides, languageOverrideFor } from "./languageOverrides";
 
@@ -140,7 +140,14 @@ export async function getShowtimesForRange(dates: string[]): Promise<DayResult> 
   const hiddenFilms = await loadHiddenFilms();
   const screenings = results
     .flatMap((r) => r.screenings)
-    .map((s) => ({ ...s, filmTitle: cleanFilmTitle(s.filmTitle, titleOverrides) }))
+    .map((s) => {
+      const filmTitle = cleanFilmTitle(s.filmTitle, titleOverrides);
+      // Drop the original title once the display title is cleaned/corrected to match it (an
+      // annotation strip, or an override that lands on the same words).
+      const originalTitle =
+        s.originalTitle && !titlesEquivalent(s.originalTitle, filmTitle) ? s.originalTitle : undefined;
+      return { ...s, filmTitle, originalTitle };
+    })
     .filter((s) => !isHiddenFilm(s.filmTitle, hiddenFilms));
 
   // Trailing annotations (`(4K Restoration)`, `25th Anniversary`) stripped from raw titles,

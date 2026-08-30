@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { cleanFilmTitle, titleAnnotation, type TitleOverrides } from "@/lib/titles";
+import { cleanFilmTitle, titleAnnotation, titlesEquivalent, type TitleOverrides } from "@/lib/titles";
 
 const overrides: TitleOverrides = {
   stripPrefixes: ["ARCHIVE AT LUNCHTIME:", "CINEMA BOOK CLUB:"],
@@ -84,5 +84,19 @@ describe("titleAnnotation", () => {
 
   it("also reports a non-labelworthy annotation (fetch-batch filters to anniversary/restoration)", () => {
     expect(titleAnnotation("Mystery Matinee August 2026", overrides)).toBe("august 2026");
+  });
+});
+
+describe("titlesEquivalent", () => {
+  it("ignores case, whitespace, punctuation and parentheticals", () => {
+    expect(titlesEquivalent("The Odyssey", "the odyssey")).toBe(true);
+    expect(titlesEquivalent("i", "I (Ai) (Tamil)")).toBe(true);
+    expect(titlesEquivalent("Coyote vs. ACME", "Coyote vs Acme")).toBe(true);
+  });
+
+  it("is false for a genuinely different original title", () => {
+    expect(
+      titlesEquivalent("La Bataille de Gaulle - partie 1 : L'Âge de Fer", "De Gaulle: Résistance"),
+    ).toBe(false);
   });
 });

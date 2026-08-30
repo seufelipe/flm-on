@@ -4,6 +4,9 @@ export interface Screening {
   cinema: CinemaId;
   cinemaName: string;
   filmTitle: string;
+  // The film's original-language title, when a cinema reports one that differs from `filmTitle`
+  // (only Cineworld's `movies` API does). Shown dimmed before the title on the card.
+  originalTitle?: string;
   cert?: string;
   durationMins?: number;
   durationEstimated?: boolean;

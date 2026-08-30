@@ -46,7 +46,9 @@ is gitignored runtime cache/staging.
   what the UI shows *and* what Letterboxd resolution + its cache/override keys use, so editing
   these files shifts `letterboxd-overrides.json` keys too. `titleAnnotation()` reports what
   `stripAnnotations` removed (lower-cased) — `scripts/fetch-batch.ts` pre-fills an
-  anniversary/restoration annotation as the film's `film-labels.json` label (decision #11). (Note: `letterboxd-overrides.json` /
+  anniversary/restoration annotation as the film's `film-labels.json` label (decision #11).
+  `titlesEquivalent(a, b)` (case/punctuation/parenthetical-insensitive) gates whether a
+  `Screening.originalTitle` is worth keeping. (Note: `letterboxd-overrides.json` /
   `letterboxd-cache.json` keys are `title|year`, and `year` is the *scraped* year — often empty
   for a repertory foreign title, so the key can be `"I (Ai)|"` with a trailing bar.)
 - `lib/hidden.ts` — `loadHiddenFilms` / `isHiddenFilm`, an editorial blocklist from
@@ -88,8 +90,10 @@ is gitignored runtime cache/staging.
 - `components/controlSegment.ts` — `SEGMENT_BASE` + `controlSegmentClass(active)`, the
   accent-fill / hard-press "selected" segment styling shared by the filter-bar `ControlGroup`
   and the `SettingsPanel` toggles.
-- `components/FilmCard.tsx` — one film's card. Header line 1: title (black) + year inline
-  (title-sized but `font-normal`, `text-dim`, no parens), with the cinema film-page links
+- `components/FilmCard.tsx` — one film's card. Header line 1: `[original title] TITLE [year]` —
+  the black uppercase name flanked by the `<TitleMeta>` bits (title-sized but `font-normal`,
+  `text-dim`, natural case): the year after, and the original-language title *before* it when
+  `FilmGroup.originalTitle` is set (Cineworld only — see decision #16). With the cinema film-page links
   top-right as `text-dim`/`border-dim` chips (`border-2`/`rounded-btn`, from `Screening.filmPageUrl`
   — each cinema's own detail page, `ifi.ie/films/{slug}` / `lighthousecinema.ie/film/{slug}`,
   kept separate from `bookingUrl`). The links are the `cinemaLinks` prop — **one per cinema the
@@ -602,8 +606,12 @@ is gitignored runtime cache/staging.
     its own id) rather than a tag — the adapter strips that suffix and synthesises an `IMAX` tag
     so `groupByFilm` merges it onto the base film. Re-releases get a current-year `release` (same
     as Light House — decision #4; fix via `letterboxd-overrides.json`). Foreign titles carry a
-    trailing `(Tamil)` etc. that duplicates the language tag — stripped in the adapter. Repertory
-    foreign titles often have no `release`/`certificate` at all → year/cert `undefined`, so the
+    trailing `(Tamil)` etc. that duplicates the language tag — stripped in the adapter. The
+    `movies` API's `originalTitle` becomes `Screening.originalTitle` (shown dimmed before the
+    name on the card) when `titlesEquivalent` says it's genuinely different from the English
+    title — the adapter gates it against the raw title, `lib/aggregate.ts` re-gates against the
+    cleaned/corrected one. Repertory foreign titles often have no `release`/`certificate` at all
+    → year/cert `undefined`, so the
     `letterboxd-overrides.json` key has an empty year (`"I (Ai)|"`). A film that's genuinely
     interesting but plays Cineworld only as a plain digital showing is dropped with no override
     path yet (see Known gaps). Films the user never wants shown, from any cinema (e.g. Harry
@@ -699,7 +707,8 @@ Committed:
   `lib/screeningTags.ts` (specials — decision #13), `lib/formats.ts` (`35mm`/`70mm`/`IMAX` —
   #15), and `lib/languages.ts` (`Tamil`/`Subtitled`/`Dubbed` — #17). Light House emits them from
   `em.additional`, IFI from format `svg[data-icon]`s, Cineworld normalises its API tags onto them
-  (#16), and `lib/aggregate.ts` appends the per-film language from Letterboxd (#17).
+  (#16), and `lib/aggregate.ts` appends the per-film language from Letterboxd (#17). A Cineworld
+  screening may also carry `originalTitle` (#16).
 - `title-overrides.json` — `{ stripPrefixes: string[], stripAnnotations: string[] (regex sources),
   corrections: Record<string,string> }`.
 - `letterboxd-overrides.json` — `Record<"title|year", string | null>`, checked before auto-resolve.

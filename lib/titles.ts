@@ -107,3 +107,16 @@ export function cleanFilmTitle(raw: string, overrides: TitleOverrides): string {
 export function titleAnnotation(raw: string, overrides: TitleOverrides): string | undefined {
   return cleanTitleParts(raw, overrides).annotation;
 }
+
+// Whether two titles are effectively the same — case, whitespace, punctuation and
+// parentheticals ignored. Used to decide whether an original-language title is worth showing
+// next to the display title (FilmCard) or is just the same thing.
+export function titlesEquivalent(a: string, b: string): boolean {
+  const norm = (s: string) =>
+    s
+      .toLowerCase()
+      .replace(/\([^)]*\)/g, " ")
+      .replace(/[^a-z0-9]+/g, " ")
+      .trim();
+  return norm(a) === norm(b);
+}

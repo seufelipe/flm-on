@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, type ReactNode } from "react";
 import FilmNotes from "@/components/FilmNotes";
 import MysteryTitle from "@/components/MysteryTitle";
 import { isMysteryFilm } from "@/lib/mystery";
@@ -34,6 +34,12 @@ interface Props {
   // hides that session. The `FilmNotes` sticker uses this; the per-pill ☻ marks stay per-session.
   // Falls back to the visible screenings' tags.
   specialTags?: string[];
+}
+
+// Dim, normal-weight text sitting inline with the (black, uppercase) film name at the same
+// size — the year after the name, the original-language title before it.
+function TitleMeta({ children, className = "" }: { children: ReactNode; className?: string }) {
+  return <span className={`font-normal text-dim ${className}`}>{children}</span>;
 }
 
 // Age cert styled after the official IFCO classification symbol — a colour-coded circle with a
@@ -203,13 +209,18 @@ export default function FilmCard({
             {isMystery ? (
               <MysteryTitle text={group.filmTitle} />
             ) : (
-              // The only plain text that keeps the I-beam cursor — the film name is the thing
-              // you actually want to select and copy. The year next to it stays on the arrow
-              // cursor (globals.css default) so a drag-select grabs just the name.
-              <span className="font-black uppercase cursor-text">{group.filmTitle}</span>
+              <>
+                {/* Original-language title (Cineworld only), dimmed and title-sized like the
+                    year — sits before the name. */}
+                {group.originalTitle && <TitleMeta className="mr-3">{group.originalTitle}</TitleMeta>}
+                {/* The only plain text that keeps the I-beam cursor — the film name is the thing
+                    you actually want to select and copy. The metadata around it stays on the
+                    arrow cursor (globals.css default) so a drag-select grabs just the name. */}
+                <span className="font-black uppercase cursor-text">{group.filmTitle}</span>
+              </>
             )}
             {!isMystery && group.year !== undefined && (
-              <span className="font-normal text-dim ml-3">{group.year}</span>
+              <TitleMeta className="ml-3">{group.year}</TitleMeta>
             )}
             <FilmNotes tags={specialTags ?? sessionTags} label={label} />
           </h3>
