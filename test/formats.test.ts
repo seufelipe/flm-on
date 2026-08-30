@@ -14,6 +14,16 @@ describe("displayFilmFormats", () => {
     expect(r("70mm")).toBeGreaterThan(r("imax"));
   });
 
+  it("marks 35mm/70mm as print (animated strip) and IMAX as a static branded box", () => {
+    expect(displayFilmFormats(["35mm"])[0].print).toBe(true);
+    expect(displayFilmFormats(["70mm"])[0].print).toBe(true);
+    expect(displayFilmFormats(["35mm"])[0].brandColor).toBeUndefined();
+
+    const imax = displayFilmFormats(["imax"])[0];
+    expect(imax.print).toBe(false);
+    expect(imax.brandColor).toMatch(/^#[0-9a-f]{6}$/i);
+  });
+
   it("is case-insensitive, trims, and accepts aliases", () => {
     expect(displayFilmFormats(["  70 MM "])[0].id).toBe("70mm");
     expect(displayFilmFormats(["15/70"])[0].id).toBe("imax");

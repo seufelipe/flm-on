@@ -94,9 +94,10 @@ is gitignored runtime cache/staging.
   film plays at across its whole preferred set, fixed regardless of the Day/Cinema/Time filter
   bar** (a film at both cinemas keeps both links while you browse one); only the session pills
   follow the filter bar. Line 2: cert, duration, format tag(s), and the Letterboxd link — now the
-  Letterboxd three-dot mark (`LetterboxdLogo`, an inline SVG) rather than a text link, and the
-  one deliberate exception to the ink + single-gold palette (decision #7): it's a third party's
-  logo, so it keeps their orange/green/blue. Screening pills are grouped by day then timeframe; the day sub-header shows
+  Letterboxd three-dot mark (`LetterboxdLogo`, an inline SVG) rather than a text link — one of
+  the two allowed exceptions to the ink + single-gold palette (decision #7), a third party's
+  logo, so it keeps their orange/green/blue (the other is the IMAX-blue format box, decision
+  #15). Screening pills are grouped by day then timeframe; the day sub-header shows
   unless a specific Day chip is active (`daySpecified` — then the chip already says the day).
   Each day's pill row is a single non-wrapping `overflow-x-auto` strip (`scrollbar-none`, a
   `@utility` in `globals.css`) — pills scroll sideways rather than stacking, so a card stays
@@ -284,7 +285,9 @@ is gitignored runtime cache/staging.
    real Black/900 cut) instead of the system sans stack. See the `@theme` block in
    `app/globals.css` for all tokens. **The accent-reservation rule itself is unchanged**: the one
    functional accent color (`--color-accent`, a warm gold `#fdc732`) is used only for
-   actionable/important things and the current selection — never decoratively.
+   actionable/important things and the current selection — never decoratively. Two colours
+   outside ink+gold are allowed, both third-party brand identities, not decoration: the
+   Letterboxd mark's orange/green/blue, and the IMAX format box's brand blue (decision #15).
 
    `body { cursor: default }` — plain text reads with the arrow cursor (an app, not a document);
    interactive elements set `cursor-pointer` themselves, and the film title (name only, not the
@@ -449,25 +452,31 @@ is gitignored runtime cache/staging.
     IMAX is sourced from Cineworld (decision #16 — a `Format.Projection.Imax` tag, plus a
     `": The IMAX Experience"` companion-movie form the adapter folds in); aliases `imax 70mm` /
     `15/70` / `1570` / `format.projection.imax` also map. `displayFilmFormats` mirrors
-    `displayScreeningTags`. Render: `<FilmFormatTag>` — a solid `--color-fg` box holding the
-    label on the `FilmCard` meta line (after duration, before Letterboxd); all formats share a
-    width, `height = width / ratio`, and `ratio` descends 35mm (1.5) → 70mm (1.2) → IMAX
-    (0.95) so a bigger format is a taller box ("bigger format = taller", user's framing — not
-    literal projection ratios). `<FilmFormatMarks>` — a bare ratio-shaped rectangle after the
-    time on a pill / `DayPlan` row, the format analogue of the `☻` mark. `filmFormatsTooltip`
-    is merged into the pill / plan-row `title` next to `screeningTagsTooltip`. Decorative → never
-    accent (#7), not a count (#8). All three formats count toward the **Highlights** toggle
-    (`preferred` memo in `ScreeningBrowser`). Formats are a *tag*, not a marquee sticker, so the
-    "one sticker max" rule is unaffected — a 70mm Parent & Baby screening shows both. The card
-    tag is styled as a single frame of film strip — a `--color-bg` radial-gradient tiled down
-    each edge (`Perforations` in `FilmFormats.tsx`) so the sprocket holes fill the box height
-    whatever the ratio. The label rides a two-copy vertical reel (`.flm-filmstrip-reel`) and the
-    sprocket rails scroll their background (`.flm-filmstrip-rail`, one 5px dot-period per loop so
-    it's seamless at any box height) — both upward, roughly speed-matched, so the whole box reads
-    as one strip of film running through a projector gate. `.flm-filmstrip-*` live in
-    `globals.css`; reduced-motion / print freeze both.
-    First real data landed 2026-08-29: "The Odyssey" plays 35mm at Light House and 70mm at IFI
-    in the same week, so its card shows both boxes and each pill carries its own mark.
+    `displayScreeningTags`. Render: `<FilmFormatTag>` — a box on the `FilmCard` meta line (after
+    duration, before Letterboxd); all formats share a width, `height = width / ratio`, and
+    `ratio` descends 35mm (1.5) → 70mm (1.2) → IMAX (0.95) so a bigger format is a taller box
+    ("bigger format = taller", user's framing — not literal projection ratios).
+    `<FilmFormatMarks>` — a bare ratio-shaped rectangle after the time on a pill / `DayPlan` row,
+    the format analogue of the `☻` mark. `filmFormatsTooltip` is merged into the pill / plan-row
+    `title` next to `screeningTagsTooltip`. Not a count (#8). All formats count toward the
+    **Highlights** toggle (`preferred` memo in `ScreeningBrowser`). Formats are a *tag*, not a
+    marquee sticker, so the "one sticker max" rule is unaffected — a 70mm Parent & Baby screening
+    shows both.
+
+    **Print (`print: true`) vs digital.** 35mm / 70mm are struck from an actual print: the card
+    box is styled as a single frame of film strip — a `--color-fg` box, `--color-bg` radial-
+    gradient sprocket rails tiled down each edge (`Perforations`), the label on a two-copy
+    vertical reel (`.flm-filmstrip-reel`) and the rails scrolling their background
+    (`.flm-filmstrip-rail`, one 5px dot-period per loop) — both upward, roughly speed-matched, so
+    it reads as film running through a gate. `.flm-filmstrip-*` live in `globals.css`;
+    reduced-motion / print freeze both. **IMAX (`print: false`)** is a normal digital projection
+    (it just means the big house), so its box is a **static plaque in the IMAX brand blue**
+    (`brandColor` `#0057b8`, white text) — no rails, no animation, same size/ratio. Its
+    `<FilmFormatMarks>` rectangle is the same blue. That blue is the **second** allowed exception
+    to the ink + single-gold palette (decision #7), after the Letterboxd mark — a third party's
+    brand identity, not decoration.
+    First real data: 2026-08-29 "The Odyssey" plays 35mm at Light House and 70mm at IFI the same
+    week; 2026-08-30 it added IMAX at Cineworld — one card, three format boxes, each pill its mark.
 
 14. **Settings panel — persisted viewing preferences (localStorage).** Added 2026-08-29. The
     app's **only** persisted state and its first `localStorage` / `useEffect` /

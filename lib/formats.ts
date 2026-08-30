@@ -4,6 +4,12 @@
 // format ("bigger format = taller"), and a bare ratio-shaped rectangle on each showtime pill.
 // See lib/screeningTags.ts for the special-audience / curated-event side of the same field.
 //
+// 35mm / 70mm are struck from an actual print, so their card box gets the animated film-strip
+// treatment (scrolling reel + sprocket rails). IMAX is a digital projection like every other
+// screening — it just means the big house — so its box is static and wears the IMAX brand blue
+// (`brandColor`), the second deliberate exception to the ink + single-gold palette after the
+// Letterboxd mark (CLAUDE.md decision #7).
+//
 // Sources: Light House puts "35mm" in em.additional; IFI encodes "70mm" as an svg[data-icon]
 // on each booking link (see lib/scrapers/ifi.ts); Cineworld tags an IMAX session
 // `Format.Projection.Imax`, which lib/scrapers/cineworld.ts normalises to "IMAX" (it also files
@@ -17,6 +23,11 @@ export interface FilmFormat {
   ratio: number;
   title: string; // tooltip heading
   description: string;
+  // An actual film print → the animated film-strip box treatment. IMAX (digital) is static.
+  print: boolean;
+  // Static-box background + pill-mark colour for a non-print format (IMAX blue). When unset the
+  // box/mark use the default ink (`--color-fg`).
+  brandColor?: string;
 }
 
 const FORMAT_35MM: FilmFormat = {
@@ -25,6 +36,7 @@ const FORMAT_35MM: FilmFormat = {
   ratio: 1.5,
   title: "35mm film",
   description: "Projected from a 35mm print rather than a digital file.",
+  print: true,
 };
 
 const FORMAT_70MM: FilmFormat = {
@@ -33,6 +45,7 @@ const FORMAT_70MM: FilmFormat = {
   ratio: 1.2,
   title: "70mm film",
   description: "Projected from a large-format 70mm print — a bigger, sharper image than 35mm.",
+  print: true,
 };
 
 const FORMAT_IMAX: FilmFormat = {
@@ -41,6 +54,8 @@ const FORMAT_IMAX: FilmFormat = {
   ratio: 0.95,
   title: "IMAX",
   description: "Shown in IMAX — the largest frame and screen format.",
+  print: false,
+  brandColor: "#0057b8",
 };
 
 // Keyed by the normalized (`.trim().toLowerCase()`) raw tag. Aliases collapse onto one format.
