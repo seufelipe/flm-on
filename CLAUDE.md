@@ -298,7 +298,9 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
     - UI: header button (`PreferencesButton`, sliders icon not a gear; a `--color-fg` dot when
       prefs ≠ default) → `SettingsPanel` (responsive modal / bottom sheet). Options are toggle
       buttons in `controlSegment.ts` style; the **Language** group is a `Segmented` single-select
-      (flush, same treatment as the filter bar). Cinemas + Times each require ≥1 on — the last
+      (flush, same treatment as the filter bar). Each group is one non-wrapping full-bleed
+      `overflow-x-auto` strip (the film-card pill idiom) — options scroll sideways rather than
+      stacking on a narrow screen. Cinemas + Times each require ≥1 on — the last
       remaining one locks (keeps the selected look, click is a no-op — not a greyed disabled
       state, decision #7).
 
