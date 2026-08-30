@@ -28,20 +28,16 @@ export function FilmFormatTag({ tags }: { tags?: string[] }) {
 }
 
 // A column of cream sprocket dots down one edge, tiled to fill the box height whatever the
-// format's ratio — so the box reads as a single frame of film strip.
+// format's ratio — so the box reads as a single frame of film strip. The dots scroll upward
+// too (`.flm-filmstrip-rail` in globals.css, its background/animation), roughly locked to the
+// label reel's speed, so the whole box reads as one moving strip.
 function Perforations({ side }: { side: "left" | "right" }) {
   return (
     <span
       aria-hidden="true"
-      className={`pointer-events-none absolute inset-y-[3px] w-[3px] ${
+      className={`flm-filmstrip-rail pointer-events-none absolute inset-y-[3px] w-[3px] ${
         side === "left" ? "left-[3px]" : "right-[3px]"
       }`}
-      style={{
-        backgroundImage: "radial-gradient(circle, var(--color-bg) 1.3px, transparent 1.6px)",
-        backgroundSize: "3px 5px",
-        backgroundRepeat: "repeat-y",
-        backgroundPosition: "center",
-      }}
     />
   );
 }

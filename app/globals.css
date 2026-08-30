@@ -141,6 +141,27 @@
   }
 }
 
+/* The sprocket-hole rails (Perforations in FilmFormats.tsx) scroll upward too, so the whole box
+   moves as one strip. Shifting the background by exactly one dot period (5px) keeps the loop
+   seamless whatever the box height; the duration is picked so the dot speed roughly matches the
+   label reel (one ~39px frame in 1.5s ≈ 5px per 0.19s). */
+.flm-filmstrip-rail {
+  background-image: radial-gradient(circle, var(--color-bg) 1.3px, transparent 1.6px);
+  background-size: 3px 5px;
+  background-repeat: repeat-y;
+  background-position-x: center;
+  animation: flm-filmstrip-rail 0.19s linear infinite;
+}
+
+@keyframes flm-filmstrip-rail {
+  from {
+    background-position-y: 0;
+  }
+  to {
+    background-position-y: -5px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .flm-marquee {
     width: auto;
@@ -154,7 +175,8 @@
     display: none;
   }
 
-  .flm-filmstrip-reel {
+  .flm-filmstrip-reel,
+  .flm-filmstrip-rail {
     animation: none;
     transform: none;
   }
@@ -182,7 +204,8 @@
   }
 
   /* Freeze the film-strip reel on its centred frame — a paused mid-scroll would print a seam. */
-  .flm-filmstrip-reel {
+  .flm-filmstrip-reel,
+  .flm-filmstrip-rail {
     animation: none;
     transform: none;
   }

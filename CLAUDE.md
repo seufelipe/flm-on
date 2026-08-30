@@ -421,9 +421,11 @@ is gitignored runtime cache/staging.
     "one sticker max" rule is unaffected — a 70mm Parent & Baby screening shows both. The card
     tag is styled as a single frame of film strip — a `--color-bg` radial-gradient tiled down
     each edge (`Perforations` in `FilmFormats.tsx`) so the sprocket holes fill the box height
-    whatever the ratio — and the label rides a two-copy vertical reel (`.flm-filmstrip-*` in
-    `globals.css`) scrolling upward on a continuous seamless loop, so it reads as a strip of film
-    running through a projector gate (the rails stay put); reduced-motion / print freeze it centred.
+    whatever the ratio. The label rides a two-copy vertical reel (`.flm-filmstrip-reel`) and the
+    sprocket rails scroll their background (`.flm-filmstrip-rail`, one 5px dot-period per loop so
+    it's seamless at any box height) — both upward, roughly speed-matched, so the whole box reads
+    as one strip of film running through a projector gate. `.flm-filmstrip-*` live in
+    `globals.css`; reduced-motion / print freeze both.
     First real data landed 2026-08-29: "The Odyssey" plays 35mm at Light House and 70mm at IFI
     in the same week, so its card shows both boxes and each pill carries its own mark.
 
