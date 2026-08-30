@@ -83,8 +83,10 @@ is gitignored runtime cache/staging.
   kept separate from `bookingUrl`). The links are the `cinemaLinks` prop — **one per cinema the
   film plays at across its whole preferred set, fixed regardless of the Day/Cinema/Time filter
   bar** (a film at both cinemas keeps both links while you browse one); only the session pills
-  follow the filter bar. Line 2: cert, duration,
-  Letterboxd link. Screening pills are grouped by day then timeframe; the day sub-header shows
+  follow the filter bar. Line 2: cert, duration, format tag(s), and the Letterboxd link — now the
+  Letterboxd three-dot mark (`LetterboxdLogo`, an inline SVG) rather than a text link, and the
+  one deliberate exception to the ink + single-gold palette (decision #7): it's a third party's
+  logo, so it keeps their orange/green/blue. Screening pills are grouped by day then timeframe; the day sub-header shows
   unless a specific Day chip is active (`daySpecified` — then the chip already says the day).
   Each day's pill row is a single non-wrapping `overflow-x-auto` strip (`scrollbar-none`, a
   `@utility` in `globals.css`) — pills scroll sideways rather than stacking, so a card stays

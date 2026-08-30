@@ -47,6 +47,19 @@ function Cert({ cert }: { cert: string }) {
   );
 }
 
+// The Letterboxd mark — three overlapping brand-colour dots (orange / green / blue), standing in
+// for the old "Letterboxd ↗" text link. The one deliberate exception to the ink + single-gold
+// palette (decision #7): it's a third party's logo, so it wears their colours.
+function LetterboxdLogo() {
+  return (
+    <svg viewBox="0 0 40 16" aria-hidden="true" className="h-3.5 w-auto shrink-0">
+      <circle cx="8" cy="8" r="8" fill="#FF8000" />
+      <circle cx="20" cy="8" r="8" fill="#00E054" />
+      <circle cx="32" cy="8" r="8" fill="#40BCF4" />
+    </svg>
+  );
+}
+
 export default function FilmCard({
   group,
   selectedKeys,
@@ -214,9 +227,11 @@ export default function FilmCard({
                 href={group.letterboxdUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="no-print underline underline-offset-2 text-sm"
+                aria-label="View on Letterboxd"
+                title="Letterboxd"
+                className="no-print inline-flex items-center transition-opacity hover:opacity-70"
               >
-                Letterboxd <span aria-hidden="true">↗</span>
+                <LetterboxdLogo />
               </a>
             )}
           </div>
