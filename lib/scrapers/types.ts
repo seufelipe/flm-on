@@ -10,6 +10,9 @@ export interface Screening {
   cert?: string;
   durationMins?: number;
   durationEstimated?: boolean;
+  // The film's director(s), comma-joined for a co-directed film. Not scraped from the cinemas —
+  // filled in by lib/aggregate.ts from the resolved Letterboxd page. Shown next to the runtime.
+  director?: string;
   year?: number;
   date: string; // ISO YYYY-MM-DD
   time: string; // "HH:MM" 24h

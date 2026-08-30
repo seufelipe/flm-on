@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-30T19:06:27.014Z",
+  "generatedAt": "2026-08-30T19:26:26.162Z",
   "days": [
     "2026-08-30",
     "2026-08-31",
@@ -18,6 +18,7 @@
       "time": "11:10",
       "bookingUrl": "https://shop.ifi.ie/performance/112925/",
       "filmPageUrl": "https://ifi.ie/films/guggi",
+      "director": "Ian Thuillier",
       "letterboxdUrl": "https://letterboxd.com/film/guggi/"
     },
     {
@@ -31,6 +32,7 @@
       "time": "11:30",
       "bookingUrl": "https://shop.ifi.ie/performance/112922/",
       "filmPageUrl": "https://ifi.ie/films/i-want-your-sex",
+      "director": "Gregg Araki",
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
     },
     {
@@ -59,6 +61,7 @@
         "French"
       ],
       "originalTitle": "La bataille de Gaulle: L'âge de fer",
+      "director": "Antonin Baudry",
       "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
     },
     {
@@ -87,6 +90,7 @@
         "Spanish"
       ],
       "originalTitle": "Amarga Navidad",
+      "director": "Pedro Almodóvar",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
@@ -100,6 +104,7 @@
       "time": "15:40",
       "bookingUrl": "https://shop.ifi.ie/performance/113397/",
       "filmPageUrl": "https://ifi.ie/films/tony",
+      "director": "Matt Johnson",
       "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
     },
     {
@@ -113,6 +118,7 @@
       "time": "15:50",
       "bookingUrl": "https://shop.ifi.ie/performance/112924/",
       "filmPageUrl": "https://ifi.ie/films/guggi",
+      "director": "Ian Thuillier",
       "letterboxdUrl": "https://letterboxd.com/film/guggi/"
     },
     {
@@ -129,6 +135,7 @@
       "screeningTags": [
         "70mm"
       ],
+      "director": "Christopher Nolan",
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
@@ -142,6 +149,7 @@
       "time": "17:40",
       "bookingUrl": "https://shop.ifi.ie/performance/113317/",
       "filmPageUrl": "https://ifi.ie/films/tony",
+      "director": "Matt Johnson",
       "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
     },
     {
@@ -159,6 +167,7 @@
         "Spanish"
       ],
       "originalTitle": "Amarga Navidad",
+      "director": "Pedro Almodóvar",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
@@ -176,6 +185,7 @@
         "French"
       ],
       "originalTitle": "La bataille de Gaulle: L'âge de fer",
+      "director": "Antonin Baudry",
       "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
     },
     {
@@ -189,6 +199,7 @@
       "time": "19:45",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40637&showtimeId=1001-40637&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-odyssey",
+      "director": "Christopher Nolan",
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
@@ -202,51 +213,8 @@
       "time": "20:00",
       "bookingUrl": "https://shop.ifi.ie/performance/112918/",
       "filmPageUrl": "https://ifi.ie/films/teenage-sex-and-death-at-camp-miasma",
+      "director": "Jane Schoenbrun",
       "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
-    },
-    {
-      "cinema": "cineworld",
-      "cinemaName": "Cineworld Dublin",
-      "filmTitle": "The Odyssey",
-      "cert": "15A",
-      "durationMins": 173,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "20:00",
-      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366815/seats",
-      "filmPageUrl": "https://www.cineworld.ie/movies/1000013045-the-odyssey/",
-      "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
-    },
-    {
-      "cinema": "cineworld",
-      "cinemaName": "Cineworld Dublin",
-      "filmTitle": "De Gaulle Part One: Résistance",
-      "originalTitle": "La bataille de Gaulle: L'âge de fer",
-      "cert": "15A",
-      "durationMins": 160,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "20:10",
-      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367028/seats",
-      "filmPageUrl": "https://www.cineworld.ie/movies/294280-de-gaulle-resistance/",
-      "screeningTags": [
-        "Subtitled",
-        "French"
-      ],
-      "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
-    },
-    {
-      "cinema": "cineworld",
-      "cinemaName": "Cineworld Dublin",
-      "filmTitle": "Spa Weekend",
-      "cert": "15A",
-      "durationMins": 93,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "20:15",
-      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367107/seats",
-      "filmPageUrl": "https://www.cineworld.ie/movies/1000019386-spa-weekend/",
-      "letterboxdUrl": "https://letterboxd.com/film/spa-weekend-2026/"
     },
     {
       "cinema": "cineworld",
@@ -263,6 +231,7 @@
         "Tamil",
         "Subtitled"
       ],
+      "director": "Shankar",
       "letterboxdUrl": "https://letterboxd.com/film/i-2015/"
     },
     {
@@ -276,6 +245,7 @@
       "time": "20:30",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40724&showtimeId=1001-40724&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/tony",
+      "director": "Matt Johnson",
       "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
     },
     {
@@ -293,6 +263,7 @@
         "Korean"
       ],
       "originalTitle": "군체",
+      "director": "Yeon Sang-ho",
       "letterboxdUrl": "https://letterboxd.com/film/colony-2026/"
     },
     {
@@ -306,6 +277,7 @@
       "time": "20:30",
       "bookingUrl": "https://shop.ifi.ie/performance/112920/",
       "filmPageUrl": "https://ifi.ie/films/i-want-your-sex",
+      "director": "Gregg Araki",
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
     },
     {
@@ -319,6 +291,7 @@
       "time": "20:30",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366981/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000024260-teenage-sex-and-death-at-camp-miasma/",
+      "director": "Jane Schoenbrun",
       "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
     },
     {
@@ -332,6 +305,7 @@
       "time": "20:40",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366752/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000014969-the-dog-stars/",
+      "director": "Ridley Scott",
       "letterboxdUrl": "https://letterboxd.com/film/the-dog-stars/"
     },
     {
@@ -349,6 +323,7 @@
       "screeningTags": [
         "Spanish"
       ],
+      "director": "Pedro Almodóvar",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
@@ -362,6 +337,7 @@
       "time": "20:50",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39677&showtimeId=1001-39677&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/i-want-your-sex",
+      "director": "Gregg Araki",
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
     },
     {
@@ -375,6 +351,7 @@
       "time": "20:50",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366782/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000003998-i-want-your-sex/",
+      "director": "Gregg Araki",
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
     },
     {
@@ -391,6 +368,7 @@
       "screeningTags": [
         "Big Screen Classics"
       ],
+      "director": "Rob Cohen",
       "letterboxdUrl": "https://letterboxd.com/film/the-fast-and-the-furious-2001/"
     },
     {
@@ -404,6 +382,7 @@
       "time": "21:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367082/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000016503-insidious-out-of-the-further/",
+      "director": "Jacob Chase",
       "letterboxdUrl": "https://letterboxd.com/film/insidious-out-of-the-further/"
     },
     {
@@ -417,6 +396,7 @@
       "time": "21:10",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367060/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/314503-the-end-of-oak-street/",
+      "director": "David Robert Mitchell",
       "letterboxdUrl": "https://letterboxd.com/film/the-end-of-oak-street/"
     },
     {
@@ -430,6 +410,7 @@
       "time": "21:15",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366876/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000019899-one-night-only/",
+      "director": "Will Gluck",
       "letterboxdUrl": "https://letterboxd.com/film/one-night-only-2026/"
     },
     {
@@ -446,6 +427,7 @@
       "screeningTags": [
         "35mm"
       ],
+      "director": "Christopher Nolan",
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
@@ -474,6 +456,7 @@
         "Spanish"
       ],
       "originalTitle": "Amarga Navidad",
+      "director": "Pedro Almodóvar",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
@@ -487,6 +470,7 @@
       "time": "13:00",
       "bookingUrl": "https://shop.ifi.ie/performance/112931/",
       "filmPageUrl": "https://ifi.ie/films/i-want-your-sex",
+      "director": "Gregg Araki",
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
     },
     {
@@ -500,6 +484,7 @@
       "time": "13:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366805/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/267335-coyote-vs-acme/",
+      "director": "Dave Green",
       "letterboxdUrl": "https://letterboxd.com/film/coyote-vs-acme/"
     },
     {
@@ -518,6 +503,7 @@
         "Subtitled",
         "French"
       ],
+      "director": "Antonin Baudry",
       "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
     },
     {
@@ -531,6 +517,7 @@
       "time": "13:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366934/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000002942-mutiny/",
+      "director": "Jean-François Richet",
       "letterboxdUrl": "https://letterboxd.com/film/mutiny-2026/"
     },
     {
@@ -544,6 +531,7 @@
       "time": "13:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367122/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000016503-insidious-out-of-the-further/",
+      "director": "Jacob Chase",
       "letterboxdUrl": "https://letterboxd.com/film/insidious-out-of-the-further/"
     },
     {
@@ -560,6 +548,7 @@
       "screeningTags": [
         "Big Screen Classics"
       ],
+      "director": "Rob Cohen",
       "letterboxdUrl": "https://letterboxd.com/film/the-fast-and-the-furious-2001/"
     },
     {
@@ -573,6 +562,7 @@
       "time": "13:05",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41005&showtimeId=1001-41005&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/coyote-vs-acme",
+      "director": "Dave Green",
       "letterboxdUrl": "https://letterboxd.com/film/coyote-vs-acme/"
     },
     {
@@ -586,6 +576,7 @@
       "time": "13:10",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366718/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "director": "Destin Daniel Cretton",
       "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
     },
     {
@@ -599,6 +590,7 @@
       "time": "13:20",
       "bookingUrl": "https://shop.ifi.ie/performance/113419/",
       "filmPageUrl": "https://ifi.ie/films/tony",
+      "director": "Matt Johnson",
       "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
     },
     {
@@ -612,6 +604,7 @@
       "time": "13:20",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367061/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/314503-the-end-of-oak-street/",
+      "director": "David Robert Mitchell",
       "letterboxdUrl": "https://letterboxd.com/film/the-end-of-oak-street/"
     },
     {
@@ -625,6 +618,7 @@
       "time": "13:30",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366840/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/322967-david/",
+      "director": "Phil Cunningham, Brent Dawes",
       "letterboxdUrl": "https://letterboxd.com/film/david-2025/"
     },
     {
@@ -643,6 +637,7 @@
         "Japanese"
       ],
       "originalTitle": "魔女の宅急便",
+      "director": "Hayao Miyazaki",
       "letterboxdUrl": "https://letterboxd.com/film/kikis-delivery-service/"
     },
     {
@@ -656,6 +651,7 @@
       "time": "13:35",
       "bookingUrl": "https://shop.ifi.ie/performance/113372/",
       "filmPageUrl": "https://ifi.ie/films/guggi",
+      "director": "Ian Thuillier",
       "letterboxdUrl": "https://letterboxd.com/film/guggi/"
     },
     {
@@ -669,6 +665,7 @@
       "time": "13:50",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366736/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000013045-the-odyssey/",
+      "director": "Christopher Nolan",
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
@@ -682,6 +679,7 @@
       "time": "14:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366951/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000009107-tony/",
+      "director": "Matt Johnson",
       "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
     },
     {
@@ -698,6 +696,7 @@
       "screeningTags": [
         "IMAX"
       ],
+      "director": "Christopher Nolan",
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
@@ -715,6 +714,7 @@
         "French"
       ],
       "originalTitle": "La bataille de Gaulle: L'âge de fer",
+      "director": "Antonin Baudry",
       "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
     },
     {
@@ -728,6 +728,7 @@
       "time": "15:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366653/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000014969-the-dog-stars/",
+      "director": "Ridley Scott",
       "letterboxdUrl": "https://letterboxd.com/film/the-dog-stars/"
     },
     {
@@ -741,6 +742,7 @@
       "time": "15:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366904/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000016503-insidious-out-of-the-further/",
+      "director": "Jacob Chase",
       "letterboxdUrl": "https://letterboxd.com/film/insidious-out-of-the-further/"
     },
     {
@@ -754,6 +756,7 @@
       "time": "15:25",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41029&showtimeId=1001-41029&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/tony",
+      "director": "Matt Johnson",
       "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
     },
     {
@@ -770,6 +773,7 @@
       "screeningTags": [
         "70mm"
       ],
+      "director": "Christopher Nolan",
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
@@ -783,6 +787,7 @@
       "time": "15:30",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366972/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "director": "Destin Daniel Cretton",
       "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
     },
     {
@@ -796,6 +801,7 @@
       "time": "15:30",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366935/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000002942-mutiny/",
+      "director": "Jean-François Richet",
       "letterboxdUrl": "https://letterboxd.com/film/mutiny-2026/"
     },
     {
@@ -809,6 +815,7 @@
       "time": "15:35",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41002&showtimeId=1001-41002&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/teenage-sex-and-death-at-camp-miasma",
+      "director": "Jane Schoenbrun",
       "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
     },
     {
@@ -826,6 +833,7 @@
         "Spanish"
       ],
       "originalTitle": "Amarga Navidad",
+      "director": "Pedro Almodóvar",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
@@ -842,6 +850,7 @@
       "screeningTags": [
         "Big Screen Classics"
       ],
+      "director": "Rob Cohen",
       "letterboxdUrl": "https://letterboxd.com/film/the-fast-and-the-furious-2001/"
     },
     {
@@ -859,6 +868,7 @@
         "Spanish"
       ],
       "originalTitle": "Amarga Navidad",
+      "director": "Pedro Almodóvar",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
@@ -872,6 +882,7 @@
       "time": "16:00",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40050&showtimeId=1001-40050&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/i-want-your-sex",
+      "director": "Gregg Araki",
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
     },
     {
@@ -889,6 +900,7 @@
         "Tamil",
         "Subtitled"
       ],
+      "director": "Shankar",
       "letterboxdUrl": "https://letterboxd.com/film/i-2015/"
     },
     {
@@ -902,6 +914,7 @@
       "time": "16:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366847/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/314503-the-end-of-oak-street/",
+      "director": "David Robert Mitchell",
       "letterboxdUrl": "https://letterboxd.com/film/the-end-of-oak-street/"
     },
     {
@@ -915,6 +928,7 @@
       "time": "16:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366783/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000003998-i-want-your-sex/",
+      "director": "Gregg Araki",
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
     },
     {
@@ -928,6 +942,7 @@
       "time": "16:20",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366816/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000013045-the-odyssey/",
+      "director": "Christopher Nolan",
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
@@ -941,6 +956,7 @@
       "time": "16:30",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366719/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "director": "Destin Daniel Cretton",
       "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
     },
     {
@@ -959,6 +975,7 @@
         "Subtitled",
         "French"
       ],
+      "director": "Antonin Baudry",
       "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
     },
     {
@@ -972,6 +989,7 @@
       "time": "17:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366952/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000009107-tony/",
+      "director": "Matt Johnson",
       "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
     },
     {
@@ -985,6 +1003,7 @@
       "time": "17:40",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366652/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000014969-the-dog-stars/",
+      "director": "Ridley Scott",
       "letterboxdUrl": "https://letterboxd.com/film/the-dog-stars/"
     },
     {
@@ -998,6 +1017,7 @@
       "time": "17:45",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366905/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000016503-insidious-out-of-the-further/",
+      "director": "Jacob Chase",
       "letterboxdUrl": "https://letterboxd.com/film/insidious-out-of-the-further/"
     },
     {
@@ -1011,6 +1031,7 @@
       "time": "18:00",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41004&showtimeId=1001-41004&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/coyote-vs-acme",
+      "director": "Dave Green",
       "letterboxdUrl": "https://letterboxd.com/film/coyote-vs-acme/"
     },
     {
@@ -1028,6 +1049,7 @@
       "screeningTags": [
         "Spanish"
       ],
+      "director": "Pedro Almodóvar",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
@@ -1044,6 +1066,7 @@
       "screeningTags": [
         "Open Captioned"
       ],
+      "director": "Matt Johnson",
       "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
     },
     {
@@ -1057,6 +1080,7 @@
       "time": "18:10",
       "bookingUrl": "https://shop.ifi.ie/performance/112932/",
       "filmPageUrl": "https://ifi.ie/films/guggi",
+      "director": "Ian Thuillier",
       "letterboxdUrl": "https://letterboxd.com/film/guggi/"
     },
     {
@@ -1075,6 +1099,7 @@
         "Japanese"
       ],
       "originalTitle": "魔女の宅急便",
+      "director": "Hayao Miyazaki",
       "letterboxdUrl": "https://letterboxd.com/film/kikis-delivery-service/"
     },
     {
@@ -1088,6 +1113,7 @@
       "time": "18:20",
       "bookingUrl": "https://shop.ifi.ie/performance/112935/",
       "filmPageUrl": "https://ifi.ie/films/teenage-sex-and-death-at-camp-miasma",
+      "director": "Jane Schoenbrun",
       "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
     },
     {
@@ -1104,6 +1130,7 @@
       "screeningTags": [
         "Cinema Book Club"
       ],
+      "director": "Chris Columbus",
       "letterboxdUrl": "https://letterboxd.com/film/mrs-doubtfire/"
     },
     {
@@ -1117,6 +1144,7 @@
       "time": "18:30",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366784/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000003998-i-want-your-sex/",
+      "director": "Gregg Araki",
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
     },
     {
@@ -1130,6 +1158,7 @@
       "time": "18:30",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366737/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000013045-the-odyssey/",
+      "director": "Christopher Nolan",
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
@@ -1143,6 +1172,7 @@
       "time": "18:35",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367126/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000019386-spa-weekend/",
+      "director": "Jon Lucas, Scott Moore",
       "letterboxdUrl": "https://letterboxd.com/film/spa-weekend-2026/"
     },
     {
@@ -1156,6 +1186,7 @@
       "time": "18:40",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366848/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/314503-the-end-of-oak-street/",
+      "director": "David Robert Mitchell",
       "letterboxdUrl": "https://letterboxd.com/film/the-end-of-oak-street/"
     },
     {
@@ -1169,6 +1200,7 @@
       "time": "18:50",
       "bookingUrl": "https://shop.ifi.ie/performance/112930/",
       "filmPageUrl": "https://ifi.ie/films/i-want-your-sex",
+      "director": "Gregg Araki",
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
     },
     {
@@ -1182,6 +1214,7 @@
       "time": "18:50",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366878/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000019899-one-night-only/",
+      "director": "Will Gluck",
       "letterboxdUrl": "https://letterboxd.com/film/one-night-only-2026/"
     },
     {
@@ -1195,6 +1228,7 @@
       "time": "19:30",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366923/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "director": "Destin Daniel Cretton",
       "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
     },
     {
@@ -1211,6 +1245,7 @@
       "screeningTags": [
         "IMAX"
       ],
+      "director": "Christopher Nolan",
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
@@ -1228,6 +1263,7 @@
         "French"
       ],
       "originalTitle": "La bataille de Gaulle: L'âge de fer",
+      "director": "Antonin Baudry",
       "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
     },
     {
@@ -1241,6 +1277,7 @@
       "time": "20:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366953/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000009107-tony/",
+      "director": "Matt Johnson",
       "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
     },
     {
@@ -1259,6 +1296,7 @@
         "Subtitled",
         "French"
       ],
+      "director": "Antonin Baudry",
       "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
     },
     {
@@ -1272,6 +1310,7 @@
       "time": "20:10",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366817/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000013045-the-odyssey/",
+      "director": "Christopher Nolan",
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
@@ -1289,6 +1328,7 @@
         "Tamil",
         "Subtitled"
       ],
+      "director": "Shankar",
       "letterboxdUrl": "https://letterboxd.com/film/i-2015/"
     },
     {
@@ -1306,6 +1346,7 @@
         "Spanish"
       ],
       "originalTitle": "Amarga Navidad",
+      "director": "Pedro Almodóvar",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
@@ -1319,6 +1360,7 @@
       "time": "20:30",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366906/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000016503-insidious-out-of-the-further/",
+      "director": "Jacob Chase",
       "letterboxdUrl": "https://letterboxd.com/film/insidious-out-of-the-further/"
     },
     {
@@ -1332,6 +1374,7 @@
       "time": "20:35",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41000&showtimeId=1001-41000&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/teenage-sex-and-death-at-camp-miasma",
+      "director": "Jane Schoenbrun",
       "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
     },
     {
@@ -1349,6 +1392,7 @@
         "Korean"
       ],
       "originalTitle": "군체",
+      "director": "Yeon Sang-ho",
       "letterboxdUrl": "https://letterboxd.com/film/colony-2026/"
     },
     {
@@ -1362,6 +1406,7 @@
       "time": "20:40",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367071/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "director": "Destin Daniel Cretton",
       "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
     },
     {
@@ -1375,6 +1420,7 @@
       "time": "20:40",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366651/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000014969-the-dog-stars/",
+      "director": "Ridley Scott",
       "letterboxdUrl": "https://letterboxd.com/film/the-dog-stars/"
     },
     {
@@ -1388,6 +1434,7 @@
       "time": "20:40",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366982/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000024260-teenage-sex-and-death-at-camp-miasma/",
+      "director": "Jane Schoenbrun",
       "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
     },
     {
@@ -1406,6 +1453,7 @@
         "Spanish"
       ],
       "originalTitle": "Amarga Navidad",
+      "director": "Pedro Almodóvar",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
@@ -1423,6 +1471,7 @@
       "screeningTags": [
         "Spanish"
       ],
+      "director": "Pedro Almodóvar",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
@@ -1436,6 +1485,7 @@
       "time": "20:50",
       "bookingUrl": "https://shop.ifi.ie/performance/113319/",
       "filmPageUrl": "https://ifi.ie/films/tony",
+      "director": "Matt Johnson",
       "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
     },
     {
@@ -1449,6 +1499,7 @@
       "time": "21:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366785/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000003998-i-want-your-sex/",
+      "director": "Gregg Araki",
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
     },
     {
@@ -1462,6 +1513,7 @@
       "time": "21:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367127/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000019386-spa-weekend/",
+      "director": "Jon Lucas, Scott Moore",
       "letterboxdUrl": "https://letterboxd.com/film/spa-weekend-2026/"
     },
     {
@@ -1475,6 +1527,7 @@
       "time": "21:10",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366849/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/314503-the-end-of-oak-street/",
+      "director": "David Robert Mitchell",
       "letterboxdUrl": "https://letterboxd.com/film/the-end-of-oak-street/"
     },
     {
@@ -1488,6 +1541,7 @@
       "time": "21:15",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40049&showtimeId=1001-40049&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/i-want-your-sex",
+      "director": "Gregg Araki",
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
     },
     {
@@ -1501,6 +1555,7 @@
       "time": "21:15",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366877/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000019899-one-night-only/",
+      "director": "Will Gluck",
       "letterboxdUrl": "https://letterboxd.com/film/one-night-only-2026/"
     },
     {
@@ -1518,6 +1573,7 @@
         "Spanish"
       ],
       "originalTitle": "Amarga Navidad",
+      "director": "Pedro Almodóvar",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
@@ -1531,6 +1587,7 @@
       "time": "12:35",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41038&showtimeId=1001-41038&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/spider-man-brand-new-day",
+      "director": "Destin Daniel Cretton",
       "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
     },
     {
@@ -1544,6 +1601,7 @@
       "time": "12:50",
       "bookingUrl": "https://shop.ifi.ie/performance/113379/",
       "filmPageUrl": "https://ifi.ie/films/guggi",
+      "director": "Ian Thuillier",
       "letterboxdUrl": "https://letterboxd.com/film/guggi/"
     },
     {
@@ -1557,6 +1615,7 @@
       "time": "13:00",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40513&showtimeId=1001-40513&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/coyote-vs-acme",
+      "director": "Dave Green",
       "letterboxdUrl": "https://letterboxd.com/film/coyote-vs-acme/"
     },
     {
@@ -1570,6 +1629,7 @@
       "time": "13:00",
       "bookingUrl": "https://shop.ifi.ie/performance/113411/",
       "filmPageUrl": "https://ifi.ie/films/i-want-your-sex",
+      "director": "Gregg Araki",
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
     },
     {
@@ -1587,6 +1647,7 @@
         "Spanish"
       ],
       "originalTitle": "Amarga Navidad",
+      "director": "Pedro Almodóvar",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
@@ -1600,6 +1661,7 @@
       "time": "13:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366806/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/267335-coyote-vs-acme/",
+      "director": "Dave Green",
       "letterboxdUrl": "https://letterboxd.com/film/coyote-vs-acme/"
     },
     {
@@ -1618,6 +1680,7 @@
         "Subtitled",
         "French"
       ],
+      "director": "Antonin Baudry",
       "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
     },
     {
@@ -1631,6 +1694,7 @@
       "time": "13:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367090/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000016503-insidious-out-of-the-further/",
+      "director": "Jacob Chase",
       "letterboxdUrl": "https://letterboxd.com/film/insidious-out-of-the-further/"
     },
     {
@@ -1647,6 +1711,7 @@
       "screeningTags": [
         "Big Screen Classics"
       ],
+      "director": "Rob Cohen",
       "letterboxdUrl": "https://letterboxd.com/film/the-fast-and-the-furious-2001/"
     },
     {
@@ -1660,6 +1725,7 @@
       "time": "13:10",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366721/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "director": "Destin Daniel Cretton",
       "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
     },
     {
@@ -1673,6 +1739,7 @@
       "time": "13:10",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366936/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000002942-mutiny/",
+      "director": "Jean-François Richet",
       "letterboxdUrl": "https://letterboxd.com/film/mutiny-2026/"
     },
     {
@@ -1686,6 +1753,7 @@
       "time": "13:15",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41032&showtimeId=1001-41032&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-end-of-oak-street",
+      "director": "David Robert Mitchell",
       "letterboxdUrl": "https://letterboxd.com/film/the-end-of-oak-street/"
     },
     {
@@ -1699,6 +1767,7 @@
       "time": "13:20",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367062/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/314503-the-end-of-oak-street/",
+      "director": "David Robert Mitchell",
       "letterboxdUrl": "https://letterboxd.com/film/the-end-of-oak-street/"
     },
     {
@@ -1712,6 +1781,7 @@
       "time": "13:20",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367120/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000009107-tony/",
+      "director": "Matt Johnson",
       "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
     },
     {
@@ -1725,6 +1795,7 @@
       "time": "13:30",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367089/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/322967-david/",
+      "director": "Phil Cunningham, Brent Dawes",
       "letterboxdUrl": "https://letterboxd.com/film/david-2025/"
     },
     {
@@ -1738,6 +1809,7 @@
       "time": "13:50",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366738/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000013045-the-odyssey/",
+      "director": "Christopher Nolan",
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
@@ -1751,6 +1823,7 @@
       "time": "14:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366954/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000009107-tony/",
+      "director": "Matt Johnson",
       "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
     },
     {
@@ -1764,6 +1837,7 @@
       "time": "14:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367087/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000014969-the-dog-stars/",
+      "director": "Ridley Scott",
       "letterboxdUrl": "https://letterboxd.com/film/the-dog-stars/"
     },
     {
@@ -1777,6 +1851,7 @@
       "time": "14:25",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40481&showtimeId=1001-40481&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/i-want-your-sex",
+      "director": "Gregg Araki",
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
     },
     {
@@ -1794,6 +1869,7 @@
         "French"
       ],
       "originalTitle": "La bataille de Gaulle: L'âge de fer",
+      "director": "Antonin Baudry",
       "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
     },
     {
@@ -1810,6 +1886,7 @@
       "screeningTags": [
         "70mm"
       ],
+      "director": "Christopher Nolan",
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
@@ -1823,6 +1900,7 @@
       "time": "15:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366656/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000014969-the-dog-stars/",
+      "director": "Ridley Scott",
       "letterboxdUrl": "https://letterboxd.com/film/the-dog-stars/"
     },
     {
@@ -1839,6 +1917,7 @@
       "screeningTags": [
         "IMAX"
       ],
+      "director": "Christopher Nolan",
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
@@ -1857,6 +1936,7 @@
         "Japanese"
       ],
       "originalTitle": "魔女の宅急便",
+      "director": "Hayao Miyazaki",
       "letterboxdUrl": "https://letterboxd.com/film/kikis-delivery-service/"
     },
     {
@@ -1870,6 +1950,7 @@
       "time": "15:30",
       "bookingUrl": "https://shop.ifi.ie/performance/113384/",
       "filmPageUrl": "https://ifi.ie/films/teenage-sex-and-death-at-camp-miasma",
+      "director": "Jane Schoenbrun",
       "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
     },
     {
@@ -1883,6 +1964,7 @@
       "time": "15:30",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366974/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "director": "Destin Daniel Cretton",
       "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
     },
     {
@@ -1896,6 +1978,7 @@
       "time": "15:30",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366937/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000002942-mutiny/",
+      "director": "Jean-François Richet",
       "letterboxdUrl": "https://letterboxd.com/film/mutiny-2026/"
     },
     {
@@ -1913,6 +1996,7 @@
         "Spanish"
       ],
       "originalTitle": "Amarga Navidad",
+      "director": "Pedro Almodóvar",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
@@ -1929,6 +2013,7 @@
       "screeningTags": [
         "Open Captioned"
       ],
+      "director": "Jane Schoenbrun",
       "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
     },
     {
@@ -1942,6 +2027,7 @@
       "time": "15:40",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366907/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000016503-insidious-out-of-the-further/",
+      "director": "Jacob Chase",
       "letterboxdUrl": "https://letterboxd.com/film/insidious-out-of-the-further/"
     },
     {
@@ -1958,6 +2044,7 @@
       "screeningTags": [
         "Big Screen Classics"
       ],
+      "director": "Rob Cohen",
       "letterboxdUrl": "https://letterboxd.com/film/the-fast-and-the-furious-2001/"
     },
     {
@@ -1971,6 +2058,7 @@
       "time": "16:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367065/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/314503-the-end-of-oak-street/",
+      "director": "David Robert Mitchell",
       "letterboxdUrl": "https://letterboxd.com/film/the-end-of-oak-street/"
     },
     {
@@ -1984,6 +2072,7 @@
       "time": "16:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366786/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000003998-i-want-your-sex/",
+      "director": "Gregg Araki",
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
     },
     {
@@ -1997,6 +2086,7 @@
       "time": "16:20",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366818/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000013045-the-odyssey/",
+      "director": "Christopher Nolan",
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
@@ -2010,6 +2100,7 @@
       "time": "16:30",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41030&showtimeId=1001-41030&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/lady",
+      "director": "Olive Nwosu",
       "letterboxdUrl": "https://letterboxd.com/film/lady-2026/"
     },
     {
@@ -2023,6 +2114,7 @@
       "time": "16:30",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366722/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "director": "Destin Daniel Cretton",
       "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
     },
     {
@@ -2041,6 +2133,7 @@
         "Subtitled",
         "French"
       ],
+      "director": "Antonin Baudry",
       "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
     },
     {
@@ -2054,6 +2147,7 @@
       "time": "17:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366955/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000009107-tony/",
+      "director": "Matt Johnson",
       "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
     },
     {
@@ -2067,6 +2161,7 @@
       "time": "17:10",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366889/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "director": "Destin Daniel Cretton",
       "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
     },
     {
@@ -2080,6 +2175,7 @@
       "time": "17:40",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366655/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000014969-the-dog-stars/",
+      "director": "Ridley Scott",
       "letterboxdUrl": "https://letterboxd.com/film/the-dog-stars/"
     },
     {
@@ -2093,6 +2189,7 @@
       "time": "18:00",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41036&showtimeId=1001-41036&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/nirvanna-the-band-the-show-the-movie",
+      "director": "Matt Johnson",
       "letterboxdUrl": "https://letterboxd.com/film/nirvanna-the-band-the-show-the-movie/"
     },
     {
@@ -2110,6 +2207,7 @@
       "screeningTags": [
         "Spanish"
       ],
+      "director": "Pedro Almodóvar",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
@@ -2123,6 +2221,7 @@
       "time": "18:10",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40512&showtimeId=1001-40512&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/coyote-vs-acme",
+      "director": "Dave Green",
       "letterboxdUrl": "https://letterboxd.com/film/coyote-vs-acme/"
     },
     {
@@ -2136,6 +2235,7 @@
       "time": "18:10",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41033&showtimeId=1001-41033&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/tony",
+      "director": "Matt Johnson",
       "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
     },
     {
@@ -2149,6 +2249,7 @@
       "time": "18:10",
       "bookingUrl": "https://shop.ifi.ie/performance/113380/",
       "filmPageUrl": "https://ifi.ie/films/guggi",
+      "director": "Ian Thuillier",
       "letterboxdUrl": "https://letterboxd.com/film/guggi/"
     },
     {
@@ -2162,6 +2263,7 @@
       "time": "18:20",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366908/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000016503-insidious-out-of-the-further/",
+      "director": "Jacob Chase",
       "letterboxdUrl": "https://letterboxd.com/film/insidious-out-of-the-further/"
     },
     {
@@ -2179,6 +2281,7 @@
         "Spanish"
       ],
       "originalTitle": "Amarga Navidad",
+      "director": "Pedro Almodóvar",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
@@ -2192,6 +2295,7 @@
       "time": "18:30",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366787/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000003998-i-want-your-sex/",
+      "director": "Gregg Araki",
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
     },
     {
@@ -2205,6 +2309,7 @@
       "time": "18:30",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366739/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000013045-the-odyssey/",
+      "director": "Christopher Nolan",
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
@@ -2218,6 +2323,7 @@
       "time": "18:35",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367115/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000019386-spa-weekend/",
+      "director": "Jon Lucas, Scott Moore",
       "letterboxdUrl": "https://letterboxd.com/film/spa-weekend-2026/"
     },
     {
@@ -2231,6 +2337,7 @@
       "time": "18:40",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367064/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/314503-the-end-of-oak-street/",
+      "director": "David Robert Mitchell",
       "letterboxdUrl": "https://letterboxd.com/film/the-end-of-oak-street/"
     },
     {
@@ -2244,6 +2351,7 @@
       "time": "18:45",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366880/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000019899-one-night-only/",
+      "director": "Will Gluck",
       "letterboxdUrl": "https://letterboxd.com/film/one-night-only-2026/"
     },
     {
@@ -2257,6 +2365,7 @@
       "time": "19:30",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366925/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "director": "Destin Daniel Cretton",
       "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
     },
     {
@@ -2273,6 +2382,7 @@
       "screeningTags": [
         "IMAX"
       ],
+      "director": "Christopher Nolan",
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
@@ -2290,6 +2400,7 @@
         "French"
       ],
       "originalTitle": "La bataille de Gaulle: L'âge de fer",
+      "director": "Antonin Baudry",
       "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
     },
     {
@@ -2303,6 +2414,7 @@
       "time": "20:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366956/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000009107-tony/",
+      "director": "Matt Johnson",
       "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
     },
     {
@@ -2321,6 +2433,7 @@
         "Subtitled",
         "French"
       ],
+      "director": "Antonin Baudry",
       "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
     },
     {
@@ -2334,6 +2447,7 @@
       "time": "20:10",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366819/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000013045-the-odyssey/",
+      "director": "Christopher Nolan",
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
@@ -2347,6 +2461,7 @@
       "time": "20:20",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40480&showtimeId=1001-40480&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/i-want-your-sex",
+      "director": "Gregg Araki",
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
     },
     {
@@ -2364,6 +2479,7 @@
         "Spanish"
       ],
       "originalTitle": "Amarga Navidad",
+      "director": "Pedro Almodóvar",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
@@ -2377,6 +2493,7 @@
       "time": "20:30",
       "bookingUrl": "https://shop.ifi.ie/performance/113410/",
       "filmPageUrl": "https://ifi.ie/films/i-want-your-sex",
+      "director": "Gregg Araki",
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
     },
     {
@@ -2390,6 +2507,7 @@
       "time": "20:40",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41007&showtimeId=1001-41007&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/teenage-sex-and-death-at-camp-miasma",
+      "director": "Jane Schoenbrun",
       "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
     },
     {
@@ -2407,6 +2525,7 @@
         "Korean"
       ],
       "originalTitle": "군체",
+      "director": "Yeon Sang-ho",
       "letterboxdUrl": "https://letterboxd.com/film/colony-2026/"
     },
     {
@@ -2420,6 +2539,7 @@
       "time": "20:40",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366890/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "director": "Destin Daniel Cretton",
       "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
     },
     {
@@ -2433,6 +2553,7 @@
       "time": "20:40",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366654/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000014969-the-dog-stars/",
+      "director": "Ridley Scott",
       "letterboxdUrl": "https://letterboxd.com/film/the-dog-stars/"
     },
     {
@@ -2446,6 +2567,7 @@
       "time": "20:40",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366983/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000024260-teenage-sex-and-death-at-camp-miasma/",
+      "director": "Jane Schoenbrun",
       "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
     },
     {
@@ -2463,6 +2585,7 @@
       "screeningTags": [
         "Spanish"
       ],
+      "director": "Pedro Almodóvar",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
@@ -2476,6 +2599,7 @@
       "time": "20:50",
       "bookingUrl": "https://shop.ifi.ie/performance/113382/",
       "filmPageUrl": "https://ifi.ie/films/tony",
+      "director": "Matt Johnson",
       "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
     },
     {
@@ -2489,6 +2613,7 @@
       "time": "21:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366788/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000003998-i-want-your-sex/",
+      "director": "Gregg Araki",
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
     },
     {
@@ -2502,6 +2627,7 @@
       "time": "21:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366909/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000016503-insidious-out-of-the-further/",
+      "director": "Jacob Chase",
       "letterboxdUrl": "https://letterboxd.com/film/insidious-out-of-the-further/"
     },
     {
@@ -2515,6 +2641,7 @@
       "time": "21:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367116/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000019386-spa-weekend/",
+      "director": "Jon Lucas, Scott Moore",
       "letterboxdUrl": "https://letterboxd.com/film/spa-weekend-2026/"
     },
     {
@@ -2528,6 +2655,7 @@
       "time": "21:10",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367063/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/314503-the-end-of-oak-street/",
+      "director": "David Robert Mitchell",
       "letterboxdUrl": "https://letterboxd.com/film/the-end-of-oak-street/"
     },
     {
@@ -2541,6 +2669,7 @@
       "time": "21:15",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366879/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000019899-one-night-only/",
+      "director": "Will Gluck",
       "letterboxdUrl": "https://letterboxd.com/film/one-night-only-2026/"
     },
     {
@@ -2560,6 +2689,7 @@
         "Japanese"
       ],
       "originalTitle": "魔女の宅急便",
+      "director": "Hayao Miyazaki",
       "letterboxdUrl": "https://letterboxd.com/film/kikis-delivery-service/"
     },
     {
@@ -2573,6 +2703,7 @@
       "time": "11:10",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40129&showtimeId=1001-40129&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/teenage-sex-and-death-at-camp-miasma",
+      "director": "Jane Schoenbrun",
       "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
     },
     {
@@ -2589,6 +2720,7 @@
       "screeningTags": [
         "Spanish"
       ],
+      "director": "Alejandro G. Iñárritu",
       "letterboxdUrl": "https://letterboxd.com/film/amores-perros/"
     },
     {
@@ -2602,6 +2734,7 @@
       "time": "13:00",
       "bookingUrl": "https://shop.ifi.ie/performance/113390/",
       "filmPageUrl": "https://ifi.ie/films/guggi",
+      "director": "Ian Thuillier",
       "letterboxdUrl": "https://letterboxd.com/film/guggi/"
     },
     {
@@ -2615,6 +2748,7 @@
       "time": "13:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366807/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/267335-coyote-vs-acme/",
+      "director": "Dave Green",
       "letterboxdUrl": "https://letterboxd.com/film/coyote-vs-acme/"
     },
     {
@@ -2633,6 +2767,7 @@
         "Subtitled",
         "French"
       ],
+      "director": "Antonin Baudry",
       "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
     },
     {
@@ -2646,6 +2781,7 @@
       "time": "13:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367066/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000002580-the-death-of-robin-hood/",
+      "director": "Michael Sarnoski",
       "letterboxdUrl": "https://letterboxd.com/film/the-death-of-robin-hood/"
     },
     {
@@ -2659,6 +2795,7 @@
       "time": "13:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366938/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000002942-mutiny/",
+      "director": "Jean-François Richet",
       "letterboxdUrl": "https://letterboxd.com/film/mutiny-2026/"
     },
     {
@@ -2672,6 +2809,7 @@
       "time": "13:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367091/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000016503-insidious-out-of-the-further/",
+      "director": "Jacob Chase",
       "letterboxdUrl": "https://letterboxd.com/film/insidious-out-of-the-further/"
     },
     {
@@ -2688,6 +2826,7 @@
       "screeningTags": [
         "Big Screen Classics"
       ],
+      "director": "Rob Cohen",
       "letterboxdUrl": "https://letterboxd.com/film/the-fast-and-the-furious-2001/"
     },
     {
@@ -2712,6 +2851,7 @@
       "time": "13:10",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366724/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "director": "Destin Daniel Cretton",
       "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
     },
     {
@@ -2729,6 +2869,7 @@
         "Spanish"
       ],
       "originalTitle": "Amarga Navidad",
+      "director": "Pedro Almodóvar",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
@@ -2742,6 +2883,7 @@
       "time": "13:20",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367118/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000009107-tony/",
+      "director": "Matt Johnson",
       "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
     },
     {
@@ -2755,6 +2897,7 @@
       "time": "13:25",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40521&showtimeId=1001-40521&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/tony",
+      "director": "Matt Johnson",
       "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
     },
     {
@@ -2768,6 +2911,7 @@
       "time": "13:30",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41042&showtimeId=1001-41042&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/lady",
+      "director": "Olive Nwosu",
       "letterboxdUrl": "https://letterboxd.com/film/lady-2026/"
     },
     {
@@ -2781,6 +2925,7 @@
       "time": "13:30",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366842/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/322967-david/",
+      "director": "Phil Cunningham, Brent Dawes",
       "letterboxdUrl": "https://letterboxd.com/film/david-2025/"
     },
     {
@@ -2798,6 +2943,7 @@
         "Spanish"
       ],
       "originalTitle": "Amarga Navidad",
+      "director": "Pedro Almodóvar",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
@@ -2811,6 +2957,7 @@
       "time": "13:50",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366740/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000013045-the-odyssey/",
+      "director": "Christopher Nolan",
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
@@ -2824,6 +2971,7 @@
       "time": "14:00",
       "bookingUrl": "https://shop.ifi.ie/performance/113086/",
       "filmPageUrl": "https://ifi.ie/films/leviticus-2",
+      "director": "Adrian Chiarella",
       "letterboxdUrl": "https://letterboxd.com/film/leviticus-2026/"
     },
     {
@@ -2837,6 +2985,7 @@
       "time": "14:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366957/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000009107-tony/",
+      "director": "Matt Johnson",
       "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
     },
     {
@@ -2850,6 +2999,7 @@
       "time": "14:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367086/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000014969-the-dog-stars/",
+      "director": "Ridley Scott",
       "letterboxdUrl": "https://letterboxd.com/film/the-dog-stars/"
     },
     {
@@ -2866,6 +3016,7 @@
       "screeningTags": [
         "70mm"
       ],
+      "director": "Christopher Nolan",
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
@@ -2879,6 +3030,7 @@
       "time": "15:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366657/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000014969-the-dog-stars/",
+      "director": "Ridley Scott",
       "letterboxdUrl": "https://letterboxd.com/film/the-dog-stars/"
     },
     {
@@ -2895,6 +3047,7 @@
       "screeningTags": [
         "IMAX"
       ],
+      "director": "Christopher Nolan",
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
@@ -2908,6 +3061,7 @@
       "time": "15:30",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366976/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "director": "Destin Daniel Cretton",
       "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
     },
     {
@@ -2921,6 +3075,7 @@
       "time": "15:30",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366939/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000002942-mutiny/",
+      "director": "Jean-François Richet",
       "letterboxdUrl": "https://letterboxd.com/film/mutiny-2026/"
     },
     {
@@ -2938,6 +3093,7 @@
         "Spanish"
       ],
       "originalTitle": "Amarga Navidad",
+      "director": "Pedro Almodóvar",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
@@ -2951,6 +3107,7 @@
       "time": "15:40",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367094/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000016503-insidious-out-of-the-further/",
+      "director": "Jacob Chase",
       "letterboxdUrl": "https://letterboxd.com/film/insidious-out-of-the-further/"
     },
     {
@@ -2964,6 +3121,7 @@
       "time": "15:45",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40135&showtimeId=1001-40135&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/coyote-vs-acme",
+      "director": "Dave Green",
       "letterboxdUrl": "https://letterboxd.com/film/coyote-vs-acme/"
     },
     {
@@ -2977,6 +3135,7 @@
       "time": "15:50",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40482&showtimeId=1001-40482&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/i-want-your-sex",
+      "director": "Gregg Araki",
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
     },
     {
@@ -2990,6 +3149,7 @@
       "time": "15:50",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366864/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000002580-the-death-of-robin-hood/",
+      "director": "Michael Sarnoski",
       "letterboxdUrl": "https://letterboxd.com/film/the-death-of-robin-hood/"
     },
     {
@@ -3006,6 +3166,7 @@
       "screeningTags": [
         "Big Screen Classics"
       ],
+      "director": "Rob Cohen",
       "letterboxdUrl": "https://letterboxd.com/film/the-fast-and-the-furious-2001/"
     },
     {
@@ -3019,6 +3180,7 @@
       "time": "16:00",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41049&showtimeId=1001-41049&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-invite",
+      "director": "Olivia Wilde",
       "letterboxdUrl": "https://letterboxd.com/film/the-invite-2026/"
     },
     {
@@ -3032,6 +3194,7 @@
       "time": "16:00",
       "bookingUrl": "https://shop.ifi.ie/performance/113389/",
       "filmPageUrl": "https://ifi.ie/films/i-want-your-sex",
+      "director": "Gregg Araki",
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
     },
     {
@@ -3045,6 +3208,7 @@
       "time": "16:10",
       "bookingUrl": "https://shop.ifi.ie/performance/112970/",
       "filmPageUrl": "https://ifi.ie/films/teenage-sex-and-death-at-camp-miasma",
+      "director": "Jane Schoenbrun",
       "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
     },
     {
@@ -3058,6 +3222,7 @@
       "time": "16:20",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366820/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000013045-the-odyssey/",
+      "director": "Christopher Nolan",
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
@@ -3071,6 +3236,7 @@
       "time": "16:30",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366725/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "director": "Destin Daniel Cretton",
       "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
     },
     {
@@ -3089,6 +3255,7 @@
         "Subtitled",
         "French"
       ],
+      "director": "Antonin Baudry",
       "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
     },
     {
@@ -3102,6 +3269,7 @@
       "time": "17:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366958/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000009107-tony/",
+      "director": "Matt Johnson",
       "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
     },
     {
@@ -3115,6 +3283,7 @@
       "time": "17:10",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366891/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "director": "Destin Daniel Cretton",
       "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
     },
     {
@@ -3128,6 +3297,7 @@
       "time": "17:40",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366658/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000014969-the-dog-stars/",
+      "director": "Ridley Scott",
       "letterboxdUrl": "https://letterboxd.com/film/the-dog-stars/"
     },
     {
@@ -3141,6 +3311,7 @@
       "time": "18:00",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41040&showtimeId=1001-41040&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/tony",
+      "director": "Matt Johnson",
       "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
     },
     {
@@ -3154,6 +3325,7 @@
       "time": "18:00",
       "bookingUrl": "https://shop.ifi.ie/performance/112968/",
       "filmPageUrl": "https://ifi.ie/films/guggi",
+      "director": "Ian Thuillier",
       "letterboxdUrl": "https://letterboxd.com/film/guggi/"
     },
     {
@@ -3171,6 +3343,7 @@
       "screeningTags": [
         "Spanish"
       ],
+      "director": "Pedro Almodóvar",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
@@ -3188,6 +3361,7 @@
         "Spanish"
       ],
       "originalTitle": "Amarga Navidad",
+      "director": "Pedro Almodóvar",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
@@ -3201,6 +3375,7 @@
       "time": "18:20",
       "bookingUrl": "https://shop.ifi.ie/performance/113412/",
       "filmPageUrl": "https://ifi.ie/films/tony",
+      "director": "Matt Johnson",
       "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
     },
     {
@@ -3214,6 +3389,7 @@
       "time": "18:20",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367093/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000016503-insidious-out-of-the-further/",
+      "director": "Jacob Chase",
       "letterboxdUrl": "https://letterboxd.com/film/insidious-out-of-the-further/"
     },
     {
@@ -3227,6 +3403,7 @@
       "time": "18:25",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40132&showtimeId=1001-40132&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/coyote-vs-acme",
+      "director": "Dave Green",
       "letterboxdUrl": "https://letterboxd.com/film/coyote-vs-acme/"
     },
     {
@@ -3243,6 +3420,7 @@
       "screeningTags": [
         "Open Captioned"
       ],
+      "director": "Gregg Araki",
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
     },
     {
@@ -3256,6 +3434,7 @@
       "time": "18:30",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366863/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000002580-the-death-of-robin-hood/",
+      "director": "Michael Sarnoski",
       "letterboxdUrl": "https://letterboxd.com/film/the-death-of-robin-hood/"
     },
     {
@@ -3269,6 +3448,7 @@
       "time": "18:30",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366741/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000013045-the-odyssey/",
+      "director": "Christopher Nolan",
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
@@ -3282,6 +3462,7 @@
       "time": "18:35",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367010/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000019386-spa-weekend/",
+      "director": "Jon Lucas, Scott Moore",
       "letterboxdUrl": "https://letterboxd.com/film/spa-weekend-2026/"
     },
     {
@@ -3295,6 +3476,7 @@
       "time": "18:45",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366881/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000019899-one-night-only/",
+      "director": "Will Gluck",
       "letterboxdUrl": "https://letterboxd.com/film/one-night-only-2026/"
     },
     {
@@ -3308,6 +3490,7 @@
       "time": "19:30",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366927/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "director": "Destin Daniel Cretton",
       "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
     },
     {
@@ -3324,6 +3507,7 @@
       "screeningTags": [
         "IMAX"
       ],
+      "director": "Christopher Nolan",
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
@@ -3341,6 +3525,7 @@
         "French"
       ],
       "originalTitle": "La bataille de Gaulle: L'âge de fer",
+      "director": "Antonin Baudry",
       "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
     },
     {
@@ -3354,6 +3539,7 @@
       "time": "20:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366959/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000009107-tony/",
+      "director": "Matt Johnson",
       "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
     },
     {
@@ -3372,6 +3558,7 @@
         "Subtitled",
         "French"
       ],
+      "director": "Antonin Baudry",
       "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
     },
     {
@@ -3385,6 +3572,7 @@
       "time": "20:10",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366821/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000013045-the-odyssey/",
+      "director": "Christopher Nolan",
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
@@ -3398,6 +3586,7 @@
       "time": "20:20",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41026&showtimeId=1001-41026&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/trainspotting-4k-restoration",
+      "director": "Danny Boyle",
       "letterboxdUrl": "https://letterboxd.com/film/trainspotting/"
     },
     {
@@ -3411,6 +3600,7 @@
       "time": "20:30",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40130&showtimeId=1001-40130&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/teenage-sex-and-death-at-camp-miasma",
+      "director": "Jane Schoenbrun",
       "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
     },
     {
@@ -3424,6 +3614,7 @@
       "time": "20:30",
       "bookingUrl": "https://shop.ifi.ie/performance/113085/",
       "filmPageUrl": "https://ifi.ie/films/leviticus-2",
+      "director": "Adrian Chiarella",
       "letterboxdUrl": "https://letterboxd.com/film/leviticus-2026/"
     },
     {
@@ -3441,6 +3632,7 @@
         "Korean"
       ],
       "originalTitle": "군체",
+      "director": "Yeon Sang-ho",
       "letterboxdUrl": "https://letterboxd.com/film/colony-2026/"
     },
     {
@@ -3458,6 +3650,7 @@
         "Spanish"
       ],
       "originalTitle": "Amarga Navidad",
+      "director": "Pedro Almodóvar",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
@@ -3471,6 +3664,7 @@
       "time": "20:40",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366892/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "director": "Destin Daniel Cretton",
       "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
     },
     {
@@ -3484,6 +3678,7 @@
       "time": "20:40",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366659/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000014969-the-dog-stars/",
+      "director": "Ridley Scott",
       "letterboxdUrl": "https://letterboxd.com/film/the-dog-stars/"
     },
     {
@@ -3497,6 +3692,7 @@
       "time": "20:40",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366984/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000024260-teenage-sex-and-death-at-camp-miasma/",
+      "director": "Jane Schoenbrun",
       "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
     },
     {
@@ -3514,6 +3710,7 @@
       "screeningTags": [
         "Spanish"
       ],
+      "director": "Pedro Almodóvar",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
@@ -3527,6 +3724,7 @@
       "time": "20:50",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40138&showtimeId=1001-40138&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/i-want-your-sex",
+      "director": "Gregg Araki",
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
     },
     {
@@ -3540,6 +3738,7 @@
       "time": "21:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367092/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000016503-insidious-out-of-the-further/",
+      "director": "Jacob Chase",
       "letterboxdUrl": "https://letterboxd.com/film/insidious-out-of-the-further/"
     },
     {
@@ -3553,6 +3752,7 @@
       "time": "21:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367011/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000019386-spa-weekend/",
+      "director": "Jon Lucas, Scott Moore",
       "letterboxdUrl": "https://letterboxd.com/film/spa-weekend-2026/"
     },
     {
@@ -3566,6 +3766,7 @@
       "time": "21:10",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366862/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000002580-the-death-of-robin-hood/",
+      "director": "Michael Sarnoski",
       "letterboxdUrl": "https://letterboxd.com/film/the-death-of-robin-hood/"
     },
     {
@@ -3579,6 +3780,7 @@
       "time": "21:15",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366882/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000019899-one-night-only/",
+      "director": "Will Gluck",
       "letterboxdUrl": "https://letterboxd.com/film/one-night-only-2026/"
     }
   ]

@@ -137,6 +137,7 @@ async function withLetterboxdLinks(screenings: Screening[]): Promise<Screening[]
       ...s,
       screeningTags,
       originalTitle,
+      director: match?.director ?? s.director,
       letterboxdUrl: match?.url,
       year: match?.year ?? s.year,
     };

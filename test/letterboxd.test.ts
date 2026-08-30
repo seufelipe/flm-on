@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { parsePrimaryLanguage, parseOriginalTitle } from "@/lib/letterboxd";
+import { parsePrimaryLanguage, parseOriginalTitle, parseDirector } from "@/lib/letterboxd";
 
 // Snippets mirror Letterboxd's real details-panel markup (server HTML, `hidden="until-found"`).
 const multiLang = `
@@ -65,5 +65,43 @@ describe("parseOriginalTitle", () => {
 
   it("returns undefined when the film has no original-name heading", () => {
     expect(parseOriginalTitle(`<h1 class="headline-1 primaryname"><span>Trainspotting</span></h1>`)).toBeUndefined();
+  });
+});
+
+describe("parseDirector", () => {
+  it("reads the 'Directed by' Twitter meta pair", () => {
+    const html = `
+      <meta name="twitter:label1" content="Directed by">
+      <meta name="twitter:data1" content="Danny Boyle">
+      <meta name="twitter:label2" content="Average rating">
+      <meta name="twitter:data2" content="4.23 out of 5">`;
+    expect(parseDirector(html)).toBe("Danny Boyle");
+  });
+
+  it("keeps co-directors comma-joined", () => {
+    const html = `
+      <meta name="twitter:label1" content="Directed by">
+      <meta name="twitter:data1" content="Daniel Scheinert, Daniel Kwan">`;
+    expect(parseDirector(html)).toBe("Daniel Scheinert, Daniel Kwan");
+  });
+
+  it("matches the label to its own index, not always 1", () => {
+    const html = `
+      <meta name="twitter:label1" content="Average rating">
+      <meta name="twitter:data1" content="3.9 out of 5">
+      <meta name="twitter:label2" content="Directed by">
+      <meta name="twitter:data2" content="Agnès Varda">`;
+    expect(parseDirector(html)).toBe("Agnès Varda");
+  });
+
+  it("decodes HTML entities in the name", () => {
+    const html = `
+      <meta name="twitter:label1" content="Directed by">
+      <meta name="twitter:data1" content="Bong Joon-ho &amp; friends">`;
+    expect(parseDirector(html)).toBe("Bong Joon-ho & friends");
+  });
+
+  it("returns undefined when there's no 'Directed by' pair", () => {
+    expect(parseDirector(`<meta name="twitter:label1" content="Average rating">`)).toBeUndefined();
   });
 });

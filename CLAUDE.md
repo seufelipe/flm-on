@@ -31,7 +31,7 @@ the curated override / editorial files (`title-overrides`, `letterboxd-overrides
 - `lib/aggregate.ts` — `getShowtimesForRange` / `refreshShowtimesForRange`. Fetches each adapter's
   *missing* dates in one batched call, caches per `(cinema, date)` (incl. an explicit empty array
   for dates a cinema has nothing on). Then, per screening: `cleanFilmTitle` → drop hidden films →
-  resolve Letterboxd (URL, year, language, original title) → fold the language into
+  resolve Letterboxd (URL, year, language, original title, director) → fold the language into
   `screeningTags`. Returns `DayResult` incl. `titleAnnotations` (for the label pre-fill).
 - `lib/cache.ts` — in-memory Map + `data/cache.json` fallback, 6h TTL. Only `fetch-batch` + dev.
 - `lib/titles.ts` — `cleanFilmTitle(raw, overrides)`: exact `corrections`, then `stripPrefixes`
@@ -45,10 +45,11 @@ the curated override / editorial files (`title-overrides`, `letterboxd-overrides
 - `lib/hidden.ts` — `data/hidden-films.json` (`{ titleSubstrings: string[] }`), a case-insensitive
   substring blocklist on the cleaned title, applied in `aggregate` before Letterboxd. A hidden
   film never reaches staged/published data, from any cinema.
-- `lib/letterboxd.ts` — `resolveLetterboxd(title, year)` → `{ url?, year?, language?, originalTitle? }`
+- `lib/letterboxd.ts` — `resolveLetterboxd(title, year)` → `{ url?, year?, language?, originalTitle?, director? }`
   (decision #4). One page fetch yields the `og:title` year (adopted as the film's real year),
   `parsePrimaryLanguage` (non-English only, decision #17), `parseOriginalTitle`
-  (`<h2 class="originalname">`, native script). Cache: `data/letterboxd-cache.json`, keyed
+  (`<h2 class="originalname">`, native script), `parseDirector` (the `twitter:label*/data*`
+  "Directed by" meta pair, comma-joined co-directors). Cache: `data/letterboxd-cache.json`, keyed
   `title|year` (`year` = *scraped* year, often empty → `"I (Ai)|"`), no TTL, an entry missing any
   field re-resolves once (gitignored, so churn is invisible). `data/letterboxd-overrides.json`
   (`Record<"title|year", url|null>`) is checked first and always wins.
@@ -102,15 +103,20 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
 - `components/FilmCard.tsx` — one film's card. **Line 1** (`<h3>`): `[original title] TITLE [year]`
   — the black uppercase name flanked by `<TitleMeta>` (`font-normal text-dim`, title-sized,
   natural case); the original-language title shows before the name when `FilmGroup.originalTitle`
-  is set. Cinema film-page links (`cinemaLinks` prop — one per cinema the film plays at across
-  its *whole* preferred set, fixed regardless of the filter bar) as `text-dim` chips top-right.
-  **Line 2** (`hasMetaLine`): cert, duration, `<LanguageTag>`, format box(es), the Letterboxd
-  three-dot mark, then last the `<FilmNotes>` marquee sticker. Pills grouped by day then
+  is set. The `<FilmNotes>` marquee sticker sits right after the year (`ml-3`, its own `text-xs`,
+  `vertical-align: middle` against the title) — moved off the meta line once it had grown.
+  **Line 2** (`hasMetaLine`): cert, duration + director (both `text-base text-dim`), `<LanguageTag>`,
+  format box(es).
+  **Footer row** (`hasFooter`, `mt-16` — same gap as below the header, no divider): the cinema
+  film-page links (`cinemaLinks` prop — one per cinema the film plays at across its *whole*
+  preferred set, fixed regardless of the filter bar) as `text-dim` chips on the left, the
+  Letterboxd three-dot mark on the right (`justify-between`). Whole row is `no-print`.
+  Pills grouped by day then
   timeframe; each day's row is one non-wrapping `overflow-x-auto` strip (needs `relative` — the
   pills' `position:absolute` `.sr-only` spans would otherwise escape the clip and give the page a
   phantom horizontal scrollbar; `-mx-8 px-8` full-bleeds it past the card padding).
 - `components/FilmNotes.tsx` + `components/MarqueeSticker.tsx` — the **one** dark scrolling
-  sticker per card (`FilmNotes`, last on the meta line), carrying the special-screening name(s)
+  sticker per card (`FilmNotes`, beside the year on the title line), carrying the special-screening name(s)
   *and* the curated editorial label (decision #11) joined by ` · ` ("☻ parent & baby ·
   4k restoration"). `MarqueeSticker` is `"use client"`: measures one copy and sets
   `--flm-marquee-shift` (exact px — a `%`-of-`max-content` translate stutters at speed) and
@@ -172,8 +178,9 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
      *different* real film of that name from this year (`The Sacrifice` → `the-sacrifice-2026`).
      Pinned in `letterboxd-overrides.json` keyed on the *wrong* year (`"The Sacrifice|2026"`).
      When reviewing a batch, sanity-check every repertory/restoration link, not just NOT FOUND.
-   - The same page fetch also yields the **Primary Language** (decision #17) and **original
-     title** (native script) — see `lib/letterboxd.ts` above.
+   - The same page fetch also yields the **Primary Language** (decision #17), the **original
+     title** (native script) and the **director(s)** (shown next to the runtime on the card's
+     meta line) — see `lib/letterboxd.ts` above.
 
 5. **Day-plan building only activates when the Day filter is one specific date** (`activeDay !==
    null`) — a plan is single-day. The Day filter **defaults to today** (the next day with
@@ -398,7 +405,8 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
 
 **Committed:**
 - `showtimes.json` — the published week. Only file that gets pushed. Screenings may carry
-  `screeningTags: string[]` (shared vocab — decisions #13/#15/#17) and `originalTitle` (#16).
+  `screeningTags: string[]` (shared vocab — decisions #13/#15/#17), `originalTitle` (#16) and
+  `director` (from Letterboxd, decision #4).
 - `title-overrides.json` — `{ stripPrefixes, stripAnnotations (regex sources), corrections }`.
 - `letterboxd-overrides.json` — `Record<"title|year", string | null>`; `year` is the *scraped*
   year, often empty (`"I (Ai)|"`).

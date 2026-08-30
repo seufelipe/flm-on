@@ -23,6 +23,7 @@ const LABELWORTHY_ANNOTATION = /\b(?:anniversary|restoration)\b/i;
 interface FilmSummary {
   filmTitle: string;
   year?: number;
+  director?: string;
   letterboxdUrl?: string;
   titleVariants: Set<string>;
 }
@@ -36,11 +37,12 @@ function summarizeFilms(screenings: Screening[]): FilmSummary[] {
     const key = s.filmTitle.trim().toLowerCase();
     let entry = seen.get(key);
     if (!entry) {
-      entry = { filmTitle: s.filmTitle, year: s.year, letterboxdUrl: s.letterboxdUrl, titleVariants: new Set() };
+      entry = { filmTitle: s.filmTitle, year: s.year, director: s.director, letterboxdUrl: s.letterboxdUrl, titleVariants: new Set() };
       seen.set(key, entry);
     }
     entry.titleVariants.add(s.filmTitle);
     entry.year = entry.year ?? s.year;
+    entry.director = entry.director ?? s.director;
     entry.letterboxdUrl = entry.letterboxdUrl ?? s.letterboxdUrl;
   }
   return Array.from(seen.values()).sort((a, b) => a.filmTitle.localeCompare(b.filmTitle));
@@ -75,7 +77,9 @@ async function main() {
     const letterboxd = f.letterboxdUrl ?? "NOT FOUND";
     const variants = Array.from(f.titleVariants);
     const titleLabel = variants.length > 1 ? `${variants.join(" / ")} [CASING DIFFERS]` : variants[0];
-    console.log(`- ${titleLabel}${f.year ? ` (${f.year})` : ""} — Letterboxd: ${letterboxd}`);
+    console.log(
+      `- ${titleLabel}${f.year ? ` (${f.year})` : ""}${f.director ? ` — dir. ${f.director}` : ""} — Letterboxd: ${letterboxd}`,
+    );
   }
 
   // Curated editorial tags (data/film-labels.json) — not part of the published showtimes,

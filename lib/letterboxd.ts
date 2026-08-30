@@ -66,6 +66,21 @@ function decodeEntities(s: string): string {
     .replace(/&amp;/g, "&");
 }
 
+// Letterboxd puts the director(s) in a Twitter card meta pair in the page head —
+// `<meta name="twitter:label1" content="Directed by">` + a matching `twitter:data1` holding the
+// name(s), comma-joined for a co-directed film ("Daniel Scheinert, Daniel Kwan"). The label
+// index isn't always 1, so match "Directed by" to its number first, then read that `data{n}`.
+export function parseDirector(html: string): string | undefined {
+  const label = html.match(/<meta name="twitter:label(\d)" content="Directed by"\s*\/?>/i);
+  if (!label) return undefined;
+  const data = html.match(
+    new RegExp(`<meta name="twitter:data${label[1]}" content="([^"]*)"`, "i"),
+  );
+  if (!data) return undefined;
+  const name = decodeEntities(data[1]).trim();
+  return name || undefined;
+}
+
 // Letterboxd shows the film's original title (often in its native script) as
 // `<h2 class="originalname" lang="…">…</h2>` in the masthead — only when it differs from the
 // primary display name (English films / films whose display title *is* the original get none).
@@ -78,7 +93,7 @@ export function parseOriginalTitle(html: string): string | undefined {
 
 async function fetchFilmPage(
   slug: string,
-): Promise<{ ok: boolean; year?: number; language?: string; originalTitle?: string }> {
+): Promise<{ ok: boolean; year?: number; language?: string; originalTitle?: string; director?: string }> {
   try {
     const res = await fetch(`https://letterboxd.com/film/${slug}/`, {
       headers: { "User-Agent": USER_AGENT },
@@ -91,6 +106,7 @@ async function fetchFilmPage(
       year: yearMatch ? Number(yearMatch[1]) : undefined,
       language: parsePrimaryLanguage(html),
       originalTitle: parseOriginalTitle(html),
+      director: parseDirector(html),
     };
   } catch {
     return { ok: false };
@@ -113,6 +129,9 @@ export interface LetterboxdMatch {
   // The page's original-language title (native script), when it differs from the display name —
   // shown dimmed before the title on the card (lib/aggregate.ts, FilmCard).
   originalTitle?: string;
+  // The page's director(s), comma-joined for a co-directed film — shown next to the runtime on
+  // the card's meta line (lib/aggregate.ts, FilmCard).
+  director?: string;
 }
 
 // A cache entry is the resolved URL plus what's read off that page (year, primary language,
@@ -124,6 +143,7 @@ type CacheEntry = {
   year: number | null;
   language?: string | null;
   originalTitle?: string | null;
+  director?: string | null;
 };
 type LetterboxdCache = Record<string, CacheEntry | string | null>;
 type LetterboxdOverrides = Record<string, string | null>;
@@ -140,14 +160,20 @@ function entryToMatch(entry: CacheEntry): LetterboxdMatch {
     year: entry.year ?? undefined,
     language: entry.language ?? undefined,
     originalTitle: entry.originalTitle ?? undefined,
+    director: entry.director ?? undefined,
   };
 }
 
 // True once an entry has been fully resolved against a real page — year, language and original
 // title all recorded. A `year: null` (page had no `og:title` year) or a missing `language` /
-// `originalTitle` key forces a re-resolve.
+// `originalTitle` / `director` key forces a re-resolve.
 function isResolved(entry: CacheEntry): boolean {
-  return entry.year !== null && entry.language !== undefined && entry.originalTitle !== undefined;
+  return (
+    entry.year !== null &&
+    entry.language !== undefined &&
+    entry.originalTitle !== undefined &&
+    entry.director !== undefined
+  );
 }
 
 let memoryCache: LetterboxdCache | undefined;
@@ -208,6 +234,7 @@ export async function resolveLetterboxd(title: string, year?: number): Promise<L
       year: page?.year ?? null,
       language: page?.language ?? null,
       originalTitle: page?.originalTitle ?? null,
+      director: page?.director ?? null,
     };
     cache[key] = entry;
     await saveCache(cache);
@@ -234,6 +261,7 @@ export async function resolveLetterboxd(title: string, year?: number): Promise<L
       year: page.year,
       language: page.language,
       originalTitle: page.originalTitle,
+      director: page.director,
     };
     break;
   }
@@ -244,6 +272,7 @@ export async function resolveLetterboxd(title: string, year?: number): Promise<L
         year: match.year ?? null,
         language: match.language ?? null,
         originalTitle: match.originalTitle ?? null,
+        director: match.director ?? null,
       }
     : null;
   await saveCache(cache);

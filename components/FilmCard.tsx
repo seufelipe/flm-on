@@ -8,7 +8,7 @@ import { groupScreeningsByTimeframe } from "@/lib/timeframe";
 import { ScreeningTagMarks } from "@/components/ScreeningTags";
 import { FilmFormatTag, FilmFormatMarks } from "@/components/FilmFormats";
 import { LanguageTag, LanguageMarks } from "@/components/ScreeningLanguage";
-import { displayScreeningTags, screeningTagsTooltip } from "@/lib/screeningTags";
+import { screeningTagsTooltip } from "@/lib/screeningTags";
 import { displayFilmFormats, filmFormatsTooltip } from "@/lib/formats";
 import { displayLanguage, languageTooltip } from "@/lib/languages";
 import { CINEMA_LABEL } from "@/lib/cinemas";
@@ -184,91 +184,64 @@ export default function FilmCard({
   const isMystery = isMysteryFilm(group.filmTitle);
 
   // Descriptors across all of this film's visible sessions. The special-screening name(s) and
-  // the curated editorial label are named together in one `<FilmNotes>` sticker at the end of
-  // the meta line; the individual pills carry only the bare ☻ mark.
+  // the curated editorial label are named together in one `<FilmNotes>` sticker beside the year
+  // on the title line; the individual pills carry only the bare ☻ mark.
   const sessionTags = Array.from(new Set(group.screenings.flatMap((s) => s.screeningTags ?? [])));
   const sessionFormats = displayFilmFormats(sessionTags);
   // Only the language name goes on the card (per-film); the subtitled/dubbed state is per-showtime
   // and lives on the pills, so it doesn't count towards showing the meta line.
   const sessionLanguage = displayLanguage(sessionTags)?.language;
-  // The `<FilmNotes>` sticker (special-screening name(s) + the curated label) now lives on the
-  // meta line, so its presence keeps the line rendering even for a film with nothing else on it.
-  const hasNotes =
-    label != null || displayScreeningTags(specialTags ?? sessionTags).some((t) => t.mark !== false);
 
   const hasMetaLine =
     group.cert !== undefined ||
     (group.durationMins !== undefined && !isMystery) ||
-    group.letterboxdUrl !== undefined ||
+    (group.director !== undefined && !isMystery) ||
     sessionFormats.length > 0 ||
-    sessionLanguage !== undefined ||
-    hasNotes;
+    sessionLanguage !== undefined;
+
+  // Bottom row, below the screenings: the cinema film-page links on the left, the Letterboxd
+  // mark on the right. Both are `no-print`, so the whole row is dropped on print.
+  const hasFooter = cinemaPageLinks.length > 0 || group.letterboxdUrl !== undefined;
 
   return (
     <div className="bg-surface border-4 border-border rounded-card p-8">
       <div className="mb-16">
-        {/* On narrow screens there isn't room for the title and the cinema chips on one line, so
-            the chips stack above the title (order-1); from `md` up they sit top-right. */}
-        <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between md:gap-4">
-          <h3 className="order-2 md:order-1 text-2xl md:text-3xl tracking-tight">
-            {isMystery ? (
-              <MysteryTitle text={group.filmTitle} />
-            ) : (
-              <>
-                {/* Original-language title (Cineworld only), dimmed and title-sized like the
-                    year — sits before the name. */}
-                {group.originalTitle && <TitleMeta className="mr-3">{group.originalTitle}</TitleMeta>}
-                {/* The only plain text that keeps the I-beam cursor — the film name is the thing
-                    you actually want to select and copy. The metadata around it stays on the
-                    arrow cursor (globals.css default) so a drag-select grabs just the name. */}
-                <span className="font-black uppercase cursor-text">{group.filmTitle}</span>
-              </>
-            )}
-            {!isMystery && group.year !== undefined && (
-              <TitleMeta className="ml-3">{group.year}</TitleMeta>
-            )}
-          </h3>
-          {cinemaPageLinks.length > 0 && (
-            <div className="order-1 md:order-2 no-print flex flex-wrap gap-2 shrink-0 md:justify-end">
-              {cinemaPageLinks.map((link) => (
-                <a
-                  key={link.url}
-                  href={link.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="border-2 border-dim rounded-btn bg-surface text-dim px-3 py-1.5 text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-transform active:translate-x-[2px] active:translate-y-[2px]"
-                >
-                  {link.label} <span aria-hidden="true">↗</span>
-                </a>
-              ))}
-            </div>
+        <h3 className="text-2xl md:text-3xl tracking-tight">
+          {isMystery ? (
+            <MysteryTitle text={group.filmTitle} />
+          ) : (
+            <>
+              {/* Original-language title (Cineworld only), dimmed and title-sized like the
+                  year — sits before the name. */}
+              {group.originalTitle && <TitleMeta className="mr-3">{group.originalTitle}</TitleMeta>}
+              {/* The only plain text that keeps the I-beam cursor — the film name is the thing
+                  you actually want to select and copy. The metadata around it stays on the
+                  arrow cursor (globals.css default) so a drag-select grabs just the name. */}
+              <span className="font-black uppercase cursor-text">{group.filmTitle}</span>
+            </>
           )}
-        </div>
+          {!isMystery && group.year !== undefined && (
+            <TitleMeta className="ml-3">{group.year}</TitleMeta>
+          )}
+          {/* Special-screening name(s) + the curated editorial label, one marquee sticker,
+              beside the year (its own `text-xs`, vertically centred against the title). */}
+          <FilmNotes tags={specialTags ?? sessionTags} label={label} className="ml-3" />
+        </h3>
         {hasMetaLine && (
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2">
             {group.cert && <Cert cert={group.cert} />}
             {group.durationMins !== undefined && !isMystery && (
-              <span className="text-xs text-dim">
+              <span className="text-base text-dim">
                 {group.durationMins}min{group.durationEstimated ? " (est.)" : ""}
               </span>
             )}
+            {/* Director(s), from the resolved Letterboxd page — sits next to the runtime, same
+                dim treatment. Suppressed for a Mystery Matinee (would narrow the guess). */}
+            {group.director && !isMystery && (
+              <span className="text-base text-dim">{group.director}</span>
+            )}
             <LanguageTag tags={sessionTags} />
             <FilmFormatTag tags={sessionTags} />
-            {group.letterboxdUrl && (
-              <a
-                href={group.letterboxdUrl}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="View on Letterboxd"
-                title="Letterboxd"
-                className="no-print inline-flex items-center transition-opacity hover:opacity-70"
-              >
-                <LetterboxdLogo />
-              </a>
-            )}
-            {/* Special-screening name(s) + the curated editorial label, one marquee sticker,
-                last on the meta line. */}
-            <FilmNotes tags={specialTags ?? sessionTags} label={label} />
           </div>
         )}
       </div>
@@ -285,6 +258,35 @@ export default function FilmCard({
         </div>
       ) : (
         renderScreeningsRow(group.screenings)
+      )}
+      {hasFooter && (
+        <div className="no-print mt-16 flex flex-wrap items-center justify-between gap-4">
+          <div className="flex flex-wrap gap-2">
+            {cinemaPageLinks.map((link) => (
+              <a
+                key={link.url}
+                href={link.url}
+                target="_blank"
+                rel="noreferrer"
+                className="border-2 border-dim rounded-btn bg-surface text-dim px-3 py-1.5 text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-transform active:translate-x-[2px] active:translate-y-[2px]"
+              >
+                {link.label} <span aria-hidden="true">↗</span>
+              </a>
+            ))}
+          </div>
+          {group.letterboxdUrl && (
+            <a
+              href={group.letterboxdUrl}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="View on Letterboxd"
+              title="Letterboxd"
+              className="inline-flex items-center transition-opacity hover:opacity-70"
+            >
+              <LetterboxdLogo />
+            </a>
+          )}
+        </div>
       )}
     </div>
   );
