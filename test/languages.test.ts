@@ -4,6 +4,7 @@ import {
   languageTooltip,
   captionMark,
   isLanguageName,
+  hasNonEnglishLanguage,
   matchesLanguagePref,
 } from "@/lib/languages";
 
@@ -77,6 +78,21 @@ describe("matchesLanguagePref", () => {
     expect(matchesLanguagePref("non-english", ["Kannada", "Subtitled"])).toBe(true);
     expect(matchesLanguagePref("non-english", ["IMAX"])).toBe(false);
     expect(matchesLanguagePref("non-english", undefined)).toBe(false);
+  });
+});
+
+describe("hasNonEnglishLanguage", () => {
+  it("is true only for a genuine non-English original language", () => {
+    expect(hasNonEnglishLanguage(["French"])).toBe(true);
+    expect(hasNonEnglishLanguage(["Kannada", "Subtitled"])).toBe(true);
+  });
+
+  it("is false for an English film with only a subtitled / open-captioned session", () => {
+    expect(hasNonEnglishLanguage(["Subtitled"])).toBe(false);
+    expect(hasNonEnglishLanguage(["Open Captioned"])).toBe(false);
+    expect(hasNonEnglishLanguage(["Dubbed"])).toBe(false);
+    expect(hasNonEnglishLanguage(["IMAX"])).toBe(false);
+    expect(hasNonEnglishLanguage(undefined)).toBe(false);
   });
 });
 

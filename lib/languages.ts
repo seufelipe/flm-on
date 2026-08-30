@@ -96,12 +96,19 @@ export function captionMark(info: LanguageInfo): "ST" | "Dub" | null {
 
 // The "Language" preference filter (lib/preferences.ts): does this screening's film match?
 // A film is "non-English" when displayLanguage found an original language name (English never
-// yields one). `"any"` passes everything.
+// yields one). This — NOT the presence of subtitles — is what makes a screening a "highlight":
+// an English film with a subtitled/open-captioned session still shows the per-pill "ST" mark but
+// isn't a special.
+export function hasNonEnglishLanguage(tags?: string[]): boolean {
+  return displayLanguage(tags)?.language != null;
+}
+
+// The "Language" preference filter (lib/preferences.ts). `"any"` passes everything.
 export function matchesLanguagePref(
   pref: "any" | "english" | "non-english",
   tags?: string[],
 ): boolean {
   if (pref === "any") return true;
-  const nonEnglish = displayLanguage(tags)?.language != null;
+  const nonEnglish = hasNonEnglishLanguage(tags);
   return pref === "non-english" ? nonEnglish : !nonEnglish;
 }
