@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-30T19:26:26.162Z",
+  "generatedAt": "2026-08-30T19:51:47.616Z",
   "days": [
     "2026-08-30",
     "2026-08-31",
@@ -189,20 +189,6 @@
       "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
     },
     {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "The Odyssey",
-      "cert": "15A",
-      "durationMins": 172,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "19:45",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40637&showtimeId=1001-40637&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/the-odyssey",
-      "director": "Christopher Nolan",
-      "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
-    },
-    {
       "cinema": "ifi",
       "cinemaName": "IFI",
       "filmTitle": "Teenage Sex and Death at Camp Miasma",
@@ -215,38 +201,6 @@
       "filmPageUrl": "https://ifi.ie/films/teenage-sex-and-death-at-camp-miasma",
       "director": "Jane Schoenbrun",
       "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
-    },
-    {
-      "cinema": "cineworld",
-      "cinemaName": "Cineworld Dublin",
-      "filmTitle": "I",
-      "originalTitle": "ஐ",
-      "durationMins": 188,
-      "year": 2015,
-      "date": "2026-08-30",
-      "time": "20:20",
-      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367181/seats",
-      "filmPageUrl": "https://www.cineworld.ie/movies/231658-i-ai-tamil/",
-      "screeningTags": [
-        "Tamil",
-        "Subtitled"
-      ],
-      "director": "Shankar",
-      "letterboxdUrl": "https://letterboxd.com/film/i-2015/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Tony",
-      "cert": "15A",
-      "durationMins": 106,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "20:30",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40724&showtimeId=1001-40724&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/tony",
-      "director": "Matt Johnson",
-      "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
     },
     {
       "cinema": "lighthouse",
@@ -279,20 +233,6 @@
       "filmPageUrl": "https://ifi.ie/films/i-want-your-sex",
       "director": "Gregg Araki",
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
-    },
-    {
-      "cinema": "cineworld",
-      "cinemaName": "Cineworld Dublin",
-      "filmTitle": "TEENAGE SEX AND DEATH AT CAMP MIASMA",
-      "cert": "16",
-      "durationMins": 112,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "20:30",
-      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366981/seats",
-      "filmPageUrl": "https://www.cineworld.ie/movies/1000024260-teenage-sex-and-death-at-camp-miasma/",
-      "director": "Jane Schoenbrun",
-      "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
     },
     {
       "cinema": "cineworld",
