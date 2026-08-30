@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-30T15:24:36.752Z",
+  "generatedAt": "2026-08-30T15:34:26.167Z",
   "days": [
     "2026-08-30",
     "2026-08-31",
@@ -90,23 +90,6 @@
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Bitter Christmas",
-      "cert": "15A",
-      "durationMins": 111,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "15:30",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39670&showtimeId=1001-39670&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/bitter-christmas",
-      "screeningTags": [
-        "Spanish"
-      ],
-      "originalTitle": "Amarga Navidad",
-      "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
-    },
-    {
       "cinema": "ifi",
       "cinemaName": "IFI",
       "filmTitle": "Tony",
@@ -178,24 +161,6 @@
         "70mm"
       ],
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
-    },
-    {
-      "cinema": "cineworld",
-      "cinemaName": "Cineworld Dublin",
-      "filmTitle": "De Gaulle Part One: Résistance",
-      "originalTitle": "La bataille de Gaulle: L'âge de fer",
-      "cert": "15A",
-      "durationMins": 160,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "16:30",
-      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367029/seats",
-      "filmPageUrl": "https://www.cineworld.ie/movies/294280-de-gaulle-resistance/",
-      "screeningTags": [
-        "Subtitled",
-        "French"
-      ],
-      "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
     },
     {
       "cinema": "lighthouse",
@@ -381,7 +346,7 @@
     {
       "cinema": "cineworld",
       "cinemaName": "Cineworld Dublin",
-      "filmTitle": "I (Ai)",
+      "filmTitle": "I",
       "originalTitle": "ஐ",
       "durationMins": 188,
       "year": 2015,
@@ -394,19 +359,6 @@
         "Subtitled"
       ],
       "letterboxdUrl": "https://letterboxd.com/film/i-2015/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Tony",
-      "cert": "15A",
-      "durationMins": 106,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "20:30",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40724&showtimeId=1001-40724&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/tony",
-      "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
     },
     {
       "cinema": "lighthouse",
@@ -424,6 +376,19 @@
       ],
       "originalTitle": "군체",
       "letterboxdUrl": "https://letterboxd.com/film/colony-2026/"
+    },
+    {
+      "cinema": "lighthouse",
+      "cinemaName": "Light House Cinema",
+      "filmTitle": "Tony",
+      "cert": "15A",
+      "durationMins": 106,
+      "year": 2026,
+      "date": "2026-08-30",
+      "time": "20:30",
+      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40724&showtimeId=1001-40724&visLang=1",
+      "filmPageUrl": "https://www.lighthousecinema.ie/film/tony",
+      "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
     },
     {
       "cinema": "ifi",
@@ -756,7 +721,7 @@
     {
       "cinema": "cineworld",
       "cinemaName": "Cineworld Dublin",
-      "filmTitle": "I (Ai)",
+      "filmTitle": "I",
       "originalTitle": "ஐ",
       "durationMins": 188,
       "year": 2015,
@@ -944,7 +909,7 @@
     {
       "cinema": "cineworld",
       "cinemaName": "Cineworld Dublin",
-      "filmTitle": "I (Ai)",
+      "filmTitle": "I",
       "originalTitle": "ஐ",
       "durationMins": 188,
       "year": 2015,
