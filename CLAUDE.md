@@ -262,8 +262,8 @@ is gitignored runtime cache/staging.
    actionable/important things and the current selection — never decoratively.
 
    `body { cursor: default }` — plain text reads with the arrow cursor (an app, not a document);
-   interactive elements set `cursor-pointer` themselves, and the film title + year opt back into
-   `cursor-text` in `FilmCard` since those are the thing you actually copy.
+   interactive elements set `cursor-pointer` themselves, and the film title (name only, not the
+   year) opts back into `cursor-text` in `FilmCard` since that's the thing you actually copy.
 
    **Shadow tokens**: `--shadow-card`/`--shadow-card-lg` (cards), `--shadow-btn-secondary` (flat
    offset, used on a few standalone buttons like DayPlan's Clear), `--shadow-group`, and
