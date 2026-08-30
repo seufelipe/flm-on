@@ -221,7 +221,11 @@ is gitignored runtime cache/staging.
 
 5. **Day-plan building (suggestions + click-to-select) only activates when the Day filter is
    narrowed to a specific date (`activeDay !== null`)** — a plan is inherently single-day; the
-   "This week" segment (the `null` day state) disables it entirely. Selecting a showtime auto-narrows the Day filter to
+   "This week" segment (the `null` day state) disables it entirely. The Day filter now **defaults
+   to today** (the `activeDay` `useState` initializer: today while it still has an un-started
+   screening, else the next day that has anything on — visiting late at night lands you on
+   tomorrow), so planning is live on load; "This week" is one tap away but not where you land.
+   Selecting a showtime auto-narrows the Day filter to
    that date if not already scoped to it, so planning starts immediately without a separate manual
    step; deselecting leaves the day filter alone. Selection state is `selectedKeys: Set<string>`
    (generalized 2026-08-24 from a single `selectedKey` — originally just double-bill pairs, now any

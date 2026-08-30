@@ -142,29 +142,19 @@ function ControlGroup<T>({
 export default function ScreeningBrowser({ screenings, days, labels }: Props) {
   const [activeTimeframe, setActiveTimeframe] = useState<Timeframe | null>(null);
   const [activeCinema, setActiveCinema] = useState<CinemaId | null>(null);
-  // Defaults to the whole-week view (null — the "This week" segment) as usual, with two
-  // exceptions where a specific day is pinned instead — both because the week view would show the
-  // exact same set of films as the one day would, just without the framing (day headers,
-  // day-plan building) that comes from actually having a day in scope.
+  // Defaults to **today** — the day you're most likely to be planning for — which also means the
+  // day-plan tools (suggestions, click-to-select) are live from the start (decision #5). Once
+  // today's slate is done (visiting late at night, everything left is for tomorrow onward) it
+  // falls through to the next day that still has something on. "This week" (null) stays one tap
+  // away on the Day control; it's just not where you land.
   const [activeDay, setActiveDay] = useState<string | null>(() => {
     const nowDate = todayISO();
     const nowTime = nowTimeISO();
-    const upcomingDays = days.filter((d) => d >= nowDate);
-    // 1. Only one day left to browse at all (e.g. the batch's date range is almost over) — same
-    // logic as the disabled/enabled split on the time picker: with a single option, there's
-    // nothing for "Any Day" to actually broaden the view to.
-    if (upcomingDays.length === 1) return upcomingDays[0];
-    // 2. Today's screenings have already fully passed — e.g. loading the page late in the
-    // evening once everything remaining is for tomorrow onward. Landing on "Any Day" there would
-    // just show a flat list with no day headers (a film's day header only appears once its
-    // visible screenings span more than one day) and no obvious explanation why, so pin to the
-    // first day that actually still has something on.
     const todayHasScreenings = screenings.some((s) => s.date === nowDate && s.time >= nowTime);
-    if (todayHasScreenings) return null;
-    // Today is excluded here (`d > nowDate`, not `>=`) — it's already confirmed empty above, and
-    // "has any screening on that date at all" (with no time check) would otherwise match today's
-    // now-fully-past screenings right back.
-    return upcomingDays.find((d) => d > nowDate && screenings.some((s) => s.date === d)) ?? null;
+    if (todayHasScreenings) return nowDate;
+    // `d > nowDate` (not `>=`) — today is already confirmed done above, and a bare "any screening
+    // on that date" check with no time bound would just match today's now-past screenings again.
+    return days.filter((d) => d > nowDate).find((d) => screenings.some((s) => s.date === d)) ?? null;
   });
   const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set());
 
