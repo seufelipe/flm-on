@@ -52,14 +52,14 @@ is gitignored runtime cache/staging.
   after `cleanFilmTitle`, before Letterboxd — a hidden film (case-insensitive substring match on
   the cleaned title, e.g. `"harry potter"`) never reaches the staged or published showtimes,
   from any cinema. `scripts/fetch-batch.ts` echoes the active patterns.
-- `lib/letterboxd.ts` — `resolveLetterboxd(title, year)` → `{ url?, year? }`: resolves each film's
-  Letterboxd page (see decision #4) *and* returns that page's `og:title` year, which
-  `lib/aggregate.ts` then adopts as the film's real year (cinema-reported years are unreliable —
-  decisions #2, #4 — so the scraped year is only a fallback for NOT-FOUND films). Cached
-  indefinitely in `data/letterboxd-cache.json` as `{ url, year }` per `title|year` key (no TTL — a
-  match doesn't change; legacy bare-string entries are migrated on read and re-resolve once to
-  pick up a year). `data/letterboxd-overrides.json` is checked first and always wins; an override
-  gives only a URL, so its page is fetched once for the year.
+- `lib/letterboxd.ts` — `resolveLetterboxd(title, year)` → `{ url?, year?, language? }`: resolves
+  each film's Letterboxd page (see decision #4) *and* returns that page's `og:title` year (which
+  `lib/aggregate.ts` adopts as the film's real year — cinema-reported years are unreliable,
+  decisions #2, #4) *and* its "Primary Language" (`parsePrimaryLanguage`, non-English only —
+  decision #17). Cached indefinitely in `data/letterboxd-cache.json` as `{ url, year, language }`
+  per `title|year` key (no TTL; legacy bare-string / `{url,year}` entries migrate on read and
+  re-resolve once to backfill). `data/letterboxd-overrides.json` is checked first and always
+  wins; an override gives only a URL, so its page is fetched once for the year + language.
 - `lib/clash.ts` — `findCombos`: valid double-bill pairs (same day, different film, gap between
   `MAX_COMBO_GAP_MINUTES` and a minimum that depends on whether the pair is cross-cinema
   (`WALK_BUFFER_MINUTES`, enough time to walk between buildings) or same-cinema
@@ -142,15 +142,18 @@ is gitignored runtime cache/staging.
   All three formats also count toward the Highlights toggle. Decision #15.
 - `components/ScreeningLanguage.tsx` + `lib/languages.ts` — international-feature markers, the
   third reader of `Screening.screeningTags` (sibling of `screeningTags.ts` / `formats.ts`).
-  `displayLanguage` reads an original (non-English) language name plus subtitled/dubbed state →
-  `{ language?, subtitled, dubbed } | null`. `<LanguageTag>` is a small outlined `--color-dim`
-  chip on the `FilmCard` meta line ("Tamil · ST"); `<LanguageMarks>` is the compact pill /
-  `DayPlan` analogue; `languageTooltip` merges into the pill/row `title`. A tag, not a sticker
-  (decision #13's "one sticker max" is unaffected). Sources: Cineworld's
-  `Localization.Language.*` / `Showtime.Accessibility.Subtitled` tags (normalised by the
-  adapter), and Light House's long-captured `Subtitled`/`Dubbed`/`Open Captioned` — the latter
-  were parsed but never shown before, and surface now. Counts toward Highlights; a `hideDubbed`
-  preference hides dubbed sessions. Decision #17.
+  `displayLanguage` → `{ language?, subtitled, dubbed } | null`. Split by scope:
+  `<LanguageTag>` shows the **per-film language** as a small outlined `--color-dim` chip on the
+  `FilmCard` meta line, right after the duration ("French"); `<LanguageMarks>` shows the
+  **per-showtime `ST` / `Dub`** (`captionMark`) after the time on a pill / `DayPlan` row;
+  `languageTooltip` merges into the pill/row `title`. A tag, not a sticker (decision #13's "one
+  sticker max" is unaffected). The language is per-film from Letterboxd's "Primary Language"
+  (via `lib/letterboxd.ts`), folded into every screening's `screeningTags` by `lib/aggregate.ts`
+  — `data/language-overrides.json` (`lib/languageOverrides.ts`) is the manual fix path;
+  Cineworld's `Localization.Language.*` is the per-session fallback. Subtitled/dubbed comes from
+  Cineworld's `Showtime.Accessibility.*` and Light House's long-captured
+  `Subtitled`/`Dubbed`/`Open Captioned`. Counts toward Highlights; a `hideDubbed` preference
+  hides dubbed sessions. Decision #17.
 - `components/ComboSuggestions.tsx` — the "Suggested plans" browsing list shown before anything is
   selected (`effectiveSelectedKeys.size === 0`); clicking a suggestion adds its first leg to the
   plan. `components/DayPlan.tsx` — replaces that list once anything is selected: a continuous
@@ -232,6 +235,13 @@ is gitignored runtime cache/staging.
    that film — the cinema-reported year is used only for the slug guess and as a fallback when
    there's no match. So `Kiki's Delivery Service` shows 1989, not Light House's "2026"; a repertory
    pin in `letterboxd-overrides.json` fixes both the link and the displayed year in one go.
+
+   Since 2026-08-31 the same page fetch also yields the film's **"Primary Language"**
+   (`parsePrimaryLanguage`) — how every non-English film gets marked (decision #17).
+   `resolveLetterboxd` returns `{ url?, year?, language? }` and the `letterboxd-cache.json` entry
+   is `{ url, year, language }`; a legacy `{ url, year }` entry (no `language`) is treated as
+   "not checked" and re-resolves once, so the first batch after this change re-fetches that
+   week's films.
 
    **Light House stamps re-releases with the *current* year** ("Released: …-2026" on a 1986
    Tarkovsky restoration), which defeats the `og:title` year check and — worse — can match a
@@ -582,20 +592,40 @@ is gitignored runtime cache/staging.
     path yet (see Known gaps). Films the user never wants shown, from any cinema (e.g. Harry
     Potter), go in `data/hidden-films.json` (`lib/hidden.ts`, applied in `lib/aggregate.ts`).
 
-17. **International / foreign-language support — `lib/languages.ts`.** Added 2026-08-30. The
-    third reader of `Screening.screeningTags`, alongside `screeningTags.ts` and `formats.ts`.
-    `displayLanguage(tags)` → `{ language?, subtitled, dubbed } | null`: an original non-English
-    language name (`LANGUAGE_NAMES` map) plus subtitled (incl. "open captioned") / dubbed state.
-    Rendered by `components/ScreeningLanguage.tsx` — `<LanguageTag>` (outlined `--color-dim` chip
-    on the card meta line) + `<LanguageMarks>` (compact pill / `DayPlan` label, "Tamil · ST");
-    `languageTooltip` merges into the pill/row `title`. A **tag, not a marquee sticker**, so
-    decision #13's "one sticker max" is untouched. Informational → never accent (decision #7).
-    A language screening **counts toward the Highlights ("☻ Specials, etc") filter**
-    (`preferred` memo in `ScreeningBrowser`). New preference **`hideDubbed`** (default off,
-    General group in `SettingsPanel`) drops dubbed sessions — usually the kids' matinee version
-    of a foreign film. **Behaviour change for Light House**: it has emitted `Subtitled` /
-    `Dubbed` / `Open Captioned` in `em.additional` since decision #13 but they were captured and
-    never shown — they surface now, through this module.
+17. **International / foreign-language support — `lib/languages.ts`.** Added 2026-08-30, reworked
+    2026-08-31. The third reader of `Screening.screeningTags`, alongside `screeningTags.ts` and
+    `formats.ts`. `displayLanguage(tags)` → `{ language?, subtitled, dubbed } | null`: an original
+    non-English language name (`LANGUAGE_NAMES` map, ~90 entries) plus subtitled (incl.
+    "open captioned") / dubbed state.
+
+    **Language is per-film, from Letterboxd's "Primary Language" field** (`parsePrimaryLanguage`
+    in `lib/letterboxd.ts` — parsed from the same page fetch that gives the year; the details
+    panel uses `<h3><span>Language</span>` for single-language films, `Primary Language` +
+    `Spoken Languages` for multi). `withLetterboxdLinks` in `lib/aggregate.ts` folds it into
+    every screening's `screeningTags` (case-insensitively de-duped, so a cinema's own
+    per-session language token wins). Covers **every non-English film across all three cinemas**,
+    not just the ones a cinema happens to tag. Wrong/missing values are pinned in
+    **`data/language-overrides.json`** (`lib/languageOverrides.ts`; `"<cleaned title>" → language`,
+    or `null` to force unmarked) — checked before the Letterboxd value. Cineworld's
+    `Localization.Language.*` showtime tag is the fallback for a film that doesn't resolve on
+    Letterboxd. **Subtitled/dubbed is per-session**: Cineworld's `Showtime.Accessibility.*`,
+    Light House's long-captured `Subtitled`/`Dubbed`/`Open Captioned` (parsed since decision #13,
+    surface only now).
+
+    Render (`components/ScreeningLanguage.tsx`): `<LanguageTag>` — the **language name only**, an
+    outlined `--color-dim` chip on the `FilmCard` meta line right after the duration;
+    `<LanguageMarks>` — the **per-showtime `ST` / `Dub`** (`captionMark`) after the time on a
+    pill / `DayPlan` row (the language isn't repeated on every pill). `languageTooltip` merges
+    into the pill/row `title`. A **tag, not a marquee sticker** (decision #13's "one sticker max"
+    untouched); informational → never accent (decision #7). A language screening **counts toward
+    the Highlights ("☻ Specials, etc") filter**. Preference **`hideDubbed`** (default off,
+    General group in `SettingsPanel`) drops dubbed sessions — usually the kids' matinee version.
+
+    `letterboxd-cache.json` entries are now `{ url, year, language }`; a legacy entry missing
+    `language` re-resolves once to backfill (one slower batch run — see decision #4). A Primary
+    Language name not in `LANGUAGE_NAMES` still rides in `screeningTags` and surfaces in the
+    `fetch:batch` "unrecognised screening tags" section — one line to add. The batch report also
+    has a **"Languages"** section listing every non-English film's resolved language for review.
 
 ## Known gaps
 
@@ -616,8 +646,13 @@ is gitignored runtime cache/staging.
   Cineworld solely as a plain digital showing is dropped, with no per-title allowlist to rescue
   it (would be a new `data/` file). The `fetch:batch` "dropped ordinary screenings" section is
   the manual check.
-- IFI still has no language/subtitled tagging (its adapter only reads format `svg[data-icon]`s),
-  so `lib/languages.ts` only ever has Cineworld + Light House data.
+- Language marking depends on the film resolving on Letterboxd (a NOT-FOUND foreign film isn't
+  marked unless a `data/language-overrides.json` entry is added) and on the "Primary Language"
+  name being in `LANGUAGE_NAMES` (a missing one surfaces in the `fetch:batch` "unrecognised
+  screening tags" section — one line to add). Letterboxd's primary language is occasionally wrong
+  for Indian regional films / dubs — the batch "Languages" section is the manual check. IFI /
+  Light House still don't tag *subtitled/dubbed* per session (only Cineworld + Light House
+  `em.additional` do).
 - Nothing enforces the Thursday cadence — if the weekly `fetch:batch`/`fetch:confirm` run is
   skipped, the public site just keeps serving last week's `data/showtimes.json` with no warning.
 - IFI titles often scrape in ALL CAPS while Light House's don't — `fetch:batch`'s report flags
@@ -645,7 +680,7 @@ Committed:
   `lib/screeningTags.ts` (specials — decision #13), `lib/formats.ts` (`35mm`/`70mm`/`IMAX` —
   #15), and `lib/languages.ts` (`Tamil`/`Subtitled`/`Dubbed` — #17). Light House emits them from
   `em.additional`, IFI from format `svg[data-icon]`s, Cineworld normalises its API tags onto them
-  (#16).
+  (#16), and `lib/aggregate.ts` appends the per-film language from Letterboxd (#17).
 - `title-overrides.json` — `{ stripPrefixes: string[], stripAnnotations: string[] (regex sources),
   corrections: Record<string,string> }`.
 - `letterboxd-overrides.json` — `Record<"title|year", string | null>`, checked before auto-resolve.
@@ -657,6 +692,9 @@ Committed:
 - `hidden-films.json` — `{ titleSubstrings: string[] }`, an editorial blocklist applied in
   `lib/aggregate.ts` (`lib/hidden.ts`) — a matching film never reaches staged/published data,
   from any cinema.
+- `language-overrides.json` — `Record<"<normalized title>", string | null>` (`lib/languageOverrides.ts`),
+  checked before Letterboxd's "Primary Language" — a string forces that language, `null` forces
+  the film unmarked (decision #17).
 
 Gitignored (runtime cache/staging, regenerated by scripts or local dev):
 - `cache.json` — live-scrape cache, 6h TTL, includes explicit empty entries per date.

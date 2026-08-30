@@ -1,14 +1,17 @@
 // Language / international-feature descriptors — the original (non-English) language a film is
 // in, and whether a given session is subtitled or dubbed. These ride the same per-session
 // carrier as the special-screening tags and film formats (Screening.screeningTags, raw strings),
-// but they're their own concept with their own rendering: a small chip on the film card and a
-// compact mark on each showtime pill. See lib/screeningTags.ts and lib/formats.ts for the other
-// two readers of that field.
+// but they're their own concept with their own rendering: the language name as a chip on the
+// film card (beside the duration), and the subtitled/dubbed state as a compact mark on each
+// showtime pill. See lib/screeningTags.ts and lib/formats.ts for the other two readers.
 //
-// Sources: Cineworld encodes `Localization.Language.Tamil` etc. and `Showtime.Accessibility.
-// Subtitled` as showtime tags (see lib/scrapers/cineworld.ts, which normalises them to a bare
-// language name / "Subtitled"). Light House has long emitted "Subtitled" / "Dubbed" /
-// "Open Captioned" in em.additional — those were captured but never shown; they surface now too.
+// Sources (see CLAUDE.md decision #17):
+//  - the *language* is per-film, from Letterboxd's "Primary Language" field, folded into every
+//    screening's `screeningTags` by lib/aggregate.ts (Cineworld's `Localization.Language.*`
+//    showtime tag is a fallback when the film doesn't resolve on Letterboxd). Manual fixes live
+//    in data/language-overrides.json (lib/languageOverrides.ts).
+//  - subtitled / dubbed is per-session: Cineworld's `Showtime.Accessibility.Subtitled`, and
+//    Light House's long-captured "Subtitled" / "Dubbed" / "Open Captioned" from em.additional.
 
 export interface LanguageInfo {
   language?: string; // display-cased original language, e.g. "Tamil" — only when non-English
@@ -16,55 +19,37 @@ export interface LanguageInfo {
   dubbed: boolean; // dubbed into English (usually the kids' matinee version)
 }
 
-// Recognised original-language tags, lower-cased. The value is the display casing.
-const LANGUAGE_NAMES: Record<string, string> = {
-  tamil: "Tamil",
-  telugu: "Telugu",
-  hindi: "Hindi",
-  malayalam: "Malayalam",
-  kannada: "Kannada",
-  punjabi: "Punjabi",
-  marathi: "Marathi",
-  bengali: "Bengali",
-  gujarati: "Gujarati",
-  urdu: "Urdu",
-  french: "French",
-  spanish: "Spanish",
-  italian: "Italian",
-  german: "German",
-  portuguese: "Portuguese",
-  polish: "Polish",
-  ukrainian: "Ukrainian",
-  russian: "Russian",
-  romanian: "Romanian",
-  dutch: "Dutch",
-  greek: "Greek",
-  turkish: "Turkish",
-  arabic: "Arabic",
-  farsi: "Farsi",
-  persian: "Persian",
-  hebrew: "Hebrew",
-  japanese: "Japanese",
-  korean: "Korean",
-  mandarin: "Mandarin",
-  cantonese: "Cantonese",
-  chinese: "Chinese",
-  thai: "Thai",
-  vietnamese: "Vietnamese",
-  tagalog: "Tagalog",
-  filipino: "Filipino",
-  hungarian: "Hungarian",
-  czech: "Czech",
-  swedish: "Swedish",
-  norwegian: "Norwegian",
-  danish: "Danish",
-  finnish: "Finnish",
-  icelandic: "Icelandic",
-  irish: "Irish",
-};
+// Recognised language names, keyed lower-cased; the value is the display casing. Matched against
+// Letterboxd's "Primary Language" text and Cineworld's `Localization.Language.*` token. A name
+// not listed here still rides in `screeningTags` but won't surface — it shows up in the
+// `fetch:batch` "unrecognised screening tags" section, one line to add.
+const LANGUAGE_NAMES: Record<string, string> = Object.fromEntries(
+  [
+    // South Asian
+    "Tamil", "Telugu", "Hindi", "Malayalam", "Kannada", "Punjabi", "Marathi", "Bengali",
+    "Gujarati", "Urdu", "Odia", "Assamese", "Bhojpuri", "Nepali", "Sinhala", "Sinhalese",
+    "Dhivehi",
+    // European (non-English)
+    "French", "Spanish", "Italian", "German", "Portuguese", "Dutch", "Flemish", "Polish",
+    "Ukrainian", "Russian", "Romanian", "Greek", "Turkish", "Hungarian", "Czech", "Slovak",
+    "Slovenian", "Slovene", "Croatian", "Serbian", "Serbo-Croatian", "Bosnian", "Bulgarian",
+    "Macedonian", "Albanian", "Swedish", "Norwegian", "Danish", "Finnish", "Icelandic",
+    "Estonian", "Latvian", "Lithuanian", "Catalan", "Basque", "Galician", "Welsh", "Irish",
+    "Scottish Gaelic", "Luxembourgish", "Maltese", "Yiddish", "Latin", "Esperanto",
+    // Caucasus / Central Asia / Middle East
+    "Georgian", "Armenian", "Azerbaijani", "Kazakh", "Uzbek", "Turkmen", "Kyrgyz", "Tajik",
+    "Mongolian", "Tibetan", "Arabic", "Hebrew", "Farsi", "Persian", "Dari", "Pashto", "Kurdish",
+    // East / South-East Asia
+    "Japanese", "Korean", "Mandarin", "Cantonese", "Chinese", "Thai", "Vietnamese", "Khmer",
+    "Lao", "Burmese", "Indonesian", "Malay", "Tagalog", "Filipino", "Javanese",
+    // Africa
+    "Swahili", "Amharic", "Yoruba", "Hausa", "Igbo", "Zulu", "Xhosa", "Afrikaans", "Wolof",
+    "Somali", "Bambara", "Lingala",
+  ].map((name) => [name.toLowerCase(), name]),
+);
 
-// Whether a bare word is one of the recognised original-language names (used by the Cineworld
-// adapter to strip a trailing "(Tamil)" that duplicates the language tag).
+// Whether a bare word is one of the recognised language names (used by the Cineworld adapter to
+// strip a trailing "(Tamil)" that duplicates the language tag).
 export function isLanguageName(word: string): boolean {
   return word.trim().toLowerCase() in LANGUAGE_NAMES;
 }
@@ -101,12 +86,10 @@ export function languageTooltip(tags?: string[]): string | undefined {
   return "With English subtitles";
 }
 
-// The compact label shown on a pill / plan row — "TAMIL · ST", "ST", "DUB". Kept terse; the
-// full sentence is in the tooltip.
-export function languageMarkLabel(info: LanguageInfo): string {
-  const parts: string[] = [];
-  if (info.language) parts.push(info.language);
-  if (info.subtitled) parts.push("ST");
-  else if (info.dubbed) parts.push("Dub");
-  return parts.join(" · ");
+// The per-showtime caption mark shown on a pill / plan row — "ST" (subtitled) or "Dub". The
+// language name itself lives on the film card, not repeated on every pill.
+export function captionMark(info: LanguageInfo): "ST" | "Dub" | null {
+  if (info.subtitled) return "ST";
+  if (info.dubbed) return "Dub";
+  return null;
 }

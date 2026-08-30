@@ -179,14 +179,16 @@ export default function FilmCard({
   const sessionTags = Array.from(new Set(group.screenings.flatMap((s) => s.screeningTags ?? [])));
   const hasScreeningLabel = displayScreeningTags(sessionTags).some((t) => t.mark !== false);
   const sessionFormats = displayFilmFormats(sessionTags);
-  const sessionLanguage = displayLanguage(sessionTags);
+  // Only the language name goes on the card (per-film); the subtitled/dubbed state is per-showtime
+  // and lives on the pills, so it doesn't count towards showing the meta line.
+  const sessionLanguage = displayLanguage(sessionTags)?.language;
 
   const hasMetaLine =
     group.cert !== undefined ||
     (group.durationMins !== undefined && !isMystery) ||
     group.letterboxdUrl !== undefined ||
     sessionFormats.length > 0 ||
-    sessionLanguage !== null;
+    sessionLanguage !== undefined;
 
   return (
     <div className="bg-surface border-4 border-border rounded-card p-8">
@@ -233,8 +235,8 @@ export default function FilmCard({
                 {group.durationMins}min{group.durationEstimated ? " (est.)" : ""}
               </span>
             )}
-            <FilmFormatTag tags={sessionTags} />
             <LanguageTag tags={sessionTags} />
+            <FilmFormatTag tags={sessionTags} />
             {group.letterboxdUrl && (
               <a
                 href={group.letterboxdUrl}

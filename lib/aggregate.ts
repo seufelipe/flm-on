@@ -4,6 +4,7 @@ import * as cache from "./cache";
 import { resolveLetterboxd, type LetterboxdMatch } from "./letterboxd";
 import { cleanFilmTitle, loadTitleOverrides } from "./titles";
 import { loadHiddenFilms, isHiddenFilm } from "./hidden";
+import { loadLanguageOverrides, languageOverrideFor } from "./languageOverrides";
 
 export interface AdapterError {
   cinema: string;
@@ -89,6 +90,8 @@ async function getCinemaRange(
 // year from the resolved Letterboxd page as the source of truth, keeping the scraped year only as
 // a fallback for films with no match.
 async function withLetterboxdLinks(screenings: Screening[]): Promise<Screening[]> {
+  const languageOverrides = await loadLanguageOverrides();
+
   const unique = new Map<string, { title: string; year?: number }>();
   for (const s of screenings) {
     unique.set(`${s.filmTitle}|${s.year ?? ""}`, { title: s.filmTitle, year: s.year });
@@ -103,8 +106,24 @@ async function withLetterboxdLinks(screenings: Screening[]): Promise<Screening[]
 
   return screenings.map((s) => {
     const match = resolved.get(`${s.filmTitle}|${s.year ?? ""}`);
+
+    // Per-film original language: a manual override wins (a `null` override forces the film
+    // unmarked), otherwise Letterboxd's "Primary Language" (only set when it isn't English).
+    // Fold it into screeningTags — de-duped case-insensitively so a cinema's own per-session
+    // language tag wins — where lib/languages.ts picks it up alongside the subtitled/dubbed tags.
+    const override = languageOverrideFor(s.filmTitle, languageOverrides);
+    const language = override === undefined ? match?.language : (override ?? undefined);
+    let screeningTags = s.screeningTags;
+    if (
+      language &&
+      !(screeningTags ?? []).some((t) => t.trim().toLowerCase() === language.toLowerCase())
+    ) {
+      screeningTags = [...(screeningTags ?? []), language];
+    }
+
     return {
       ...s,
+      screeningTags,
       letterboxdUrl: match?.url,
       year: match?.year ?? s.year,
     };

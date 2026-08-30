@@ -1,10 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-  displayLanguage,
-  languageTooltip,
-  languageMarkLabel,
-  isLanguageName,
-} from "@/lib/languages";
+import { displayLanguage, languageTooltip, captionMark, isLanguageName } from "@/lib/languages";
 
 describe("displayLanguage", () => {
   it("returns null for an ordinary English screening", () => {
@@ -32,13 +27,19 @@ describe("displayLanguage", () => {
   it("ignores unrelated tags alongside a language", () => {
     expect(displayLanguage(["Big Screen Classics", "French", "35mm"])?.language).toBe("French");
   });
+
+  it("recognises the wider language set Letterboxd's Primary Language field uses", () => {
+    for (const name of ["Korean", "Japanese", "Mandarin", "Cantonese", "Georgian", "Wolof", "Scottish Gaelic"]) {
+      expect(displayLanguage([name])?.language).toBe(name);
+    }
+  });
 });
 
-describe("languageMarkLabel", () => {
-  it("is terse — language plus ST/Dub", () => {
-    expect(languageMarkLabel({ language: "Tamil", subtitled: true, dubbed: false })).toBe("Tamil · ST");
-    expect(languageMarkLabel({ subtitled: true, dubbed: false })).toBe("ST");
-    expect(languageMarkLabel({ language: "French", subtitled: false, dubbed: true })).toBe("French · Dub");
+describe("captionMark", () => {
+  it("is the per-showtime ST / Dub only — never the language name", () => {
+    expect(captionMark({ language: "Tamil", subtitled: true, dubbed: false })).toBe("ST");
+    expect(captionMark({ language: "French", subtitled: false, dubbed: true })).toBe("Dub");
+    expect(captionMark({ language: "French", subtitled: false, dubbed: false })).toBeNull();
   });
 });
 

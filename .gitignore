@@ -34,12 +34,14 @@ yarn-error.log*
 .env*
 
 # runtime cache and weekly-batch staging — data/showtimes.json (published data) and the
-# title/letterboxd override files are curated and committed, everything else here is not
+# curated override / editorial files below are committed, everything else here is not
 /data/*.json
 !/data/showtimes.json
 !/data/title-overrides.json
 !/data/letterboxd-overrides.json
 !/data/film-labels.json
+!/data/hidden-films.json
+!/data/language-overrides.json
 
 # vercel
 .vercel

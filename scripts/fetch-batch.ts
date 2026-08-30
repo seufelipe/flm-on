@@ -8,6 +8,7 @@ import { displayScreeningTags } from "@/lib/screeningTags";
 import { displayFilmFormats } from "@/lib/formats";
 import { displayLanguage } from "@/lib/languages";
 import { loadHiddenFilms } from "@/lib/hidden";
+import { loadLanguageOverrides } from "@/lib/languageOverrides";
 
 const STAGING_FILE = path.join(process.cwd(), "data", "staging-batch.json");
 const LABELS_FILE = path.join(process.cwd(), "data", "film-labels.json");
@@ -105,6 +106,28 @@ async function main() {
   for (const f of films) {
     const key = f.filmTitle.trim().toLowerCase();
     console.log(`  ${key}  →  ${labels[key] ?? "—"}`);
+  }
+
+  // Resolved original language per film (Letterboxd "Primary Language", folded into
+  // screeningTags by lib/aggregate.ts). Spot a wrong value and pin it in
+  // data/language-overrides.json (title → language, or null to force unmarked).
+  const langOverrides = await loadLanguageOverrides();
+  const langByFilm = new Map<string, string>();
+  for (const s of screenings) {
+    const key = s.filmTitle.trim().toLowerCase();
+    const lang = displayLanguage(s.screeningTags)?.language;
+    if (lang && !langByFilm.has(key)) langByFilm.set(key, lang);
+  }
+  console.log("\nLanguages (non-English films — override in data/language-overrides.json):\n");
+  const nonEnglish = films.filter((f) => langByFilm.has(f.filmTitle.trim().toLowerCase()));
+  if (nonEnglish.length === 0) {
+    console.log("  none");
+  } else {
+    for (const f of nonEnglish) {
+      const key = f.filmTitle.trim().toLowerCase();
+      const over = key in langOverrides ? `  [override: ${langOverrides[key] ?? "unmarked"}]` : "";
+      console.log(`  ${key}  →  ${langByFilm.get(key)}${over}`);
+    }
   }
 
   // Per-session descriptors the cinema attaches to a specific showtime (Light House's

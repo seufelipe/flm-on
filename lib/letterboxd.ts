@@ -12,10 +12,10 @@ const USER_AGENT = "flm-personal-cinema-app/1.0 (+personal showtime planner)";
 // searching, we guess the slug from the title (Letterboxd's own convention: lowercase, hyphenated,
 // punctuation stripped) and optionally a `-{year}` suffix for disambiguation, then fetch that page
 // directly. Verified against ~15 real titles including disambiguated duplicates (dune-2021 vs
-// bare dune, true-grit-2010 vs bare true-grit) — works reliably. The resolved page's own
-// `og:title` meta tag (format "Title (YYYY)") is used to confirm the year actually matches
-// before accepting the link, which is the concrete way "use year to minimize mismatch" is
-// implemented here.
+// bare dune, true-grit-2010 vs bare true-grit) — works reliably. From that one page we read the
+// `og:title` year (format "Title (YYYY)") — used both to confirm the match and, since cinema
+// listings mis-report years, as the film's real year — AND the "Primary Language" field, which
+// marks every non-English film (see lib/languages.ts, CLAUDE.md decision #17).
 // Cinema listings often append annotations like "(4K Restoration)" or "(Subtitled)" that
 // aren't part of the actual film title and would break slug matching if left in.
 function cleanTitleForMatching(title: string): string {
@@ -36,15 +36,39 @@ function slugify(title: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
-async function fetchFilmPageYear(slug: string): Promise<{ ok: boolean; year?: number }> {
+// Letterboxd's film-detail page carries the language in its "Details" panel (present in the
+// server HTML, just `hidden="until-found"`): a single-language film gets `<h3><span>Language`,
+// a multi-language one gets `<h3><span>Primary Language` plus a separate `Spoken Languages`.
+// We take the first `/films/language/…` anchor under either header. English (and the
+// silent-film placeholders) return undefined — only a *non-English* language is worth marking.
+export function parsePrimaryLanguage(html: string): string | undefined {
+  const match = html.match(
+    /<h3><span>(?:Primary Language|Language)<\/span><\/h3>\s*<div[^>]*>\s*<a[^>]*\/films\/language\/[^"]+"[^>]*>([^<]+)<\/a>/i,
+  );
+  if (!match) return undefined;
+  const name = match[1].trim();
+  const lower = name.toLowerCase();
+  if (!name || lower === "english" || lower === "no spoken language" || lower === "no language") {
+    return undefined;
+  }
+  return name;
+}
+
+async function fetchFilmPage(
+  slug: string,
+): Promise<{ ok: boolean; year?: number; language?: string }> {
   try {
     const res = await fetch(`https://letterboxd.com/film/${slug}/`, {
       headers: { "User-Agent": USER_AGENT },
     });
     if (!res.ok) return { ok: false };
     const html = await res.text();
-    const match = html.match(/<meta property="og:title" content="[^"]*\((\d{4})\)"/);
-    return { ok: true, year: match ? Number(match[1]) : undefined };
+    const yearMatch = html.match(/<meta property="og:title" content="[^"]*\((\d{4})\)"/);
+    return {
+      ok: true,
+      year: yearMatch ? Number(yearMatch[1]) : undefined,
+      language: parsePrimaryLanguage(html),
+    };
   } catch {
     return { ok: false };
   }
@@ -60,11 +84,16 @@ export interface LetterboxdMatch {
   // a film's year, since cinema listings are unreliable (IFI tags everything with the season year,
   // Light House stamps re-releases with the current year).
   year?: number;
+  // The page's "Primary Language" — set only when it isn't English (lib/aggregate.ts folds it
+  // into the screening's `screeningTags` so lib/languages.ts surfaces it).
+  language?: string;
 }
 
-// A cache entry is the resolved URL plus the year read off that page. Legacy entries were a bare
-// URL string (or null); those are migrated on read, and re-resolve to pick up a year.
-type CacheEntry = { url: string | null; year: number | null };
+// A cache entry is the resolved URL, the year read off that page, and its primary language.
+// Legacy entries were a bare URL string (or null), or `{ url, year }` with no `language`; both
+// are migrated on read and re-resolve once to backfill the missing field(s). `language: null`
+// means "resolved, English / no language"; a missing `language` key means "not checked yet".
+type CacheEntry = { url: string | null; year: number | null; language?: string | null };
 type LetterboxdCache = Record<string, CacheEntry | string | null>;
 type LetterboxdOverrides = Record<string, string | null>;
 
@@ -72,6 +101,21 @@ function normaliseEntry(raw: CacheEntry | string | null): CacheEntry | null {
   if (raw === null) return null;
   if (typeof raw === "string") return { url: raw, year: null };
   return raw;
+}
+
+function entryToMatch(entry: CacheEntry): LetterboxdMatch {
+  return {
+    url: entry.url ?? undefined,
+    year: entry.year ?? undefined,
+    language: entry.language ?? undefined,
+  };
+}
+
+// True once an entry has been fully resolved against a real page — both the year and the
+// language are recorded. A `year: null` (page had no `og:title` year) or a missing `language`
+// key forces a re-resolve.
+function isResolved(entry: CacheEntry): boolean {
+  return entry.year !== null && entry.language !== undefined;
 }
 
 let memoryCache: LetterboxdCache | undefined;
@@ -121,19 +165,20 @@ export async function resolveLetterboxd(title: string, year?: number): Promise<L
   if (key in overrides) {
     const url = overrides[key] ?? undefined;
     if (!url) return {};
-    // Reuse the cached year only if it belongs to this exact override URL.
-    if (cached && cached.url === url && cached.year !== null) {
-      return { url, year: cached.year };
+    // Reuse the cached result only if it belongs to this exact override URL and is fully resolved.
+    if (cached && cached.url === url && isResolved(cached)) {
+      return entryToMatch(cached);
     }
     const slug = slugFromUrl(url);
-    const resolvedYear = slug ? (await fetchFilmPageYear(slug)).year : undefined;
-    cache[key] = { url, year: resolvedYear ?? null };
+    const page = slug ? await fetchFilmPage(slug) : undefined;
+    const entry: CacheEntry = { url, year: page?.year ?? null, language: page?.language ?? null };
+    cache[key] = entry;
     await saveCache(cache);
-    return { url, year: resolvedYear };
+    return entryToMatch(entry);
   }
 
-  if (key in cache && cached !== null && cached.year !== null) {
-    return { url: cached.url ?? undefined, year: cached.year ?? undefined };
+  if (key in cache && cached !== null && isResolved(cached)) {
+    return entryToMatch(cached);
   }
   if (key in cache && cached === null) {
     return {};
@@ -144,14 +189,16 @@ export async function resolveLetterboxd(title: string, year?: number): Promise<L
 
   let match: LetterboxdMatch = {};
   for (const slug of candidates) {
-    const page = await fetchFilmPageYear(slug);
+    const page = await fetchFilmPage(slug);
     if (!page.ok) continue;
     if (year && page.year && Math.abs(page.year - year) > 1) continue;
-    match = { url: `https://letterboxd.com/film/${slug}/`, year: page.year };
+    match = { url: `https://letterboxd.com/film/${slug}/`, year: page.year, language: page.language };
     break;
   }
 
-  cache[key] = match.url ? { url: match.url, year: match.year ?? null } : null;
+  cache[key] = match.url
+    ? { url: match.url, year: match.year ?? null, language: match.language ?? null }
+    : null;
   await saveCache(cache);
   return match;
 }
