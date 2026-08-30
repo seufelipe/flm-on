@@ -30,8 +30,9 @@ describe("displayScreeningTags", () => {
     expect(m.symbol).toContain("☻");
   });
 
-  it("flags Mystery Matinee as mark:false — still a surfaced special, but the components render no glyph", () => {
+  it("flags Mystery Matinee and Big Screen Classics as mark:false — surfaced specials with no glyph", () => {
     expect(displayScreeningTags(["Mystery Matinee"])[0].mark).toBe(false);
+    expect(displayScreeningTags(["Big Screen Classics"])[0].mark).toBe(false);
     // Everything else defaults to a visible mark.
     expect(displayScreeningTags(["Parent and Baby"])[0].mark).not.toBe(false);
     expect(displayScreeningTags(["Cinema Book Club"])[0].mark).not.toBe(false);
@@ -42,6 +43,12 @@ describe("displayScreeningTags", () => {
     expect(bookClub.label).toBe("cinema book club");
     expect(bookClub.symbol).toContain("☻");
     expect(displayScreeningTags(["Silver Screen"])[0].label).toBe("silver screen");
+  });
+
+  it("surfaces the Cineworld event strands (Movies for Juniors marked, Big Screen Classics not)", () => {
+    expect(displayScreeningTags(["Movies For Juniors"])[0].label).toBe("movies for juniors");
+    expect(displayScreeningTags(["Movies For Juniors"])[0].mark).not.toBe(false);
+    expect(displayScreeningTags(["Big Screen Classics"])[0].label).toBe("big screen classics");
   });
 
   it("carries a title + description for the tooltip", () => {

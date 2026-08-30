@@ -10,13 +10,17 @@ export interface Preferences {
   timeframes: Record<Timeframe, boolean>;
   hideShortFilms: boolean;
   kidsOnly: boolean;
+  // Hide screenings of a foreign-language film that's dubbed into English (usually the kids'
+  // matinee version) — see lib/languages.ts and CLAUDE.md decision #17.
+  hideDubbed: boolean;
 }
 
 export const DEFAULT_PREFERENCES: Preferences = {
-  cinemas: { lighthouse: true, ifi: true },
+  cinemas: { lighthouse: true, ifi: true, cineworld: true },
   timeframes: { early: true, mid: true, late: true },
   hideShortFilms: true,
   kidsOnly: false,
+  hideDubbed: false,
 };
 
 export const STORAGE_KEY = "flm-on:preferences";
@@ -46,6 +50,7 @@ export function normalize(raw: unknown): Preferences {
     ) as Record<Timeframe, boolean>,
     hideShortFilms: asBool(root.hideShortFilms, DEFAULT_PREFERENCES.hideShortFilms),
     kidsOnly: asBool(root.kidsOnly, DEFAULT_PREFERENCES.kidsOnly),
+    hideDubbed: asBool(root.hideDubbed, DEFAULT_PREFERENCES.hideDubbed),
   };
 }
 
@@ -54,7 +59,8 @@ export function isDefault(prefs: Preferences): boolean {
     CINEMA_ORDER.every((id) => prefs.cinemas[id] === DEFAULT_PREFERENCES.cinemas[id]) &&
     TIMEFRAMES.every((tf) => prefs.timeframes[tf.id] === DEFAULT_PREFERENCES.timeframes[tf.id]) &&
     prefs.hideShortFilms === DEFAULT_PREFERENCES.hideShortFilms &&
-    prefs.kidsOnly === DEFAULT_PREFERENCES.kidsOnly
+    prefs.kidsOnly === DEFAULT_PREFERENCES.kidsOnly &&
+    prefs.hideDubbed === DEFAULT_PREFERENCES.hideDubbed
   );
 }
 

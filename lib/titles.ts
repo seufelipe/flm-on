@@ -37,8 +37,9 @@ function stripTrailingAnnotations(title: string, patterns: string[]): string {
   const body = patterns.join("|");
   // A trailing "(…)" whose contents are entirely annotation text (plus connective filler).
   const parenthetical = new RegExp(`\\s*\\((?:${body}|[\\s,&]|and)+\\)\\s*$`, "i");
-  // A trailing annotation with no parens, optionally after a dash: "Film - 4K Restoration".
-  const tail = new RegExp(`\\s*(?:[-–—]\\s*)?(?:${body})\\s*$`, "i");
+  // A trailing annotation with no parens, optionally after a dash or colon:
+  // "Film - 4K Restoration", "Film: 25th Anniversary".
+  const tail = new RegExp(`\\s*(?:[-–—:]\\s*)?(?:${body})\\s*$`, "i");
 
   let out = title.trim();
   let prev: string;
@@ -46,6 +47,9 @@ function stripTrailingAnnotations(title: string, patterns: string[]): string {
     prev = out;
     out = out.replace(parenthetical, "").trim();
     out = out.replace(tail, "").trim();
+    // A lone trailing separator left behind once the annotation after it is gone
+    // ("The Fast and the Furious:" → "The Fast and the Furious").
+    out = out.replace(/\s*[-–—:]\s*$/, "").trim();
   } while (out !== prev && out.length > 0);
 
   return out.length ? out : title.trim();

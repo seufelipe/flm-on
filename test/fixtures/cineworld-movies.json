@@ -1,0 +1,183 @@
+[
+  {
+    "id": "231658",
+    "title": "I (Ai) (Tamil)",
+    "originalTitle": "i",
+    "locale": {
+      "title": "I (Ai) (Tamil)"
+    },
+    "runtime": 11280,
+    "releases": [],
+    "direction": [
+      "S. Shankar"
+    ],
+    "genres": "Drama, Fantasy, Romance"
+  },
+  {
+    "id": "1000013045",
+    "title": "The Odyssey",
+    "originalTitle": "The Odyssey",
+    "locale": {
+      "title": "The Odyssey"
+    },
+    "runtime": 10380,
+    "certificate": "15A",
+    "release": "2026-07-17T00:00:00.000Z",
+    "releases": [
+      {
+        "releasedAt": "2026-07-17T00:00:00.000Z",
+        "rating": {
+          "certificate": "15A"
+        }
+      }
+    ],
+    "direction": [
+      "Christopher Nolan"
+    ],
+    "genres": "Action, Fantasy"
+  },
+  {
+    "id": "1000046469",
+    "title": "The Odyssey: The IMAX Experience",
+    "originalTitle": "The Odyssey: The IMAX Experience",
+    "locale": {
+      "title": "The Odyssey: The IMAX Experience"
+    },
+    "runtime": 10320,
+    "certificate": "15A",
+    "release": "2026-07-17T00:00:00.000Z",
+    "releases": [
+      {
+        "releasedAt": "2026-07-17T00:00:00.000Z",
+        "rating": {
+          "certificate": "15A"
+        }
+      }
+    ],
+    "direction": [
+      "Christopher Nolan"
+    ],
+    "genres": "Fantasy, Action"
+  },
+  {
+    "id": "276608",
+    "title": "Spider-Man: Brand New Day",
+    "originalTitle": "Spider-Man: Brand New Day",
+    "locale": {
+      "title": "Spider-Man: Brand New Day"
+    },
+    "runtime": 8700,
+    "certificate": "12A",
+    "release": "2026-07-29T00:00:00.000Z",
+    "releases": [
+      {
+        "releasedAt": "2026-07-29T00:00:00.000Z",
+        "rating": {
+          "certificate": "12A"
+        }
+      }
+    ],
+    "direction": [
+      "Destin Daniel Cretton"
+    ],
+    "genres": "Action, Adventure, Fantasy, Science fiction"
+  },
+  {
+    "id": "294280",
+    "title": "De Gaulle: Résistance",
+    "originalTitle": "La Bataille de Gaulle - partie 1 : L'Âge de Fer",
+    "locale": {
+      "title": "De Gaulle: Résistance"
+    },
+    "runtime": 9600,
+    "certificate": "15A",
+    "release": "2026-08-28T00:00:00.000Z",
+    "releases": [
+      {
+        "releasedAt": "2026-08-28T00:00:00.000Z",
+        "rating": {
+          "certificate": "15A"
+        }
+      }
+    ],
+    "direction": [
+      "Antonin Baudry"
+    ],
+    "genres": "Thriller, Historical"
+  },
+  {
+    "id": "1000038971",
+    "title": "25 Years of Magic - Harry Potter and the Philosopher’s Stone",
+    "originalTitle": "25 Years of Magic - Harry Potter and the Sorcerer’s Stone",
+    "locale": {
+      "title": "25 Years of Magic - Harry Potter and the Sorcerer’s Stone"
+    },
+    "runtime": 9720,
+    "certificate": "PG",
+    "release": "2026-08-28T00:00:00.000Z",
+    "releases": [
+      {
+        "releasedAt": "2026-08-28T00:00:00.000Z",
+        "rating": {
+          "certificate": "PG"
+        }
+      }
+    ],
+    "direction": [
+      "Chris Columbus"
+    ],
+    "genres": "Fantasy"
+  },
+  {
+    "id": "324492",
+    "title": "Toxic",
+    "originalTitle": "Toxic",
+    "locale": {
+      "title": "Toxic"
+    },
+    "runtime": 10500,
+    "certificate": "16",
+    "release": "2026-08-26T00:00:00.000Z",
+    "releases": [
+      {
+        "releasedAt": "2026-08-26T00:00:00.000Z",
+        "rating": {
+          "certificate": "16"
+        }
+      }
+    ],
+    "direction": [
+      "Geethu Mohandas"
+    ],
+    "genres": "Action, Thriller, Drama"
+  },
+  {
+    "id": "267335",
+    "title": "Coyote vs Acme",
+    "originalTitle": "Coyote vs. ACME",
+    "locale": {
+      "title": "Coyote vs Acme"
+    },
+    "runtime": 6180,
+    "certificate": "PG",
+    "release": "2026-08-21T00:00:00.000Z",
+    "releases": [
+      {
+        "releasedAt": "2026-08-21T00:00:00.000Z",
+        "rating": {
+          "certificate": "PG"
+        }
+      },
+      {
+        "releasedAt": "2026-08-28T00:00:00.000Z",
+        "rating": {
+          "certificate": "PG"
+        }
+      }
+    ],
+    "direction": [
+      "Dave Green"
+    ],
+    "genres": "Comedy, Adventure, Animation"
+  }
+]

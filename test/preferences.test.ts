@@ -18,10 +18,16 @@ describe("normalize", () => {
 
   it("merges a partial blob onto the defaults", () => {
     const out = normalize({ cinemas: { ifi: false } });
-    expect(out.cinemas).toEqual({ lighthouse: true, ifi: false });
+    expect(out.cinemas).toEqual({ lighthouse: true, ifi: false, cineworld: true });
     expect(out.timeframes).toEqual(DEFAULT_PREFERENCES.timeframes);
     expect(out.hideShortFilms).toBe(DEFAULT_PREFERENCES.hideShortFilms);
     expect(out.kidsOnly).toBe(false);
+    expect(out.hideDubbed).toBe(false);
+  });
+
+  it("defaults a newly-added cinema on for a blob saved before it existed", () => {
+    const out = normalize({ cinemas: { lighthouse: true, ifi: false } });
+    expect(out.cinemas.cineworld).toBe(true);
   });
 
   it("coerces non-boolean values to their default", () => {
@@ -40,6 +46,7 @@ describe("normalize", () => {
   it("keeps a genuine boolean that differs from the default", () => {
     expect(normalize({ hideShortFilms: false }).hideShortFilms).toBe(false);
     expect(normalize({ kidsOnly: true }).kidsOnly).toBe(true);
+    expect(normalize({ hideDubbed: true }).hideDubbed).toBe(true);
     expect(normalize({ timeframes: { early: false } }).timeframes.early).toBe(false);
   });
 
@@ -51,6 +58,7 @@ describe("isDefault", () => {
     expect(isDefault(normalize({ cinemas: { ifi: false } }))).toBe(false);
     expect(isDefault(normalize({ hideShortFilms: false }))).toBe(false);
     expect(isDefault(normalize({ kidsOnly: true }))).toBe(false);
+    expect(isDefault(normalize({ hideDubbed: true }))).toBe(false);
   });
 });
 

@@ -5,8 +5,9 @@
 // See lib/screeningTags.ts for the special-audience / curated-event side of the same field.
 //
 // Sources: Light House puts "35mm" in em.additional; IFI encodes "70mm" as an svg[data-icon]
-// on each booking link (see lib/scrapers/ifi.ts). IMAX has no source yet — neither cinema is an
-// IMAX venue — but the mapping is here so it works the moment one appears.
+// on each booking link (see lib/scrapers/ifi.ts); Cineworld tags an IMAX session
+// `Format.Projection.Imax`, which lib/scrapers/cineworld.ts normalises to "IMAX" (it also files
+// its ": The IMAX Experience" companion-movie showings under a synthesised "IMAX" tag).
 
 export interface FilmFormat {
   id: string; // stable slug, also the de-dupe key
@@ -52,6 +53,7 @@ const FORMATS: Record<string, FilmFormat> = {
   "imax 70mm": FORMAT_IMAX,
   "15/70": FORMAT_IMAX,
   "1570": FORMAT_IMAX,
+  "format.projection.imax": FORMAT_IMAX,
 };
 
 // Maps raw tags to their format display form, dropping anything not a known format and

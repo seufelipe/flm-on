@@ -7,8 +7,10 @@ import { groupScreeningsByDay, type FilmGroup } from "@/lib/groupings";
 import { groupScreeningsByTimeframe } from "@/lib/timeframe";
 import { ScreeningTagMarks, ScreeningTagLabel } from "@/components/ScreeningTags";
 import { FilmFormatTag, FilmFormatMarks } from "@/components/FilmFormats";
+import { LanguageTag, LanguageMarks } from "@/components/ScreeningLanguage";
 import { displayScreeningTags, screeningTagsTooltip } from "@/lib/screeningTags";
 import { displayFilmFormats, filmFormatsTooltip } from "@/lib/formats";
+import { displayLanguage, languageTooltip } from "@/lib/languages";
 import { CINEMA_LABEL } from "@/lib/cinemas";
 import { certColor } from "@/lib/certs";
 import { formatDayFriendly, formatDayDate } from "@/lib/date";
@@ -112,7 +114,11 @@ export default function FilmCard({
         role="button"
         tabIndex={0}
         title={
-          [screeningTagsTooltip(s.screeningTags), filmFormatsTooltip(s.screeningTags)]
+          [
+            screeningTagsTooltip(s.screeningTags),
+            filmFormatsTooltip(s.screeningTags),
+            languageTooltip(s.screeningTags),
+          ]
             .filter(Boolean)
             .join(" · ") || undefined
         }
@@ -132,6 +138,7 @@ export default function FilmCard({
         <span className="font-bold">{s.time}</span>
         <ScreeningTagMarks tags={s.screeningTags} />
         <FilmFormatMarks tags={s.screeningTags} />
+        <LanguageMarks tags={s.screeningTags} />
       </div>
     );
   }
@@ -172,12 +179,14 @@ export default function FilmCard({
   const sessionTags = Array.from(new Set(group.screenings.flatMap((s) => s.screeningTags ?? [])));
   const hasScreeningLabel = displayScreeningTags(sessionTags).some((t) => t.mark !== false);
   const sessionFormats = displayFilmFormats(sessionTags);
+  const sessionLanguage = displayLanguage(sessionTags);
 
   const hasMetaLine =
     group.cert !== undefined ||
     (group.durationMins !== undefined && !isMystery) ||
     group.letterboxdUrl !== undefined ||
-    sessionFormats.length > 0;
+    sessionFormats.length > 0 ||
+    sessionLanguage !== null;
 
   return (
     <div className="bg-surface border-4 border-border rounded-card p-8">
@@ -225,6 +234,7 @@ export default function FilmCard({
               </span>
             )}
             <FilmFormatTag tags={sessionTags} />
+            <LanguageTag tags={sessionTags} />
             {group.letterboxdUrl && (
               <a
                 href={group.letterboxdUrl}

@@ -3,6 +3,7 @@ import type { Screening } from "./scrapers/types";
 import * as cache from "./cache";
 import { resolveLetterboxd, type LetterboxdMatch } from "./letterboxd";
 import { cleanFilmTitle, loadTitleOverrides } from "./titles";
+import { loadHiddenFilms, isHiddenFilm } from "./hidden";
 
 export interface AdapterError {
   cinema: string;
@@ -114,9 +115,11 @@ export async function getShowtimesForRange(dates: string[]): Promise<DayResult> 
   const results = await Promise.all(adapters.map((a) => getCinemaRange(a, dates)));
 
   const titleOverrides = await loadTitleOverrides();
+  const hiddenFilms = await loadHiddenFilms();
   const screenings = results
     .flatMap((r) => r.screenings)
-    .map((s) => ({ ...s, filmTitle: cleanFilmTitle(s.filmTitle, titleOverrides) }));
+    .map((s) => ({ ...s, filmTitle: cleanFilmTitle(s.filmTitle, titleOverrides) }))
+    .filter((s) => !isHiddenFilm(s.filmTitle, hiddenFilms));
   const errors: AdapterError[] = results
     .map((r, i) => (r.error ? { cinema: adapters[i].name, message: r.error } : undefined))
     .filter((e): e is AdapterError => Boolean(e));

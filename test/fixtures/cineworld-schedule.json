@@ -1,0 +1,1510 @@
+{
+  "X07A4": {
+    "schedule": {
+      "231658": {
+        "2026-08-30": [
+          {
+            "id": "231658-2026-08-30 16:05:00-Localization.Language.Tamil,Format.Projection.Digital,Showtime.Accessibility.Subtitled",
+            "startsAt": "2026-08-30T16:05:00",
+            "tags": [
+              "Localization.Language.Tamil",
+              "Format.Projection.Digital",
+              "Showtime.Accessibility.Subtitled"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-367182/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.231658&tags=Localization.Language.Tamil,Format.Projection.Digital,Showtime.Accessibility.Subtitled&perfd=20260830&perft=16:05&code=2D; ST; Tamil"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "nextShowtimes": []
+          },
+          {
+            "id": "231658-2026-08-30 20:20:00-Localization.Language.Tamil,Format.Projection.Digital,Showtime.Accessibility.Subtitled",
+            "startsAt": "2026-08-30T20:20:00",
+            "tags": [
+              "Localization.Language.Tamil",
+              "Format.Projection.Digital",
+              "Showtime.Accessibility.Subtitled"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-367181/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.231658&tags=Localization.Language.Tamil,Format.Projection.Digital,Showtime.Accessibility.Subtitled&perfd=20260830&perft=20:20&code=2D; ST; Tamil"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "nextShowtimes": []
+          }
+        ],
+        "2026-08-31": [
+          {
+            "id": "231658-2026-08-31 16:00:00-Localization.Language.Tamil,Format.Projection.Digital,Showtime.Accessibility.Subtitled",
+            "startsAt": "2026-08-31T16:00:00",
+            "tags": [
+              "Localization.Language.Tamil",
+              "Format.Projection.Digital",
+              "Showtime.Accessibility.Subtitled"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-367184/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.231658&tags=Localization.Language.Tamil,Format.Projection.Digital,Showtime.Accessibility.Subtitled&perfd=20260831&perft=16:00&code=2D; ST; Tamil"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "nextShowtimes": []
+          },
+          {
+            "id": "231658-2026-08-31 20:20:00-Localization.Language.Tamil,Format.Projection.Digital,Showtime.Accessibility.Subtitled",
+            "startsAt": "2026-08-31T20:20:00",
+            "tags": [
+              "Localization.Language.Tamil",
+              "Format.Projection.Digital",
+              "Showtime.Accessibility.Subtitled"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-367183/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.231658&tags=Localization.Language.Tamil,Format.Projection.Digital,Showtime.Accessibility.Subtitled&perfd=20260831&perft=20:20&code=2D; ST; Tamil"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "nextShowtimes": []
+          }
+        ]
+      },
+      "267335": {
+        "2026-08-30": [
+          {
+            "id": "267335-2026-08-30 12:30:00-Format.Projection.Digital,Format.Projection.Laser",
+            "startsAt": "2026-08-30T12:30:00",
+            "tags": [
+              "Format.Projection.Digital",
+              "Format.Projection.Laser"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-366843/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.267335&tags=Format.Projection.Digital,Format.Projection.Laser&perfd=20260830&perft=12:30&code=2D; Laser"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "5"
+            },
+            "nextShowtimes": []
+          },
+          {
+            "id": "267335-2026-08-30 13:20:00-Format.Projection.Digital,Format.Projection.Laser",
+            "startsAt": "2026-08-30T13:20:00",
+            "tags": [
+              "Format.Projection.Digital",
+              "Format.Projection.Laser"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-366870/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.267335&tags=Format.Projection.Digital,Format.Projection.Laser&perfd=20260830&perft=13:20&code=2D; Laser"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "7"
+            },
+            "nextShowtimes": []
+          },
+          {
+            "id": "267335-2026-08-30 16:00:00-Format.Projection.Digital,Format.Projection.Laser",
+            "startsAt": "2026-08-30T16:00:00",
+            "tags": [
+              "Format.Projection.Digital",
+              "Format.Projection.Laser"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-366869/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.267335&tags=Format.Projection.Digital,Format.Projection.Laser&perfd=20260830&perft=16:00&code=2D; Laser"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "7"
+            },
+            "nextShowtimes": []
+          }
+        ],
+        "2026-08-31": [
+          {
+            "id": "267335-2026-08-31 13:00:00-Format.Projection.Digital,Format.Projection.Laser",
+            "startsAt": "2026-08-31T13:00:00",
+            "tags": [
+              "Format.Projection.Digital",
+              "Format.Projection.Laser"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-366805/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.267335&tags=Format.Projection.Digital,Format.Projection.Laser&perfd=20260831&perft=13:00&code=2D; Laser"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "5"
+            },
+            "nextShowtimes": []
+          }
+        ]
+      },
+      "276608": {
+        "2026-08-30": [
+          {
+            "id": "276608-2026-08-30 13:10:00-Format.Projection.Digital,Showtime.Accessibility.AutismFriendly",
+            "startsAt": "2026-08-30T13:10:00",
+            "tags": [
+              "Format.Projection.Digital",
+              "Showtime.Accessibility.AutismFriendly"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-367021/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.276608&tags=Format.Projection.Digital,Showtime.Accessibility.AutismFriendly&perfd=20260830&perft=13:10&code=2D; AUT"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "1"
+            },
+            "nextShowtimes": []
+          },
+          {
+            "id": "276608-2026-08-30 15:30:00-Format.Projection.Digital,Format.Projection.Laser",
+            "startsAt": "2026-08-30T15:30:00",
+            "tags": [
+              "Format.Projection.Digital",
+              "Format.Projection.Laser"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-366970/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.276608&tags=Format.Projection.Digital,Format.Projection.Laser&perfd=20260830&perft=15:30&code=2D; Laser"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "14"
+            },
+            "nextShowtimes": []
+          },
+          {
+            "id": "276608-2026-08-30 16:30:00-Format.Projection.Digital",
+            "startsAt": "2026-08-30T16:30:00",
+            "tags": [
+              "Format.Projection.Digital"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-366717/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.276608&tags=Format.Projection.Digital&perfd=20260830&perft=16:30&code=2D"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "1"
+            },
+            "nextShowtimes": []
+          },
+          {
+            "id": "276608-2026-08-30 19:30:00-Format.Projection.Digital,Format.Projection.Laser",
+            "startsAt": "2026-08-30T19:30:00",
+            "tags": [
+              "Format.Projection.Digital",
+              "Format.Projection.Laser"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-366921/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.276608&tags=Format.Projection.Digital,Format.Projection.Laser&perfd=20260830&perft=19:30&code=2D; Laser"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "11"
+            },
+            "nextShowtimes": []
+          }
+        ],
+        "2026-08-31": [
+          {
+            "id": "276608-2026-08-31 13:10:00-Format.Projection.Digital",
+            "startsAt": "2026-08-31T13:10:00",
+            "tags": [
+              "Format.Projection.Digital"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-366718/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.276608&tags=Format.Projection.Digital&perfd=20260831&perft=13:10&code=2D"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "1"
+            },
+            "nextShowtimes": []
+          },
+          {
+            "id": "276608-2026-08-31 15:30:00-Format.Projection.Digital,Format.Projection.Laser",
+            "startsAt": "2026-08-31T15:30:00",
+            "tags": [
+              "Format.Projection.Digital",
+              "Format.Projection.Laser"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-366972/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.276608&tags=Format.Projection.Digital,Format.Projection.Laser&perfd=20260831&perft=15:30&code=2D; Laser"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "14"
+            },
+            "nextShowtimes": []
+          },
+          {
+            "id": "276608-2026-08-31 16:30:00-Format.Projection.Digital",
+            "startsAt": "2026-08-31T16:30:00",
+            "tags": [
+              "Format.Projection.Digital"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-366719/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.276608&tags=Format.Projection.Digital&perfd=20260831&perft=16:30&code=2D"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "1"
+            },
+            "nextShowtimes": []
+          },
+          {
+            "id": "276608-2026-08-31 19:30:00-Format.Projection.Digital,Format.Projection.Laser",
+            "startsAt": "2026-08-31T19:30:00",
+            "tags": [
+              "Format.Projection.Digital",
+              "Format.Projection.Laser"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-366923/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.276608&tags=Format.Projection.Digital,Format.Projection.Laser&perfd=20260831&perft=19:30&code=2D; Laser"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "11"
+            },
+            "nextShowtimes": []
+          }
+        ]
+      },
+      "294280": {
+        "2026-08-30": [
+          {
+            "id": "294280-2026-08-30 13:00:00-Format.Projection.Digital,Format.Projection.Laser,Showtime.Accessibility.Subtitled",
+            "startsAt": "2026-08-30T13:00:00",
+            "tags": [
+              "Format.Projection.Digital",
+              "Format.Projection.Laser",
+              "Showtime.Accessibility.Subtitled"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-367030/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.294280&tags=Format.Projection.Digital,Format.Projection.Laser,Showtime.Accessibility.Subtitled&perfd=20260830&perft=13:00&code=2D; Laser; ST"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "4"
+            },
+            "nextShowtimes": []
+          },
+          {
+            "id": "294280-2026-08-30 16:30:00-Format.Projection.Digital,Format.Projection.Laser,Showtime.Accessibility.Subtitled",
+            "startsAt": "2026-08-30T16:30:00",
+            "tags": [
+              "Format.Projection.Digital",
+              "Format.Projection.Laser",
+              "Showtime.Accessibility.Subtitled"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-367029/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.294280&tags=Format.Projection.Digital,Format.Projection.Laser,Showtime.Accessibility.Subtitled&perfd=20260830&perft=16:30&code=2D; Laser; ST"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "4"
+            },
+            "nextShowtimes": []
+          },
+          {
+            "id": "294280-2026-08-30 20:10:00-Format.Projection.Digital,Format.Projection.Laser,Showtime.Accessibility.Subtitled",
+            "startsAt": "2026-08-30T20:10:00",
+            "tags": [
+              "Format.Projection.Digital",
+              "Format.Projection.Laser",
+              "Showtime.Accessibility.Subtitled"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-367028/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.294280&tags=Format.Projection.Digital,Format.Projection.Laser,Showtime.Accessibility.Subtitled&perfd=20260830&perft=20:10&code=2D; Laser; ST"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "4"
+            },
+            "nextShowtimes": []
+          }
+        ],
+        "2026-08-31": [
+          {
+            "id": "294280-2026-08-31 13:00:00-Format.Projection.Digital,Format.Projection.Laser,Showtime.Accessibility.Subtitled",
+            "startsAt": "2026-08-31T13:00:00",
+            "tags": [
+              "Format.Projection.Digital",
+              "Format.Projection.Laser",
+              "Showtime.Accessibility.Subtitled"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-367025/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.294280&tags=Format.Projection.Digital,Format.Projection.Laser,Showtime.Accessibility.Subtitled&perfd=20260831&perft=13:00&code=2D; Laser; ST"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "4"
+            },
+            "nextShowtimes": []
+          },
+          {
+            "id": "294280-2026-08-31 16:30:00-Format.Projection.Digital,Format.Projection.Laser,Showtime.Accessibility.Subtitled",
+            "startsAt": "2026-08-31T16:30:00",
+            "tags": [
+              "Format.Projection.Digital",
+              "Format.Projection.Laser",
+              "Showtime.Accessibility.Subtitled"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-367026/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.294280&tags=Format.Projection.Digital,Format.Projection.Laser,Showtime.Accessibility.Subtitled&perfd=20260831&perft=16:30&code=2D; Laser; ST"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "4"
+            },
+            "nextShowtimes": []
+          },
+          {
+            "id": "294280-2026-08-31 20:10:00-Format.Projection.Digital,Format.Projection.Laser,Showtime.Accessibility.Subtitled",
+            "startsAt": "2026-08-31T20:10:00",
+            "tags": [
+              "Format.Projection.Digital",
+              "Format.Projection.Laser",
+              "Showtime.Accessibility.Subtitled"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-367027/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.294280&tags=Format.Projection.Digital,Format.Projection.Laser,Showtime.Accessibility.Subtitled&perfd=20260831&perft=20:10&code=2D; Laser; ST"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "4"
+            },
+            "nextShowtimes": []
+          }
+        ]
+      },
+      "324492": {
+        "2026-08-30": [
+          {
+            "id": "324492-2026-08-30 19:50:00-Localization.Language.Kannada,Format.Projection.Digital,Showtime.Accessibility.Subtitled",
+            "startsAt": "2026-08-30T19:50:00",
+            "tags": [
+              "Localization.Language.Kannada",
+              "Format.Projection.Digital",
+              "Showtime.Accessibility.Subtitled"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-366712/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.324492&tags=Localization.Language.Kannada,Format.Projection.Digital,Showtime.Accessibility.Subtitled&perfd=20260830&perft=19:50&code=2D; ST"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "1"
+            },
+            "nextShowtimes": []
+          }
+        ]
+      },
+      "1000013045": {
+        "2026-08-30": [
+          {
+            "id": "1000013045-2026-08-30 12:30:00-Format.Projection.Digital,Format.Projection.Laser",
+            "startsAt": "2026-08-30T12:30:00",
+            "tags": [
+              "Format.Projection.Digital",
+              "Format.Projection.Laser"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-367075/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.1000013045&tags=Format.Projection.Digital,Format.Projection.Laser&perfd=20260830&perft=12:30&code=2D; Laser"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "2"
+            },
+            "nextShowtimes": []
+          },
+          {
+            "id": "1000013045-2026-08-30 15:50:00-Format.Projection.Digital,Format.Projection.Laser",
+            "startsAt": "2026-08-30T15:50:00",
+            "tags": [
+              "Format.Projection.Digital",
+              "Format.Projection.Laser"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-366814/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.1000013045&tags=Format.Projection.Digital,Format.Projection.Laser&perfd=20260830&perft=15:50&code=2D; Laser"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "6"
+            },
+            "nextShowtimes": []
+          },
+          {
+            "id": "1000013045-2026-08-30 16:50:00-Format.Projection.Digital,Format.Projection.Laser",
+            "startsAt": "2026-08-30T16:50:00",
+            "tags": [
+              "Format.Projection.Digital",
+              "Format.Projection.Laser"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-367076/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.1000013045&tags=Format.Projection.Digital,Format.Projection.Laser&perfd=20260830&perft=16:50&code=2D; Laser"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "2"
+            },
+            "nextShowtimes": []
+          },
+          {
+            "id": "1000013045-2026-08-30 20:00:00-Format.Projection.Digital,Format.Projection.Laser",
+            "startsAt": "2026-08-30T20:00:00",
+            "tags": [
+              "Format.Projection.Digital",
+              "Format.Projection.Laser"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-366815/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.1000013045&tags=Format.Projection.Digital,Format.Projection.Laser&perfd=20260830&perft=20:00&code=2D; Laser"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "6"
+            },
+            "nextShowtimes": []
+          }
+        ],
+        "2026-08-31": [
+          {
+            "id": "1000013045-2026-08-31 13:50:00-Format.Projection.Digital,Format.Projection.Laser",
+            "startsAt": "2026-08-31T13:50:00",
+            "tags": [
+              "Format.Projection.Digital",
+              "Format.Projection.Laser"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-366736/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.1000013045&tags=Format.Projection.Digital,Format.Projection.Laser&perfd=20260831&perft=13:50&code=2D; Laser"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "2"
+            },
+            "nextShowtimes": []
+          },
+          {
+            "id": "1000013045-2026-08-31 16:20:00-Format.Projection.Digital,Format.Projection.Laser",
+            "startsAt": "2026-08-31T16:20:00",
+            "tags": [
+              "Format.Projection.Digital",
+              "Format.Projection.Laser"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-366816/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.1000013045&tags=Format.Projection.Digital,Format.Projection.Laser&perfd=20260831&perft=16:20&code=2D; Laser"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "6"
+            },
+            "nextShowtimes": []
+          },
+          {
+            "id": "1000013045-2026-08-31 18:30:00-Format.Projection.Digital,Format.Projection.Laser",
+            "startsAt": "2026-08-31T18:30:00",
+            "tags": [
+              "Format.Projection.Digital",
+              "Format.Projection.Laser"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-366737/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.1000013045&tags=Format.Projection.Digital,Format.Projection.Laser&perfd=20260831&perft=18:30&code=2D; Laser"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "2"
+            },
+            "nextShowtimes": []
+          },
+          {
+            "id": "1000013045-2026-08-31 20:10:00-Format.Projection.Digital,Format.Projection.Laser",
+            "startsAt": "2026-08-31T20:10:00",
+            "tags": [
+              "Format.Projection.Digital",
+              "Format.Projection.Laser"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-366817/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.1000013045&tags=Format.Projection.Digital,Format.Projection.Laser&perfd=20260831&perft=20:10&code=2D; Laser"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "6"
+            },
+            "nextShowtimes": []
+          }
+        ]
+      },
+      "1000038971": {
+        "2026-08-30": [
+          {
+            "id": "1000038971-2026-08-30 13:20:00-Format.Projection.Digital,Showtime.Event.BigScreenClassics,Format.Projection.Laser",
+            "startsAt": "2026-08-30T13:20:00",
+            "tags": [
+              "Format.Projection.Digital",
+              "Showtime.Event.BigScreenClassics",
+              "Format.Projection.Laser"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-366990/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.1000038971&tags=Format.Projection.Digital,Showtime.Event.BigScreenClassics,Format.Projection.Laser&perfd=20260830&perft=13:20&code=2D; CF; Laser; STAR"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "15"
+            },
+            "nextShowtimes": []
+          },
+          {
+            "id": "1000038971-2026-08-30 13:40:00-Auditorium.Experience.4dx,Format.Projection.Digital,Showtime.Event.BigScreenClassics,Format.Projection.Laser",
+            "startsAt": "2026-08-30T13:40:00",
+            "tags": [
+              "Auditorium.Experience.4dx",
+              "Format.Projection.Digital",
+              "Showtime.Event.BigScreenClassics",
+              "Format.Projection.Laser"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-366637/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.1000038971&tags=Auditorium.Experience.4dx,Format.Projection.Digital,Showtime.Event.BigScreenClassics,Format.Projection.Laser&perfd=20260830&perft=13:40&code=2D; 4DX; CF; Laser"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "4"
+            },
+            "nextShowtimes": []
+          },
+          {
+            "id": "1000038971-2026-08-30 17:00:00-Format.Projection.Digital,Showtime.Event.BigScreenClassics,Format.Projection.Laser",
+            "startsAt": "2026-08-30T17:00:00",
+            "tags": [
+              "Format.Projection.Digital",
+              "Showtime.Event.BigScreenClassics",
+              "Format.Projection.Laser"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-366991/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.1000038971&tags=Format.Projection.Digital,Showtime.Event.BigScreenClassics,Format.Projection.Laser&perfd=20260830&perft=17:00&code=2D; CF; Laser; STAR"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "15"
+            },
+            "nextShowtimes": []
+          },
+          {
+            "id": "1000038971-2026-08-30 17:10:00-Auditorium.Experience.4dx,Format.Projection.Digital,Showtime.Event.BigScreenClassics,Format.Projection.Laser",
+            "startsAt": "2026-08-30T17:10:00",
+            "tags": [
+              "Auditorium.Experience.4dx",
+              "Format.Projection.Digital",
+              "Showtime.Event.BigScreenClassics",
+              "Format.Projection.Laser"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-366887/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.1000038971&tags=Auditorium.Experience.4dx,Format.Projection.Digital,Showtime.Event.BigScreenClassics,Format.Projection.Laser&perfd=20260830&perft=17:10&code=2D; 4DX; CF; Laser"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "4"
+            },
+            "nextShowtimes": []
+          }
+        ],
+        "2026-08-31": [
+          {
+            "id": "1000038971-2026-08-31 13:20:00-Format.Projection.Digital,Showtime.Event.BigScreenClassics,Format.Projection.Laser",
+            "startsAt": "2026-08-31T13:20:00",
+            "tags": [
+              "Format.Projection.Digital",
+              "Showtime.Event.BigScreenClassics",
+              "Format.Projection.Laser"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-366992/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.1000038971&tags=Format.Projection.Digital,Showtime.Event.BigScreenClassics,Format.Projection.Laser&perfd=20260831&perft=13:20&code=2D; CF; Laser"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "16"
+            },
+            "nextShowtimes": []
+          },
+          {
+            "id": "1000038971-2026-08-31 13:40:00-Auditorium.Experience.4dx,Format.Projection.Digital,Showtime.Event.BigScreenClassics,Format.Projection.Laser",
+            "startsAt": "2026-08-31T13:40:00",
+            "tags": [
+              "Auditorium.Experience.4dx",
+              "Format.Projection.Digital",
+              "Showtime.Event.BigScreenClassics",
+              "Format.Projection.Laser"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-366638/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.1000038971&tags=Auditorium.Experience.4dx,Format.Projection.Digital,Showtime.Event.BigScreenClassics,Format.Projection.Laser&perfd=20260831&perft=13:40&code=2D; 4DX; CF; Laser"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "4"
+            },
+            "nextShowtimes": []
+          },
+          {
+            "id": "1000038971-2026-08-31 17:00:00-Format.Projection.Digital,Showtime.Event.BigScreenClassics,Format.Projection.Laser",
+            "startsAt": "2026-08-31T17:00:00",
+            "tags": [
+              "Format.Projection.Digital",
+              "Showtime.Event.BigScreenClassics",
+              "Format.Projection.Laser"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-366993/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.1000038971&tags=Format.Projection.Digital,Showtime.Event.BigScreenClassics,Format.Projection.Laser&perfd=20260831&perft=17:00&code=2D; CF; Laser"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "16"
+            },
+            "nextShowtimes": []
+          },
+          {
+            "id": "1000038971-2026-08-31 17:10:00-Auditorium.Experience.4dx,Format.Projection.Digital,Showtime.Event.BigScreenClassics,Format.Projection.Laser",
+            "startsAt": "2026-08-31T17:10:00",
+            "tags": [
+              "Auditorium.Experience.4dx",
+              "Format.Projection.Digital",
+              "Showtime.Event.BigScreenClassics",
+              "Format.Projection.Laser"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-366888/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.1000038971&tags=Auditorium.Experience.4dx,Format.Projection.Digital,Showtime.Event.BigScreenClassics,Format.Projection.Laser&perfd=20260831&perft=17:10&code=2D; 4DX; CF; Laser"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "screen": {
+              "name": "4"
+            },
+            "nextShowtimes": []
+          }
+        ]
+      },
+      "1000046469": {
+        "2026-08-30": [
+          {
+            "id": "1000046469-2026-08-30 15:00:00-Format.Projection.Imax,Format.Projection.Digital",
+            "startsAt": "2026-08-30T15:00:00",
+            "tags": [
+              "Format.Projection.Imax",
+              "Format.Projection.Digital"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-367042/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.1000046469&tags=Format.Projection.Imax,Format.Projection.Digital&perfd=20260830&perft=15:00&code=2D"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "nextShowtimes": []
+          },
+          {
+            "id": "1000046469-2026-08-30 19:20:00-Format.Projection.Imax,Format.Projection.Digital",
+            "startsAt": "2026-08-30T19:20:00",
+            "tags": [
+              "Format.Projection.Imax",
+              "Format.Projection.Digital"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-367043/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.1000046469&tags=Format.Projection.Imax,Format.Projection.Digital&perfd=20260830&perft=19:20&code=2D"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "nextShowtimes": []
+          }
+        ],
+        "2026-08-31": [
+          {
+            "id": "1000046469-2026-08-31 14:40:00-Format.Projection.Imax,Format.Projection.Digital",
+            "startsAt": "2026-08-31T14:40:00",
+            "tags": [
+              "Format.Projection.Imax",
+              "Format.Projection.Digital"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-367044/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.1000046469&tags=Format.Projection.Imax,Format.Projection.Digital&perfd=20260831&perft=14:40&code=2D"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "nextShowtimes": []
+          },
+          {
+            "id": "1000046469-2026-08-31 19:30:00-Format.Projection.Imax,Format.Projection.Digital",
+            "startsAt": "2026-08-31T19:30:00",
+            "tags": [
+              "Format.Projection.Imax",
+              "Format.Projection.Digital"
+            ],
+            "isExpired": false,
+            "data": {
+              "ticketing": [
+                {
+                  "urls": [
+                    "https://web.cineworld.ie/order/showtimes/0001-367045/seats"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "default"
+                },
+                {
+                  "urls": [
+                    "https://relay.mvtx.us/ticketing/dbz?code_theater=X07A4&gid_entity=movie.movie._.1000046469&tags=Format.Projection.Imax,Format.Projection.Digital&perfd=20260831&perft=19:30&code=2D"
+                  ],
+                  "type": "DESKTOP",
+                  "provider": "relay"
+                }
+              ]
+            },
+            "occupancy": {
+              "rate": null
+            },
+            "nextShowtimes": []
+          }
+        ]
+      }
+    }
+  }
+}

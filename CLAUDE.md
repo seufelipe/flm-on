@@ -2,10 +2,11 @@
 
 # FLM ON — Dublin cinema showtime planner
 
-Personal single-user app (no auth, no accounts) that combines showtimes from the user's two
-favourite Dublin cinemas — **Light House Cinema** and **IFI** — into one place, with tools to
-plan a day at the cinema — anything from a double bill up to a full day of back-to-back
-screenings. Built iteratively through direct conversation with the user; this file exists so a
+Personal single-user app (no auth, no accounts) that combines showtimes from the user's
+favourite Dublin cinemas — **Light House Cinema** and **IFI** in full, plus the *non-standard*
+programming (classics, IMAX, foreign-language, special events) of **Cineworld Dublin** — into
+one place, with tools to plan a day at the cinema — anything from a double bill up to a full day
+of back-to-back screenings. Built iteratively through direct conversation with the user; this file exists so a
 future session can pick back up without re-deriving the reasoning below.
 
 Public deployment (see decision #9) runs on a **weekly curated data pipeline**, not live
@@ -15,16 +16,18 @@ reads statically.
 
 ## Stack
 
-Next.js 16 (App Router) + TypeScript, Tailwind v4, cheerio for HTML parsing, vitest for tests.
+Next.js 16 (App Router) + TypeScript, Tailwind v4, cheerio for HTML parsing (Light House / IFI;
+Cineworld is a JSON API), vitest for tests.
 No database — `data/showtimes.json` (the published week) plus `data/title-overrides.json` and
 `data/letterboxd-overrides.json` (curated corrections) are committed; everything else in `data/`
 is gitignored runtime cache/staging.
 
 ## Architecture
 
-- `lib/scrapers/lighthouse.ts`, `lib/scrapers/ifi.ts` — `CinemaAdapter` implementations (real
-  scrapers, not dummy data — Phase 1 used hand-written dummy adapters to build the UI risk-free,
-  Phase 2 swapped in these).
+- `lib/scrapers/lighthouse.ts`, `lib/scrapers/ifi.ts`, `lib/scrapers/cineworld.ts` —
+  `CinemaAdapter` implementations (real scrapers, not dummy data — Phase 1 used hand-written
+  dummy adapters to build the UI risk-free, Phase 2 swapped in these). Cineworld is a JSON-API
+  adapter (decision #16), not an HTML scraper, and filters itself to non-standard screenings.
 - `lib/scrapers/index.ts` — the adapter registry (`adapters: CinemaAdapter[]`). Adding a cinema
   later is one new adapter file + one array entry — deliberately not an in-app settings UI.
 - `lib/aggregate.ts` — `getShowtimesForRange` / `refreshShowtimesForRange`. Fetches each
@@ -41,7 +44,14 @@ is gitignored runtime cache/staging.
   Restoration`, `Nth Anniversary`, and a `Month YYYY` suffix that recurring strands append —
   matched at end of title, bare / dash-prefixed / in `(…)`). The cleaned title is
   what the UI shows *and* what Letterboxd resolution + its cache/override keys use, so editing
-  these files shifts `letterboxd-overrides.json` keys too.
+  these files shifts `letterboxd-overrides.json` keys too. (Note: `letterboxd-overrides.json` /
+  `letterboxd-cache.json` keys are `title|year`, and `year` is the *scraped* year — often empty
+  for a repertory foreign title, so the key can be `"I (Ai)|"` with a trailing bar.)
+- `lib/hidden.ts` — `loadHiddenFilms` / `isHiddenFilm`, an editorial blocklist from
+  `data/hidden-films.json` (`{ titleSubstrings: string[] }`). Applied in `lib/aggregate.ts` right
+  after `cleanFilmTitle`, before Letterboxd — a hidden film (case-insensitive substring match on
+  the cleaned title, e.g. `"harry potter"`) never reaches the staged or published showtimes,
+  from any cinema. `scripts/fetch-batch.ts` echoes the active patterns.
 - `lib/letterboxd.ts` — `resolveLetterboxd(title, year)` → `{ url?, year? }`: resolves each film's
   Letterboxd page (see decision #4) *and* returns that page's `og:title` year, which
   `lib/aggregate.ts` then adopts as the film's real year (cinema-reported years are unreliable —
@@ -129,6 +139,17 @@ is gitignored runtime cache/staging.
   row (the format analogue of the `☻` mark). `filmFormatsTooltip` is merged into the pill /
   plan-row `title` alongside `screeningTagsTooltip`. Decorative → never accent (decision #7).
   All three formats also count toward the Highlights toggle. Decision #15.
+- `components/ScreeningLanguage.tsx` + `lib/languages.ts` — international-feature markers, the
+  third reader of `Screening.screeningTags` (sibling of `screeningTags.ts` / `formats.ts`).
+  `displayLanguage` reads an original (non-English) language name plus subtitled/dubbed state →
+  `{ language?, subtitled, dubbed } | null`. `<LanguageTag>` is a small outlined `--color-dim`
+  chip on the `FilmCard` meta line ("Tamil · ST"); `<LanguageMarks>` is the compact pill /
+  `DayPlan` analogue; `languageTooltip` merges into the pill/row `title`. A tag, not a sticker
+  (decision #13's "one sticker max" is unaffected). Sources: Cineworld's
+  `Localization.Language.*` / `Showtime.Accessibility.Subtitled` tags (normalised by the
+  adapter), and Light House's long-captured `Subtitled`/`Dubbed`/`Open Captioned` — the latter
+  were parsed but never shown before, and surface now. Counts toward Highlights; a `hideDubbed`
+  preference hides dubbed sessions. Decision #17.
 - `components/ComboSuggestions.tsx` — the "Suggested plans" browsing list shown before anything is
   selected (`effectiveSelectedKeys.size === 0`); clicking a suggestion adds its first leg to the
   plan. `components/DayPlan.tsx` — replaces that list once anything is selected: a continuous
@@ -340,7 +361,10 @@ is gitignored runtime cache/staging.
     part of `showtimes.json` and the scrape/`fetch:confirm` pipeline never touches it, so
     editing a label just needs a rebuild, not a re-scrape. `scripts/fetch-batch.ts` prints
     a "Labels" section listing every film's exact key + current label so one can be pasted
-    in during the weekly review without guessing the apostrophe/casing. Rendered by
+    in during the weekly review without guessing the apostrophe/casing — and, since decision
+    #16, it also **writes** the file: any Cineworld "Big Screen Classics" film with no label
+    yet gets `classic!` pre-filled (the file is rewritten sorted), for the user to review in
+    the diff. Rendered by
     `components/FilmLabel.tsx` (a `<MarqueeSticker>`) after the title + year
     — decorative, so per decision #7 it uses `--color-fg`/`--color-bg`, never
     `--color-accent`, and per decision #8 it must not become a count/badge. Keyed on title alone (not `Title|Year`
@@ -399,10 +423,15 @@ is gitignored runtime cache/staging.
     label is present (so `Cinema Book Club: Mrs. Doubtfire` shows "☻ cinema book club", not its
     `classic!` label). The `kiki's delivery service → classic!` `film-labels.json` entry was
     removed since P&B outranks it.
-    `scripts/fetch-batch.ts` prints a "Special screenings" section so a new/unexpected
-    descriptor surfaces in the weekly review. **IFI is only wired up for per-session formats**
-    (decision #15 — `svg[data-icon]` on each booking link); its special-audience strands still
-    aren't tagged. The "Archive at Lunchtime" strand isn't tagged per-session (only a
+    `scripts/fetch-batch.ts` prints a "Special screenings" section (plus, since decision #16, an
+    "unrecognised screening tags" section) so a new/unexpected descriptor surfaces in the weekly
+    review. **Cineworld** maps its `Showtime.Event.*` / `Showtime.Accessibility.AutismFriendly`
+    tags onto this vocabulary (`Movies for Juniors`, `relaxed`, …) — decision #16. **Big Screen
+    Classics** is the exception: it's in `KNOWN` with `mark: false` (no ☻ / sticker, like Mystery
+    Matinee) — instead `scripts/fetch-batch.ts` pre-fills a `classic!` entry in
+    `data/film-labels.json` (sorted, written back) for each BSC film that has no label yet, and
+    the user reviews the diff. **IFI is only wired up for per-session formats** (decision #15 —
+    `svg[data-icon]` on each booking link); its special-audience strands still aren't tagged. The "Archive at Lunchtime" strand isn't tagged per-session (only a
     ubiquitous `wheelchair` icon); the sole signal is the `filmPageUrl` slug
     `ifi.ie/films/archive-at-lunchtime-*`, which would need slug-based derivation in the IFI
     adapter — deliberately not done. The current `data/showtimes.json` was hand-patched for the
@@ -417,8 +446,9 @@ is gitignored runtime cache/staging.
     Light House already emits `35mm` in `em.additional`; the IFI adapter now reads
     `svg[data-icon]` on each `a.screening-card__screening` (`70mm` → format; `open-captioned`
     carried for parity but unsurfaced; `wheelchair`/`runtime` ignored) via the `ICON_TAGS` map.
-    IMAX has no source — neither cinema is an IMAX venue — but the mapping (with aliases
-    `imax 70mm` / `15/70` / `1570`) is in place. `displayFilmFormats` mirrors
+    IMAX is sourced from Cineworld (decision #16 — a `Format.Projection.Imax` tag, plus a
+    `": The IMAX Experience"` companion-movie form the adapter folds in); aliases `imax 70mm` /
+    `15/70` / `1570` / `format.projection.imax` also map. `displayFilmFormats` mirrors
     `displayScreeningTags`. Render: `<FilmFormatTag>` — a solid `--color-fg` box holding the
     label on the `FilmCard` meta line (after duration, before Letterboxd); all formats share a
     width, `height = width / ratio`, and `ratio` descends 35mm (1.5) → 70mm (1.2) → IMAX
@@ -442,11 +472,13 @@ is gitignored runtime cache/staging.
 14. **Settings panel — persisted viewing preferences (localStorage).** Added 2026-08-29. The
     app's **only** persisted state and its first `localStorage` / `useEffect` /
     `useSyncExternalStore` usage. `lib/preferences.ts`: `Preferences` (`cinemas` /
-    `timeframes` maps + `hideShortFilms` + `kidsOnly`; **`hideShortFilms` defaults on** — the
-    archive-at-lunchtime strands are noise for most visits), `STORAGE_KEY = "flm-on:preferences"`,
-    and `normalize` — a pure deep-merge-onto-`DEFAULT_PREFERENCES` that coerces bad types and
-    drops unknown keys; that function is the forward-compat / migration seam (a breaking change
-    would branch on a stored `version`). Read via `useSyncExternalStore(subscribePreferences,
+    `timeframes` maps + `hideShortFilms` + `kidsOnly` + `hideDubbed`; **`hideShortFilms` defaults
+    on** — the archive-at-lunchtime strands are noise for most visits; `hideDubbed` defaults off —
+    decision #17), `STORAGE_KEY = "flm-on:preferences"`, and `normalize` — a pure
+    deep-merge-onto-`DEFAULT_PREFERENCES` that coerces bad types and drops unknown keys; that
+    function is the forward-compat / migration seam (a breaking change would branch on a stored
+    `version`). Adding the `cineworld` cinema (decision #16) needed no migration — `normalize`
+    maps over `CINEMA_ORDER`, so a blob saved before it existed picks the new key up defaulted-on. Read via `useSyncExternalStore(subscribePreferences,
     preferencesSnapshot, () => PREFERENCES_SERVER_SNAPSHOT)` so SSR and the first client render
     agree (both use `DEFAULT_PREFERENCES`) with no hydration warning; a `storage` listener also
     syncs across tabs. **Model: standing pre-filter** — the `preferred` memo in `ScreeningBrowser` carves the
@@ -496,6 +528,66 @@ is gitignored runtime cache/staging.
     `Intl … month: "short"`, which hydration-mismatched ("1 Sept" server vs "1 Sep" browser —
     CLDR drift); it's now a hand-rolled `<day> <Mon>`.
 
+16. **Cineworld Dublin — a JSON-API adapter, filtered to non-standard screenings.** Added
+    2026-08-30. `lib/scrapers/cineworld.ts`. Cineworld.ie is a Gatsby site backed by a public,
+    unauthenticated JSON API (`robots.txt` empty). Theatre id **`X07A4`**. Two calls per batch
+    window, both in `fetchCineworldRaw`:
+    - `GET /api/gatsby-source-boxofficeapi/schedule?from={ISO}&to={ISO}&theaters={"id":"X07A4","timeZone":"Europe/Dublin"}`
+      (`theaters` is URL-encoded JSON; day boundary 03:00 local) →
+      `{ X07A4: { schedule: { <movieId>: { <YYYY-MM-DD>: [ {id, startsAt, tags[], data.ticketing[{provider,urls}]} ] } } } }`.
+      Accepts an arbitrary range — one call for the week. The `provider:"default"` URL
+      (`https://web.cineworld.ie/order/showtimes/0001-NNNNNN/seats`) is the `bookingUrl`, unique
+      per session (decision #6).
+    - `GET /api/gatsby-source-boxofficeapi/movies?basic=false&castingLimit=1&ids=…` (chunked at
+      30) → `[{ id, title, runtime (SECONDS — ÷60), certificate, release / releases[].releasedAt,
+      … }]`. `filmPageUrl` = `https://www.cineworld.ie/movies/{id}-{slug}/`.
+    - `scheduledMovies` exists but is unused — the schedule call already returns only movies that
+      play in the window.
+
+    **Non-standard filter (`isNotableTagSet` / `normaliseTags`)**: a multiplex would bury the two
+    arthouse cinemas (~257 showtimes in a 3-week sample), so the adapter keeps a screening only
+    if — after dropping the "ordinary" tags (`Format.Projection.Digital`/`.Laser`,
+    `Auditorium.Experience.4dx`/`.ScreenX`/`.Superscreen`, `Showtime.Accessibility.AudioDescription`)
+    — a descriptor still survives: IMAX, a `Localization.Language.*`, `Subtitled`,
+    `AutismFriendly`, or any `Showtime.Event.*` strand. Surviving raw tags are normalised onto
+    the shared `screeningTags` vocabulary (`Format.Projection.Imax` → `IMAX`,
+    `Showtime.Event.BigScreenClassics` → `Big Screen Classics`, `Localization.Language.Tamil` →
+    `Tamil`); **unknown `Showtime.Event.*` are kept verbatim** so a new strand shows in the batch
+    report (`summariseDroppedTitles` + the "unrecognised screening tags" section, both added to
+    `scripts/fetch-batch.ts`). **4DX / ScreenX get no visual treatment yet** (decision #15, user:
+    "IMAX only for now") and, being dropped, don't keep an otherwise-ordinary blockbuster.
+    **Big Screen Classics** is kept (the tag survives → the screening is notable) but gets no ☻
+    treatment — `KNOWN["big screen classics"]` is `mark: false`, and `fetch:batch` instead
+    pre-fills a `classic!` label into `data/film-labels.json` for the user to review (decision
+    #11). **Movies for Juniors** *does* get the ☻ mark (a genuine audience strand like
+    Parent & Baby).
+
+    Cineworld quirks: IMAX sometimes appears as a **separate movie** (`"… : The IMAX Experience"`,
+    its own id) rather than a tag — the adapter strips that suffix and synthesises an `IMAX` tag
+    so `groupByFilm` merges it onto the base film. Re-releases get a current-year `release` (same
+    as Light House — decision #4; fix via `letterboxd-overrides.json`). Foreign titles carry a
+    trailing `(Tamil)` etc. that duplicates the language tag — stripped in the adapter. Repertory
+    foreign titles often have no `release`/`certificate` at all → year/cert `undefined`, so the
+    `letterboxd-overrides.json` key has an empty year (`"I (Ai)|"`). A film that's genuinely
+    interesting but plays Cineworld only as a plain digital showing is dropped with no override
+    path yet (see Known gaps). Films the user never wants shown, from any cinema (e.g. Harry
+    Potter), go in `data/hidden-films.json` (`lib/hidden.ts`, applied in `lib/aggregate.ts`).
+
+17. **International / foreign-language support — `lib/languages.ts`.** Added 2026-08-30. The
+    third reader of `Screening.screeningTags`, alongside `screeningTags.ts` and `formats.ts`.
+    `displayLanguage(tags)` → `{ language?, subtitled, dubbed } | null`: an original non-English
+    language name (`LANGUAGE_NAMES` map) plus subtitled (incl. "open captioned") / dubbed state.
+    Rendered by `components/ScreeningLanguage.tsx` — `<LanguageTag>` (outlined `--color-dim` chip
+    on the card meta line) + `<LanguageMarks>` (compact pill / `DayPlan` label, "Tamil · ST");
+    `languageTooltip` merges into the pill/row `title`. A **tag, not a marquee sticker**, so
+    decision #13's "one sticker max" is untouched. Informational → never accent (decision #7).
+    A language screening **counts toward the Highlights ("☻ Specials, etc") filter**
+    (`preferred` memo in `ScreeningBrowser`). New preference **`hideDubbed`** (default off,
+    General group in `SettingsPanel`) drops dubbed sessions — usually the kids' matinee version
+    of a foreign film. **Behaviour change for Light House**: it has emitted `Subtitled` /
+    `Dubbed` / `Open Captioned` in `em.additional` since decision #13 but they were captured and
+    never shown — they surface now, through this module.
+
 ## Known gaps
 
 - No automated tests for the interactive UI layer — only `lib/` unit tests (`test/*.test.ts`)
@@ -506,10 +598,17 @@ is gitignored runtime cache/staging.
   `open-captioned` are mapped; a new `data-icon` value is silently dropped (surfaces in the
   `fetch:batch` report only if it maps to something). No automatic check for a new/unhandled
   `em.additional` value beyond that report.
-- No IMAX data source — the format is mapped (#15) but neither cinema is an IMAX venue, so the
-  IMAX box has never actually rendered against real data.
+- IMAX now has a real source (Cineworld, #16); 4DX / ScreenX / Superscreen are recognised but
+  deliberately unsurfaced (#15/#16).
 - No alerting if a cinema's HTML structure changes — scrapers degrade to cached data via
-  try/catch, but nothing flags a *silent* long-term failure.
+  try/catch, but nothing flags a *silent* long-term failure. Same for Cineworld's JSON API
+  shape (#16).
+- Cineworld's non-standard filter is tag-based only — a genuinely interesting film that plays
+  Cineworld solely as a plain digital showing is dropped, with no per-title allowlist to rescue
+  it (would be a new `data/` file). The `fetch:batch` "dropped ordinary screenings" section is
+  the manual check.
+- IFI still has no language/subtitled tagging (its adapter only reads format `svg[data-icon]`s),
+  so `lib/languages.ts` only ever has Cineworld + Light House data.
 - Nothing enforces the Thursday cadence — if the weekly `fetch:batch`/`fetch:confirm` run is
   skipped, the public site just keeps serving last week's `data/showtimes.json` with no warning.
 - IFI titles often scrape in ALL CAPS while Light House's don't — `fetch:batch`'s report flags
@@ -533,14 +632,22 @@ is gitignored runtime cache/staging.
 
 Committed:
 - `showtimes.json` — the published week the app actually reads. Only file that gets pushed.
-  A screening may carry `screeningTags: string[]` (raw per-session descriptors — special
-  screenings from Light House per decision #13, plus film-format tokens like `35mm` / `70mm`
-  from both cinemas per decision #15).
+  A screening may carry `screeningTags: string[]` — the shared per-session vocabulary read by
+  `lib/screeningTags.ts` (specials — decision #13), `lib/formats.ts` (`35mm`/`70mm`/`IMAX` —
+  #15), and `lib/languages.ts` (`Tamil`/`Subtitled`/`Dubbed` — #17). Light House emits them from
+  `em.additional`, IFI from format `svg[data-icon]`s, Cineworld normalises its API tags onto them
+  (#16).
 - `title-overrides.json` — `{ stripPrefixes: string[], stripAnnotations: string[] (regex sources),
   corrections: Record<string,string> }`.
 - `letterboxd-overrides.json` — `Record<"title|year", string | null>`, checked before auto-resolve.
+  `year` is the *scraped* year and is often empty (`"I (Ai)|"`) for a repertory foreign title.
 - `film-labels.json` — `Record<"<normalized title>", string>`, curated editorial tags shown
-  as a marquee sticker after the film title (decision #11). Render-time only; not in `showtimes.json`.
+  as a marquee sticker after the film title (decision #11). Render-time only; not in
+  `showtimes.json`. `fetch:batch` pre-fills `classic!` for Big Screen Classics films and rewrites
+  it sorted (decisions #11, #16).
+- `hidden-films.json` — `{ titleSubstrings: string[] }`, an editorial blocklist applied in
+  `lib/aggregate.ts` (`lib/hidden.ts`) — a matching film never reaches staged/published data,
+  from any cinema.
 
 Gitignored (runtime cache/staging, regenerated by scripts or local dev):
 - `cache.json` — live-scrape cache, 6h TTL, includes explicit empty entries per date.

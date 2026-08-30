@@ -2,8 +2,10 @@ import { Fragment } from "react";
 import { type ItineraryTransition, type TimedScreening } from "@/lib/clash";
 import { ScreeningTagMarks } from "@/components/ScreeningTags";
 import { FilmFormatMarks } from "@/components/FilmFormats";
+import { LanguageMarks } from "@/components/ScreeningLanguage";
 import { screeningTagsTooltip } from "@/lib/screeningTags";
 import { filmFormatsTooltip } from "@/lib/formats";
+import { languageTooltip } from "@/lib/languages";
 import { CINEMA_LABEL } from "@/lib/cinemas";
 import { formatDayFriendly } from "@/lib/date";
 
@@ -74,7 +76,11 @@ export default function DayPlan({ items, transitions, onRemove, onClear, keyOf }
                 type="button"
                 aria-label={`Remove ${s.filmTitle} from your day plan`}
                 title={
-                  [screeningTagsTooltip(s.screeningTags), filmFormatsTooltip(s.screeningTags)]
+                  [
+                    screeningTagsTooltip(s.screeningTags),
+                    filmFormatsTooltip(s.screeningTags),
+                    languageTooltip(s.screeningTags),
+                  ]
                     .filter(Boolean)
                     .join(" · ") || undefined
                 }
@@ -87,6 +93,7 @@ export default function DayPlan({ items, transitions, onRemove, onClear, keyOf }
                 </span>
                 <ScreeningTagMarks tags={s.screeningTags} />
                 <FilmFormatMarks tags={s.screeningTags} />
+                <LanguageMarks tags={s.screeningTags} />
               </button>
             </Fragment>
           );

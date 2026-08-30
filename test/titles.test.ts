@@ -43,6 +43,12 @@ describe("cleanFilmTitle", () => {
     ).toBe("Sunset Boulevard");
   });
 
+  it("strips a colon-separated anniversary annotation and the dangling colon", () => {
+    expect(cleanFilmTitle("The Fast and the Furious: 25th Anniversary", overrides)).toBe(
+      "The Fast and the Furious",
+    );
+  });
+
   it("strips a programme-strand prefix from a repertory screening", () => {
     expect(cleanFilmTitle("Cinema Book Club: Mrs. Doubtfire", overrides)).toBe("Mrs. Doubtfire");
   });

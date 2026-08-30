@@ -57,6 +57,24 @@ const KNOWN: Record<string, KnownTag> = {
     description:
       "A matinee for over-65s, with complimentary tea or coffee, a short introduction and a chat.",
   },
+  // Cineworld strands (Showtime.Event.* — see lib/scrapers/cineworld.ts).
+  // Big Screen Classics gets no ☻ mark or sticker (mark: false) — instead scripts/fetch-batch.ts
+  // pre-fills a curated `classic!` label (data/film-labels.json) for these films, which the user
+  // reviews. It still counts as a surfaced special so it's recognised (not "unrecognised") and
+  // its films pass the Highlights filter.
+  "big screen classics": {
+    symbol: MARK,
+    label: "big screen classics",
+    title: "Big Screen Classics",
+    description: "An older film brought back to the big screen for a limited run.",
+    mark: false,
+  },
+  "movies for juniors": {
+    symbol: MARK,
+    label: "movies for juniors",
+    title: "Movies for Juniors",
+    description: "A cut-price weekend-morning screening of a recent family film, for kids and parents.",
+  },
   // The IFI's recurring strand where the film is kept secret until the lights go down. Not a
   // scraped descriptor — lib/mystery.ts detects it from the title and ScreeningBrowser attaches
   // this tag so it flows through the same mark / sticker / Highlights path as the rest.

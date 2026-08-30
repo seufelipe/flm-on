@@ -161,6 +161,12 @@ export default function SettingsPanel({ prefs, onChange, onClose }: Props) {
               on={prefs.kidsOnly}
               onChange={(value) => onChange({ ...prefs, kidsOnly: value })}
             />
+            <Toggle
+              label="Hide dubbed *"
+              sublabel="* foreign films voiced in english"
+              on={prefs.hideDubbed}
+              onChange={(value) => onChange({ ...prefs, hideDubbed: value })}
+            />
           </Group>
         </div>
       </div>

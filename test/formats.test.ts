@@ -18,6 +18,8 @@ describe("displayFilmFormats", () => {
     expect(displayFilmFormats(["  70 MM "])[0].id).toBe("70mm");
     expect(displayFilmFormats(["15/70"])[0].id).toBe("imax");
     expect(displayFilmFormats(["IMAX 70mm"])[0].id).toBe("imax");
+    expect(displayFilmFormats(["IMAX"])[0].id).toBe("imax");
+    expect(displayFilmFormats(["Format.Projection.Imax"])[0].id).toBe("imax");
   });
 
   it("drops non-format tags and de-dupes by format", () => {

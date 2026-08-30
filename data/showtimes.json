@@ -1,498 +1,12 @@
 {
-  "generatedAt": "2026-08-29T10:43:04.344Z",
+  "generatedAt": "2026-08-30T13:35:16.572Z",
   "days": [
-    "2026-08-29",
     "2026-08-30",
     "2026-08-31",
     "2026-09-01",
     "2026-09-02"
   ],
   "screenings": [
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Lady",
-      "cert": "15A",
-      "durationMins": 97,
-      "year": 2026,
-      "date": "2026-08-29",
-      "time": "10:50",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41041&showtimeId=1001-41041&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/lady",
-      "letterboxdUrl": "https://letterboxd.com/film/lady-2026/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Kiki’s Delivery Service",
-      "cert": "G",
-      "durationMins": 103,
-      "year": 1989,
-      "date": "2026-08-29",
-      "time": "11:00",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39889&showtimeId=1001-39889&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/kikis-delivery-service-4k-restoration",
-      "screeningTags": [
-        "Dubbed",
-        "Parent and Baby"
-      ],
-      "letterboxdUrl": "https://letterboxd.com/film/kikis-delivery-service/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Horse Plays",
-      "durationMins": 65,
-      "year": 2026,
-      "date": "2026-08-29",
-      "time": "11:00",
-      "bookingUrl": "https://shop.ifi.ie/performance/111215/",
-      "filmPageUrl": "https://ifi.ie/films/archive-at-lunchtime-august-2026-double-bill"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Tony",
-      "cert": "15A",
-      "durationMins": 106,
-      "year": 2026,
-      "date": "2026-08-29",
-      "time": "11:15",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40995&showtimeId=1001-40995&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/tony",
-      "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Guggi",
-      "cert": "12A",
-      "durationMins": 78,
-      "year": 2026,
-      "date": "2026-08-29",
-      "time": "11:50",
-      "bookingUrl": "https://shop.ifi.ie/performance/112938/",
-      "filmPageUrl": "https://ifi.ie/films/guggi",
-      "letterboxdUrl": "https://letterboxd.com/film/guggi/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Bitter Christmas",
-      "cert": "15A",
-      "durationMins": 111,
-      "year": 2026,
-      "date": "2026-08-29",
-      "time": "12:00",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39656&showtimeId=1001-39656&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/bitter-christmas",
-      "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "De Gaulle Part One: Résistance",
-      "cert": "15A",
-      "durationMins": 160,
-      "year": 2026,
-      "date": "2026-08-29",
-      "time": "12:10",
-      "bookingUrl": "https://shop.ifi.ie/performance/112402/",
-      "filmPageUrl": "https://ifi.ie/films/de-gaulle-resistance",
-      "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Tony",
-      "cert": "15A",
-      "durationMins": 106,
-      "year": 2026,
-      "date": "2026-08-29",
-      "time": "12:40",
-      "bookingUrl": "https://shop.ifi.ie/performance/113316/",
-      "filmPageUrl": "https://ifi.ie/films/tony",
-      "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Coyote vs. Acme",
-      "cert": "PG",
-      "durationMins": 103,
-      "year": 2026,
-      "date": "2026-08-29",
-      "time": "12:50",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40988&showtimeId=1001-40988&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/coyote-vs-acme",
-      "letterboxdUrl": "https://letterboxd.com/film/coyote-vs-acme/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "I Want Your Sex",
-      "cert": "18",
-      "durationMins": 90,
-      "year": 2026,
-      "date": "2026-08-29",
-      "time": "13:15",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39620&showtimeId=1001-39620&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/i-want-your-sex",
-      "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Teenage Sex and Death at Camp Miasma",
-      "cert": "16",
-      "durationMins": 112,
-      "year": 2026,
-      "date": "2026-08-29",
-      "time": "13:35",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40994&showtimeId=1001-40994&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/teenage-sex-and-death-at-camp-miasma",
-      "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "I Want Your Sex",
-      "cert": "18",
-      "durationMins": 90,
-      "year": 2026,
-      "date": "2026-08-29",
-      "time": "13:40",
-      "bookingUrl": "https://shop.ifi.ie/performance/112398/",
-      "filmPageUrl": "https://ifi.ie/films/i-want-your-sex",
-      "screeningTags": [
-        "Open Captioned"
-      ],
-      "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Colony",
-      "cert": "16",
-      "durationMins": 123,
-      "year": 2026,
-      "date": "2026-08-29",
-      "time": "14:35",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40747&showtimeId=1001-40747&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/colony",
-      "letterboxdUrl": "https://letterboxd.com/film/colony-2026/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "The Invite",
-      "cert": "16",
-      "durationMins": 107,
-      "year": 2026,
-      "date": "2026-08-29",
-      "time": "15:00",
-      "bookingUrl": "https://shop.ifi.ie/performance/113336/",
-      "filmPageUrl": "https://ifi.ie/films/the-invite",
-      "letterboxdUrl": "https://letterboxd.com/film/the-invite-2026/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Bitter Christmas",
-      "cert": "15A",
-      "durationMins": 111,
-      "year": 2026,
-      "date": "2026-08-29",
-      "time": "15:05",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39618&showtimeId=1001-39618&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/bitter-christmas",
-      "screeningTags": [
-        "Subtitled"
-      ],
-      "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Kiki’s Delivery Service",
-      "cert": "G",
-      "durationMins": 103,
-      "year": 1989,
-      "date": "2026-08-29",
-      "time": "15:15",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39538&showtimeId=1001-39538&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/kikis-delivery-service-4k-restoration",
-      "screeningTags": [
-        "Subtitled"
-      ],
-      "letterboxdUrl": "https://letterboxd.com/film/kikis-delivery-service/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Guggi",
-      "cert": "12A",
-      "durationMins": 78,
-      "year": 2026,
-      "date": "2026-08-29",
-      "time": "15:30",
-      "bookingUrl": "https://shop.ifi.ie/performance/112400/",
-      "filmPageUrl": "https://ifi.ie/films/guggi",
-      "letterboxdUrl": "https://letterboxd.com/film/guggi/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Bitter Christmas",
-      "cert": "15A",
-      "durationMins": 111,
-      "year": 2026,
-      "date": "2026-08-29",
-      "time": "15:45",
-      "bookingUrl": "https://shop.ifi.ie/performance/112403/",
-      "filmPageUrl": "https://ifi.ie/films/bitter-christmas",
-      "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Coyote vs. Acme",
-      "cert": "PG",
-      "durationMins": 103,
-      "year": 2026,
-      "date": "2026-08-29",
-      "time": "16:15",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39681&showtimeId=1001-39681&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/coyote-vs-acme",
-      "letterboxdUrl": "https://letterboxd.com/film/coyote-vs-acme/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Teenage Sex and Death at Camp Miasma",
-      "cert": "16",
-      "durationMins": 112,
-      "year": 2026,
-      "date": "2026-08-29",
-      "time": "17:20",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39665&showtimeId=1001-39665&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/teenage-sex-and-death-at-camp-miasma",
-      "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "The Odyssey",
-      "cert": "15A",
-      "durationMins": 172,
-      "year": 2026,
-      "date": "2026-08-29",
-      "time": "17:20",
-      "bookingUrl": "https://shop.ifi.ie/performance/112406/",
-      "filmPageUrl": "https://ifi.ie/films/the-odyssey",
-      "screeningTags": [
-        "70mm"
-      ],
-      "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Tony",
-      "cert": "15A",
-      "durationMins": 106,
-      "year": 2026,
-      "date": "2026-08-29",
-      "time": "17:30",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40993&showtimeId=1001-40993&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/tony",
-      "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "De Gaulle Part One: Résistance",
-      "cert": "15A",
-      "durationMins": 160,
-      "year": 2026,
-      "date": "2026-08-29",
-      "time": "17:30",
-      "bookingUrl": "https://shop.ifi.ie/performance/112401/",
-      "filmPageUrl": "https://ifi.ie/films/de-gaulle-resistance",
-      "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Hannah Montana: The Movie",
-      "cert": "G",
-      "durationMins": 102,
-      "year": 2009,
-      "date": "2026-08-29",
-      "time": "17:45",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=38358&showtimeId=1001-38358&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/hannah-montana-the-movie",
-      "letterboxdUrl": "https://letterboxd.com/film/hannah-montana-the-movie/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Tony",
-      "cert": "15A",
-      "durationMins": 106,
-      "year": 2026,
-      "date": "2026-08-29",
-      "time": "18:10",
-      "bookingUrl": "https://shop.ifi.ie/performance/113396/",
-      "filmPageUrl": "https://ifi.ie/films/tony",
-      "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Bitter Christmas",
-      "cert": "15A",
-      "durationMins": 111,
-      "year": 2026,
-      "date": "2026-08-29",
-      "time": "18:30",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39617&showtimeId=1001-39617&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/bitter-christmas",
-      "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Kiki’s Delivery Service",
-      "cert": "G",
-      "durationMins": 103,
-      "year": 1989,
-      "date": "2026-08-29",
-      "time": "19:45",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39682&showtimeId=1001-39682&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/kikis-delivery-service-4k-restoration",
-      "screeningTags": [
-        "Subtitled"
-      ],
-      "letterboxdUrl": "https://letterboxd.com/film/kikis-delivery-service/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Teenage Sex and Death at Camp Miasma",
-      "cert": "16",
-      "durationMins": 112,
-      "year": 2026,
-      "date": "2026-08-29",
-      "time": "20:00",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39662&showtimeId=1001-39662&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/teenage-sex-and-death-at-camp-miasma",
-      "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "I Want Your Sex",
-      "cert": "18",
-      "durationMins": 90,
-      "year": 2026,
-      "date": "2026-08-29",
-      "time": "20:10",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39619&showtimeId=1001-39619&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/i-want-your-sex",
-      "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Teenage Sex and Death at Camp Miasma",
-      "cert": "16",
-      "durationMins": 111,
-      "year": 2026,
-      "date": "2026-08-29",
-      "time": "20:30",
-      "bookingUrl": "https://shop.ifi.ie/performance/113334/",
-      "filmPageUrl": "https://ifi.ie/films/teenage-sex-and-death-at-camp-miasma",
-      "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "I Want Your Sex",
-      "cert": "18",
-      "durationMins": 90,
-      "year": 2026,
-      "date": "2026-08-29",
-      "time": "20:40",
-      "bookingUrl": "https://shop.ifi.ie/performance/112399/",
-      "filmPageUrl": "https://ifi.ie/films/i-want-your-sex",
-      "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Bitter Christmas",
-      "cert": "15A",
-      "durationMins": 111,
-      "year": 2026,
-      "date": "2026-08-29",
-      "time": "20:50",
-      "bookingUrl": "https://shop.ifi.ie/performance/112404/",
-      "filmPageUrl": "https://ifi.ie/films/bitter-christmas",
-      "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Colony",
-      "cert": "16",
-      "durationMins": 123,
-      "year": 2026,
-      "date": "2026-08-29",
-      "time": "21:00",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40661&showtimeId=1001-40661&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/colony",
-      "letterboxdUrl": "https://letterboxd.com/film/colony-2026/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Trainspotting",
-      "cert": "18",
-      "durationMins": 94,
-      "year": 1996,
-      "date": "2026-08-29",
-      "time": "22:10",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40785&showtimeId=1001-40785&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/trainspotting-4k-restoration",
-      "letterboxdUrl": "https://letterboxd.com/film/trainspotting/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Tony",
-      "cert": "15A",
-      "durationMins": 106,
-      "year": 2026,
-      "date": "2026-08-29",
-      "time": "22:20",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40989&showtimeId=1001-40989&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/tony",
-      "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Stop! That! Train!",
-      "cert": "15A",
-      "durationMins": 90,
-      "year": 2026,
-      "date": "2026-08-29",
-      "time": "22:30",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39616&showtimeId=1001-39616&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/stop-that-train",
-      "letterboxdUrl": "https://letterboxd.com/film/stop-that-train/"
-    },
     {
       "cinema": "ifi",
       "cinemaName": "IFI",
@@ -531,19 +45,6 @@
       "filmPageUrl": "https://ifi.ie/films/archive-at-lunchtime-august-2026-programme-1"
     },
     {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Bitter Christmas",
-      "cert": "15A",
-      "durationMins": 111,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "12:25",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39668&showtimeId=1001-39668&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/bitter-christmas",
-      "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
-    },
-    {
       "cinema": "ifi",
       "cinemaName": "IFI",
       "filmTitle": "De Gaulle Part One: Résistance",
@@ -566,48 +67,6 @@
       "time": "13:00",
       "bookingUrl": "https://shop.ifi.ie/performance/112014/",
       "filmPageUrl": "https://ifi.ie/films/mystery-matinee-august-2026"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Coyote vs. Acme",
-      "cert": "PG",
-      "durationMins": 103,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "13:10",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40999&showtimeId=1001-40999&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/coyote-vs-acme",
-      "letterboxdUrl": "https://letterboxd.com/film/coyote-vs-acme/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Teenage Sex and Death at Camp Miasma",
-      "cert": "16",
-      "durationMins": 112,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "13:10",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39675&showtimeId=1001-39675&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/teenage-sex-and-death-at-camp-miasma",
-      "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Kiki’s Delivery Service",
-      "cert": "G",
-      "durationMins": 103,
-      "year": 1989,
-      "date": "2026-08-30",
-      "time": "13:30",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39539&showtimeId=1001-39539&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/kikis-delivery-service-4k-restoration",
-      "screeningTags": [
-        "Dubbed"
-      ],
-      "letterboxdUrl": "https://letterboxd.com/film/kikis-delivery-service/"
     },
     {
       "cinema": "ifi",
@@ -634,6 +93,38 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40997&showtimeId=1001-40997&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/tony",
       "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Odyssey",
+      "cert": "15A",
+      "durationMins": 172,
+      "year": 2026,
+      "date": "2026-08-30",
+      "time": "15:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367042/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000046469-the-odyssey-the-imax-experience/",
+      "screeningTags": [
+        "IMAX"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Fast and the Furious",
+      "cert": "15A",
+      "durationMins": 107,
+      "year": 2001,
+      "date": "2026-08-30",
+      "time": "15:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367109/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000046538-the-fast-and-the-furious-25th-anniversary/",
+      "screeningTags": [
+        "Big Screen Classics"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/the-fast-and-the-furious-2001/"
     },
     {
       "cinema": "lighthouse",
@@ -720,6 +211,38 @@
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "I (Ai)",
+      "durationMins": 188,
+      "year": 2015,
+      "date": "2026-08-30",
+      "time": "16:05",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367182/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/231658-i-ai-tamil/",
+      "screeningTags": [
+        "Tamil",
+        "Subtitled"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/i-2015/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "De Gaulle Part One: Résistance",
+      "cert": "15A",
+      "durationMins": 160,
+      "year": 2026,
+      "date": "2026-08-30",
+      "time": "16:30",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367029/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/294280-de-gaulle-resistance/",
+      "screeningTags": [
+        "Subtitled"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
+    },
+    {
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
       "filmTitle": "Stop! That! Train!",
@@ -798,6 +321,22 @@
       "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
     },
     {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Odyssey",
+      "cert": "15A",
+      "durationMins": 172,
+      "year": 2026,
+      "date": "2026-08-30",
+      "time": "19:20",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367043/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000046469-the-odyssey-the-imax-experience/",
+      "screeningTags": [
+        "IMAX"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
+    },
+    {
       "cinema": "ifi",
       "cinemaName": "IFI",
       "filmTitle": "De Gaulle Part One: Résistance",
@@ -824,6 +363,23 @@
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Toxic",
+      "cert": "16",
+      "durationMins": 175,
+      "year": 2026,
+      "date": "2026-08-30",
+      "time": "19:50",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366712/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/324492-toxic/",
+      "screeningTags": [
+        "Kannada",
+        "Subtitled"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/toxic-2026/"
+    },
+    {
       "cinema": "ifi",
       "cinemaName": "IFI",
       "filmTitle": "Teenage Sex and Death at Camp Miasma",
@@ -835,6 +391,38 @@
       "bookingUrl": "https://shop.ifi.ie/performance/112918/",
       "filmPageUrl": "https://ifi.ie/films/teenage-sex-and-death-at-camp-miasma",
       "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "De Gaulle Part One: Résistance",
+      "cert": "15A",
+      "durationMins": 160,
+      "year": 2026,
+      "date": "2026-08-30",
+      "time": "20:10",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367028/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/294280-de-gaulle-resistance/",
+      "screeningTags": [
+        "Subtitled"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "I (Ai)",
+      "durationMins": 188,
+      "year": 2015,
+      "date": "2026-08-30",
+      "time": "20:20",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367181/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/231658-i-ai-tamil/",
+      "screeningTags": [
+        "Tamil",
+        "Subtitled"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/i-2015/"
     },
     {
       "cinema": "lighthouse",
@@ -887,6 +475,22 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39677&showtimeId=1001-39677&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/i-want-your-sex",
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Fast and the Furious",
+      "cert": "15A",
+      "durationMins": 107,
+      "year": 2001,
+      "date": "2026-08-30",
+      "time": "20:50",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366641/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000046538-the-fast-and-the-furious-25th-anniversary/",
+      "screeningTags": [
+        "Big Screen Classics"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/the-fast-and-the-furious-2001/"
     },
     {
       "cinema": "lighthouse",
@@ -942,6 +546,38 @@
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
     },
     {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "De Gaulle Part One: Résistance",
+      "cert": "15A",
+      "durationMins": 160,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "13:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367025/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/294280-de-gaulle-resistance/",
+      "screeningTags": [
+        "Subtitled"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Fast and the Furious",
+      "cert": "15A",
+      "durationMins": 107,
+      "year": 2001,
+      "date": "2026-08-31",
+      "time": "13:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367128/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000046538-the-fast-and-the-furious-25th-anniversary/",
+      "screeningTags": [
+        "Big Screen Classics"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/the-fast-and-the-furious-2001/"
+    },
+    {
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
       "filmTitle": "Coyote vs. Acme",
@@ -995,6 +631,22 @@
       "bookingUrl": "https://shop.ifi.ie/performance/113372/",
       "filmPageUrl": "https://ifi.ie/films/guggi",
       "letterboxdUrl": "https://letterboxd.com/film/guggi/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Odyssey",
+      "cert": "15A",
+      "durationMins": 172,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "14:40",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367044/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000046469-the-odyssey-the-imax-experience/",
+      "screeningTags": [
+        "IMAX"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
       "cinema": "ifi",
@@ -1065,6 +717,22 @@
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Fast and the Furious",
+      "cert": "15A",
+      "durationMins": 107,
+      "year": 2001,
+      "date": "2026-08-31",
+      "time": "15:50",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367125/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000046538-the-fast-and-the-furious-25th-anniversary/",
+      "screeningTags": [
+        "Big Screen Classics"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/the-fast-and-the-furious-2001/"
+    },
+    {
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
       "filmTitle": "Bitter Christmas",
@@ -1089,6 +757,38 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40050&showtimeId=1001-40050&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/i-want-your-sex",
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "I (Ai)",
+      "durationMins": 188,
+      "year": 2015,
+      "date": "2026-08-31",
+      "time": "16:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367184/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/231658-i-ai-tamil/",
+      "screeningTags": [
+        "Tamil",
+        "Subtitled"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/i-2015/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "De Gaulle Part One: Résistance",
+      "cert": "15A",
+      "durationMins": 160,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "16:30",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367026/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/294280-de-gaulle-resistance/",
+      "screeningTags": [
+        "Subtitled"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
     },
     {
       "cinema": "lighthouse",
@@ -1191,6 +891,22 @@
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
     },
     {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Odyssey",
+      "cert": "15A",
+      "durationMins": 172,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "19:30",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367045/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000046469-the-odyssey-the-imax-experience/",
+      "screeningTags": [
+        "IMAX"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
+    },
+    {
       "cinema": "ifi",
       "cinemaName": "IFI",
       "filmTitle": "De Gaulle Part One: Résistance",
@@ -1202,6 +918,38 @@
       "bookingUrl": "https://shop.ifi.ie/performance/112933/",
       "filmPageUrl": "https://ifi.ie/films/de-gaulle-resistance",
       "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "De Gaulle Part One: Résistance",
+      "cert": "15A",
+      "durationMins": 160,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "20:10",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367027/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/294280-de-gaulle-resistance/",
+      "screeningTags": [
+        "Subtitled"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "I (Ai)",
+      "durationMins": 188,
+      "year": 2015,
+      "date": "2026-08-31",
+      "time": "20:20",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367183/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/231658-i-ai-tamil/",
+      "screeningTags": [
+        "Tamil",
+        "Subtitled"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/i-2015/"
     },
     {
       "cinema": "lighthouse",
@@ -1363,6 +1111,38 @@
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "De Gaulle Part One: Résistance",
+      "cert": "15A",
+      "durationMins": 160,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "13:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366765/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/294280-de-gaulle-resistance/",
+      "screeningTags": [
+        "Subtitled"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Fast and the Furious",
+      "cert": "15A",
+      "durationMins": 107,
+      "year": 2001,
+      "date": "2026-09-01",
+      "time": "13:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367114/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000046538-the-fast-and-the-furious-25th-anniversary/",
+      "screeningTags": [
+        "Big Screen Classics"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/the-fast-and-the-furious-2001/"
+    },
+    {
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
       "filmTitle": "The End of Oak Street",
@@ -1414,6 +1194,22 @@
       "filmPageUrl": "https://ifi.ie/films/the-odyssey",
       "screeningTags": [
         "70mm"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Odyssey",
+      "cert": "15A",
+      "durationMins": 172,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "15:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367046/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000046469-the-odyssey-the-imax-experience/",
+      "screeningTags": [
+        "IMAX"
       ],
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
@@ -1476,6 +1272,22 @@
       "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
     },
     {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Fast and the Furious",
+      "cert": "15A",
+      "durationMins": 107,
+      "year": 2001,
+      "date": "2026-09-01",
+      "time": "15:50",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367117/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000046538-the-fast-and-the-furious-25th-anniversary/",
+      "screeningTags": [
+        "Big Screen Classics"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/the-fast-and-the-furious-2001/"
+    },
+    {
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
       "filmTitle": "Lady",
@@ -1487,6 +1299,22 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41030&showtimeId=1001-41030&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/lady",
       "letterboxdUrl": "https://letterboxd.com/film/lady-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "De Gaulle Part One: Résistance",
+      "cert": "15A",
+      "durationMins": 160,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "16:30",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366766/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/294280-de-gaulle-resistance/",
+      "screeningTags": [
+        "Subtitled"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
     },
     {
       "cinema": "lighthouse",
@@ -1554,6 +1382,22 @@
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Odyssey",
+      "cert": "15A",
+      "durationMins": 172,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "19:30",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367047/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000046469-the-odyssey-the-imax-experience/",
+      "screeningTags": [
+        "IMAX"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
+    },
+    {
       "cinema": "ifi",
       "cinemaName": "IFI",
       "filmTitle": "De Gaulle Part One: Résistance",
@@ -1564,6 +1408,22 @@
       "time": "20:00",
       "bookingUrl": "https://shop.ifi.ie/performance/112450/",
       "filmPageUrl": "https://ifi.ie/films/de-gaulle-resistance",
+      "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "De Gaulle Part One: Résistance",
+      "cert": "15A",
+      "durationMins": 160,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "20:10",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366767/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/294280-de-gaulle-resistance/",
+      "screeningTags": [
+        "Subtitled"
+      ],
       "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
     },
     {
@@ -1701,6 +1561,38 @@
       "letterboxdUrl": "https://letterboxd.com/film/guggi/"
     },
     {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "De Gaulle Part One: Résistance",
+      "cert": "15A",
+      "durationMins": 160,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "13:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367024/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/294280-de-gaulle-resistance/",
+      "screeningTags": [
+        "Subtitled"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Fast and the Furious",
+      "cert": "15A",
+      "durationMins": 107,
+      "year": 2001,
+      "date": "2026-09-02",
+      "time": "13:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367019/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000046538-the-fast-and-the-furious-25th-anniversary/",
+      "screeningTags": [
+        "Big Screen Classics"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/the-fast-and-the-furious-2001/"
+    },
+    {
       "cinema": "ifi",
       "cinemaName": "IFI",
       "filmTitle": "The Irish Riviera",
@@ -1793,6 +1685,22 @@
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Odyssey",
+      "cert": "15A",
+      "durationMins": 172,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "15:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367048/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000046469-the-odyssey-the-imax-experience/",
+      "screeningTags": [
+        "IMAX"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
+    },
+    {
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
       "filmTitle": "Bitter Christmas",
@@ -1832,6 +1740,22 @@
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
     },
     {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Fast and the Furious",
+      "cert": "15A",
+      "durationMins": 107,
+      "year": 2001,
+      "date": "2026-09-02",
+      "time": "15:50",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367102/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000046538-the-fast-and-the-furious-25th-anniversary/",
+      "screeningTags": [
+        "Big Screen Classics"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/the-fast-and-the-furious-2001/"
+    },
+    {
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
       "filmTitle": "The Invite",
@@ -1869,6 +1793,22 @@
       "bookingUrl": "https://shop.ifi.ie/performance/112970/",
       "filmPageUrl": "https://ifi.ie/films/teenage-sex-and-death-at-camp-miasma",
       "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "De Gaulle Part One: Résistance",
+      "cert": "15A",
+      "durationMins": 160,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "16:30",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367023/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/294280-de-gaulle-resistance/",
+      "screeningTags": [
+        "Subtitled"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
     },
     {
       "cinema": "lighthouse",
@@ -1952,6 +1892,22 @@
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
     },
     {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Odyssey",
+      "cert": "15A",
+      "durationMins": 172,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "19:30",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367049/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000046469-the-odyssey-the-imax-experience/",
+      "screeningTags": [
+        "IMAX"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
+    },
+    {
       "cinema": "ifi",
       "cinemaName": "IFI",
       "filmTitle": "De Gaulle Part One: Résistance",
@@ -1962,6 +1918,22 @@
       "time": "19:50",
       "bookingUrl": "https://shop.ifi.ie/performance/113087/",
       "filmPageUrl": "https://ifi.ie/films/de-gaulle-resistance",
+      "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "De Gaulle Part One: Résistance",
+      "cert": "15A",
+      "durationMins": 160,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "20:10",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367022/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/294280-de-gaulle-resistance/",
+      "screeningTags": [
+        "Subtitled"
+      ],
       "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
     },
     {
