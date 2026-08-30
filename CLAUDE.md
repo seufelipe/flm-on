@@ -261,6 +261,10 @@ is gitignored runtime cache/staging.
    functional accent color (`--color-accent`, a warm gold `#fdc732`) is used only for
    actionable/important things and the current selection — never decoratively.
 
+   `body { cursor: default }` — plain text reads with the arrow cursor (an app, not a document);
+   interactive elements set `cursor-pointer` themselves, and the film title + year opt back into
+   `cursor-text` in `FilmCard` since those are the thing you actually copy.
+
    **Shadow tokens**: `--shadow-card`/`--shadow-card-lg` (cards), `--shadow-btn-secondary` (flat
    offset, used on a few standalone buttons like DayPlan's Clear), `--shadow-group`, and
    `--shadow-chip`/`--shadow-chip-half` — the two-tone "stacked card" shadow (grey block wrapped

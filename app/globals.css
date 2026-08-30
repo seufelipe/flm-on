@@ -44,6 +44,10 @@
     background: var(--color-bg);
     color: var(--color-fg);
     font-family: var(--font-sans);
+    /* Plain text gets the arrow cursor, not the I-beam — the page should read as an app, not a
+       document. Interactive elements set their own cursor (`cursor-pointer` throughout); film
+       titles opt back into `cursor-text` (FilmCard) since those you often want to copy. */
+    cursor: default;
   }
 
   a {

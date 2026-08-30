@@ -189,10 +189,13 @@ export default function FilmCard({
             {isMystery ? (
               <MysteryTitle text={group.filmTitle} />
             ) : (
-              <span className="font-black uppercase">{group.filmTitle}</span>
+              // The one bit of plain text that keeps the I-beam cursor — a title is the thing
+              // you're most likely to want to select and copy (globals.css sets the rest to the
+              // arrow cursor).
+              <span className="font-black uppercase cursor-text">{group.filmTitle}</span>
             )}
             {!isMystery && group.year !== undefined && (
-              <span className="font-normal text-dim ml-3">{group.year}</span>
+              <span className="font-normal text-dim ml-3 cursor-text">{group.year}</span>
             )}
             {label && !hasScreeningLabel && <FilmLabel text={label} />}
             <ScreeningTagLabel tags={sessionTags} />
