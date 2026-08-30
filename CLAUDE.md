@@ -64,8 +64,9 @@ is gitignored runtime cache/staging.
   same film shows as one card with multiple date/cinema/time pills, not duplicate rows.
 - `components/ScreeningBrowser.tsx` — the interactive core (client component). Owns Day/Cinema/
   Time filters as single-select segmented controls (each a nullable value, `null` = "any" —
-  an explicit "Any Day"/"Anywhere"/"Any Time" segment rather than an implicit all-deselected
-  state) and the day-plan selection state (`selectedKeys: Set<string>` — any number of screenings,
+  an explicit "This week"/"Anywhere"/"Any Time" segment rather than an implicit all-deselected
+  state; the Day one reads "This week" because that's the span it broadens to) and the day-plan
+  selection state (`selectedKeys: Set<string>` — any number of screenings,
   not just a pair; see decision #5). Also holds the persisted preferences (decision #14) and
   applies them as the `preferred` pre-filter ahead of everything else.
 - `components/PreferencesButton.tsx` + `components/SettingsPanel.tsx` + `lib/preferences.ts` +
@@ -216,7 +217,7 @@ is gitignored runtime cache/staging.
 
 5. **Day-plan building (suggestions + click-to-select) only activates when the Day filter is
    narrowed to a specific date (`activeDay !== null`)** — a plan is inherently single-day; the
-   "Any Day" segment disables it entirely. Selecting a showtime auto-narrows the Day filter to
+   "This week" segment (the `null` day state) disables it entirely. Selecting a showtime auto-narrows the Day filter to
    that date if not already scoped to it, so planning starts immediately without a separate manual
    step; deselecting leaves the day filter alone. Selection state is `selectedKeys: Set<string>`
    (generalized 2026-08-24 from a single `selectedKey` — originally just double-bill pairs, now any
@@ -447,8 +448,9 @@ is gitignored runtime cache/staging.
     are excluded (Lighthouse doesn't upper-case its cert string, so normalize in the helper).
 
     **"Highlights" is a filter-bar toggle, not a saved preference** — a `useState` in
-    `ScreeningBrowser` (ephemeral, resets on reload), a standalone segment after the Cinema
-    control. On → `preferred` keeps only screenings that are a surfaced special screening
+    `ScreeningBrowser` (ephemeral, resets on reload), a standalone segment first in the bar,
+    ahead of the Day/Time/Place `ControlGroup`s (it's the lens reached for most). On →
+    `preferred` keeps only screenings that are a surfaced special screening
     (`displayScreeningTags(...).length > 0`) **or** whose film carries a `data/film-labels.json`
     label (so `preferred` also reads the `labels` prop). It's a browsing lens flipped often, so
     it lives in the always-visible bar; the saved preferences live in a panel behind a header

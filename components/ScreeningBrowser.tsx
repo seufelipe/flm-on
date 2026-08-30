@@ -142,10 +142,10 @@ function ControlGroup<T>({
 export default function ScreeningBrowser({ screenings, days, labels }: Props) {
   const [activeTimeframe, setActiveTimeframe] = useState<Timeframe | null>(null);
   const [activeCinema, setActiveCinema] = useState<CinemaId | null>(null);
-  // Defaults to "Any Day" (null) as usual, with two exceptions where a specific day is pinned
-  // instead — both because "Any Day" would show the exact same set of films as the one day would,
-  // just without the framing (day headers, day-plan building) that comes from actually having a
-  // day in scope.
+  // Defaults to the whole-week view (null — the "This week" segment) as usual, with two
+  // exceptions where a specific day is pinned instead — both because the week view would show the
+  // exact same set of films as the one day would, just without the framing (day headers,
+  // day-plan building) that comes from actually having a day in scope.
   const [activeDay, setActiveDay] = useState<string | null>(() => {
     const nowDate = todayISO();
     const nowTime = nowTimeISO();
@@ -446,9 +446,22 @@ export default function ScreeningBrowser({ screenings, days, labels }: Props) {
           />
         )}
         <div className="flex items-center justify-center-safe gap-4 overflow-x-auto border-t-2 border-border bg-bg px-4 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
+          {/* A binary browsing lens — not the "Any X + options" shape, so a standalone toggle
+              segment rather than a ControlGroup. Same accent-fill press language as the rest.
+              Sits first: it's the lens you reach for most, ahead of the Day/Time/Place filters. */}
+          <button
+            type="button"
+            aria-pressed={highlightsOnly}
+            onClick={() => setHighlightsOnly((v) => !v)}
+            className={`${SEGMENT_BASE} rounded-[10px] cursor-pointer ${controlSegmentClass(highlightsOnly)}`}
+          >
+            <span className="font-bold uppercase text-sm tracking-wide">Highlights</span>
+            <span className="text-xs text-dim uppercase tracking-widest">special, etc</span>
+          </button>
+
           <ControlGroup
             options={visibleDays}
-            anyLabel="Any Day"
+            anyLabel="This week"
             anyActive={effectiveDay === null}
             isActive={(day) => effectiveDay === day}
             onAny={() => setActiveDay(null)}
@@ -512,18 +525,6 @@ export default function ScreeningBrowser({ screenings, days, labels }: Props) {
               )}
             />
           )}
-
-          {/* A binary browsing lens — not the "Any X + options" shape, so a standalone toggle
-              segment rather than a ControlGroup. Same accent-fill press language as the rest. */}
-          <button
-            type="button"
-            aria-pressed={highlightsOnly}
-            onClick={() => setHighlightsOnly((v) => !v)}
-            className={`${SEGMENT_BASE} rounded-[10px] cursor-pointer ${controlSegmentClass(highlightsOnly)}`}
-          >
-            <span className="font-bold uppercase text-sm tracking-wide">Highlights</span>
-            <span className="text-xs text-dim uppercase tracking-widest">special, etc</span>
-          </button>
         </div>
       </div>
     </div>
