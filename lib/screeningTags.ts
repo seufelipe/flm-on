@@ -17,6 +17,10 @@ interface KnownTag {
   label: string;
   title: string;
   description: string;
+  // Whether this tag renders a visible ☻ mark / marquee sticker. Default true. A `false` tag
+  // still counts as a surfaced special (Highlights filter, tooltip) but shows no glyph — for
+  // Mystery Matinee, whose card already has its own redacted treatment, so the badge is noise.
+  mark?: boolean;
 }
 
 const KNOWN: Record<string, KnownTag> = {
@@ -61,6 +65,7 @@ const KNOWN: Record<string, KnownTag> = {
     label: "mystery matinee",
     title: "Mystery Matinee",
     description: "The film isn't announced — you find out what you're watching once it starts.",
+    mark: false,
   },
 };
 

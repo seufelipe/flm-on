@@ -154,9 +154,10 @@ export default function FilmCard({
   // Special-screening descriptors across all of this film's sessions (usually just "Parent and
   // Baby" on the recurring Sat/Wed morning slot). Named once as a sticker after the title; the
   // individual pills carry only the bare mark. A card shows at most one sticker — the
-  // screening label wins over a curated editorial label if a film somehow has both.
+  // screening label wins over a curated editorial label if a film somehow has both. `mark: false`
+  // tags (Mystery Matinee) render no sticker, so they don't suppress a curated label either.
   const sessionTags = Array.from(new Set(group.screenings.flatMap((s) => s.screeningTags ?? [])));
-  const hasScreeningLabel = displayScreeningTags(sessionTags).length > 0;
+  const hasScreeningLabel = displayScreeningTags(sessionTags).some((t) => t.mark !== false);
   const sessionFormats = displayFilmFormats(sessionTags);
 
   const hasMetaLine =

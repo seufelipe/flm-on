@@ -30,6 +30,13 @@ describe("displayScreeningTags", () => {
     expect(m.symbol).toContain("☻");
   });
 
+  it("flags Mystery Matinee as mark:false — still a surfaced special, but the components render no glyph", () => {
+    expect(displayScreeningTags(["Mystery Matinee"])[0].mark).toBe(false);
+    // Everything else defaults to a visible mark.
+    expect(displayScreeningTags(["Parent and Baby"])[0].mark).not.toBe(false);
+    expect(displayScreeningTags(["Cinema Book Club"])[0].mark).not.toBe(false);
+  });
+
   it("surfaces the curated-strand screenings (book club, silver screen)", () => {
     const [bookClub] = displayScreeningTags(["Cinema Book Club"]);
     expect(bookClub.label).toBe("cinema book club");

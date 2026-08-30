@@ -108,8 +108,10 @@ is gitignored runtime cache/staging.
   `displayScreeningTags` filters `Screening.screeningTags` (raw per-session descriptors from the
   scraper, plus a synthetic `Mystery Matinee` attached render-time by `ScreeningBrowser` —
   decision #12) to the surfaced set — Parent & Baby, Relaxed, Cinema Book Club, Silver Screen,
-  Mystery Matinee — → `{ symbol, label, title, description }` (`title`/`description` curated from
-  Light House's own `data-tooltip` text).
+  Mystery Matinee — → `{ symbol, label, title, description, mark? }` (`title`/`description`
+  curated from Light House's own `data-tooltip` text). `mark: false` (only Mystery Matinee) means
+  it still counts as a surfaced special — Highlights filter, tooltip, "one sticker max"
+  suppression — but `<ScreeningTagMarks>` / `<ScreeningTagLabel>` skip it, so no glyph shows.
   `<ScreeningTagMarks>` renders the bare `☻` on a pill / `DayPlan` row; `<ScreeningTagLabel>`
   renders a `☻ parent & baby` `<MarqueeSticker>` after the film title. The
   `title="<name> — <description>"` hover tooltip (`screeningTagsTooltip`) goes on the **whole**
@@ -353,9 +355,10 @@ is gitignored runtime cache/staging.
     It also **counts as a special screening** (decision #13): `ScreeningBrowser` attaches a
     synthetic `"Mystery Matinee"` to `screeningTags` for any `isMysteryFilm` screening (in the
     `upcomingScreenings` memo — render-time only, like the redaction, not in `showtimes.json`),
-    so it gets the `☻` mark + "☻ mystery matinee" sticker and passes the Highlights filter
-    through the same `displayScreeningTags` path as the rest. `KNOWN["mystery matinee"]` lives in
-    `lib/screeningTags.ts`.
+    so it passes the Highlights filter through the same `displayScreeningTags` path as the rest.
+    But its `KNOWN["mystery matinee"]` entry (in `lib/screeningTags.ts`) carries `mark: false`,
+    so unlike the other specials it shows **no `☻` mark or sticker** — the redacted card is
+    already treatment enough, and the extra badge would be noise on top of it.
 
 13. **Special screenings get a per-session marker.** Added 2026-08-28. Light House runs
     **Parent & Baby** screenings (Wed/Sat mornings — babies welcome, volume down, lights up).
@@ -369,7 +372,8 @@ is gitignored runtime cache/staging.
     `lib/screeningTags.ts` `displayScreeningTags` is the gate on what actually shows: the
     special-audience / curated-event strands — `Parent and Baby`, `Relaxed`/`Autism Friendly`
     (→ one `relaxed`), `Cinema Book Club`, `Silver Screen`, `Mystery Matinee` (the last attached
-    render-time by `ScreeningBrowser`, not scraped — see decision #12). Caption/language notes (`Subtitled` /
+    render-time by `ScreeningBrowser`, not scraped, and carrying `mark: false` so it counts as a
+    special but renders no glyph — see decision #12). Caption/language notes (`Subtitled` /
     `Dubbed` / `Open Captioned`) are captured but deliberately not surfaced — widening is a
     one-line edit to the `KNOWN` map (each entry also carries a `title` + `description`, cleaned
     up from Light House's `data-tooltip` text, shown as a `title=` hover tooltip — on the whole

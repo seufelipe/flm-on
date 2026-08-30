@@ -24,7 +24,8 @@ function Glyph({ symbol }: { symbol: string }) {
 }
 
 export function ScreeningTagMarks({ tags }: { tags?: string[] }) {
-  const display = displayScreeningTags(tags);
+  // `mark: false` tags (Mystery Matinee) still count as specials elsewhere but render no glyph.
+  const display = displayScreeningTags(tags).filter((t) => t.mark !== false);
   if (display.length === 0) return null;
   return (
     <>
@@ -39,7 +40,7 @@ export function ScreeningTagMarks({ tags }: { tags?: string[] }) {
 }
 
 export function ScreeningTagLabel({ tags }: { tags?: string[] }) {
-  const display = displayScreeningTags(tags);
+  const display = displayScreeningTags(tags).filter((t) => t.mark !== false);
   if (display.length === 0) return null;
   return (
     <>
