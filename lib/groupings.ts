@@ -8,6 +8,7 @@ export interface FilmGroup {
   cert?: string;
   durationMins?: number;
   durationEstimated?: boolean;
+  director?: string;
   letterboxdUrl?: string;
   screenings: TimedScreening[];
 }
@@ -30,6 +31,7 @@ export function groupByFilm(screenings: TimedScreening[]): FilmGroup[] {
         cert: s.cert,
         durationMins: s.durationMins,
         durationEstimated: s.durationEstimated,
+        director: s.director,
         letterboxdUrl: s.letterboxdUrl,
         screenings: [],
       };
@@ -39,6 +41,7 @@ export function groupByFilm(screenings: TimedScreening[]): FilmGroup[] {
     group.cert = group.cert ?? s.cert;
     group.year = group.year ?? s.year;
     group.durationMins = group.durationMins ?? s.durationMins;
+    group.director = group.director ?? s.director;
     group.letterboxdUrl = group.letterboxdUrl ?? s.letterboxdUrl;
     group.screenings.push(s);
   }

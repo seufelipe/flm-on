@@ -103,7 +103,14 @@ function Group({
     <fieldset className="border-0 p-0 m-0">
       <legend className="font-bold uppercase text-xs tracking-widest text-fg">{legend}</legend>
       {description && <p className="mt-0.5 text-xs text-dim">{description}</p>}
-      <div className="mt-2 flex flex-wrap gap-2">{children}</div>
+      {/* One non-wrapping row that scrolls sideways on overflow rather than stacking the options
+          onto several lines (same idiom as the film-card pill strip). `-mx-6 px-6 sm:-mx-8 sm:px-8`
+          cancels the modal's padding so the strip is full-bleed — options sit flush under the
+          legend at rest but scroll right to the dialog's inner edge. `pb-2 -mb-2` keeps the
+          segments' chunky down-right shadow inside the scroll box without adding visible gap. */}
+      <div className="mt-2 -mx-6 px-6 sm:-mx-8 sm:px-8 pb-2 -mb-2 flex flex-nowrap gap-2 overflow-x-auto scrollbar-none">
+        {children}
+      </div>
     </fieldset>
   );
 }

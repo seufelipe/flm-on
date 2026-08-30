@@ -18,7 +18,15 @@ function Glyph({ symbol }: { symbol: string }) {
   );
 }
 
-export default function FilmNotes({ tags, label }: { tags?: string[]; label?: string }) {
+export default function FilmNotes({
+  tags,
+  label,
+  className,
+}: {
+  tags?: string[];
+  label?: string;
+  className?: string;
+}) {
   const specials = displayScreeningTags(tags).filter((t) => t.mark !== false);
 
   const parts: ReactNode[] = specials.map((t) => (
@@ -36,5 +44,7 @@ export default function FilmNotes({ tags, label }: { tags?: string[]; label?: st
     .filter(Boolean)
     .join(" · ");
 
-  return <MarqueeSticker text={<>{text}</>} ariaLabel={aria} title={aria} />;
+  return (
+    <MarqueeSticker text={<>{text}</>} ariaLabel={aria} title={aria} className={className} />
+  );
 }
