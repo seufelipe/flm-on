@@ -111,6 +111,38 @@
   }
 }
 
+/* Film-format tag (components/FilmFormats.tsx) — the label rides a two-copy vertical reel that
+   loops like a projector: the frame sits still and readable, then a quick downward pulldown
+   advances to the next (identical) frame. translateY(-100%) of the reel is exactly one frame and
+   frame 2 == frame 1, so the 100% → 0% wrap is invisible. Rails (perforations) don't move. */
+.flm-filmstrip-reel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  animation: flm-filmstrip 3.2s cubic-bezier(0.6, 0, 0.25, 1) infinite;
+}
+
+.flm-filmstrip-frame {
+  flex: none;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 0.5rem;
+}
+
+@keyframes flm-filmstrip {
+  0%,
+  55% {
+    transform: translateY(-100%);
+  }
+  75%,
+  100% {
+    transform: translateY(0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .flm-marquee {
     width: auto;
@@ -121,6 +153,15 @@
   }
 
   .flm-marquee-item + .flm-marquee-item {
+    display: none;
+  }
+
+  .flm-filmstrip-reel {
+    animation: none;
+    transform: none;
+  }
+
+  .flm-filmstrip-frame + .flm-filmstrip-frame {
     display: none;
   }
 }
@@ -140,5 +181,11 @@
     -webkit-text-stroke: 0;
     color: #000 !important;
     background: #fff !important;
+  }
+
+  /* Freeze the film-strip reel on its centred frame — a paused mid-scroll would print a seam. */
+  .flm-filmstrip-reel {
+    animation: none;
+    transform: none;
   }
 }

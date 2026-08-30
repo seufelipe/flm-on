@@ -99,9 +99,9 @@ is gitignored runtime cache/staging.
   title names it once ("☻ parent & baby") — see decision #13.
 - `components/MarqueeSticker.tsx` — the small fixed-width dark sticker whose text scrolls on a
   seamless loop (two copies + a `translateX(-50%)` loop via the `flm-marquee` keyframe in
-  `app/globals.css` — the project's only CSS animation; reduced-motion → static full-width).
-  `--color-fg` sticker, `--color-bg` text, never accent. Shared by `FilmLabel` and
-  `ScreeningTagLabel`.
+  `app/globals.css`; reduced-motion → static full-width). `--color-fg` sticker, `--color-bg`
+  text, never accent. Shared by `FilmLabel` and `ScreeningTagLabel`. (The film-format tag uses
+  the same two-copy-loop trick vertically — `flm-filmstrip` — see `components/FilmFormats.tsx`.)
 - `components/FilmLabel.tsx` — a curated editorial tag (from `data/film-labels.json`, see
   decision #11) rendered as a `<MarqueeSticker>` after a film's title + year. Decorative.
 - `components/ScreeningTags.tsx` + `lib/screeningTags.ts` — special-screening markers.
@@ -421,9 +421,11 @@ is gitignored runtime cache/staging.
     "one sticker max" rule is unaffected — a 70mm Parent & Baby screening shows both. The card
     tag is styled as a single frame of film strip — a `--color-bg` radial-gradient tiled down
     each edge (`Perforations` in `FilmFormats.tsx`) so the sprocket holes fill the box height
-    whatever the ratio. First real data landed 2026-08-29: "The Odyssey" plays 35mm at Light
-    House and 70mm at IFI in the same week, so its card shows both boxes and each pill carries
-    its own mark.
+    whatever the ratio — and the label rides a two-copy vertical reel (`.flm-filmstrip-*` in
+    `globals.css`) scrolling downward on a seamless loop, so it reads as a frame advancing
+    through a projector gate (the rails stay put); reduced-motion / print freeze it centred.
+    First real data landed 2026-08-29: "The Odyssey" plays 35mm at Light House and 70mm at IFI
+    in the same week, so its card shows both boxes and each pill carries its own mark.
 
 14. **Settings panel — persisted viewing preferences (localStorage).** Added 2026-08-29. The
     app's **only** persisted state and its first `localStorage` / `useEffect` /

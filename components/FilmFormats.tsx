@@ -4,7 +4,9 @@ import { displayFilmFormats, type FilmFormat } from "@/lib/formats";
 // components/ScreeningTags.tsx:
 //  - <FilmFormatTag>  — a small solid box holding the label, on the film card's meta line
 //    (after the duration, before the Letterboxd link). Sized to the format: same width for all,
-//    height stepping up 35mm → 70mm → IMAX ("bigger format = taller").
+//    height stepping up 35mm → 70mm → IMAX ("bigger format = taller"). The label rides a
+//    vertical reel that scrolls on a seamless loop (`.flm-filmstrip-*` in globals.css) so the
+//    box reads as a frame of film advancing through a gate.
 //  - <FilmFormatMarks> — a bare ratio-shaped rectangle after the time on a pill / plan row,
 //    the format equivalent of the special-screening ☻ mark. The pill/row button carries the
 //    hover tooltip (via filmFormatsTooltip), not the mark itself.
@@ -51,11 +53,16 @@ function Box({ format }: { format: FilmFormat }) {
       role="img"
       aria-label={tip}
       title={tip}
-      className="relative inline-flex shrink-0 cursor-default items-center justify-center rounded-[3px] bg-fg text-bg px-2 text-[0.58rem] font-black uppercase leading-none tracking-tight"
+      className="relative inline-flex shrink-0 cursor-default overflow-hidden rounded-[3px] bg-fg text-bg text-[0.58rem] font-black uppercase leading-none tracking-tight"
       style={{ width: `${TAG_WIDTH_REM}rem`, height: `${TAG_WIDTH_REM / format.ratio}rem` }}
     >
+      {/* The label rides a two-copy vertical reel scrolling on a seamless loop, so the box reads
+          as a frame of film advancing through the gate. The perforation rails stay put. */}
+      <span className="flm-filmstrip-reel" aria-hidden="true">
+        <span className="flm-filmstrip-frame">{format.label}</span>
+        <span className="flm-filmstrip-frame">{format.label}</span>
+      </span>
       <Perforations side="left" />
-      {format.label}
       <Perforations side="right" />
     </span>
   );
