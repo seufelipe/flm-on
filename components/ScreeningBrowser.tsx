@@ -448,15 +448,16 @@ export default function ScreeningBrowser({ screenings, days, labels }: Props) {
         <div className="flex items-center justify-center-safe gap-4 overflow-x-auto border-t-2 border-border bg-bg px-4 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
           {/* A binary browsing lens — not the "Any X + options" shape, so a standalone toggle
               segment rather than a ControlGroup. Same accent-fill press language as the rest.
-              Sits first: it's the lens you reach for most, ahead of the Day/Time/Place filters. */}
+              Sits first: it's the lens you reach for most, ahead of the Day/Time/Place filters.
+              One line, so it mirrors the ControlGroups' "any" segment (`flex items-center`) and
+              takes `self-stretch` to match their two-line height instead of sitting short. */}
           <button
             type="button"
             aria-pressed={highlightsOnly}
             onClick={() => setHighlightsOnly((v) => !v)}
-            className={`${SEGMENT_BASE} rounded-[10px] cursor-pointer ${controlSegmentClass(highlightsOnly)}`}
+            className={`relative shrink-0 self-stretch flex items-center border-2 px-3 py-1 rounded-[10px] transition-[translate,box-shadow] duration-100 cursor-pointer ${controlSegmentClass(highlightsOnly)}`}
           >
-            <span className="font-bold uppercase text-sm tracking-wide">Highlights</span>
-            <span className="text-xs text-dim uppercase tracking-widest">special, etc</span>
+            <span className="font-bold uppercase text-sm tracking-wide">Specials, etc</span>
           </button>
 
           <ControlGroup

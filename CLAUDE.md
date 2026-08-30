@@ -447,9 +447,10 @@ is gitignored runtime cache/staging.
     → `lib/certs.ts` `isKidFriendly` — IFCO `G`/`PG`/`12A` only; `15A`+ and **no listed cert**
     are excluded (Lighthouse doesn't upper-case its cert string, so normalize in the helper).
 
-    **"Highlights" is a filter-bar toggle, not a saved preference** — a `useState` in
-    `ScreeningBrowser` (ephemeral, resets on reload), a standalone segment first in the bar,
-    ahead of the Day/Time/Place `ControlGroup`s (it's the lens reached for most). On →
+    **The Highlights toggle (labelled "Specials, etc") is a filter-bar toggle, not a saved
+    preference** — a `useState` (`highlightsOnly`) in `ScreeningBrowser` (ephemeral, resets on
+    reload), a standalone single-line segment first in the bar, ahead of the Day/Time/Place
+    `ControlGroup`s (it's the lens reached for most). On →
     `preferred` keeps only screenings that are a surfaced special screening
     (`displayScreeningTags(...).length > 0`) **or** whose film carries a `data/film-labels.json`
     label (so `preferred` also reads the `labels` prop). It's a browsing lens flipped often, so
