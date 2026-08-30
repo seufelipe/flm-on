@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-30T18:51:38.346Z",
+  "generatedAt": "2026-08-30T19:06:27.014Z",
   "days": [
     "2026-08-30",
     "2026-08-31",
@@ -190,24 +190,6 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40637&showtimeId=1001-40637&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-odyssey",
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
-    },
-    {
-      "cinema": "cineworld",
-      "cinemaName": "Cineworld Dublin",
-      "filmTitle": "Toxic",
-      "originalTitle": "ಟಾಕ್ಸಿಕ್",
-      "cert": "16",
-      "durationMins": 175,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "19:50",
-      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366712/seats",
-      "filmPageUrl": "https://www.cineworld.ie/movies/324492-toxic/",
-      "screeningTags": [
-        "Kannada",
-        "Subtitled"
-      ],
-      "letterboxdUrl": "https://letterboxd.com/film/toxic-2026/"
     },
     {
       "cinema": "ifi",
@@ -638,11 +620,12 @@
       "filmTitle": "David",
       "cert": "PG",
       "durationMins": 114,
-      "year": 2026,
+      "year": 2025,
       "date": "2026-08-31",
       "time": "13:30",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366840/seats",
-      "filmPageUrl": "https://www.cineworld.ie/movies/322967-david/"
+      "filmPageUrl": "https://www.cineworld.ie/movies/322967-david/",
+      "letterboxdUrl": "https://letterboxd.com/film/david-2025/"
     },
     {
       "cinema": "lighthouse",
@@ -1737,11 +1720,12 @@
       "filmTitle": "David",
       "cert": "PG",
       "durationMins": 114,
-      "year": 2026,
+      "year": 2025,
       "date": "2026-09-01",
       "time": "13:30",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367089/seats",
-      "filmPageUrl": "https://www.cineworld.ie/movies/322967-david/"
+      "filmPageUrl": "https://www.cineworld.ie/movies/322967-david/",
+      "letterboxdUrl": "https://letterboxd.com/film/david-2025/"
     },
     {
       "cinema": "cineworld",
@@ -2792,11 +2776,12 @@
       "filmTitle": "David",
       "cert": "PG",
       "durationMins": 114,
-      "year": 2026,
+      "year": 2025,
       "date": "2026-09-02",
       "time": "13:30",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366842/seats",
-      "filmPageUrl": "https://www.cineworld.ie/movies/322967-david/"
+      "filmPageUrl": "https://www.cineworld.ie/movies/322967-david/",
+      "letterboxdUrl": "https://letterboxd.com/film/david-2025/"
     },
     {
       "cinema": "ifi",
