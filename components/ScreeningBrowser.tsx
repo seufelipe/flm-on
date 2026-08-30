@@ -455,8 +455,14 @@ export default function ScreeningBrowser({ screenings, days, labels }: Props) {
             type="button"
             aria-pressed={highlightsOnly}
             onClick={() => setHighlightsOnly((v) => !v)}
-            className={`relative shrink-0 self-stretch flex items-center border-2 px-3 py-1 rounded-[10px] transition-[translate,box-shadow] duration-100 cursor-pointer ${controlSegmentClass(highlightsOnly)}`}
+            className={`relative shrink-0 self-stretch flex items-center gap-1.5 border-2 px-3 py-1 rounded-[10px] transition-[translate,box-shadow] duration-100 cursor-pointer ${controlSegmentClass(highlightsOnly)}`}
           >
+            {/* Same flat-ink smiley the special-screening marks use (decision #13) — this is the
+                lens that surfaces them, so it wears their glyph. Decorative; the label carries the
+                meaning. */}
+            <span aria-hidden="true" className="text-[1.4em] leading-none [font-variant-emoji:text]">
+              {"☻︎"}
+            </span>
             <span className="font-bold uppercase text-sm tracking-wide">Specials, etc</span>
           </button>
 

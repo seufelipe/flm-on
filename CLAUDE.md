@@ -447,7 +447,8 @@ is gitignored runtime cache/staging.
     → `lib/certs.ts` `isKidFriendly` — IFCO `G`/`PG`/`12A` only; `15A`+ and **no listed cert**
     are excluded (Lighthouse doesn't upper-case its cert string, so normalize in the helper).
 
-    **The Highlights toggle (labelled "Specials, etc") is a filter-bar toggle, not a saved
+    **The Highlights toggle (labelled "☻ Specials, etc" — the same flat-ink smiley the
+    special-screening marks use, decision #13) is a filter-bar toggle, not a saved
     preference** — a `useState` (`highlightsOnly`) in `ScreeningBrowser` (ephemeral, resets on
     reload), a standalone single-line segment first in the bar, ahead of the Day/Time/Place
     `ControlGroup`s (it's the lens reached for most). On →
