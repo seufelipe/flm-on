@@ -2,11 +2,12 @@
 
 # FLM ON — Dublin cinema showtime planner
 
-Personal single-user app (no auth, no accounts). Combines showtimes from **Light House Cinema**
-and **IFI** in full, plus the *non-standard* programming (classics, IMAX, foreign-language,
-special events) of **Cineworld Dublin**, into one place — with tools to plan a day at the cinema,
-from a double bill up to back-to-back screenings. Built entirely through conversation with the
-user; this file exists so a future session can pick up without re-deriving the reasoning.
+Personal single-user app (no auth, no accounts). Combines showtimes from **Light House Cinema**,
+**IFI** and **Cineworld Dublin** — all scraped in full — into one place, with tools to plan a day
+at the cinema, from a double bill up to back-to-back screenings. Cineworld is off by default and,
+when on, its ordinary multiplex programme is hidden by the "Specials, etc" lens unless you ask
+for it (decisions #14, #16). Built entirely through conversation with the user; this file exists
+so a future session can pick up without re-deriving the reasoning.
 
 **Public deploy runs on a weekly curated pipeline, not live scraping** (decision #9): a
 manually-run script fetches the week, prints a plain-text report to review, and confirming
@@ -24,9 +25,9 @@ the curated override / editorial files (`title-overrides`, `letterboxd-overrides
 ### Data pipeline (server-only — `app/page.tsx` never runs it)
 
 - `lib/scrapers/{lighthouse,ifi,cineworld}.ts` — `CinemaAdapter`s. Light House / IFI are HTML
-  scrapers; Cineworld is a JSON-API adapter that filters itself to non-standard screenings
-  (decision #16). `lib/scrapers/index.ts` is the registry — adding a cinema is one file + one
-  array entry (deliberately no in-app settings UI).
+  scrapers; Cineworld is a JSON-API adapter (decision #16). All three return every screening;
+  `lib/scrapers/index.ts` is the registry — adding a cinema is one file + one array entry
+  (deliberately no in-app settings UI).
 - `lib/aggregate.ts` — `getShowtimesForRange` / `refreshShowtimesForRange`. Fetches each adapter's
   *missing* dates in one batched call, caches per `(cinema, date)` (incl. an explicit empty array
   for dates a cinema has nothing on). Then, per screening: `cleanFilmTitle` → drop hidden films →
@@ -63,7 +64,7 @@ the curated override / editorial files (`title-overrides`, `letterboxd-overrides
 - `scripts/fetch-batch.ts` (`npm run fetch:batch`) — scrapes `upcomingDays()` (`lib/date.ts` —
   full week on a Thursday, else capped at the next Thursday), writes `data/staging-batch.json`,
   prints the review report (titles/casing, Letterboxd matches/misses, special screenings,
-  unrecognised tags, Cineworld dropped titles, resolved languages, Labels), and *writes*
+  unrecognised tags, Cineworld's ordinary (lens-hidden) titles, resolved languages, Labels), and *writes*
   `data/film-labels.json` pre-fills (decision #11). `scripts/confirm-batch.ts`
   (`npm run fetch:confirm`) copies staging → `data/showtimes.json`; git stays manual.
 - `app/page.tsx` — server component, reads `data/showtimes.json` directly. Static per deploy
@@ -282,7 +283,9 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
     - **The Highlights toggle** ("☻ Specials, etc") is a filter-bar `useState`, **not** a saved
       preference — ephemeral, first in the bar (the lens reached for most). On → `preferred`
       keeps only screenings that are a surfaced special / a film format / a non-English language /
-      a `film-labels.json` film. The empty-state Reset clears prefs **and** this toggle.
+      a `film-labels.json` film. This is also what keeps Cineworld's ordinary multiplex programme
+      out of view (decision #16) — with it off and Cineworld on, you get the full slate. The
+      empty-state Reset clears prefs **and** this toggle.
     - UI: header button (`PreferencesButton`, sliders icon not a gear; a `--color-fg` dot when
       prefs ≠ default) → `SettingsPanel` (responsive modal / bottom sheet). Options are toggle
       buttons in `controlSegment.ts` style; the **Language** group is a `Segmented` single-select
@@ -303,10 +306,9 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
     Counts toward Highlights. Not part of the `FilmNotes` sticker. 4DX / ScreenX / Superscreen
     are recognised but deliberately unsurfaced.
 
-16. **Cineworld Dublin — a JSON-API adapter, filtered to non-standard screenings**
-    (`lib/scrapers/cineworld.ts`). Cineworld.ie is a Gatsby site with a public, unauthenticated
-    JSON API (`robots.txt` empty). Theatre id **`X07A4`**. Two calls per batch window
-    (`fetchCineworldRaw`):
+16. **Cineworld Dublin — a JSON-API adapter, scraped in full** (`lib/scrapers/cineworld.ts`).
+    Cineworld.ie is a Gatsby site with a public, unauthenticated JSON API (`robots.txt` empty).
+    Theatre id **`X07A4`**. Two calls per batch window (`fetchCineworldRaw`):
     - `GET /api/gatsby-source-boxofficeapi/schedule?from={ISO}&to={ISO}&theaters={"id":"X07A4","timeZone":"Europe/Dublin"}`
       (`theaters` = URL-encoded JSON; day boundary 03:00 local; accepts an arbitrary range) →
       `{ X07A4: { schedule: { <movieId>: { <YYYY-MM-DD>: [ {id, startsAt, tags[], data.ticketing} ] } } } }`.
@@ -316,17 +318,19 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
       originalTitle, runtime (SECONDS — ÷60), certificate, release / releases[].releasedAt }]`.
       `filmPageUrl` = `cineworld.ie/movies/{id}-{slug}/`.
 
-    **Non-standard filter (`isNotableTagSet` / `normaliseTags`):** a multiplex would bury the
-    arthouse cinemas (~257 showtimes in a 3-week sample), so the adapter drops the "ordinary"
-    tags (`Format.Projection.Digital`/`.Laser`, `Auditorium.Experience.4dx`/`.ScreenX`/
-    `.Superscreen`, `Showtime.Accessibility.AudioDescription`) and keeps a screening only if a
-    descriptor survives: IMAX, a `Localization.Language.*`, `Subtitled`, `AutismFriendly`, or any
-    `Showtime.Event.*`. Survivors are normalised onto the shared `screeningTags` vocab
+    **`normaliseTags`** maps each showtime's raw tag tokens onto the shared `screeningTags` vocab
     (`Format.Projection.Imax` → `IMAX`, `Showtime.Event.BigScreenClassics` → `Big Screen
-    Classics`, `Localization.Language.Tamil` → `Tamil`); **unknown `Showtime.Event.*` kept
-    verbatim** → shows in the report ("unrecognised screening tags" + `summariseDroppedTitles`).
-    **Big Screen Classics** is kept but `mark: false` — `fetch:batch` pre-fills a `classic!`
-    label instead (decision #11).
+    Classics`, `Localization.Language.Tamil` → `Tamil`, `Showtime.Accessibility.AutismFriendly` →
+    relaxed) and drops the tokens with no display meaning (`IGNORED_TAGS` —
+    `Format.Projection.Digital`/`.Laser`, `Auditorium.Experience.4dx`/`.ScreenX`/`.Superscreen`,
+    `Showtime.Accessibility.AudioDescription`). An ordinary wide-release showing therefore ends
+    up with **no `screeningTags`** — still scraped, just not a "highlight". **Unknown
+    `Showtime.Event.*` kept verbatim** → shows in the report's "unrecognised screening tags".
+    **Big Screen Classics** is `mark: false` — `fetch:batch` pre-fills a `classic!` label instead
+    (decision #11). Nothing is dropped at scrape time: the multiplex firehose is hidden by the
+    **"Specials, etc" Highlights lens** (decision #14), and the batch report's
+    "Cineworld — ordinary screenings" section lists what that lens hides so a mistitled /
+    label-worthy film is caught in review.
 
     Also: **Cineworld defaults off** in preferences (decision #14). IMAX may be a **separate
     movie** (`"…: The IMAX Experience"`) — the adapter strips that + synthesises an `IMAX` tag so
@@ -366,9 +370,11 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
 - **IFI**: special-audience strands not tagged (#13); a new format `svg[data-icon]` is silently
   dropped (#15); no automatic check for a new `em.additional` value beyond the batch report;
   titles often ALL CAPS (`[CASING DIFFERS]` in the report, but new mismatches aren't caught).
-- **Cineworld's non-standard filter is tag-based only** — an interesting film that plays
-  Cineworld only as a plain digital showing is dropped, with no per-title allowlist to rescue it.
-  The report's "dropped ordinary screenings" section is the manual check.
+- **Cineworld "highlight" detection is tag-based only** — a plain-digital showing of an
+  interesting film shows only with the Highlights lens *off* (i.e. buried in the full multiplex
+  slate), with no per-title allowlist to promote it. The report's "Cineworld — ordinary
+  screenings" section is the manual check. The committed `showtimes.json` now carries the whole
+  Cineworld programme, so its git diffs churn with wide-release showtimes.
 - **Language marking** needs the film to resolve on Letterboxd and its "Primary Language" to be
   in `LANGUAGE_NAMES` (a miss shows in the report). Letterboxd's primary language is occasionally
   wrong for Indian regional films / dubs — the "Languages" report section is the check.

@@ -4,10 +4,12 @@ import { isLanguageName } from "@/lib/languages";
 import { titlesEquivalent } from "@/lib/titles";
 import type { CinemaAdapter, Screening } from "./types";
 
-// Cineworld Dublin (Parnell St) — a 16-screen multiplex. It's on the app for its *non-standard*
-// programming: classics/repertory, IMAX, foreign-language & subtitled features, and special-event
-// strands. Ordinary wide-release showings are filtered out here at scrape time (see
-// `isNotableTagSet` / CLAUDE.md decision #16) so they don't bury the two arthouse cinemas.
+// Cineworld Dublin (Parnell St) — a 16-screen multiplex, scraped in full like Light House / IFI.
+// `normaliseTags` still maps the cinema's raw tag tokens onto the shared `screeningTags` vocab
+// and drops the ordinary projection / premium-auditorium / audio-description tokens
+// (`IGNORED_TAGS`), so an ordinary wide-release showing simply carries no tags. Hiding that
+// ordinary programme is the job of the UI's "Specials, etc" Highlights lens (CLAUDE.md
+// decisions #14, #16), not this adapter — nothing is dropped at scrape time.
 //
 // Source: cineworld.ie is a Gatsby site backed by a public, unauthenticated JSON API. robots.txt
 // is empty. Two calls cover a batch window:
@@ -57,10 +59,9 @@ export interface CineworldMovie {
 
 // ---- tag normalisation ------------------------------------------------------------------------
 
-// Raw Cineworld tags that mean "ordinary screening" — dropped entirely. Everything not on this
-// list survives (see `normaliseTags`), and any surviving tag makes the screening notable.
-// `4dx` / `screenx` / `superscreen` are premium auditoriums we deliberately don't surface yet
-// (CLAUDE.md decision #15) — and, since they're dropped, a plain 4DX blockbuster is filtered out.
+// Raw Cineworld tags that carry no display meaning — dropped in `normaliseTags` so an ordinary
+// showing ends up with an empty tag list. `4dx` / `screenx` / `superscreen` are premium
+// auditoriums we deliberately don't surface yet (CLAUDE.md decision #15).
 const IGNORED_TAGS = new Set([
   "format.projection.digital",
   "format.projection.laser",
@@ -99,12 +100,6 @@ export function normaliseTags(raw: string[] | undefined): string[] {
     }
   }
   return out;
-}
-
-// A screening is worth keeping iff, after normalisation, it still carries a descriptor — IMAX, a
-// language, subtitles, a relaxed screening, or an event strand. See file header.
-export function isNotableTagSet(rawTags: string[] | undefined): boolean {
-  return normaliseTags(rawTags).length > 0;
 }
 
 // ---- parsing --------------------------------------------------------------------------------
@@ -159,7 +154,7 @@ function bookingUrlOf(showtime: RawShowtime): string | undefined {
   return preferred?.urls?.[0]?.trim() || undefined;
 }
 
-// Pure — takes the two raw API payloads and the requested dates, returns the notable screenings.
+// Pure — takes the two raw API payloads and the requested dates, returns every bookable session.
 export function parseCineworldSchedule(
   scheduleJson: CineworldSchedule,
   movies: CineworldMovie[],
@@ -192,7 +187,6 @@ export function parseCineworldSchedule(
       if (!wanted.has(date)) continue;
       for (const showtime of showtimes) {
         const rawTags = imaxFromTitle ? [...(showtime.tags ?? []), "IMAX"] : showtime.tags;
-        if (!isNotableTagSet(rawTags)) continue;
 
         const bookingUrl = bookingUrlOf(showtime);
         const time = showtime.startsAt?.slice(11, 16);
@@ -246,8 +240,7 @@ function chunk<T>(items: T[], size: number): T[][] {
   return out;
 }
 
-// The two raw API payloads for a date range — shared by the adapter and the batch report (which
-// uses `summariseDroppedTitles` to show what the notable-only filter removed).
+// The two raw API payloads for a date range.
 export async function fetchCineworldRaw(
   days: string[],
 ): Promise<{ scheduleJson: CineworldSchedule; movies: CineworldMovie[] }> {
@@ -260,38 +253,6 @@ export async function fetchCineworldRaw(
     fetchJson<CineworldMovie[]>(moviesUrl(ids)),
   );
   return { scheduleJson, movies: movieChunks.flat() };
-}
-
-// Titles (with their showtime count) that the notable-only filter removed — an ordinary
-// wide-release blockbuster with nothing but plain digital/laser/4DX showings. Surfaced in the
-// batch report so a mistakenly-dropped interesting film is visible for review.
-export function summariseDroppedTitles(
-  scheduleJson: CineworldSchedule,
-  movies: CineworldMovie[],
-  days: string[],
-): { title: string; dropped: number }[] {
-  const wanted = new Set(days);
-  const byId = new Map(movies.map((m) => [m.id, m]));
-  const counts = new Map<string, number>();
-  const schedule = scheduleJson?.[THEATER_ID]?.schedule ?? {};
-
-  for (const [movieId, perDate] of Object.entries(schedule)) {
-    const movie = byId.get(movieId);
-    const rawTitle = movie?.title || movie?.locale?.title || movie?.originalTitle;
-    if (!rawTitle) continue;
-    const { title, imaxFromTitle } = cleanScheduleTitle(rawTitle);
-    for (const [date, showtimes] of Object.entries(perDate)) {
-      if (!wanted.has(date)) continue;
-      for (const st of showtimes) {
-        const rawTags = imaxFromTitle ? [...(st.tags ?? []), "IMAX"] : st.tags;
-        if (!isNotableTagSet(rawTags)) counts.set(title, (counts.get(title) ?? 0) + 1);
-      }
-    }
-  }
-
-  return Array.from(counts, ([title, dropped]) => ({ title, dropped })).sort((a, b) =>
-    a.title.localeCompare(b.title),
-  );
 }
 
 export const cineworldAdapter: CinemaAdapter = {

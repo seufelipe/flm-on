@@ -4,8 +4,6 @@ import path from "path";
 import {
   parseCineworldSchedule,
   normaliseTags,
-  isNotableTagSet,
-  summariseDroppedTitles,
   type CineworldSchedule,
   type CineworldMovie,
 } from "@/lib/scrapers/cineworld";
@@ -35,18 +33,12 @@ describe("cineworld normaliseTags", () => {
   it("drops premium-auditorium tags (4DX etc.) — not surfaced yet", () => {
     expect(normaliseTags(["Auditorium.Experience.4dx", "Format.Projection.Digital"])).toEqual([]);
   });
-
-  it("isNotableTagSet is true only when a descriptor survives", () => {
-    expect(isNotableTagSet(["Format.Projection.Digital", "Auditorium.Experience.4dx"])).toBe(false);
-    expect(isNotableTagSet(["Showtime.Event.BigScreenClassics", "Auditorium.Experience.4dx"])).toBe(true);
-    expect(isNotableTagSet(["Localization.Language.Kannada"])).toBe(true);
-  });
 });
 
 describe("cineworld parseCineworldSchedule", () => {
   const screenings = parseCineworldSchedule(scheduleJson, movies, DAYS);
 
-  it("keeps only non-standard screenings, one per bookable session", () => {
+  it("keeps every bookable session, one screening each", () => {
     expect(screenings.length).toBeGreaterThan(0);
     expect(screenings.every((s) => s.cinema === "cineworld")).toBe(true);
     expect(screenings.every((s) => DAYS.includes(s.date))).toBe(true);
@@ -55,9 +47,16 @@ describe("cineworld parseCineworldSchedule", () => {
     expect(screenings.every((s) => /web\.cineworld\.ie\/order\/showtimes\/0001-\d+/.test(s.bookingUrl))).toBe(true);
   });
 
-  it("drops an ordinary wide release with only plain digital/laser showings", () => {
-    expect(screenings.some((s) => s.filmTitle === "Coyote vs Acme")).toBe(false);
-    expect(screenings.some((s) => s.filmTitle === "The Odyssey" && !s.screeningTags?.includes("IMAX"))).toBe(false);
+  it("keeps an ordinary wide release, with no screeningTags", () => {
+    const coyote = screenings.filter((s) => s.filmTitle === "Coyote vs Acme");
+    expect(coyote.length).toBe(4);
+    expect(coyote.every((s) => s.screeningTags === undefined)).toBe(true);
+
+    // The Odyssey's plain digital sessions (8) plus its ": The IMAX Experience" companion (4).
+    const odyssey = screenings.filter((s) => s.filmTitle === "The Odyssey");
+    expect(odyssey.length).toBe(12);
+    expect(odyssey.filter((s) => s.screeningTags?.includes("IMAX")).length).toBe(4);
+    expect(odyssey.filter((s) => s.screeningTags === undefined).length).toBe(8);
   });
 
   it("converts runtime from seconds to minutes and reads the release year", () => {
@@ -86,10 +85,9 @@ describe("cineworld parseCineworldSchedule", () => {
   });
 
   it("folds a ': The IMAX Experience' companion movie onto the base title with a synthetic IMAX tag", () => {
-    const odyssey = screenings.filter((s) => s.filmTitle === "The Odyssey");
-    expect(odyssey.length).toBe(4);
-    expect(odyssey.every((s) => s.screeningTags?.includes("IMAX"))).toBe(true);
-    expect(odyssey[0].year).toBe(2026);
+    const imax = screenings.filter((s) => s.filmTitle === "The Odyssey" && s.screeningTags?.includes("IMAX"));
+    expect(imax.length).toBe(4);
+    expect(imax[0].year).toBe(2026);
   });
 
   it("keeps a Big Screen Classics session even when it's also a 4DX showing", () => {
@@ -99,10 +97,11 @@ describe("cineworld parseCineworldSchedule", () => {
     expect(hp.some((s) => s.screeningTags?.includes("4dx"))).toBe(false);
   });
 
-  it("keeps the one accessible session of an otherwise-ordinary blockbuster", () => {
+  it("tags only the accessible session of an otherwise-ordinary blockbuster", () => {
     const spidey = screenings.filter((s) => s.filmTitle === "Spider-Man: Brand New Day");
-    expect(spidey.length).toBe(1);
-    expect(spidey[0].screeningTags).toEqual(["Autism Friendly"]);
+    expect(spidey.length).toBe(8);
+    expect(spidey.filter((s) => s.screeningTags?.includes("Autism Friendly")).length).toBe(1);
+    expect(spidey.filter((s) => s.screeningTags === undefined).length).toBe(7);
   });
 
   it("honours the requested day set", () => {
@@ -114,15 +113,5 @@ describe("cineworld parseCineworldSchedule", () => {
   it("builds a film-page URL from the movie id and slug", () => {
     const toxic = screenings.find((s) => s.filmTitle === "Toxic");
     expect(toxic?.filmPageUrl).toBe("https://www.cineworld.ie/movies/324492-toxic/");
-  });
-});
-
-describe("cineworld summariseDroppedTitles", () => {
-  it("reports the ordinary titles the filter removed, with counts", () => {
-    const dropped = summariseDroppedTitles(scheduleJson, movies, DAYS);
-    const byTitle = Object.fromEntries(dropped.map((d) => [d.title, d.dropped]));
-    expect(byTitle["Coyote vs Acme"]).toBeGreaterThan(0);
-    expect(byTitle["The Odyssey"]).toBeGreaterThan(0);
-    expect(byTitle["Toxic"]).toBeUndefined();
   });
 });
