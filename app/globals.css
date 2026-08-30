@@ -54,7 +54,7 @@
 /* White cert label with a hard dark outline, like the official IFCO symbol — keeps it legible
    on the lighter fills (orange, green) where plain white would wash out. */
 .cert-badge {
-  -webkit-text-stroke: 1.5px var(--color-border);
+  -webkit-text-stroke: 1px var(--color-border);
   paint-order: stroke fill;
 }
 

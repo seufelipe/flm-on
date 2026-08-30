@@ -37,8 +37,8 @@ function Cert({ cert }: { cert: string }) {
   const color = certColor(cert);
   return (
     <span
-      className={`cert-badge inline-flex h-9 w-9 shrink-0 cursor-default items-center justify-center rounded-full border-[3px] border-border font-black uppercase leading-none text-white ${
-        cert.length > 2 ? "text-[0.66rem] tracking-tight" : "text-sm"
+      className={`cert-badge inline-flex h-7 w-7 shrink-0 cursor-default items-center justify-center rounded-full border-2 border-border font-black uppercase leading-none text-white ${
+        cert.length > 2 ? "text-[0.52rem] tracking-tight" : "text-xs"
       }`}
       style={{ background: color ?? "var(--color-dim)" }}
     >
