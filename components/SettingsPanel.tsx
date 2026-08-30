@@ -1,7 +1,7 @@
 import { CINEMA_LABEL, CINEMA_LOCATION, CINEMA_ORDER } from "@/lib/cinemas";
 import { TIMEFRAMES, formatTimeframeRange } from "@/lib/timeframe";
 import { SHORT_FILM_MAX_MINS } from "@/lib/duration";
-import { DEFAULT_PREFERENCES, isDefault, type Preferences } from "@/lib/preferences";
+import { DEFAULT_PREFERENCES, isDefault, type LanguagePref, type Preferences } from "@/lib/preferences";
 import { SEGMENT_BASE, controlSegmentClass } from "./controlSegment";
 
 // The settings overlay: a centered modal on desktop, a bottom sheet on mobile (pure CSS via the
@@ -46,6 +46,47 @@ function Toggle({
       <span className="font-bold uppercase text-sm tracking-wide">{label}</span>
       <span className="text-xs text-dim uppercase tracking-widest">{sublabel}</span>
     </button>
+  );
+}
+
+// A single-select segmented control, flush like the filter-bar groups in ScreeningBrowser: each
+// segment carries its own border + shadow, `-ml-0.5` merges adjacent borders into one line, only
+// the ends round outward, and every segment gets an explicit ascending z-index so the active
+// segment's `translate` (a new stacking context) doesn't paint over its right-hand neighbour.
+function Segmented<T extends string>({
+  options,
+  value,
+  onChange,
+}: {
+  options: { value: T; label: string; sublabel?: string }[];
+  value: T;
+  onChange: (value: T) => void;
+}) {
+  return (
+    <div className="flex">
+      {options.map((opt, i) => {
+        const first = i === 0;
+        const last = i === options.length - 1;
+        const radius = first ? "rounded-l-[10px]" : last ? "rounded-r-[10px]" : "";
+        return (
+          <button
+            key={opt.value}
+            type="button"
+            aria-pressed={value === opt.value}
+            onClick={() => onChange(opt.value)}
+            style={{ zIndex: i + 1 }}
+            className={`relative shrink-0 border-2 px-3 py-1 flex flex-col items-center justify-center gap-0.5 transition-[translate,box-shadow] duration-100 cursor-pointer ${
+              first ? "" : "-ml-0.5"
+            } ${radius} ${controlSegmentClass(value === opt.value)}`}
+          >
+            <span className="font-bold uppercase text-sm tracking-wide">{opt.label}</span>
+            {opt.sublabel && (
+              <span className="text-xs text-dim uppercase tracking-widest">{opt.sublabel}</span>
+            )}
+          </button>
+        );
+      })}
+    </div>
   );
 }
 
@@ -161,11 +202,17 @@ export default function SettingsPanel({ prefs, onChange, onClose }: Props) {
               on={prefs.kidsOnly}
               onChange={(value) => onChange({ ...prefs, kidsOnly: value })}
             />
-            <Toggle
-              label="Hide dubbed *"
-              sublabel="* foreign films voiced in english"
-              on={prefs.hideDubbed}
-              onChange={(value) => onChange({ ...prefs, hideDubbed: value })}
+          </Group>
+
+          <Group legend="Language" description="By the film's original language">
+            <Segmented<LanguagePref>
+              value={prefs.language}
+              onChange={(value) => onChange({ ...prefs, language: value })}
+              options={[
+                { value: "any", label: "Any language" },
+                { value: "english", label: "English", sublabel: "only" },
+                { value: "non-english", label: "Non-English", sublabel: "only" },
+              ]}
             />
           </Group>
         </div>

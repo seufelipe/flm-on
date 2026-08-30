@@ -159,8 +159,8 @@ is gitignored runtime cache/staging.
   — `data/language-overrides.json` (`lib/languageOverrides.ts`) is the manual fix path;
   Cineworld's `Localization.Language.*` is the per-session fallback. Subtitled/dubbed comes from
   Cineworld's `Showtime.Accessibility.*` and Light House's long-captured
-  `Subtitled`/`Dubbed`/`Open Captioned`. Counts toward Highlights; a `hideDubbed` preference
-  hides dubbed sessions. Decision #17.
+  `Subtitled`/`Dubbed`/`Open Captioned`. Counts toward Highlights; the **Language** preference
+  (`any` / `english` / `non-english`, `matchesLanguagePref`) filters on it. Decision #17.
 - `components/ComboSuggestions.tsx` — the "Suggested plans" browsing list shown before anything is
   selected (`effectiveSelectedKeys.size === 0`); clicking a suggestion adds its first leg to the
   plan. `components/DayPlan.tsx` — replaces that list once anything is selected: a continuous
@@ -504,9 +504,10 @@ is gitignored runtime cache/staging.
 14. **Settings panel — persisted viewing preferences (localStorage).** Added 2026-08-29. The
     app's **only** persisted state and its first `localStorage` / `useEffect` /
     `useSyncExternalStore` usage. `lib/preferences.ts`: `Preferences` (`cinemas` /
-    `timeframes` maps + `hideShortFilms` + `kidsOnly` + `hideDubbed`; **`hideShortFilms` defaults
-    on** — the archive-at-lunchtime strands are noise for most visits; `hideDubbed` defaults off —
-    decision #17), `STORAGE_KEY = "flm-on:preferences"`, and `normalize` — a pure
+    `timeframes` maps + `hideShortFilms` + `kidsOnly` + `language` — `"any"`/`"english"`/
+    `"non-english"`, a segmented control, decision #17; **`hideShortFilms` defaults on** — the
+    archive-at-lunchtime strands are noise for most visits), `STORAGE_KEY = "flm-on:preferences"`,
+    and `normalize` — a pure
     deep-merge-onto-`DEFAULT_PREFERENCES` that coerces bad types and drops unknown keys; that
     function is the forward-compat / migration seam (a breaking change would branch on a stored
     `version`). Adding the `cineworld` cinema (decision #16) needed no migration — `normalize`
@@ -547,9 +548,12 @@ is gitignored runtime cache/staging.
     a gap to the viewport so its shadow shows, scrim + Escape + body-scroll-lock. Each option is
     a **toggle button in the same accent-fill / hard-press style as the filter-bar segments**
     (`components/controlSegment.ts` — `SEGMENT_BASE` + `controlSegmentClass`, extracted from
-    `ScreeningBrowser` and shared), grouped inline (`flex flex-wrap`). **Cinemas and Times each
-    require ≥1 on** — the last remaining one locks (`aria-disabled`, `cursor-default`, click is a
-    no-op; still shows the selected accent fill, not a greyed disabled look). Hide-shorts /
+    `ScreeningBrowser` and shared), grouped inline (`flex flex-wrap`). The **Language** group is a
+    `Segmented` single-select instead — three flush segments (`Any language` / `English·only` /
+    `Non-English·only`), same `-ml-0.5`/z-index/rounded-ends treatment as the filter-bar
+    `ControlGroup`. **Cinemas and Times each require ≥1 on** — the last remaining one locks
+    (`aria-disabled`, `cursor-default`, click is a no-op; still shows the selected accent fill,
+    not a greyed disabled look). Hide-shorts /
     highlights / an edge case can still empty the view, so a "nothing within your current view"
     empty state with a one-tap Reset (clears prefs **and** the highlights toggle) stays as a
     fallback.
@@ -631,8 +635,10 @@ is gitignored runtime cache/staging.
     pill / `DayPlan` row (the language isn't repeated on every pill). `languageTooltip` merges
     into the pill/row `title`. A **tag, not part of the `FilmNotes` marquee sticker**
     (decision #13); informational → never accent (decision #7). A language screening **counts toward
-    the Highlights ("☻ Specials, etc") filter**. Preference **`hideDubbed`** (default off,
-    General group in `SettingsPanel`) drops dubbed sessions — usually the kids' matinee version.
+    the Highlights ("☻ Specials, etc") filter**. The **`language` preference** — a segmented
+    control `any` / `english` / `non-english` (was a `hideDubbed` toggle; `matchesLanguagePref`
+    in `lib/languages.ts`) — filters `preferred` by whether `displayLanguage` found a non-English
+    original language. `dubbed` is now surfaced only as the pill "Dub" mark, not filtered on.
 
     `letterboxd-cache.json` entries are now `{ url, year, language }`; a legacy entry missing
     `language` re-resolves once to backfill (one slower batch run — see decision #4). A Primary

@@ -93,3 +93,15 @@ export function captionMark(info: LanguageInfo): "ST" | "Dub" | null {
   if (info.dubbed) return "Dub";
   return null;
 }
+
+// The "Language" preference filter (lib/preferences.ts): does this screening's film match?
+// A film is "non-English" when displayLanguage found an original language name (English never
+// yields one). `"any"` passes everything.
+export function matchesLanguagePref(
+  pref: "any" | "english" | "non-english",
+  tags?: string[],
+): boolean {
+  if (pref === "any") return true;
+  const nonEnglish = displayLanguage(tags)?.language != null;
+  return pref === "non-english" ? nonEnglish : !nonEnglish;
+}

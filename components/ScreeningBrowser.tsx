@@ -11,7 +11,7 @@ import { isShortFilm } from "@/lib/duration";
 import { isKidFriendly } from "@/lib/certs";
 import { displayScreeningTags } from "@/lib/screeningTags";
 import { displayFilmFormats } from "@/lib/formats";
-import { displayLanguage } from "@/lib/languages";
+import { displayLanguage, matchesLanguagePref } from "@/lib/languages";
 import { isMysteryFilm } from "@/lib/mystery";
 import {
   DEFAULT_PREFERENCES,
@@ -211,7 +211,7 @@ export default function ScreeningBrowser({ screenings, days, labels }: Props) {
           prefs.timeframes[timeframeForTime(s.time)] &&
           !(prefs.hideShortFilms && isShortFilm(s.durationMins)) &&
           !(prefs.kidsOnly && !isKidFriendly(s.cert)) &&
-          !(prefs.hideDubbed && displayLanguage(s.screeningTags)?.dubbed) &&
+          matchesLanguagePref(prefs.language, s.screeningTags) &&
           (!highlightsOnly ||
             displayScreeningTags(s.screeningTags).length > 0 ||
             displayFilmFormats(s.screeningTags).length > 0 ||

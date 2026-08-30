@@ -1,5 +1,11 @@
 import { describe, it, expect } from "vitest";
-import { displayLanguage, languageTooltip, captionMark, isLanguageName } from "@/lib/languages";
+import {
+  displayLanguage,
+  languageTooltip,
+  captionMark,
+  isLanguageName,
+  matchesLanguagePref,
+} from "@/lib/languages";
 
 describe("displayLanguage", () => {
   it("returns null for an ordinary English screening", () => {
@@ -50,6 +56,27 @@ describe("languageTooltip", () => {
     expect(languageTooltip(["Dubbed"])).toBe("Dubbed into English");
     expect(languageTooltip(["French"])).toBe("In French");
     expect(languageTooltip(["IMAX"])).toBeUndefined();
+  });
+});
+
+describe("matchesLanguagePref", () => {
+  it("'any' passes everything", () => {
+    expect(matchesLanguagePref("any", ["Tamil"])).toBe(true);
+    expect(matchesLanguagePref("any", undefined)).toBe(true);
+  });
+
+  it("'english' keeps only films with no non-English language", () => {
+    expect(matchesLanguagePref("english", ["IMAX"])).toBe(true);
+    expect(matchesLanguagePref("english", ["Subtitled"])).toBe(true); // no language name
+    expect(matchesLanguagePref("english", ["French"])).toBe(false);
+    expect(matchesLanguagePref("english", ["Tamil", "Subtitled"])).toBe(false);
+  });
+
+  it("'non-english' keeps only films with a non-English language", () => {
+    expect(matchesLanguagePref("non-english", ["French"])).toBe(true);
+    expect(matchesLanguagePref("non-english", ["Kannada", "Subtitled"])).toBe(true);
+    expect(matchesLanguagePref("non-english", ["IMAX"])).toBe(false);
+    expect(matchesLanguagePref("non-english", undefined)).toBe(false);
   });
 });
 

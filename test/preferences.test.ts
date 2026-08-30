@@ -22,7 +22,7 @@ describe("normalize", () => {
     expect(out.timeframes).toEqual(DEFAULT_PREFERENCES.timeframes);
     expect(out.hideShortFilms).toBe(DEFAULT_PREFERENCES.hideShortFilms);
     expect(out.kidsOnly).toBe(false);
-    expect(out.hideDubbed).toBe(false);
+    expect(out.language).toBe("any");
   });
 
   it("defaults a newly-added cinema on for a blob saved before it existed", () => {
@@ -46,10 +46,16 @@ describe("normalize", () => {
   it("keeps a genuine boolean that differs from the default", () => {
     expect(normalize({ hideShortFilms: false }).hideShortFilms).toBe(false);
     expect(normalize({ kidsOnly: true }).kidsOnly).toBe(true);
-    expect(normalize({ hideDubbed: true }).hideDubbed).toBe(true);
     expect(normalize({ timeframes: { early: false } }).timeframes.early).toBe(false);
   });
 
+  it("reads the language pref, ignoring junk", () => {
+    expect(normalize({ language: "english" }).language).toBe("english");
+    expect(normalize({ language: "non-english" }).language).toBe("non-english");
+    expect(normalize({ language: "klingon" }).language).toBe("any");
+    expect(normalize({ language: 3 }).language).toBe("any");
+    expect(normalize({ hideDubbed: true }).language).toBe("any"); // old key, dropped
+  });
 });
 
 describe("isDefault", () => {
@@ -58,7 +64,7 @@ describe("isDefault", () => {
     expect(isDefault(normalize({ cinemas: { ifi: false } }))).toBe(false);
     expect(isDefault(normalize({ hideShortFilms: false }))).toBe(false);
     expect(isDefault(normalize({ kidsOnly: true }))).toBe(false);
-    expect(isDefault(normalize({ hideDubbed: true }))).toBe(false);
+    expect(isDefault(normalize({ language: "non-english" }))).toBe(false);
   });
 });
 

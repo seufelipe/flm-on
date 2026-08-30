@@ -5,14 +5,17 @@ import { TIMEFRAMES, type Timeframe } from "@/lib/timeframe";
 // The app's only persisted state (localStorage). Standing viewing preferences that pre-filter
 // the whole dataset before the ephemeral Day/Cinema/Time filter bar sees it — see CLAUDE.md
 // decision #14.
+// Filter by the film's original language (Letterboxd "Primary Language" — see lib/languages.ts,
+// CLAUDE.md decision #17). "any" shows everything.
+export type LanguagePref = "any" | "english" | "non-english";
+export const LANGUAGE_PREFS: LanguagePref[] = ["any", "english", "non-english"];
+
 export interface Preferences {
   cinemas: Record<CinemaId, boolean>;
   timeframes: Record<Timeframe, boolean>;
   hideShortFilms: boolean;
   kidsOnly: boolean;
-  // Hide screenings of a foreign-language film that's dubbed into English (usually the kids'
-  // matinee version) — see lib/languages.ts and CLAUDE.md decision #17.
-  hideDubbed: boolean;
+  language: LanguagePref;
 }
 
 export const DEFAULT_PREFERENCES: Preferences = {
@@ -20,7 +23,7 @@ export const DEFAULT_PREFERENCES: Preferences = {
   timeframes: { early: true, mid: true, late: true },
   hideShortFilms: true,
   kidsOnly: false,
-  hideDubbed: false,
+  language: "any",
 };
 
 export const STORAGE_KEY = "flm-on:preferences";
@@ -31,6 +34,10 @@ function asBool(value: unknown, fallback: boolean): boolean {
 
 function asRecord(value: unknown): Record<string, unknown> {
   return value && typeof value === "object" ? (value as Record<string, unknown>) : {};
+}
+
+function asLanguagePref(value: unknown): LanguagePref {
+  return value === "english" || value === "non-english" ? value : "any";
 }
 
 // Deep-merges an untrusted parsed blob onto DEFAULT_PREFERENCES: every known key is read
@@ -50,7 +57,7 @@ export function normalize(raw: unknown): Preferences {
     ) as Record<Timeframe, boolean>,
     hideShortFilms: asBool(root.hideShortFilms, DEFAULT_PREFERENCES.hideShortFilms),
     kidsOnly: asBool(root.kidsOnly, DEFAULT_PREFERENCES.kidsOnly),
-    hideDubbed: asBool(root.hideDubbed, DEFAULT_PREFERENCES.hideDubbed),
+    language: asLanguagePref(root.language),
   };
 }
 
@@ -60,7 +67,7 @@ export function isDefault(prefs: Preferences): boolean {
     TIMEFRAMES.every((tf) => prefs.timeframes[tf.id] === DEFAULT_PREFERENCES.timeframes[tf.id]) &&
     prefs.hideShortFilms === DEFAULT_PREFERENCES.hideShortFilms &&
     prefs.kidsOnly === DEFAULT_PREFERENCES.kidsOnly &&
-    prefs.hideDubbed === DEFAULT_PREFERENCES.hideDubbed
+    prefs.language === DEFAULT_PREFERENCES.language
   );
 }
 
