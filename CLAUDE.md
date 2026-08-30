@@ -101,11 +101,12 @@ is gitignored runtime cache/staging.
   kept separate from `bookingUrl`). The links are the `cinemaLinks` prop — **one per cinema the
   film plays at across its whole preferred set, fixed regardless of the Day/Cinema/Time filter
   bar** (a film at both cinemas keeps both links while you browse one); only the session pills
-  follow the filter bar. Line 2: cert, duration, format tag(s), and the Letterboxd link — now the
-  Letterboxd three-dot mark (`LetterboxdLogo`, an inline SVG) rather than a text link — one of
-  the two allowed exceptions to the ink + single-gold palette (decision #7), a third party's
-  logo, so it keeps their orange/green/blue (the other is the IMAX-blue format box, decision
-  #15). Screening pills are grouped by day then timeframe; the day sub-header shows
+  follow the filter bar. Line 2 (`hasMetaLine`): cert, duration, `<LanguageTag>`, format
+  tag(s), the Letterboxd link, and last the `<FilmNotes>` marquee sticker (moved here from the
+  title line 2026-08-31 — untilted now). The Letterboxd three-dot mark (`LetterboxdLogo`, an
+  inline SVG) rather than a text link — one of the two allowed exceptions to the ink +
+  single-gold palette (decision #7), a third party's logo, so it keeps their orange/green/blue
+  (the other is the IMAX-blue format box, decision #15). Screening pills are grouped by day then timeframe; the day sub-header shows
   unless a specific Day chip is active (`daySpecified` — then the chip already says the day).
   Each day's pill row is a single non-wrapping `overflow-x-auto` strip (`scrollbar-none`, a
   `@utility` in `globals.css`) — pills scroll sideways rather than stacking, so a card stays
@@ -116,8 +117,8 @@ is gitignored runtime cache/staging.
   block to the viewport, escape the row's clip, and give the whole page a phantom horizontal
   scrollbar. `pb-2.5 -mb-2.5` keeps the chunky pill shadow inside the scroll box without adding
   visual gap.
-  A special-screening session shows a bare `☻` mark after the time; a marquee sticker after the
-  title names it once ("☻ parent & baby") — see decision #13.
+  A special-screening session shows a bare `☻` mark after the time; the `<FilmNotes>` marquee
+  sticker on the meta line names it once ("☻ parent & baby") — see decision #13.
 - `components/MarqueeSticker.tsx` — the small fixed-width dark sticker whose text scrolls on a
   seamless loop (two identical copies; the `flm-marquee` keyframe in `app/globals.css` translates
   the track by exactly one copy's width). `"use client"`: it measures the copy width in a layout
@@ -128,8 +129,8 @@ is gitignored runtime cache/staging.
   CSS-var defaults. `--color-fg` sticker, `--color-bg` text, never accent. Reduced-motion →
   static full-width. Used by `FilmNotes`. (The film-format tag uses the same two-copy-loop trick
   vertically — `flm-filmstrip` — see `components/FilmFormats.tsx`.)
-- `components/FilmNotes.tsx` — the **one** `<MarqueeSticker>` after a film's title + year,
-  carrying its special-screening name(s) *and* its curated editorial label
+- `components/FilmNotes.tsx` — the **one** `<MarqueeSticker>`, last on the card's meta line,
+  carrying a film's special-screening name(s) *and* its curated editorial label
   (`data/film-labels.json`, decision #11) together, joined by ` · ` ("☻ parent & baby ·
   4k restoration"). Relaxed the old "one note per card" rule (decision #13). Decorative.
 - `components/ScreeningTags.tsx` + `lib/screeningTags.ts` — special-screening markers.
@@ -394,7 +395,7 @@ is gitignored runtime cache/staging.
     `cleanFilmTitle` stripped — `"25th anniversary"`, `"4k restoration"` (`titleAnnotation` in
     `lib/titles.ts` → `DayResult.titleAnnotations`, filtered to `/anniversary|restoration/`);
     then Cineworld "Big Screen Classics" (decision #16) → `classic!`. Rendered by
-    `components/FilmNotes.tsx` (a `<MarqueeSticker>`) after the title + year, in the *same*
+    `components/FilmNotes.tsx` (a `<MarqueeSticker>`) last on the meta line, in the *same*
     sticker as the special-screening name(s), joined by ` · ` (decision #13) — decorative, so
     per decision #7 it uses `--color-fg`/`--color-bg`, never `--color-accent`, and per decision
     #8 it must not become a count/badge. Keyed on title alone (not `Title|Year` like
@@ -443,7 +444,8 @@ is gitignored runtime cache/staging.
     pill / plan-row button, and on the sticker itself). Rendered: a **bare `☻` mark**
     (`<ScreeningTagMarks>` in `components/ScreeningTags.tsx`) after the time on the `FilmCard`
     pill and the `DayPlan` row, and the name spelled out once per card by `components/FilmNotes.tsx`
-    ("☻ parent & baby"). Rationale (user): the slot is the same every week, so once the sticker
+    (the `<MarqueeSticker>` at the end of the meta line — "☻ parent & baby"). Rationale (user):
+    the slot is the same every week, so once the sticker
     names it you recognise the mark alone — no need to repeat the words on every pill. The mark
     is `☻` (U+263B, filled — reads better small than the outline `☺`) at `1.4em`, forced flat
     with `font-variant-emoji: text` (the symbol also carries U+FE0E); never accent.

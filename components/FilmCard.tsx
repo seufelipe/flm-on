@@ -8,7 +8,7 @@ import { groupScreeningsByTimeframe } from "@/lib/timeframe";
 import { ScreeningTagMarks } from "@/components/ScreeningTags";
 import { FilmFormatTag, FilmFormatMarks } from "@/components/FilmFormats";
 import { LanguageTag, LanguageMarks } from "@/components/ScreeningLanguage";
-import { screeningTagsTooltip } from "@/lib/screeningTags";
+import { displayScreeningTags, screeningTagsTooltip } from "@/lib/screeningTags";
 import { displayFilmFormats, filmFormatsTooltip } from "@/lib/formats";
 import { displayLanguage, languageTooltip } from "@/lib/languages";
 import { CINEMA_LABEL } from "@/lib/cinemas";
@@ -184,20 +184,25 @@ export default function FilmCard({
   const isMystery = isMysteryFilm(group.filmTitle);
 
   // Descriptors across all of this film's visible sessions. The special-screening name(s) and
-  // the curated editorial label are named together in one `<FilmNotes>` sticker after the title;
-  // the individual pills carry only the bare ☻ mark.
+  // the curated editorial label are named together in one `<FilmNotes>` sticker at the end of
+  // the meta line; the individual pills carry only the bare ☻ mark.
   const sessionTags = Array.from(new Set(group.screenings.flatMap((s) => s.screeningTags ?? [])));
   const sessionFormats = displayFilmFormats(sessionTags);
   // Only the language name goes on the card (per-film); the subtitled/dubbed state is per-showtime
   // and lives on the pills, so it doesn't count towards showing the meta line.
   const sessionLanguage = displayLanguage(sessionTags)?.language;
+  // The `<FilmNotes>` sticker (special-screening name(s) + the curated label) now lives on the
+  // meta line, so its presence keeps the line rendering even for a film with nothing else on it.
+  const hasNotes =
+    label != null || displayScreeningTags(specialTags ?? sessionTags).some((t) => t.mark !== false);
 
   const hasMetaLine =
     group.cert !== undefined ||
     (group.durationMins !== undefined && !isMystery) ||
     group.letterboxdUrl !== undefined ||
     sessionFormats.length > 0 ||
-    sessionLanguage !== undefined;
+    sessionLanguage !== undefined ||
+    hasNotes;
 
   return (
     <div className="bg-surface border-4 border-border rounded-card p-8">
@@ -222,7 +227,6 @@ export default function FilmCard({
             {!isMystery && group.year !== undefined && (
               <TitleMeta className="ml-3">{group.year}</TitleMeta>
             )}
-            <FilmNotes tags={specialTags ?? sessionTags} label={label} />
           </h3>
           {cinemaPageLinks.length > 0 && (
             <div className="order-1 md:order-2 no-print flex flex-wrap gap-2 shrink-0 md:justify-end">
@@ -262,6 +266,9 @@ export default function FilmCard({
                 <LetterboxdLogo />
               </a>
             )}
+            {/* Special-screening name(s) + the curated editorial label, one marquee sticker,
+                last on the meta line. */}
+            <FilmNotes tags={specialTags ?? sessionTags} label={label} />
           </div>
         )}
       </div>

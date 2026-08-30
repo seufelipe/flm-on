@@ -72,7 +72,7 @@ export default function MarqueeSticker({
       role="img"
       aria-label={ariaLabel ?? (typeof text === "string" ? text : undefined)}
       title={title}
-      className={`flm-marquee ml-3 cursor-default rounded-[3px] bg-fg text-bg align-middle text-xs font-bold uppercase tracking-wide ${className}`}
+      className={`flm-marquee cursor-default rounded-[3px] bg-fg text-bg align-middle text-xs font-bold uppercase tracking-wide ${className}`}
     >
       <span className="flm-marquee-track" aria-hidden="true" style={vars}>
         <span className="flm-marquee-item" ref={itemRef}>

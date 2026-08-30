@@ -81,7 +81,7 @@
 }
 
 /* Film-notes sticker (components/FilmNotes.tsx via MarqueeSticker) — a fixed-width dark sticker
-   after the title whose text scrolls on a seamless loop (two identical copies; the track
+   on the card meta line whose text scrolls on a seamless loop (two identical copies; the track
    translates by exactly one copy's width per loop). `--flm-marquee-shift` /
    `--flm-marquee-duration` are measured client-side by MarqueeSticker — the `%`/`4.5s` defaults
    here are just the SSR / first-paint fallback. Width lives here (not a Tailwind w-* utility) so
@@ -91,10 +91,7 @@
   width: 4.5rem;
   overflow: hidden;
   padding-block: 0.25rem;
-  /* `middle` sits ~3px low against the all-caps title (x-height vs cap-height); nudge up.
-     Slight tilt so it reads as a sticker slapped on the card. */
   vertical-align: middle;
-  transform: translateY(-3px) rotate(3deg);
 }
 
 .flm-marquee-track {
