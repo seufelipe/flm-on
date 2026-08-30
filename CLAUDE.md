@@ -282,8 +282,10 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
       excluded).
     - **The Highlights toggle** ("☻ Specials, etc") is a filter-bar `useState`, **not** a saved
       preference — ephemeral, first in the bar (the lens reached for most). On → `preferred`
-      keeps only screenings that are a surfaced special / a film format / a non-English language /
-      a `film-labels.json` film. This is also what keeps Cineworld's ordinary multiplex programme
+      keeps only screenings that are a surfaced special / a film format / a **non-English
+      original language** (`hasNonEnglishLanguage` — a subtitled/open-captioned session of an
+      English film does *not* count) / a `film-labels.json` film. This is also what keeps
+      Cineworld's ordinary multiplex programme
       out of view (decision #16) — with it off and Cineworld on, you get the full slate. The
       empty-state Reset clears prefs **and** this toggle.
     - UI: header button (`PreferencesButton`, sliders icon not a gear; a `--color-fg` dot when
@@ -352,8 +354,9 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
     - **Subtitled/dubbed is per-session** — Cineworld `Showtime.Accessibility.*`, Light House
       `Subtitled`/`Dubbed`/`Open Captioned` (long captured, surface only now).
     - Render: `<LanguageTag>` = the language name only (meta-line chip); `<LanguageMarks>` = the
-      per-showtime `ST`/`Dub` on a pill (not repeated with the language). Counts toward
-      Highlights. Not part of the `FilmNotes` sticker.
+      per-showtime `ST`/`Dub` on a pill (not repeated with the language). Not part of the
+      `FilmNotes` sticker. **A non-English original language counts toward Highlights
+      (`hasNonEnglishLanguage`); a subtitled/dubbed session of an English film does not.**
     - The **`language` preference** (segmented control `any`/`english`/`non-english`,
       `matchesLanguagePref`) filters `preferred` on whether `displayLanguage` found a non-English
       original language. `dubbed` is no longer filtered on — just the pill "Dub" mark.

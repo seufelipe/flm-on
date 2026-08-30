@@ -5,7 +5,7 @@ import { upcomingDays } from "@/lib/date";
 import type { Screening } from "@/lib/scrapers/types";
 import { displayScreeningTags } from "@/lib/screeningTags";
 import { displayFilmFormats } from "@/lib/formats";
-import { displayLanguage } from "@/lib/languages";
+import { displayLanguage, hasNonEnglishLanguage } from "@/lib/languages";
 import { loadHiddenFilms } from "@/lib/hidden";
 import { loadLanguageOverrides } from "@/lib/languageOverrides";
 
@@ -191,7 +191,7 @@ async function main() {
     const isHighlight =
       displayScreeningTags(s.screeningTags).length > 0 ||
       displayFilmFormats(s.screeningTags).length > 0 ||
-      displayLanguage(s.screeningTags) !== null ||
+      hasNonEnglishLanguage(s.screeningTags) ||
       key in labels;
     if (!isHighlight) cineworldOrdinary.set(s.filmTitle, (cineworldOrdinary.get(s.filmTitle) ?? 0) + 1);
   }

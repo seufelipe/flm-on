@@ -11,7 +11,7 @@ import { isShortFilm } from "@/lib/duration";
 import { isKidFriendly } from "@/lib/certs";
 import { displayScreeningTags } from "@/lib/screeningTags";
 import { displayFilmFormats } from "@/lib/formats";
-import { displayLanguage, matchesLanguagePref } from "@/lib/languages";
+import { hasNonEnglishLanguage, matchesLanguagePref } from "@/lib/languages";
 import { isMysteryFilm } from "@/lib/mystery";
 import {
   DEFAULT_PREFERENCES,
@@ -215,7 +215,7 @@ export default function ScreeningBrowser({ screenings, days, labels }: Props) {
           (!highlightsOnly ||
             displayScreeningTags(s.screeningTags).length > 0 ||
             displayFilmFormats(s.screeningTags).length > 0 ||
-            displayLanguage(s.screeningTags) !== null ||
+            hasNonEnglishLanguage(s.screeningTags) ||
             labels?.[s.filmTitle.trim().toLowerCase()] !== undefined),
       ),
     [upcomingScreenings, prefs, labels, highlightsOnly],
