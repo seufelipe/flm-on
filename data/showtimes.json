@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-30T15:34:26.167Z",
+  "generatedAt": "2026-08-30T18:51:38.346Z",
   "days": [
     "2026-08-30",
     "2026-08-31",
@@ -103,19 +103,6 @@
       "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
     },
     {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "I Want Your Sex",
-      "cert": "18",
-      "durationMins": 90,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "15:45",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39672&showtimeId=1001-39672&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/i-want-your-sex",
-      "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
-    },
-    {
       "cinema": "ifi",
       "cinemaName": "IFI",
       "filmTitle": "Guggi",
@@ -127,24 +114,6 @@
       "bookingUrl": "https://shop.ifi.ie/performance/112924/",
       "filmPageUrl": "https://ifi.ie/films/guggi",
       "letterboxdUrl": "https://letterboxd.com/film/guggi/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Kiki’s Delivery Service",
-      "cert": "G",
-      "durationMins": 103,
-      "year": 1989,
-      "date": "2026-08-30",
-      "time": "16:00",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39667&showtimeId=1001-39667&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/kikis-delivery-service-4k-restoration",
-      "screeningTags": [
-        "Subtitled",
-        "Japanese"
-      ],
-      "originalTitle": "魔女の宅急便",
-      "letterboxdUrl": "https://letterboxd.com/film/kikis-delivery-service/"
     },
     {
       "cinema": "ifi",
@@ -163,19 +132,6 @@
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Stop! That! Train!",
-      "cert": "15A",
-      "durationMins": 90,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "17:30",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40998&showtimeId=1001-40998&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/stop-that-train",
-      "letterboxdUrl": "https://letterboxd.com/film/stop-that-train/"
-    },
-    {
       "cinema": "ifi",
       "cinemaName": "IFI",
       "filmTitle": "Tony",
@@ -187,36 +143,6 @@
       "bookingUrl": "https://shop.ifi.ie/performance/113317/",
       "filmPageUrl": "https://ifi.ie/films/tony",
       "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Bitter Christmas",
-      "cert": "15A",
-      "durationMins": 111,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "18:00",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39698&showtimeId=1001-39698&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/bitter-christmas",
-      "screeningTags": [
-        "Spanish"
-      ],
-      "originalTitle": "Amarga Navidad",
-      "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Trainspotting",
-      "cert": "18",
-      "durationMins": 94,
-      "year": 1996,
-      "date": "2026-08-30",
-      "time": "18:00",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41027&showtimeId=1001-41027&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/trainspotting-4k-restoration",
-      "letterboxdUrl": "https://letterboxd.com/film/trainspotting/"
     },
     {
       "cinema": "ifi",
@@ -234,35 +160,6 @@
       ],
       "originalTitle": "Amarga Navidad",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Teenage Sex and Death at Camp Miasma",
-      "cert": "16",
-      "durationMins": 112,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "18:20",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39678&showtimeId=1001-39678&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/teenage-sex-and-death-at-camp-miasma",
-      "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
-    },
-    {
-      "cinema": "cineworld",
-      "cinemaName": "Cineworld Dublin",
-      "filmTitle": "The Odyssey",
-      "cert": "15A",
-      "durationMins": 172,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "19:20",
-      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367043/seats",
-      "filmPageUrl": "https://www.cineworld.ie/movies/1000046469-the-odyssey-the-imax-experience/",
-      "screeningTags": [
-        "IMAX"
-      ],
-      "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
       "cinema": "ifi",
@@ -328,6 +225,19 @@
     {
       "cinema": "cineworld",
       "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Odyssey",
+      "cert": "15A",
+      "durationMins": 173,
+      "year": 2026,
+      "date": "2026-08-30",
+      "time": "20:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366815/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000013045-the-odyssey/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
       "filmTitle": "De Gaulle Part One: Résistance",
       "originalTitle": "La bataille de Gaulle: L'âge de fer",
       "cert": "15A",
@@ -342,6 +252,19 @@
         "French"
       ],
       "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Spa Weekend",
+      "cert": "15A",
+      "durationMins": 93,
+      "year": 2026,
+      "date": "2026-08-30",
+      "time": "20:15",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367107/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000019386-spa-weekend/",
+      "letterboxdUrl": "https://letterboxd.com/film/spa-weekend-2026/"
     },
     {
       "cinema": "cineworld",
@@ -363,6 +286,19 @@
     {
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
+      "filmTitle": "Tony",
+      "cert": "15A",
+      "durationMins": 106,
+      "year": 2026,
+      "date": "2026-08-30",
+      "time": "20:30",
+      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40724&showtimeId=1001-40724&visLang=1",
+      "filmPageUrl": "https://www.lighthousecinema.ie/film/tony",
+      "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
+    },
+    {
+      "cinema": "lighthouse",
+      "cinemaName": "Light House Cinema",
       "filmTitle": "Colony",
       "cert": "16",
       "durationMins": 123,
@@ -378,19 +314,6 @@
       "letterboxdUrl": "https://letterboxd.com/film/colony-2026/"
     },
     {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Tony",
-      "cert": "15A",
-      "durationMins": 106,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "20:30",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40724&showtimeId=1001-40724&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/tony",
-      "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
-    },
-    {
       "cinema": "ifi",
       "cinemaName": "IFI",
       "filmTitle": "I Want Your Sex",
@@ -402,6 +325,49 @@
       "bookingUrl": "https://shop.ifi.ie/performance/112920/",
       "filmPageUrl": "https://ifi.ie/films/i-want-your-sex",
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "TEENAGE SEX AND DEATH AT CAMP MIASMA",
+      "cert": "16",
+      "durationMins": 112,
+      "year": 2026,
+      "date": "2026-08-30",
+      "time": "20:30",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366981/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000024260-teenage-sex-and-death-at-camp-miasma/",
+      "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Dog Stars",
+      "cert": "15A",
+      "durationMins": 119,
+      "year": 2026,
+      "date": "2026-08-30",
+      "time": "20:40",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366752/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000014969-the-dog-stars/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-dog-stars/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Bitter Christmas",
+      "originalTitle": "Amarga Navidad",
+      "cert": "15A",
+      "durationMins": 112,
+      "year": 2026,
+      "date": "2026-08-30",
+      "time": "20:45",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367138/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000025821-bitter-christmas/",
+      "screeningTags": [
+        "Spanish"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
       "cinema": "lighthouse",
@@ -419,6 +385,19 @@
     {
       "cinema": "cineworld",
       "cinemaName": "Cineworld Dublin",
+      "filmTitle": "I Want Your Sex",
+      "cert": "18",
+      "durationMins": 90,
+      "year": 2026,
+      "date": "2026-08-30",
+      "time": "20:50",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366782/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000003998-i-want-your-sex/",
+      "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
       "filmTitle": "The Fast and the Furious",
       "cert": "15A",
       "durationMins": 107,
@@ -431,6 +410,45 @@
         "Big Screen Classics"
       ],
       "letterboxdUrl": "https://letterboxd.com/film/the-fast-and-the-furious-2001/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Insidious: Out of the Further",
+      "cert": "15A",
+      "durationMins": 106,
+      "year": 2026,
+      "date": "2026-08-30",
+      "time": "21:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367082/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000016503-insidious-out-of-the-further/",
+      "letterboxdUrl": "https://letterboxd.com/film/insidious-out-of-the-further/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The End Of Oak Street",
+      "cert": "15A",
+      "durationMins": 100,
+      "year": 2026,
+      "date": "2026-08-30",
+      "time": "21:10",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367060/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/314503-the-end-of-oak-street/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-end-of-oak-street/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "One Night Only",
+      "cert": "15A",
+      "durationMins": 102,
+      "year": 2026,
+      "date": "2026-08-30",
+      "time": "21:15",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366876/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000019899-one-night-only/",
+      "letterboxdUrl": "https://letterboxd.com/film/one-night-only-2026/"
     },
     {
       "cinema": "lighthouse",
@@ -492,6 +510,19 @@
     {
       "cinema": "cineworld",
       "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Coyote vs. Acme",
+      "cert": "PG",
+      "durationMins": 103,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "13:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366805/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/267335-coyote-vs-acme/",
+      "letterboxdUrl": "https://letterboxd.com/film/coyote-vs-acme/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
       "filmTitle": "De Gaulle Part One: Résistance",
       "originalTitle": "La bataille de Gaulle: L'âge de fer",
       "cert": "15A",
@@ -506,6 +537,32 @@
         "French"
       ],
       "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Mutiny",
+      "cert": "15A",
+      "durationMins": 95,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "13:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366934/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000002942-mutiny/",
+      "letterboxdUrl": "https://letterboxd.com/film/mutiny-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Insidious: Out of the Further",
+      "cert": "15A",
+      "durationMins": 106,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "13:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367122/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000016503-insidious-out-of-the-further/",
+      "letterboxdUrl": "https://letterboxd.com/film/insidious-out-of-the-further/"
     },
     {
       "cinema": "cineworld",
@@ -537,6 +594,19 @@
       "letterboxdUrl": "https://letterboxd.com/film/coyote-vs-acme/"
     },
     {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Spider-Man: Brand New Day",
+      "cert": "12A",
+      "durationMins": 145,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "13:10",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366718/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
+    },
+    {
       "cinema": "ifi",
       "cinemaName": "IFI",
       "filmTitle": "Tony",
@@ -548,6 +618,31 @@
       "bookingUrl": "https://shop.ifi.ie/performance/113419/",
       "filmPageUrl": "https://ifi.ie/films/tony",
       "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The End Of Oak Street",
+      "cert": "15A",
+      "durationMins": 100,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "13:20",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367061/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/314503-the-end-of-oak-street/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-end-of-oak-street/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "David",
+      "cert": "PG",
+      "durationMins": 114,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "13:30",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366840/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/322967-david/"
     },
     {
       "cinema": "lighthouse",
@@ -585,6 +680,32 @@
       "cinemaName": "Cineworld Dublin",
       "filmTitle": "The Odyssey",
       "cert": "15A",
+      "durationMins": 173,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "13:50",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366736/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000013045-the-odyssey/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Tony",
+      "cert": "15A",
+      "durationMins": 106,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "14:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366951/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000009107-tony/",
+      "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Odyssey",
+      "cert": "15A",
       "durationMins": 172,
       "year": 2026,
       "date": "2026-08-31",
@@ -614,6 +735,32 @@
       "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
     },
     {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Dog Stars",
+      "cert": "15A",
+      "durationMins": 119,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "15:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366653/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000014969-the-dog-stars/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-dog-stars/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Insidious: Out of the Further",
+      "cert": "15A",
+      "durationMins": 106,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "15:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366904/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000016503-insidious-out-of-the-further/",
+      "letterboxdUrl": "https://letterboxd.com/film/insidious-out-of-the-further/"
+    },
+    {
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
       "filmTitle": "Tony",
@@ -641,6 +788,32 @@
         "70mm"
       ],
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Spider-Man: Brand New Day",
+      "cert": "12A",
+      "durationMins": 145,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "15:30",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366972/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Mutiny",
+      "cert": "15A",
+      "durationMins": 95,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "15:30",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366935/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000002942-mutiny/",
+      "letterboxdUrl": "https://letterboxd.com/film/mutiny-2026/"
     },
     {
       "cinema": "lighthouse",
@@ -738,6 +911,58 @@
     {
       "cinema": "cineworld",
       "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The End Of Oak Street",
+      "cert": "15A",
+      "durationMins": 100,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "16:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366847/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/314503-the-end-of-oak-street/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-end-of-oak-street/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "I Want Your Sex",
+      "cert": "18",
+      "durationMins": 90,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "16:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366783/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000003998-i-want-your-sex/",
+      "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Odyssey",
+      "cert": "15A",
+      "durationMins": 173,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "16:20",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366816/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000013045-the-odyssey/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Spider-Man: Brand New Day",
+      "cert": "12A",
+      "durationMins": 145,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "16:30",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366719/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
       "filmTitle": "De Gaulle Part One: Résistance",
       "originalTitle": "La bataille de Gaulle: L'âge de fer",
       "cert": "15A",
@@ -754,6 +979,45 @@
       "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
     },
     {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Tony",
+      "cert": "15A",
+      "durationMins": 106,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "17:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366952/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000009107-tony/",
+      "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Dog Stars",
+      "cert": "15A",
+      "durationMins": 119,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "17:40",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366652/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000014969-the-dog-stars/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-dog-stars/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Insidious: Out of the Further",
+      "cert": "15A",
+      "durationMins": 106,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "17:45",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366905/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000016503-insidious-out-of-the-further/",
+      "letterboxdUrl": "https://letterboxd.com/film/insidious-out-of-the-further/"
+    },
+    {
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
       "filmTitle": "Coyote vs. Acme",
@@ -765,6 +1029,23 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41004&showtimeId=1001-41004&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/coyote-vs-acme",
       "letterboxdUrl": "https://letterboxd.com/film/coyote-vs-acme/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Bitter Christmas",
+      "originalTitle": "Amarga Navidad",
+      "cert": "15A",
+      "durationMins": 112,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "18:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367139/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000025821-bitter-christmas/",
+      "screeningTags": [
+        "Spanish"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
       "cinema": "lighthouse",
@@ -843,6 +1124,58 @@
       "letterboxdUrl": "https://letterboxd.com/film/mrs-doubtfire/"
     },
     {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "I Want Your Sex",
+      "cert": "18",
+      "durationMins": 90,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "18:30",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366784/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000003998-i-want-your-sex/",
+      "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Odyssey",
+      "cert": "15A",
+      "durationMins": 173,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "18:30",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366737/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000013045-the-odyssey/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Spa Weekend",
+      "cert": "15A",
+      "durationMins": 93,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "18:35",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367126/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000019386-spa-weekend/",
+      "letterboxdUrl": "https://letterboxd.com/film/spa-weekend-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The End Of Oak Street",
+      "cert": "15A",
+      "durationMins": 100,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "18:40",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366848/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/314503-the-end-of-oak-street/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-end-of-oak-street/"
+    },
+    {
       "cinema": "ifi",
       "cinemaName": "IFI",
       "filmTitle": "I Want Your Sex",
@@ -854,6 +1187,32 @@
       "bookingUrl": "https://shop.ifi.ie/performance/112930/",
       "filmPageUrl": "https://ifi.ie/films/i-want-your-sex",
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "One Night Only",
+      "cert": "15A",
+      "durationMins": 102,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "18:50",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366878/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000019899-one-night-only/",
+      "letterboxdUrl": "https://letterboxd.com/film/one-night-only-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Spider-Man: Brand New Day",
+      "cert": "12A",
+      "durationMins": 145,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "19:30",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366923/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
     },
     {
       "cinema": "cineworld",
@@ -891,6 +1250,19 @@
     {
       "cinema": "cineworld",
       "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Tony",
+      "cert": "15A",
+      "durationMins": 106,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "20:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366953/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000009107-tony/",
+      "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
       "filmTitle": "De Gaulle Part One: Résistance",
       "originalTitle": "La bataille de Gaulle: L'âge de fer",
       "cert": "15A",
@@ -905,6 +1277,19 @@
         "French"
       ],
       "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Odyssey",
+      "cert": "15A",
+      "durationMins": 173,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "20:10",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366817/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000013045-the-odyssey/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
       "cinema": "cineworld",
@@ -941,6 +1326,19 @@
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Insidious: Out of the Further",
+      "cert": "15A",
+      "durationMins": 106,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "20:30",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366906/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000016503-insidious-out-of-the-further/",
+      "letterboxdUrl": "https://letterboxd.com/film/insidious-out-of-the-further/"
+    },
+    {
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
       "filmTitle": "Teenage Sex and Death at Camp Miasma",
@@ -971,6 +1369,45 @@
       "letterboxdUrl": "https://letterboxd.com/film/colony-2026/"
     },
     {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Spider-Man: Brand New Day",
+      "cert": "12A",
+      "durationMins": 145,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "20:40",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367071/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Dog Stars",
+      "cert": "15A",
+      "durationMins": 119,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "20:40",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366651/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000014969-the-dog-stars/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-dog-stars/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "TEENAGE SEX AND DEATH AT CAMP MIASMA",
+      "cert": "16",
+      "durationMins": 112,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "20:40",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366982/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000024260-teenage-sex-and-death-at-camp-miasma/",
+      "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
+    },
+    {
       "cinema": "ifi",
       "cinemaName": "IFI",
       "filmTitle": "Bitter Christmas",
@@ -989,6 +1426,23 @@
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Bitter Christmas",
+      "originalTitle": "Amarga Navidad",
+      "cert": "15A",
+      "durationMins": 112,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "20:45",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367140/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000025821-bitter-christmas/",
+      "screeningTags": [
+        "Spanish"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
+    },
+    {
       "cinema": "ifi",
       "cinemaName": "IFI",
       "filmTitle": "Tony",
@@ -1002,6 +1456,45 @@
       "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
     },
     {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "I Want Your Sex",
+      "cert": "18",
+      "durationMins": 90,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "21:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366785/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000003998-i-want-your-sex/",
+      "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Spa Weekend",
+      "cert": "15A",
+      "durationMins": 93,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "21:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367127/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000019386-spa-weekend/",
+      "letterboxdUrl": "https://letterboxd.com/film/spa-weekend-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The End Of Oak Street",
+      "cert": "15A",
+      "durationMins": 100,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "21:10",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366849/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/314503-the-end-of-oak-street/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-end-of-oak-street/"
+    },
+    {
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
       "filmTitle": "I Want Your Sex",
@@ -1013,6 +1506,19 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40049&showtimeId=1001-40049&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/i-want-your-sex",
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "One Night Only",
+      "cert": "15A",
+      "durationMins": 102,
+      "year": 2026,
+      "date": "2026-08-31",
+      "time": "21:15",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366877/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000019899-one-night-only/",
+      "letterboxdUrl": "https://letterboxd.com/film/one-night-only-2026/"
     },
     {
       "cinema": "lighthouse",
@@ -1103,6 +1609,19 @@
     {
       "cinema": "cineworld",
       "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Coyote vs. Acme",
+      "cert": "PG",
+      "durationMins": 103,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "13:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366806/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/267335-coyote-vs-acme/",
+      "letterboxdUrl": "https://letterboxd.com/film/coyote-vs-acme/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
       "filmTitle": "De Gaulle Part One: Résistance",
       "originalTitle": "La bataille de Gaulle: L'âge de fer",
       "cert": "15A",
@@ -1121,6 +1640,19 @@
     {
       "cinema": "cineworld",
       "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Insidious: Out of the Further",
+      "cert": "15A",
+      "durationMins": 106,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "13:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367090/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000016503-insidious-out-of-the-further/",
+      "letterboxdUrl": "https://letterboxd.com/film/insidious-out-of-the-further/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
       "filmTitle": "The Fast and the Furious",
       "cert": "15A",
       "durationMins": 107,
@@ -1135,6 +1667,32 @@
       "letterboxdUrl": "https://letterboxd.com/film/the-fast-and-the-furious-2001/"
     },
     {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Spider-Man: Brand New Day",
+      "cert": "12A",
+      "durationMins": 145,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "13:10",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366721/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Mutiny",
+      "cert": "15A",
+      "durationMins": 95,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "13:10",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366936/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000002942-mutiny/",
+      "letterboxdUrl": "https://letterboxd.com/film/mutiny-2026/"
+    },
+    {
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
       "filmTitle": "The End of Oak Street",
@@ -1146,6 +1704,83 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41032&showtimeId=1001-41032&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-end-of-oak-street",
       "letterboxdUrl": "https://letterboxd.com/film/the-end-of-oak-street/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The End Of Oak Street",
+      "cert": "15A",
+      "durationMins": 100,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "13:20",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367062/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/314503-the-end-of-oak-street/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-end-of-oak-street/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Tony",
+      "cert": "15A",
+      "durationMins": 106,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "13:20",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367120/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000009107-tony/",
+      "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "David",
+      "cert": "PG",
+      "durationMins": 114,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "13:30",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367089/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/322967-david/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Odyssey",
+      "cert": "15A",
+      "durationMins": 173,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "13:50",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366738/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000013045-the-odyssey/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Tony",
+      "cert": "15A",
+      "durationMins": 106,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "14:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366954/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000009107-tony/",
+      "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Dog Stars",
+      "cert": "15A",
+      "durationMins": 119,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "14:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367087/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000014969-the-dog-stars/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-dog-stars/"
     },
     {
       "cinema": "lighthouse",
@@ -1196,6 +1831,19 @@
     {
       "cinema": "cineworld",
       "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Dog Stars",
+      "cert": "15A",
+      "durationMins": 119,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "15:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366656/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000014969-the-dog-stars/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-dog-stars/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
       "filmTitle": "The Odyssey",
       "cert": "15A",
       "durationMins": 172,
@@ -1241,6 +1889,32 @@
       "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
     },
     {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Spider-Man: Brand New Day",
+      "cert": "12A",
+      "durationMins": 145,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "15:30",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366974/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Mutiny",
+      "cert": "15A",
+      "durationMins": 95,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "15:30",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366937/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000002942-mutiny/",
+      "letterboxdUrl": "https://letterboxd.com/film/mutiny-2026/"
+    },
+    {
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
       "filmTitle": "Bitter Christmas",
@@ -1276,6 +1950,19 @@
     {
       "cinema": "cineworld",
       "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Insidious: Out of the Further",
+      "cert": "15A",
+      "durationMins": 106,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "15:40",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366907/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000016503-insidious-out-of-the-further/",
+      "letterboxdUrl": "https://letterboxd.com/film/insidious-out-of-the-further/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
       "filmTitle": "The Fast and the Furious",
       "cert": "15A",
       "durationMins": 107,
@@ -1290,6 +1977,45 @@
       "letterboxdUrl": "https://letterboxd.com/film/the-fast-and-the-furious-2001/"
     },
     {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The End Of Oak Street",
+      "cert": "15A",
+      "durationMins": 100,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "16:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367065/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/314503-the-end-of-oak-street/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-end-of-oak-street/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "I Want Your Sex",
+      "cert": "18",
+      "durationMins": 90,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "16:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366786/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000003998-i-want-your-sex/",
+      "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Odyssey",
+      "cert": "15A",
+      "durationMins": 173,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "16:20",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366818/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000013045-the-odyssey/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
+    },
+    {
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
       "filmTitle": "Lady",
@@ -1301,6 +2027,19 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41030&showtimeId=1001-41030&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/lady",
       "letterboxdUrl": "https://letterboxd.com/film/lady-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Spider-Man: Brand New Day",
+      "cert": "12A",
+      "durationMins": 145,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "16:30",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366722/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
     },
     {
       "cinema": "cineworld",
@@ -1321,6 +2060,45 @@
       "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
     },
     {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Tony",
+      "cert": "15A",
+      "durationMins": 106,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "17:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366955/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000009107-tony/",
+      "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Spider-Man: Brand New Day",
+      "cert": "12A",
+      "durationMins": 145,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "17:10",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366889/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Dog Stars",
+      "cert": "15A",
+      "durationMins": 119,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "17:40",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366655/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000014969-the-dog-stars/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-dog-stars/"
+    },
+    {
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
       "filmTitle": "Nirvanna the Band the Show the Movie",
@@ -1332,6 +2110,23 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41036&showtimeId=1001-41036&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/nirvanna-the-band-the-show-the-movie",
       "letterboxdUrl": "https://letterboxd.com/film/nirvanna-the-band-the-show-the-movie/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Bitter Christmas",
+      "originalTitle": "Amarga Navidad",
+      "cert": "15A",
+      "durationMins": 112,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "18:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367141/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000025821-bitter-christmas/",
+      "screeningTags": [
+        "Spanish"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
       "cinema": "lighthouse",
@@ -1373,6 +2168,19 @@
       "letterboxdUrl": "https://letterboxd.com/film/guggi/"
     },
     {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Insidious: Out of the Further",
+      "cert": "15A",
+      "durationMins": 106,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "18:20",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366908/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000016503-insidious-out-of-the-further/",
+      "letterboxdUrl": "https://letterboxd.com/film/insidious-out-of-the-further/"
+    },
+    {
       "cinema": "ifi",
       "cinemaName": "IFI",
       "filmTitle": "Bitter Christmas",
@@ -1388,6 +2196,84 @@
       ],
       "originalTitle": "Amarga Navidad",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "I Want Your Sex",
+      "cert": "18",
+      "durationMins": 90,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "18:30",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366787/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000003998-i-want-your-sex/",
+      "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Odyssey",
+      "cert": "15A",
+      "durationMins": 173,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "18:30",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366739/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000013045-the-odyssey/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Spa Weekend",
+      "cert": "15A",
+      "durationMins": 93,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "18:35",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367115/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000019386-spa-weekend/",
+      "letterboxdUrl": "https://letterboxd.com/film/spa-weekend-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The End Of Oak Street",
+      "cert": "15A",
+      "durationMins": 100,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "18:40",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367064/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/314503-the-end-of-oak-street/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-end-of-oak-street/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "One Night Only",
+      "cert": "15A",
+      "durationMins": 102,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "18:45",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366880/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000019899-one-night-only/",
+      "letterboxdUrl": "https://letterboxd.com/film/one-night-only-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Spider-Man: Brand New Day",
+      "cert": "12A",
+      "durationMins": 145,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "19:30",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366925/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
     },
     {
       "cinema": "cineworld",
@@ -1425,6 +2311,19 @@
     {
       "cinema": "cineworld",
       "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Tony",
+      "cert": "15A",
+      "durationMins": 106,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "20:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366956/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000009107-tony/",
+      "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
       "filmTitle": "De Gaulle Part One: Résistance",
       "originalTitle": "La bataille de Gaulle: L'âge de fer",
       "cert": "15A",
@@ -1439,6 +2338,19 @@
         "French"
       ],
       "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Odyssey",
+      "cert": "15A",
+      "durationMins": 173,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "20:10",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366819/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000013045-the-odyssey/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
       "cinema": "lighthouse",
@@ -1514,6 +2426,62 @@
       "letterboxdUrl": "https://letterboxd.com/film/colony-2026/"
     },
     {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Spider-Man: Brand New Day",
+      "cert": "12A",
+      "durationMins": 145,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "20:40",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366890/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Dog Stars",
+      "cert": "15A",
+      "durationMins": 119,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "20:40",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366654/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000014969-the-dog-stars/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-dog-stars/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "TEENAGE SEX AND DEATH AT CAMP MIASMA",
+      "cert": "16",
+      "durationMins": 112,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "20:40",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366983/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000024260-teenage-sex-and-death-at-camp-miasma/",
+      "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Bitter Christmas",
+      "originalTitle": "Amarga Navidad",
+      "cert": "15A",
+      "durationMins": 112,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "20:45",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367142/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000025821-bitter-christmas/",
+      "screeningTags": [
+        "Spanish"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
+    },
+    {
       "cinema": "ifi",
       "cinemaName": "IFI",
       "filmTitle": "Tony",
@@ -1525,6 +2493,71 @@
       "bookingUrl": "https://shop.ifi.ie/performance/113382/",
       "filmPageUrl": "https://ifi.ie/films/tony",
       "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "I Want Your Sex",
+      "cert": "18",
+      "durationMins": 90,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "21:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366788/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000003998-i-want-your-sex/",
+      "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Insidious: Out of the Further",
+      "cert": "15A",
+      "durationMins": 106,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "21:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366909/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000016503-insidious-out-of-the-further/",
+      "letterboxdUrl": "https://letterboxd.com/film/insidious-out-of-the-further/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Spa Weekend",
+      "cert": "15A",
+      "durationMins": 93,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "21:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367116/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000019386-spa-weekend/",
+      "letterboxdUrl": "https://letterboxd.com/film/spa-weekend-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The End Of Oak Street",
+      "cert": "15A",
+      "durationMins": 100,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "21:10",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367063/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/314503-the-end-of-oak-street/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-end-of-oak-street/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "One Night Only",
+      "cert": "15A",
+      "durationMins": 102,
+      "year": 2026,
+      "date": "2026-09-01",
+      "time": "21:15",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366879/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000019899-one-night-only/",
+      "letterboxdUrl": "https://letterboxd.com/film/one-night-only-2026/"
     },
     {
       "cinema": "lighthouse",
@@ -1590,6 +2623,19 @@
     {
       "cinema": "cineworld",
       "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Coyote vs. Acme",
+      "cert": "PG",
+      "durationMins": 103,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "13:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366807/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/267335-coyote-vs-acme/",
+      "letterboxdUrl": "https://letterboxd.com/film/coyote-vs-acme/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
       "filmTitle": "De Gaulle Part One: Résistance",
       "originalTitle": "La bataille de Gaulle: L'âge de fer",
       "cert": "15A",
@@ -1604,6 +2650,45 @@
         "French"
       ],
       "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Death Of Robin Hood",
+      "cert": "16",
+      "durationMins": 122,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "13:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367066/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000002580-the-death-of-robin-hood/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-death-of-robin-hood/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Mutiny",
+      "cert": "15A",
+      "durationMins": 95,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "13:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366938/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000002942-mutiny/",
+      "letterboxdUrl": "https://letterboxd.com/film/mutiny-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Insidious: Out of the Further",
+      "cert": "15A",
+      "durationMins": 106,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "13:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367091/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000016503-insidious-out-of-the-further/",
+      "letterboxdUrl": "https://letterboxd.com/film/insidious-out-of-the-further/"
     },
     {
       "cinema": "cineworld",
@@ -1633,6 +2718,19 @@
       "filmPageUrl": "https://ifi.ie/films/archive-at-lunchtime-september-2026-programme-1"
     },
     {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Spider-Man: Brand New Day",
+      "cert": "12A",
+      "durationMins": 145,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "13:10",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366724/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
+    },
+    {
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
       "filmTitle": "Bitter Christmas",
@@ -1648,6 +2746,19 @@
       ],
       "originalTitle": "Amarga Navidad",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Tony",
+      "cert": "15A",
+      "durationMins": 106,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "13:20",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367118/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000009107-tony/",
+      "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
     },
     {
       "cinema": "lighthouse",
@@ -1676,6 +2787,18 @@
       "letterboxdUrl": "https://letterboxd.com/film/lady-2026/"
     },
     {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "David",
+      "cert": "PG",
+      "durationMins": 114,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "13:30",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366842/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/322967-david/"
+    },
+    {
       "cinema": "ifi",
       "cinemaName": "IFI",
       "filmTitle": "Bitter Christmas",
@@ -1693,6 +2816,19 @@
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Odyssey",
+      "cert": "15A",
+      "durationMins": 173,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "13:50",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366740/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000013045-the-odyssey/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
+    },
+    {
       "cinema": "ifi",
       "cinemaName": "IFI",
       "filmTitle": "Leviticus",
@@ -1704,6 +2840,32 @@
       "bookingUrl": "https://shop.ifi.ie/performance/113086/",
       "filmPageUrl": "https://ifi.ie/films/leviticus-2",
       "letterboxdUrl": "https://letterboxd.com/film/leviticus-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Tony",
+      "cert": "15A",
+      "durationMins": 106,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "14:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366957/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000009107-tony/",
+      "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Dog Stars",
+      "cert": "15A",
+      "durationMins": 119,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "14:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367086/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000014969-the-dog-stars/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-dog-stars/"
     },
     {
       "cinema": "ifi",
@@ -1724,6 +2886,19 @@
     {
       "cinema": "cineworld",
       "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Dog Stars",
+      "cert": "15A",
+      "durationMins": 119,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "15:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366657/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000014969-the-dog-stars/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-dog-stars/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
       "filmTitle": "The Odyssey",
       "cert": "15A",
       "durationMins": 172,
@@ -1736,6 +2911,32 @@
         "IMAX"
       ],
       "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Spider-Man: Brand New Day",
+      "cert": "12A",
+      "durationMins": 145,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "15:30",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366976/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Mutiny",
+      "cert": "15A",
+      "durationMins": 95,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "15:30",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366939/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000002942-mutiny/",
+      "letterboxdUrl": "https://letterboxd.com/film/mutiny-2026/"
     },
     {
       "cinema": "lighthouse",
@@ -1753,6 +2954,19 @@
       ],
       "originalTitle": "Amarga Navidad",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Insidious: Out of the Further",
+      "cert": "15A",
+      "durationMins": 106,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "15:40",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367094/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000016503-insidious-out-of-the-further/",
+      "letterboxdUrl": "https://letterboxd.com/film/insidious-out-of-the-further/"
     },
     {
       "cinema": "lighthouse",
@@ -1779,6 +2993,19 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40482&showtimeId=1001-40482&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/i-want-your-sex",
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Death Of Robin Hood",
+      "cert": "16",
+      "durationMins": 122,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "15:50",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366864/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000002580-the-death-of-robin-hood/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-death-of-robin-hood/"
     },
     {
       "cinema": "cineworld",
@@ -1838,6 +3065,32 @@
     {
       "cinema": "cineworld",
       "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Odyssey",
+      "cert": "15A",
+      "durationMins": 173,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "16:20",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366820/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000013045-the-odyssey/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Spider-Man: Brand New Day",
+      "cert": "12A",
+      "durationMins": 145,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "16:30",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366725/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
       "filmTitle": "De Gaulle Part One: Résistance",
       "originalTitle": "La bataille de Gaulle: L'âge de fer",
       "cert": "15A",
@@ -1852,6 +3105,45 @@
         "French"
       ],
       "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Tony",
+      "cert": "15A",
+      "durationMins": 106,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "17:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366958/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000009107-tony/",
+      "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Spider-Man: Brand New Day",
+      "cert": "12A",
+      "durationMins": 145,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "17:10",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366891/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Dog Stars",
+      "cert": "15A",
+      "durationMins": 119,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "17:40",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366658/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000014969-the-dog-stars/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-dog-stars/"
     },
     {
       "cinema": "lighthouse",
@@ -1878,6 +3170,23 @@
       "bookingUrl": "https://shop.ifi.ie/performance/112968/",
       "filmPageUrl": "https://ifi.ie/films/guggi",
       "letterboxdUrl": "https://letterboxd.com/film/guggi/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Bitter Christmas",
+      "originalTitle": "Amarga Navidad",
+      "cert": "15A",
+      "durationMins": 112,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "18:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367143/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000025821-bitter-christmas/",
+      "screeningTags": [
+        "Spanish"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
       "cinema": "lighthouse",
@@ -1910,6 +3219,19 @@
       "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
     },
     {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Insidious: Out of the Further",
+      "cert": "15A",
+      "durationMins": 106,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "18:20",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367093/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000016503-insidious-out-of-the-further/",
+      "letterboxdUrl": "https://letterboxd.com/film/insidious-out-of-the-further/"
+    },
+    {
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
       "filmTitle": "Coyote vs. Acme",
@@ -1937,6 +3259,71 @@
         "Open Captioned"
       ],
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Death Of Robin Hood",
+      "cert": "16",
+      "durationMins": 122,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "18:30",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366863/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000002580-the-death-of-robin-hood/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-death-of-robin-hood/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Odyssey",
+      "cert": "15A",
+      "durationMins": 173,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "18:30",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366741/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000013045-the-odyssey/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Spa Weekend",
+      "cert": "15A",
+      "durationMins": 93,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "18:35",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367010/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000019386-spa-weekend/",
+      "letterboxdUrl": "https://letterboxd.com/film/spa-weekend-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "One Night Only",
+      "cert": "15A",
+      "durationMins": 102,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "18:45",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366881/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000019899-one-night-only/",
+      "letterboxdUrl": "https://letterboxd.com/film/one-night-only-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Spider-Man: Brand New Day",
+      "cert": "12A",
+      "durationMins": 145,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "19:30",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366927/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
     },
     {
       "cinema": "cineworld",
@@ -1974,6 +3361,19 @@
     {
       "cinema": "cineworld",
       "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Tony",
+      "cert": "15A",
+      "durationMins": 106,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "20:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366959/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000009107-tony/",
+      "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
       "filmTitle": "De Gaulle Part One: Résistance",
       "originalTitle": "La bataille de Gaulle: L'âge de fer",
       "cert": "15A",
@@ -1988,6 +3388,19 @@
         "French"
       ],
       "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Odyssey",
+      "cert": "15A",
+      "durationMins": 173,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "20:10",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366821/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000013045-the-odyssey/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
     },
     {
       "cinema": "lighthouse",
@@ -2063,6 +3476,62 @@
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
     },
     {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Spider-Man: Brand New Day",
+      "cert": "12A",
+      "durationMins": 145,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "20:40",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366892/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/276608-spider-man-brand-new-day/",
+      "letterboxdUrl": "https://letterboxd.com/film/spider-man-brand-new-day/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Dog Stars",
+      "cert": "15A",
+      "durationMins": 119,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "20:40",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366659/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000014969-the-dog-stars/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-dog-stars/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "TEENAGE SEX AND DEATH AT CAMP MIASMA",
+      "cert": "16",
+      "durationMins": 112,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "20:40",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366984/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000024260-teenage-sex-and-death-at-camp-miasma/",
+      "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Bitter Christmas",
+      "originalTitle": "Amarga Navidad",
+      "cert": "15A",
+      "durationMins": 112,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "20:45",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367144/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000025821-bitter-christmas/",
+      "screeningTags": [
+        "Spanish"
+      ],
+      "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
+    },
+    {
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
       "filmTitle": "I Want Your Sex",
@@ -2074,6 +3543,58 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40138&showtimeId=1001-40138&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/i-want-your-sex",
       "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Insidious: Out of the Further",
+      "cert": "15A",
+      "durationMins": 106,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "21:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367092/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000016503-insidious-out-of-the-further/",
+      "letterboxdUrl": "https://letterboxd.com/film/insidious-out-of-the-further/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "Spa Weekend",
+      "cert": "15A",
+      "durationMins": 93,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "21:00",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367011/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000019386-spa-weekend/",
+      "letterboxdUrl": "https://letterboxd.com/film/spa-weekend-2026/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "The Death Of Robin Hood",
+      "cert": "16",
+      "durationMins": 122,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "21:10",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366862/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000002580-the-death-of-robin-hood/",
+      "letterboxdUrl": "https://letterboxd.com/film/the-death-of-robin-hood/"
+    },
+    {
+      "cinema": "cineworld",
+      "cinemaName": "Cineworld Dublin",
+      "filmTitle": "One Night Only",
+      "cert": "15A",
+      "durationMins": 102,
+      "year": 2026,
+      "date": "2026-09-02",
+      "time": "21:15",
+      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366882/seats",
+      "filmPageUrl": "https://www.cineworld.ie/movies/1000019899-one-night-only/",
+      "letterboxdUrl": "https://letterboxd.com/film/one-night-only-2026/"
     }
   ]
 }

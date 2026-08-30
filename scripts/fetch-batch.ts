@@ -3,7 +3,6 @@ import path from "path";
 import { refreshShowtimesForRange } from "@/lib/aggregate";
 import { upcomingDays } from "@/lib/date";
 import type { Screening } from "@/lib/scrapers/types";
-import { fetchCineworldRaw, summariseDroppedTitles } from "@/lib/scrapers/cineworld";
 import { displayScreeningTags } from "@/lib/screeningTags";
 import { displayFilmFormats } from "@/lib/formats";
 import { displayLanguage } from "@/lib/languages";
@@ -181,16 +180,31 @@ async function main() {
     }
   }
 
-  // What Cineworld's "non-standard screenings only" filter dropped (ordinary wide-release
-  // showings) — so a mistakenly-dropped interesting film is visible for review. See CLAUDE.md #16.
-  try {
-    const { scheduleJson, movies } = await fetchCineworldRaw(days);
-    const dropped = summariseDroppedTitles(scheduleJson, movies, days);
-    const total = dropped.reduce((n, d) => n + d.dropped, 0);
-    console.log(`\nCineworld — dropped ordinary screenings (${total} across ${dropped.length} films):\n`);
-    for (const d of dropped) console.log(`  ${d.title}  (${d.dropped})`);
-  } catch (err) {
-    console.log(`\nCineworld — could not summarise dropped screenings: ${err instanceof Error ? err.message : err}`);
+  // Cineworld is scraped in full (CLAUDE.md #16); its ordinary wide-release showings carry no
+  // surfaced tag/format/language and no editorial label, so the "Specials, etc" Highlights lens
+  // hides them in the UI. List them here (per-film counts) so the multiplex firehose stays
+  // visible for review — a mistitled blockbuster, or one worth a label, shows up.
+  const cineworldOrdinary = new Map<string, number>();
+  for (const s of screenings) {
+    if (s.cinema !== "cineworld") continue;
+    const key = s.filmTitle.trim().toLowerCase();
+    const isHighlight =
+      displayScreeningTags(s.screeningTags).length > 0 ||
+      displayFilmFormats(s.screeningTags).length > 0 ||
+      displayLanguage(s.screeningTags) !== null ||
+      key in labels;
+    if (!isHighlight) cineworldOrdinary.set(s.filmTitle, (cineworldOrdinary.get(s.filmTitle) ?? 0) + 1);
+  }
+  const ordinaryTotal = Array.from(cineworldOrdinary.values()).reduce((n, c) => n + c, 0);
+  console.log(
+    `\nCineworld — ordinary screenings (${ordinaryTotal} across ${cineworldOrdinary.size} films — hidden by the "Specials, etc" lens):\n`,
+  );
+  if (cineworldOrdinary.size === 0) {
+    console.log("  none");
+  } else {
+    for (const [title, count] of Array.from(cineworldOrdinary).sort(([a], [b]) => a.localeCompare(b))) {
+      console.log(`  ${title}  (${count})`);
+    }
   }
 
   console.log(`\nWrote ${STAGING_FILE}`);
