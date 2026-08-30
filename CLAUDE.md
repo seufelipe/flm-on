@@ -444,7 +444,11 @@ is gitignored runtime cache/staging.
     `<FilmNotes>` joins every surfaced special-screening name *and* the curated editorial label
     (decision #11) into one `<MarqueeSticker>` separated by ` · ` — a Parent & Baby screening of
     a 4K restoration shows "☻ parent & baby · 4k restoration". `mark: false` tags still
-    contribute nothing.
+    contribute nothing. The sticker's special-screening names come from `filmSpecialTags` in
+    `ScreeningBrowser` — the tags across the film's **whole preferred set**, not just the visible
+    screenings — so "☻ parent & baby" stays on the card even on a day the P&B session is filtered
+    out (same "know your options" rule as the fixed cinema links). The per-pill `☻` marks stay
+    per-session.
     `scripts/fetch-batch.ts` prints a "Special screenings" section (plus, since decision #16, an
     "unrecognised screening tags" section) so a new/unexpected descriptor surfaces in the weekly
     review. **Cineworld** maps its `Showtime.Event.*` / `Showtime.Accessibility.AutismFriendly`

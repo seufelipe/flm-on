@@ -29,6 +29,11 @@ interface Props {
   // so a film at both cinemas keeps both links even while browsing one. The session pills below
   // still follow the filter bar. Falls back to deriving from the visible screenings.
   cinemaLinks?: { label: string; url: string }[];
+  // Every screeningTag across this film's full preferred set (not just the visible screenings),
+  // so a special-screening note ("☻ parent & baby") stays on the card even when the Day filter
+  // hides that session. The `FilmNotes` sticker uses this; the per-pill ☻ marks stay per-session.
+  // Falls back to the visible screenings' tags.
+  specialTags?: string[];
 }
 
 // Age cert styled after the official IFCO classification symbol — a colour-coded circle with a
@@ -72,6 +77,7 @@ export default function FilmCard({
   daySpecified,
   label,
   cinemaLinks,
+  specialTags,
 }: Props) {
   // Day sub-headers are redundant only when a specific Day chip is active — then every visible
   // screening is that day and the chip already says so. With "Any Day" in view, always show them,
@@ -205,7 +211,7 @@ export default function FilmCard({
             {!isMystery && group.year !== undefined && (
               <span className="font-normal text-dim ml-3">{group.year}</span>
             )}
-            <FilmNotes tags={sessionTags} label={label} />
+            <FilmNotes tags={specialTags ?? sessionTags} label={label} />
           </h3>
           {cinemaPageLinks.length > 0 && (
             <div className="order-1 md:order-2 no-print flex flex-wrap gap-2 shrink-0 md:justify-end">

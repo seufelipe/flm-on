@@ -351,6 +351,24 @@ export default function ScreeningBrowser({ screenings, days, labels }: Props) {
     return new Map(Array.from(byFilm, ([key, cinemas]) => [key, Array.from(cinemas.values())]));
   }, [preferred]);
 
+  // Every screeningTag across each film's *whole* preferred set (not just the visible
+  // screenings), so a special-screening note like "☻ parent & baby" stays on the card even when
+  // the Day / Cinema / Time filter hides that particular session. Keyed like FilmGroup.key.
+  const filmSpecialTags = useMemo(() => {
+    const byFilm = new Map<string, Set<string>>();
+    for (const s of preferred) {
+      if (!s.screeningTags?.length) continue;
+      const key = s.filmTitle.trim().toLowerCase();
+      let tags = byFilm.get(key);
+      if (!tags) {
+        tags = new Set();
+        byFilm.set(key, tags);
+      }
+      for (const t of s.screeningTags) tags.add(t);
+    }
+    return new Map(Array.from(byFilm, ([key, tags]) => [key, Array.from(tags)]));
+  }, [preferred]);
+
   const dayPlanTransitions = useMemo(() => itineraryTransitions(dayPlanItems), [dayPlanItems]);
 
   function toggleSelected(s: TimedScreening) {
@@ -415,6 +433,7 @@ export default function ScreeningBrowser({ screenings, days, labels }: Props) {
                   daySpecified={effectiveDay !== null}
                   label={labels?.[group.key]}
                   cinemaLinks={filmCinemaLinks.get(group.key)}
+                  specialTags={filmSpecialTags.get(group.key)}
                 />
               ))}
             </div>
