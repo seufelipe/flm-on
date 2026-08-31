@@ -158,7 +158,7 @@ export default function FilmCard({
   function renderScreeningsRow(screenings: TimedScreening[]) {
     const timeframeGroups = groupScreeningsByTimeframe(screenings);
     // One non-wrapping row that scrolls sideways on overflow rather than stacking the pills onto
-    // several lines (keeps each film card short on mobile). `-mx-8 px-8` cancels the card's `p-8`
+    // several lines (keeps each film card short on mobile). `-mx-* px-*` cancels the card's padding
     // so the strip is full-bleed — pills sit flush with the rest of the content at rest but scroll
     // right up to the card's inner edge, instead of stopping short inside a band of padding. The
     // vertical `pb-2.5 -mb-2.5` (added by `overflow-x-auto` also clipping the y-axis) keeps the
@@ -168,7 +168,7 @@ export default function FilmCard({
     // this row's clip — sitting out at their un-scrolled x-offset and giving the whole page a
     // phantom horizontal scroll.
     return (
-      <div className="relative flex flex-nowrap items-center gap-4 overflow-x-auto scrollbar-none -mx-8 px-8 pb-2.5 -mb-2.5">
+      <div className="relative flex flex-nowrap items-center gap-4 overflow-x-auto scrollbar-none -mx-4 px-4 sm:-mx-8 sm:px-8 pb-2.5 -mb-2.5">
         {timeframeGroups.map((tg) => (
           <Fragment key={tg.timeframe.id}>
             <span className="shrink-0 text-xs font-bold uppercase text-dim tracking-widest">{tg.timeframe.label}</span>
@@ -204,7 +204,7 @@ export default function FilmCard({
   const hasFooter = cinemaPageLinks.length > 0 || group.letterboxdUrl !== undefined;
 
   return (
-    <div className="bg-surface border-4 border-border rounded-card p-8">
+    <div className="bg-surface border-4 border-border rounded-card p-4 sm:p-8">
       <div className="mb-16">
         <h3 className="text-2xl md:text-3xl tracking-tight">
           {isMystery ? (
@@ -224,11 +224,13 @@ export default function FilmCard({
             <TitleMeta className="ml-3">{group.year}</TitleMeta>
           )}
           {/* Special-screening name(s) + the curated editorial label, one marquee sticker,
-              beside the year (its own `text-xs`, vertically centred against the title). */}
-          <FilmNotes tags={specialTags ?? sessionTags} label={label} className="ml-3" />
+              beside the year (its own `text-xs`, vertically centred against the title). It
+              carries its own leading gap and wraps flush to the left when it drops below the
+              title on a narrow card. */}
+          <FilmNotes tags={specialTags ?? sessionTags} label={label} />
         </h3>
         {hasMetaLine && (
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-3">
             {group.cert && <Cert cert={group.cert} />}
             {group.durationMins !== undefined && !isMystery && (
               <span className="text-base text-dim">
@@ -261,17 +263,19 @@ export default function FilmCard({
       )}
       {hasFooter && (
         <div className="no-print mt-16 flex flex-wrap items-center justify-between gap-4">
-          <div className="flex flex-wrap gap-2">
-            {cinemaPageLinks.map((link) => (
-              <a
-                key={link.url}
-                href={link.url}
-                target="_blank"
-                rel="noreferrer"
-                className="border-2 border-dim rounded-btn bg-surface text-dim px-3 py-1.5 text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-transform active:translate-x-[2px] active:translate-y-[2px]"
-              >
-                {link.label} <span aria-hidden="true">↗</span>
-              </a>
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-bold uppercase tracking-wide text-dim">
+            {cinemaPageLinks.map((link, i) => (
+              <Fragment key={link.url}>
+                {i > 0 && <span aria-hidden="true">·</span>}
+                <a
+                  href={link.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="whitespace-nowrap transition-opacity hover:opacity-70"
+                >
+                  {link.label} <span aria-hidden="true">↗</span>
+                </a>
+              </Fragment>
             ))}
           </div>
           {group.letterboxdUrl && (

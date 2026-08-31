@@ -28,7 +28,7 @@ export function LanguageMarks({ tags }: { tags?: string[] }) {
   const mark = info && captionMark(info);
   if (!mark) return null;
   return (
-    <span className="inline-flex items-center text-[0.62rem] font-bold uppercase leading-none tracking-wide text-dim">
+    <span className="inline-flex shrink-0 items-center rounded-[4px] border-2 border-dim px-1.5 py-0.5 text-[0.62rem] font-bold uppercase leading-none tracking-wide text-dim">
       {mark}
     </span>
   );
