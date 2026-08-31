@@ -21,11 +21,9 @@ function Glyph({ symbol }: { symbol: string }) {
 export default function FilmNotes({
   tags,
   label,
-  className,
 }: {
   tags?: string[];
   label?: string;
-  className?: string;
 }) {
   const specials = displayScreeningTags(tags).filter((t) => t.mark !== false);
 
@@ -45,6 +43,14 @@ export default function FilmNotes({
     .join(" · ");
 
   return (
-    <MarqueeSticker text={<>{text}</>} ariaLabel={aria} title={aria} className={className} />
+    <>
+      {/* Leading breakable gap: sets the space between the year and the sticker when they share
+          a line, but sits at the end of the previous line (collapsing to nothing) when the
+          sticker wraps below the title — so a wrapped sticker lands flush, no phantom indent
+          the way a `margin-left` on the sticker itself would give. The `{" "}` after it is the
+          soft-wrap opportunity the sticker breaks at. */}
+      <span aria-hidden="true" className="inline-block w-2 align-middle" />{" "}
+      <MarqueeSticker text={<>{text}</>} ariaLabel={aria} title={aria} />
+    </>
   );
 }

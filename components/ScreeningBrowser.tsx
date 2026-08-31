@@ -401,7 +401,7 @@ export default function ScreeningBrowser({ screenings, days, labels }: Props) {
           <>
             <div className="flex flex-col gap-8">
               {filmGroups.length === 0 && (
-                <p className="bg-surface border-4 border-border rounded-card shadow-card p-8 font-bold">
+                <p className="bg-surface border-4 border-border rounded-card shadow-card p-4 sm:p-8 font-bold">
                   {preferred.length === 0 && (!isDefault(prefs) || highlightsOnly) ? (
                     <>
                       Nothing on this week within your current view.{" "}

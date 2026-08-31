@@ -54,6 +54,14 @@ export function parsePrimaryLanguage(html: string): string | undefined {
   return name;
 }
 
+// Letterboxd lists a film's genres as `/films/genre/{slug}/` anchors in the Details panel (the
+// browse nav only ever links the genres this film is in, so a bare substring test is safe). We
+// only care whether it's animation: an animated non-English film often screens in an
+// English-dubbed version, so lib/aggregate.ts must not assume subtitles for it (decision #17).
+export function parseIsAnimated(html: string): boolean {
+  return /\/films\/genre\/animation\//i.test(html);
+}
+
 function decodeEntities(s: string): string {
   return s
     .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
@@ -93,7 +101,7 @@ export function parseOriginalTitle(html: string): string | undefined {
 
 async function fetchFilmPage(
   slug: string,
-): Promise<{ ok: boolean; year?: number; language?: string; originalTitle?: string; director?: string }> {
+): Promise<{ ok: boolean; year?: number; language?: string; originalTitle?: string; director?: string; animated?: boolean }> {
   try {
     const res = await fetch(`https://letterboxd.com/film/${slug}/`, {
       headers: { "User-Agent": USER_AGENT },
@@ -107,6 +115,7 @@ async function fetchFilmPage(
       language: parsePrimaryLanguage(html),
       originalTitle: parseOriginalTitle(html),
       director: parseDirector(html),
+      animated: parseIsAnimated(html),
     };
   } catch {
     return { ok: false };
@@ -132,6 +141,9 @@ export interface LetterboxdMatch {
   // The page's director(s), comma-joined for a co-directed film — shown next to the runtime on
   // the card's meta line (lib/aggregate.ts, FilmCard).
   director?: string;
+  // Whether Letterboxd files the film under "Animation" — lib/aggregate.ts uses this to decide
+  // whether to assume a non-English session is subtitled (decision #17). Not shown in the UI.
+  animated?: boolean;
 }
 
 // A cache entry is the resolved URL plus what's read off that page (year, primary language,
@@ -144,6 +156,7 @@ type CacheEntry = {
   language?: string | null;
   originalTitle?: string | null;
   director?: string | null;
+  animated?: boolean | null;
 };
 type LetterboxdCache = Record<string, CacheEntry | string | null>;
 type LetterboxdOverrides = Record<string, string | null>;
@@ -161,18 +174,20 @@ function entryToMatch(entry: CacheEntry): LetterboxdMatch {
     language: entry.language ?? undefined,
     originalTitle: entry.originalTitle ?? undefined,
     director: entry.director ?? undefined,
+    animated: entry.animated ?? undefined,
   };
 }
 
 // True once an entry has been fully resolved against a real page — year, language and original
 // title all recorded. A `year: null` (page had no `og:title` year) or a missing `language` /
-// `originalTitle` / `director` key forces a re-resolve.
+// `originalTitle` / `director` / `animated` key forces a re-resolve.
 function isResolved(entry: CacheEntry): boolean {
   return (
     entry.year !== null &&
     entry.language !== undefined &&
     entry.originalTitle !== undefined &&
-    entry.director !== undefined
+    entry.director !== undefined &&
+    entry.animated !== undefined
   );
 }
 
@@ -235,6 +250,7 @@ export async function resolveLetterboxd(title: string, year?: number): Promise<L
       language: page?.language ?? null,
       originalTitle: page?.originalTitle ?? null,
       director: page?.director ?? null,
+      animated: page?.animated ?? null,
     };
     cache[key] = entry;
     await saveCache(cache);
@@ -262,6 +278,7 @@ export async function resolveLetterboxd(title: string, year?: number): Promise<L
       language: page.language,
       originalTitle: page.originalTitle,
       director: page.director,
+      animated: page.animated,
     };
     break;
   }
@@ -273,6 +290,7 @@ export async function resolveLetterboxd(title: string, year?: number): Promise<L
         language: match.language ?? null,
         originalTitle: match.originalTitle ?? null,
         director: match.director ?? null,
+        animated: match.animated ?? null,
       }
     : null;
   await saveCache(cache);

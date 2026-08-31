@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { parsePrimaryLanguage, parseOriginalTitle, parseDirector } from "@/lib/letterboxd";
+import { parsePrimaryLanguage, parseOriginalTitle, parseDirector, parseIsAnimated } from "@/lib/letterboxd";
 
 // Snippets mirror Letterboxd's real details-panel markup (server HTML, `hidden="until-found"`).
 const multiLang = `
@@ -103,5 +103,19 @@ describe("parseDirector", () => {
 
   it("returns undefined when there's no 'Directed by' pair", () => {
     expect(parseDirector(`<meta name="twitter:label1" content="Average rating">`)).toBeUndefined();
+  });
+});
+
+describe("parseIsAnimated", () => {
+  it("is true when the film is filed under the Animation genre", () => {
+    const html = `<div id="tab-genres"> <a href="/films/genre/animation/" class="text-slug">Animation</a>
+      <a href="/films/genre/family/" class="text-slug">Family</a> </div>`;
+    expect(parseIsAnimated(html)).toBe(true);
+  });
+
+  it("is false for a live-action film", () => {
+    const html = `<div id="tab-genres"> <a href="/films/genre/drama/" class="text-slug">Drama</a>
+      <a href="/films/genre/comedy/" class="text-slug">Comedy</a> </div>`;
+    expect(parseIsAnimated(html)).toBe(false);
   });
 });

@@ -1,358 +1,11 @@
 {
-  "generatedAt": "2026-08-30T19:51:47.616Z",
+  "generatedAt": "2026-08-31T11:50:34.088Z",
   "days": [
-    "2026-08-30",
     "2026-08-31",
     "2026-09-01",
     "2026-09-02"
   ],
   "screenings": [
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Guggi",
-      "cert": "12A",
-      "durationMins": 78,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "11:10",
-      "bookingUrl": "https://shop.ifi.ie/performance/112925/",
-      "filmPageUrl": "https://ifi.ie/films/guggi",
-      "director": "Ian Thuillier",
-      "letterboxdUrl": "https://letterboxd.com/film/guggi/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "I Want Your Sex",
-      "cert": "18",
-      "durationMins": 90,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "11:30",
-      "bookingUrl": "https://shop.ifi.ie/performance/112922/",
-      "filmPageUrl": "https://ifi.ie/films/i-want-your-sex",
-      "director": "Gregg Araki",
-      "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Horse Plays",
-      "durationMins": 33,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "11:40",
-      "bookingUrl": "https://shop.ifi.ie/performance/111225/",
-      "filmPageUrl": "https://ifi.ie/films/archive-at-lunchtime-august-2026-programme-1"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "De Gaulle Part One: Résistance",
-      "cert": "15A",
-      "durationMins": 160,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "12:40",
-      "bookingUrl": "https://shop.ifi.ie/performance/112919/",
-      "filmPageUrl": "https://ifi.ie/films/de-gaulle-resistance",
-      "screeningTags": [
-        "French"
-      ],
-      "originalTitle": "La bataille de Gaulle: L'âge de fer",
-      "director": "Antonin Baudry",
-      "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Mystery Matinee",
-      "durationMins": 120,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "13:00",
-      "bookingUrl": "https://shop.ifi.ie/performance/112014/",
-      "filmPageUrl": "https://ifi.ie/films/mystery-matinee-august-2026"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Bitter Christmas",
-      "cert": "15A",
-      "durationMins": 111,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "13:30",
-      "bookingUrl": "https://shop.ifi.ie/performance/112915/",
-      "filmPageUrl": "https://ifi.ie/films/bitter-christmas",
-      "screeningTags": [
-        "Spanish"
-      ],
-      "originalTitle": "Amarga Navidad",
-      "director": "Pedro Almodóvar",
-      "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Tony",
-      "cert": "15A",
-      "durationMins": 106,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "15:40",
-      "bookingUrl": "https://shop.ifi.ie/performance/113397/",
-      "filmPageUrl": "https://ifi.ie/films/tony",
-      "director": "Matt Johnson",
-      "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Guggi",
-      "cert": "12A",
-      "durationMins": 78,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "15:50",
-      "bookingUrl": "https://shop.ifi.ie/performance/112924/",
-      "filmPageUrl": "https://ifi.ie/films/guggi",
-      "director": "Ian Thuillier",
-      "letterboxdUrl": "https://letterboxd.com/film/guggi/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "The Odyssey",
-      "cert": "15A",
-      "durationMins": 172,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "16:00",
-      "bookingUrl": "https://shop.ifi.ie/performance/112927/",
-      "filmPageUrl": "https://ifi.ie/films/the-odyssey",
-      "screeningTags": [
-        "70mm"
-      ],
-      "director": "Christopher Nolan",
-      "letterboxdUrl": "https://letterboxd.com/film/the-odyssey-2026/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Tony",
-      "cert": "15A",
-      "durationMins": 106,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "17:40",
-      "bookingUrl": "https://shop.ifi.ie/performance/113317/",
-      "filmPageUrl": "https://ifi.ie/films/tony",
-      "director": "Matt Johnson",
-      "letterboxdUrl": "https://letterboxd.com/film/tony-2026/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Bitter Christmas",
-      "cert": "15A",
-      "durationMins": 111,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "18:00",
-      "bookingUrl": "https://shop.ifi.ie/performance/112914/",
-      "filmPageUrl": "https://ifi.ie/films/bitter-christmas",
-      "screeningTags": [
-        "Spanish"
-      ],
-      "originalTitle": "Amarga Navidad",
-      "director": "Pedro Almodóvar",
-      "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "De Gaulle Part One: Résistance",
-      "cert": "15A",
-      "durationMins": 160,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "19:40",
-      "bookingUrl": "https://shop.ifi.ie/performance/112921/",
-      "filmPageUrl": "https://ifi.ie/films/de-gaulle-resistance",
-      "screeningTags": [
-        "French"
-      ],
-      "originalTitle": "La bataille de Gaulle: L'âge de fer",
-      "director": "Antonin Baudry",
-      "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-resistance/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Teenage Sex and Death at Camp Miasma",
-      "cert": "16",
-      "durationMins": 111,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "20:00",
-      "bookingUrl": "https://shop.ifi.ie/performance/112918/",
-      "filmPageUrl": "https://ifi.ie/films/teenage-sex-and-death-at-camp-miasma",
-      "director": "Jane Schoenbrun",
-      "letterboxdUrl": "https://letterboxd.com/film/teenage-sex-and-death-at-camp-miasma/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Colony",
-      "cert": "16",
-      "durationMins": 123,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "20:30",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40716&showtimeId=1001-40716&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/colony",
-      "screeningTags": [
-        "Korean"
-      ],
-      "originalTitle": "군체",
-      "director": "Yeon Sang-ho",
-      "letterboxdUrl": "https://letterboxd.com/film/colony-2026/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "I Want Your Sex",
-      "cert": "18",
-      "durationMins": 90,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "20:30",
-      "bookingUrl": "https://shop.ifi.ie/performance/112920/",
-      "filmPageUrl": "https://ifi.ie/films/i-want-your-sex",
-      "director": "Gregg Araki",
-      "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
-    },
-    {
-      "cinema": "cineworld",
-      "cinemaName": "Cineworld Dublin",
-      "filmTitle": "The Dog Stars",
-      "cert": "15A",
-      "durationMins": 119,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "20:40",
-      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366752/seats",
-      "filmPageUrl": "https://www.cineworld.ie/movies/1000014969-the-dog-stars/",
-      "director": "Ridley Scott",
-      "letterboxdUrl": "https://letterboxd.com/film/the-dog-stars/"
-    },
-    {
-      "cinema": "cineworld",
-      "cinemaName": "Cineworld Dublin",
-      "filmTitle": "Bitter Christmas",
-      "originalTitle": "Amarga Navidad",
-      "cert": "15A",
-      "durationMins": 112,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "20:45",
-      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367138/seats",
-      "filmPageUrl": "https://www.cineworld.ie/movies/1000025821-bitter-christmas/",
-      "screeningTags": [
-        "Spanish"
-      ],
-      "director": "Pedro Almodóvar",
-      "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "I Want Your Sex",
-      "cert": "18",
-      "durationMins": 90,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "20:50",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=39677&showtimeId=1001-39677&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/i-want-your-sex",
-      "director": "Gregg Araki",
-      "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
-    },
-    {
-      "cinema": "cineworld",
-      "cinemaName": "Cineworld Dublin",
-      "filmTitle": "I Want Your Sex",
-      "cert": "18",
-      "durationMins": 90,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "20:50",
-      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366782/seats",
-      "filmPageUrl": "https://www.cineworld.ie/movies/1000003998-i-want-your-sex/",
-      "director": "Gregg Araki",
-      "letterboxdUrl": "https://letterboxd.com/film/i-want-your-sex/"
-    },
-    {
-      "cinema": "cineworld",
-      "cinemaName": "Cineworld Dublin",
-      "filmTitle": "The Fast and the Furious",
-      "cert": "15A",
-      "durationMins": 107,
-      "year": 2001,
-      "date": "2026-08-30",
-      "time": "20:50",
-      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366641/seats",
-      "filmPageUrl": "https://www.cineworld.ie/movies/1000046538-the-fast-and-the-furious-25th-anniversary/",
-      "screeningTags": [
-        "Big Screen Classics"
-      ],
-      "director": "Rob Cohen",
-      "letterboxdUrl": "https://letterboxd.com/film/the-fast-and-the-furious-2001/"
-    },
-    {
-      "cinema": "cineworld",
-      "cinemaName": "Cineworld Dublin",
-      "filmTitle": "Insidious: Out of the Further",
-      "cert": "15A",
-      "durationMins": 106,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "21:00",
-      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367082/seats",
-      "filmPageUrl": "https://www.cineworld.ie/movies/1000016503-insidious-out-of-the-further/",
-      "director": "Jacob Chase",
-      "letterboxdUrl": "https://letterboxd.com/film/insidious-out-of-the-further/"
-    },
-    {
-      "cinema": "cineworld",
-      "cinemaName": "Cineworld Dublin",
-      "filmTitle": "The End Of Oak Street",
-      "cert": "15A",
-      "durationMins": 100,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "21:10",
-      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367060/seats",
-      "filmPageUrl": "https://www.cineworld.ie/movies/314503-the-end-of-oak-street/",
-      "director": "David Robert Mitchell",
-      "letterboxdUrl": "https://letterboxd.com/film/the-end-of-oak-street/"
-    },
-    {
-      "cinema": "cineworld",
-      "cinemaName": "Cineworld Dublin",
-      "filmTitle": "One Night Only",
-      "cert": "15A",
-      "durationMins": 102,
-      "year": 2026,
-      "date": "2026-08-30",
-      "time": "21:15",
-      "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-366876/seats",
-      "filmPageUrl": "https://www.cineworld.ie/movies/1000019899-one-night-only/",
-      "director": "Will Gluck",
-      "letterboxdUrl": "https://letterboxd.com/film/one-night-only-2026/"
-    },
     {
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
@@ -393,7 +46,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40053&showtimeId=1001-40053&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/bitter-christmas",
       "screeningTags": [
-        "Spanish"
+        "Spanish",
+        "Subtitled"
       ],
       "originalTitle": "Amarga Navidad",
       "director": "Pedro Almodóvar",
@@ -651,7 +305,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/112934/",
       "filmPageUrl": "https://ifi.ie/films/de-gaulle-resistance",
       "screeningTags": [
-        "French"
+        "French",
+        "Subtitled"
       ],
       "originalTitle": "La bataille de Gaulle: L'âge de fer",
       "director": "Antonin Baudry",
@@ -770,7 +425,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/112929/",
       "filmPageUrl": "https://ifi.ie/films/bitter-christmas",
       "screeningTags": [
-        "Spanish"
+        "Spanish",
+        "Subtitled"
       ],
       "originalTitle": "Amarga Navidad",
       "director": "Pedro Almodóvar",
@@ -805,7 +461,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40052&showtimeId=1001-40052&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/bitter-christmas",
       "screeningTags": [
-        "Spanish"
+        "Spanish",
+        "Subtitled"
       ],
       "originalTitle": "Amarga Navidad",
       "director": "Pedro Almodóvar",
@@ -987,7 +644,8 @@
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367139/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000025821-bitter-christmas/",
       "screeningTags": [
-        "Spanish"
+        "Spanish",
+        "Subtitled"
       ],
       "director": "Pedro Almodóvar",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
@@ -1112,7 +770,7 @@
       "time": "18:35",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367126/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000019386-spa-weekend/",
-      "director": "Jon Lucas, Scott Moore",
+      "director": "Scott Moore, Jon Lucas",
       "letterboxdUrl": "https://letterboxd.com/film/spa-weekend-2026/"
     },
     {
@@ -1200,7 +858,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/112933/",
       "filmPageUrl": "https://ifi.ie/films/de-gaulle-resistance",
       "screeningTags": [
-        "French"
+        "French",
+        "Subtitled"
       ],
       "originalTitle": "La bataille de Gaulle: L'âge de fer",
       "director": "Antonin Baudry",
@@ -1283,7 +942,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40051&showtimeId=1001-40051&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/bitter-christmas",
       "screeningTags": [
-        "Spanish"
+        "Spanish",
+        "Subtitled"
       ],
       "originalTitle": "Amarga Navidad",
       "director": "Pedro Almodóvar",
@@ -1329,7 +989,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40717&showtimeId=1001-40717&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/colony",
       "screeningTags": [
-        "Korean"
+        "Korean",
+        "Subtitled"
       ],
       "originalTitle": "군체",
       "director": "Yeon Sang-ho",
@@ -1409,7 +1070,8 @@
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367140/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000025821-bitter-christmas/",
       "screeningTags": [
-        "Spanish"
+        "Spanish",
+        "Subtitled"
       ],
       "director": "Pedro Almodóvar",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
@@ -1453,7 +1115,7 @@
       "time": "21:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367127/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000019386-spa-weekend/",
-      "director": "Jon Lucas, Scott Moore",
+      "director": "Scott Moore, Jon Lucas",
       "letterboxdUrl": "https://letterboxd.com/film/spa-weekend-2026/"
     },
     {
@@ -1510,7 +1172,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40511&showtimeId=1001-40511&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/bitter-christmas",
       "screeningTags": [
-        "Spanish"
+        "Spanish",
+        "Subtitled"
       ],
       "originalTitle": "Amarga Navidad",
       "director": "Pedro Almodóvar",
@@ -1584,7 +1247,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/113376/",
       "filmPageUrl": "https://ifi.ie/films/bitter-christmas",
       "screeningTags": [
-        "Spanish"
+        "Spanish",
+        "Subtitled"
       ],
       "originalTitle": "Amarga Navidad",
       "director": "Pedro Almodóvar",
@@ -1806,7 +1470,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/113381/",
       "filmPageUrl": "https://ifi.ie/films/de-gaulle-resistance",
       "screeningTags": [
-        "French"
+        "French",
+        "Subtitled"
       ],
       "originalTitle": "La bataille de Gaulle: L'âge de fer",
       "director": "Antonin Baudry",
@@ -1933,7 +1598,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40510&showtimeId=1001-40510&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/bitter-christmas",
       "screeningTags": [
-        "Spanish"
+        "Spanish",
+        "Subtitled"
       ],
       "originalTitle": "Amarga Navidad",
       "director": "Pedro Almodóvar",
@@ -2145,7 +1811,8 @@
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367141/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000025821-bitter-christmas/",
       "screeningTags": [
-        "Spanish"
+        "Spanish",
+        "Subtitled"
       ],
       "director": "Pedro Almodóvar",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
@@ -2218,7 +1885,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/113378/",
       "filmPageUrl": "https://ifi.ie/films/bitter-christmas",
       "screeningTags": [
-        "Spanish"
+        "Spanish",
+        "Subtitled"
       ],
       "originalTitle": "Amarga Navidad",
       "director": "Pedro Almodóvar",
@@ -2263,7 +1931,7 @@
       "time": "18:35",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367115/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000019386-spa-weekend/",
-      "director": "Jon Lucas, Scott Moore",
+      "director": "Scott Moore, Jon Lucas",
       "letterboxdUrl": "https://letterboxd.com/film/spa-weekend-2026/"
     },
     {
@@ -2337,7 +2005,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/112450/",
       "filmPageUrl": "https://ifi.ie/films/de-gaulle-resistance",
       "screeningTags": [
-        "French"
+        "French",
+        "Subtitled"
       ],
       "originalTitle": "La bataille de Gaulle: L'âge de fer",
       "director": "Antonin Baudry",
@@ -2416,7 +2085,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40509&showtimeId=1001-40509&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/bitter-christmas",
       "screeningTags": [
-        "Spanish"
+        "Spanish",
+        "Subtitled"
       ],
       "originalTitle": "Amarga Navidad",
       "director": "Pedro Almodóvar",
@@ -2462,7 +2132,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40725&showtimeId=1001-40725&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/colony",
       "screeningTags": [
-        "Korean"
+        "Korean",
+        "Subtitled"
       ],
       "originalTitle": "군체",
       "director": "Yeon Sang-ho",
@@ -2523,7 +2194,8 @@
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367142/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000025821-bitter-christmas/",
       "screeningTags": [
-        "Spanish"
+        "Spanish",
+        "Subtitled"
       ],
       "director": "Pedro Almodóvar",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
@@ -2581,7 +2253,7 @@
       "time": "21:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367116/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000019386-spa-weekend/",
-      "director": "Jon Lucas, Scott Moore",
+      "director": "Scott Moore, Jon Lucas",
       "letterboxdUrl": "https://letterboxd.com/film/spa-weekend-2026/"
     },
     {
@@ -2658,7 +2330,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41047&showtimeId=1001-41047&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/amores-perros-4k-restoration",
       "screeningTags": [
-        "Spanish"
+        "Spanish",
+        "Subtitled"
       ],
       "director": "Alejandro G. Iñárritu",
       "letterboxdUrl": "https://letterboxd.com/film/amores-perros/"
@@ -2806,7 +2479,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40136&showtimeId=1001-40136&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/bitter-christmas",
       "screeningTags": [
-        "Spanish"
+        "Spanish",
+        "Subtitled"
       ],
       "originalTitle": "Amarga Navidad",
       "director": "Pedro Almodóvar",
@@ -2880,7 +2554,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/113387/",
       "filmPageUrl": "https://ifi.ie/films/bitter-christmas",
       "screeningTags": [
-        "Spanish"
+        "Spanish",
+        "Subtitled"
       ],
       "originalTitle": "Amarga Navidad",
       "director": "Pedro Almodóvar",
@@ -3030,7 +2705,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40514&showtimeId=1001-40514&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/bitter-christmas",
       "screeningTags": [
-        "Spanish"
+        "Spanish",
+        "Subtitled"
       ],
       "originalTitle": "Amarga Navidad",
       "director": "Pedro Almodóvar",
@@ -3281,7 +2957,8 @@
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367143/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000025821-bitter-christmas/",
       "screeningTags": [
-        "Spanish"
+        "Spanish",
+        "Subtitled"
       ],
       "director": "Pedro Almodóvar",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
@@ -3298,7 +2975,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40131&showtimeId=1001-40131&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/bitter-christmas",
       "screeningTags": [
-        "Spanish"
+        "Spanish",
+        "Subtitled"
       ],
       "originalTitle": "Amarga Navidad",
       "director": "Pedro Almodóvar",
@@ -3402,7 +3080,7 @@
       "time": "18:35",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367010/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000019386-spa-weekend/",
-      "director": "Jon Lucas, Scott Moore",
+      "director": "Scott Moore, Jon Lucas",
       "letterboxdUrl": "https://letterboxd.com/film/spa-weekend-2026/"
     },
     {
@@ -3462,7 +3140,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/113087/",
       "filmPageUrl": "https://ifi.ie/films/de-gaulle-resistance",
       "screeningTags": [
-        "French"
+        "French",
+        "Subtitled"
       ],
       "originalTitle": "La bataille de Gaulle: L'âge de fer",
       "director": "Antonin Baudry",
@@ -3569,7 +3248,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40718&showtimeId=1001-40718&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/colony",
       "screeningTags": [
-        "Korean"
+        "Korean",
+        "Subtitled"
       ],
       "originalTitle": "군체",
       "director": "Yeon Sang-ho",
@@ -3587,7 +3267,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/112966/",
       "filmPageUrl": "https://ifi.ie/films/bitter-christmas",
       "screeningTags": [
-        "Spanish"
+        "Spanish",
+        "Subtitled"
       ],
       "originalTitle": "Amarga Navidad",
       "director": "Pedro Almodóvar",
@@ -3648,7 +3329,8 @@
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367144/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000025821-bitter-christmas/",
       "screeningTags": [
-        "Spanish"
+        "Spanish",
+        "Subtitled"
       ],
       "director": "Pedro Almodóvar",
       "letterboxdUrl": "https://letterboxd.com/film/bitter-christmas/"
@@ -3692,7 +3374,7 @@
       "time": "21:00",
       "bookingUrl": "https://web.cineworld.ie/order/showtimes/0001-367011/seats",
       "filmPageUrl": "https://www.cineworld.ie/movies/1000019386-spa-weekend/",
-      "director": "Jon Lucas, Scott Moore",
+      "director": "Scott Moore, Jon Lucas",
       "letterboxdUrl": "https://letterboxd.com/film/spa-weekend-2026/"
     },
     {

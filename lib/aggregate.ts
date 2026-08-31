@@ -5,6 +5,7 @@ import { resolveLetterboxd, type LetterboxdMatch } from "./letterboxd";
 import { cleanFilmTitle, titleAnnotation, titlesEquivalent, loadTitleOverrides } from "./titles";
 import { loadHiddenFilms, isHiddenFilm } from "./hidden";
 import { loadLanguageOverrides, languageOverrideFor } from "./languageOverrides";
+import { displayLanguage } from "./languages";
 
 export interface AdapterError {
   cinema: string;
@@ -122,6 +123,16 @@ async function withLetterboxdLinks(screenings: Screening[]): Promise<Screening[]
       !(screeningTags ?? []).some((t) => t.trim().toLowerCase() === language.toLowerCase())
     ) {
       screeningTags = [...(screeningTags ?? []), language];
+    }
+
+    // English subtitling is the norm for a foreign-language release in Irish cinemas, and the
+    // cinemas seldom tag it per session — so when a non-English film's screening carries no
+    // caption tag of its own, assume it's subtitled. Animation is the exception (English-dubbed
+    // kids' versions are common, e.g. Kiki), so films Letterboxd files under "Animation" are left
+    // unmarked unless the cinema said otherwise. CLAUDE.md decision #17.
+    const caption = displayLanguage(screeningTags);
+    if (caption?.language && !caption.subtitled && !caption.dubbed && !match?.animated) {
+      screeningTags = [...(screeningTags ?? []), "Subtitled"];
     }
 
     // Original-language title: Letterboxd's `originalname` (native script, canonical) wins, with
