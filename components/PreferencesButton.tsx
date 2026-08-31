@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useSyncExternalStore } from "react";
 import {
-  isDefault,
   preferencesSnapshot,
   PREFERENCES_SERVER_SNAPSHOT,
   subscribePreferences,
@@ -38,9 +37,10 @@ function PreferenceIcon() {
 
 // The preferences entry point — a header button that opens the settings modal / sheet. Shares
 // the localStorage-backed store with ScreeningBrowser (both subscribe independently), so no
-// prop drilling. A `--color-fg` dot marks a non-default ("narrowed") set. See CLAUDE.md #14.
+// prop drilling. Active kids-only / language prefs are surfaced by <ActivePreferenceNote> beside
+// the title, not here. See CLAUDE.md #14.
 export default function PreferencesButton() {
-  const { prefs, loaded } = useSyncExternalStore(
+  const { prefs } = useSyncExternalStore(
     subscribePreferences,
     preferencesSnapshot,
     () => PREFERENCES_SERVER_SNAPSHOT,
@@ -67,19 +67,13 @@ export default function PreferencesButton() {
         onClick={() => setOpen(true)}
         aria-label="Preferences"
         aria-haspopup="dialog"
-        className={`no-print relative shrink-0 border-2 border-border rounded-btn bg-surface text-fg p-2 transition-[translate,box-shadow] duration-100 cursor-pointer ${
+        className={`no-print shrink-0 border-2 border-border rounded-btn bg-surface text-fg p-2 transition-[translate,box-shadow] duration-100 cursor-pointer ${
           open
             ? "translate-x-[6px] translate-y-[6px]"
             : "shadow-chip hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-chip-half active:translate-x-[6px] active:translate-y-[6px] active:shadow-none"
         }`}
       >
         <PreferenceIcon />
-        {loaded && !isDefault(prefs) && (
-          <span
-            aria-hidden="true"
-            className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full border-2 border-bg bg-fg"
-          />
-        )}
       </button>
       {open && (
         <SettingsPanel prefs={prefs} onChange={writePreferences} onClose={() => setOpen(false)} />

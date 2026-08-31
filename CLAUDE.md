@@ -120,10 +120,12 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
 - `components/FilmNotes.tsx` + `components/MarqueeSticker.tsx` — the **one** dark scrolling
   sticker per card (`FilmNotes`, beside the year on the title line), carrying the special-screening name(s)
   *and* the curated editorial label (decision #11) joined by ` · ` ("☻ parent & baby ·
-  4k restoration"). `MarqueeSticker` is `"use client"`: measures one copy and sets
-  `--flm-marquee-shift` (exact px — a `%`-of-`max-content` translate stutters at speed) and
-  `--flm-marquee-duration` (~40px/s, 4s floor). `--color-fg`/`--color-bg`, never accent;
-  reduced-motion → static. `filmSpecialTags` (in `ScreeningBrowser`) feeds it the tags across the
+  4k restoration"). `MarqueeSticker` is `"use client"`: measures one copy and pins the track to
+  `2×` that width in px so the keyframe's plain `translate3d(-50%…)` lands exactly on one copy
+  (var-free keyframe → runs on the compositor; a `%`-of-`max-content` translate stutters at
+  speed), plus an inline `animation-duration` (~40px/s, 4s floor). `--color-fg`/`--color-bg`,
+  never accent; reduced-motion → static. The `tilted` header sticker also gets
+  `will-change: transform` (its own layer — it sits in a rotated wrapper). `filmSpecialTags` (in `ScreeningBrowser`) feeds it the tags across the
   film's *whole* preferred set, so "☻ parent & baby" stays on the card even on a day that
   session is filtered out. The per-pill `☻` marks stay per-session.
 - `components/ScreeningTags.tsx` / `FilmFormats.tsx` / `ScreeningLanguage.tsx` — the pill/card
@@ -138,9 +140,10 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
 - `components/ComboSuggestions.tsx` — the pre-selection "Suggested plans" list. `components/DayPlan.tsx`
   — replaces it once anything is selected: a chronological vertical rule with the gap / an
   accent-coloured overlap warning inline between consecutive items.
-- `components/{PreferencesButton,SettingsPanel}.tsx` + `lib/preferences.ts` + `lib/duration.ts`
-  — the header button and the overlay it opens; `PreferencesButton` shares the store with
-  `ScreeningBrowser` via `useSyncExternalStore`. Decision #14.
+- `components/{PreferencesButton,SettingsPanel,ActivePreferenceNote}.tsx` + `lib/preferences.ts`
+  + `lib/duration.ts` — the header button, the overlay it opens, and the title-side marquee
+  naming an active kids-only / language pref; all three share the store with `ScreeningBrowser`
+  via `useSyncExternalStore`. Decision #14.
 - `components/controlSegment.ts` — `SEGMENT_BASE` + `controlSegmentClass(active)`, the accent-fill
   / hard-press "selected" segment styling shared by the filter bar and the settings panel.
 
@@ -203,9 +206,12 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
    cream page (`--color-bg`), near-white card (`--color-surface`), warm near-black ink
    (`--color-fg`/`--color-border`), rounded corners, hard (non-blurred, offset) layered shadows.
    Font: Elms Sans. All tokens in the `@theme` block of `app/globals.css`.
-   - **Accent reservation (unchanged):** the one accent (`--color-accent`, gold `#fdc732`) is for
-     actionable things and the current selection only, never decoration. **Two** non-ink/gold
-     colours are allowed, both third-party brand identities: the Letterboxd mark's
+   - **Accent reservation:** the one accent (`--color-accent`, gold `#fdc732`) is for
+     actionable things, the current selection, and — the one status use — the header
+     `<ActivePreferenceNote>` "for kids!" marquee (a tilted gold sticker stuck over the title
+     when the kids-only filter is on, decision #14); never plain decoration (the film-card
+     `FilmNotes` marquee stays ink, and the sibling language tag is a plain dark tag). **Two**
+     non-ink/gold colours are allowed, both third-party brand identities: the Letterboxd mark's
      orange/green/blue, and the IMAX format box's brand blue.
    - `body { cursor: default }` (an app, not a document); interactive elements set
      `cursor-pointer`, the film *name* opts back into `cursor-text` (it's the thing you copy).
@@ -222,7 +228,9 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
 
 8. **No film-count / progress UI.** A "here are X films" counter was tried and rejected — the
    user said counters "add pressure". No running counts, badges, or the like in the main UI
-   without asking. (The prefs-≠-default indicator is a single dot, not a count.)
+   without asking. (An active kids-only / language preference is named on the title —
+   `components/ActivePreferenceNote.tsx` — a gold sticker over the top / dark subtitle pills
+   over the base, not a count.)
 
 9. **Public release = weekly curated pipeline, not live per-visitor scraping.** Live scraping on
    every request let any visitor trigger a scrape and gave no chance to catch mangled titles /
@@ -300,8 +308,18 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
       Cineworld's ordinary multiplex programme
       out of view (decision #16) — with it off and Cineworld on, you get the full slate. The
       empty-state Reset clears prefs **and** this toggle.
-    - UI: header button (`PreferencesButton`, sliders icon not a gear; a `--color-fg` dot when
-      prefs ≠ default) → `SettingsPanel` (responsive modal / bottom sheet). Options are toggle
+    - UI: header button (`PreferencesButton`, sliders icon not a gear — no badge) →
+      `SettingsPanel` (responsive modal / bottom sheet). An active **kids-only** or **language**
+      preference (the two that narrow the films with no filter-bar trace) is surfaced instead by
+      `components/ActivePreferenceNote.tsx`, layered on the "FLM ON" title (its wrapper is
+      `relative w-fit`): **kids-only** → a `MarqueeSticker` (`tone="accent" tilted`, the one
+      status use of the accent) `absolute`-positioned at an angle over the top-right of the
+      title, lowercase `for kids!`, as if a kid stuck it on; **language** → two *static* dark
+      pills (one
+      per line, each hugging its own text, sentence-case) stacked and centred on the logo,
+      pulled up so they sit over the base of the title: `Only films` / `in english` (or
+      `not in english`). Both can show at once. Cinemas / times / hide-shorts get no indicator.
+      Options are toggle
       buttons in `controlSegment.ts` style; the **Language** group is a `Segmented` single-select
       (flush, same treatment as the filter bar). Each group is one non-wrapping full-bleed
       `overflow-x-auto` strip (the film-card pill idiom) — options scroll sideways rather than

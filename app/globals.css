@@ -81,11 +81,10 @@
 }
 
 /* Film-notes sticker (components/FilmNotes.tsx via MarqueeSticker) — a fixed-width dark sticker
-   on the card meta line whose text scrolls on a seamless loop (two identical copies; the track
-   translates by exactly one copy's width per loop). `--flm-marquee-shift` /
-   `--flm-marquee-duration` are measured client-side by MarqueeSticker — the `%`/`4.5s` defaults
-   here are just the SSR / first-paint fallback. Width lives here (not a Tailwind w-* utility) so
-   the reduced-motion `width: auto` override wins. */
+   on the card meta line whose text scrolls on a seamless loop: two identical copies, the track
+   pinned by MarqueeSticker to 2× the measured copy width so the keyframe's `-50%` lands exactly
+   on one copy. The `max-content` width / `4.5s` duration here are just the SSR / first-paint
+   fallback until that measure lands (width also so the reduced-motion `width: auto` wins). */
 .flm-marquee {
   display: inline-flex;
   width: 4.5rem;
@@ -98,7 +97,8 @@
   display: flex;
   flex: none;
   width: max-content;
-  animation: flm-marquee var(--flm-marquee-duration, 4.5s) linear infinite;
+  animation: flm-marquee 4.5s linear infinite;
+  backface-visibility: hidden;
 }
 
 .flm-marquee-item {
@@ -106,12 +106,16 @@
   padding-right: 1.5em;
 }
 
+/* Plain translate3d, no var(): a keyframe that reads a custom property is forced onto the main
+   thread (custom props resolve there), which made the tilted header sticker judder inside its
+   rotated wrapper. `-50%` of the pixel-pinned track == one copy exactly. MarqueeSticker adds
+   `will-change: transform` on the header sticker (via `tilted`) so it also gets its own layer. */
 @keyframes flm-marquee {
   from {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
   to {
-    transform: translateX(calc(-1 * var(--flm-marquee-shift, 50%)));
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
