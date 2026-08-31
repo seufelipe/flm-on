@@ -133,6 +133,11 @@ async function main() {
     const lang = displayLanguage(s.screeningTags)?.language;
     if (lang && !langByFilm.has(key)) langByFilm.set(key, lang);
   }
+  // Per non-English film, tally the caption state across its sessions. lib/aggregate.ts assumes
+  // "Subtitled" for a non-animated foreign film with no caption tag (decision #17), so an
+  // "unmarked" session here means the film resolved as Animation on Letterboxd — check whether
+  // it's really screening dubbed, and pin data/language-overrides.json / add a Dubbed tag source
+  // if not.
   console.log("\nLanguages (non-English films — override in data/language-overrides.json):\n");
   const nonEnglish = films.filter((f) => langByFilm.has(f.filmTitle.trim().toLowerCase()));
   if (nonEnglish.length === 0) {
@@ -141,7 +146,18 @@ async function main() {
     for (const f of nonEnglish) {
       const key = f.filmTitle.trim().toLowerCase();
       const over = key in langOverrides ? `  [override: ${langOverrides[key] ?? "unmarked"}]` : "";
-      console.log(`  ${key}  →  ${langByFilm.get(key)}${over}`);
+      let st = 0;
+      let dub = 0;
+      let none = 0;
+      for (const s of screenings) {
+        if (s.filmTitle.trim().toLowerCase() !== key) continue;
+        const info = displayLanguage(s.screeningTags);
+        if (info?.subtitled) st++;
+        else if (info?.dubbed) dub++;
+        else none++;
+      }
+      const parts = [st && `${st} ST`, dub && `${dub} Dub`, none && `${none} UNMARKED`].filter(Boolean);
+      console.log(`  ${key}  →  ${langByFilm.get(key)}  [${parts.join(", ")}]${over}`);
     }
   }
 
