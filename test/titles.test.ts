@@ -94,6 +94,15 @@ describe("titlesEquivalent", () => {
     expect(titlesEquivalent("Coyote vs. ACME", "Coyote vs Acme")).toBe(true);
   });
 
+  it("treats curly and straight typographic punctuation as the same", () => {
+    // A cinema's own title uses a curly apostrophe, the fallback original title an ASCII one —
+    // same title, so no spurious original-language line on the card.
+    expect(
+      titlesEquivalent("Oasis: Don’t Look Back In Anger", "Oasis: Don't Look Back In Anger"),
+    ).toBe(true);
+    expect(titlesEquivalent("Amores—perros", "Amores-perros")).toBe(true);
+  });
+
   it("is false for a genuinely different original title", () => {
     expect(
       titlesEquivalent("La Bataille de Gaulle - partie 1 : L'Âge de Fer", "De Gaulle: Résistance"),

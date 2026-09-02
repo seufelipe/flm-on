@@ -58,6 +58,16 @@ export function upcomingDays(from: string = todayISO()): string[] {
   return Array.from({ length }, (_, i) => addDaysISO(from, i));
 }
 
+// The cinema-programme batch *after* the current one — next Thursday through the following
+// Wednesday, seven days. This is the still-unconfirmed window the "Next week" tease previews
+// (CLAUDE.md decision #18); it always starts on a Thursday (when the programmes turn over),
+// whatever weekday it's computed on.
+export function nextWeekDays(from: string = todayISO()): string[] {
+  const current = upcomingDays(from);
+  const start = addDaysISO(current[current.length - 1], 1);
+  return Array.from({ length: 7 }, (_, i) => addDaysISO(start, i));
+}
+
 // Compares against the real current date rather than a position within some array — a `days`
 // array sourced from stale data (e.g. last week's committed showtimes.json, viewed a day or two
 // after it was generated) must not mislabel its first entry "Today" just because it's at index 0.

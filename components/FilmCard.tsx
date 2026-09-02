@@ -24,6 +24,9 @@ interface Props {
   showCinema: boolean;
   daySpecified: boolean;
   label?: string;
+  // The "Next week" preview (CLAUDE.md decision #18): render the card with no showtime section at
+  // all — the sessions aren't confirmed. Just the title, meta line, notes and film-page links.
+  preview?: boolean;
   // One `{ label, url }` per cinema this film plays at — fixed to the film's full set of
   // screenings (respecting only the persisted preferences), NOT the Day/Cinema/Time filter bar,
   // so a film at both cinemas keeps both links even while browsing one. The session pills below
@@ -84,6 +87,7 @@ export default function FilmCard({
   label,
   cinemaLinks,
   specialTags,
+  preview = false,
 }: Props) {
   // Day sub-headers are redundant only when a specific Day chip is active — then every visible
   // screening is that day and the chip already says so. With "Any Day" in view, always show them,
@@ -186,7 +190,11 @@ export default function FilmCard({
   // Descriptors across all of this film's visible sessions. The special-screening name(s) and
   // the curated editorial label are named together in one `<FilmNotes>` sticker beside the year
   // on the title line; the individual pills carry only the bare ☻ mark.
-  const sessionTags = Array.from(new Set(group.screenings.flatMap((s) => s.screeningTags ?? [])));
+  // In the preview there are no sessions to read tags off — fall back to the caller's set so the
+  // language / format chips and the FilmNotes sticker still render.
+  const sessionTags = group.screenings.length
+    ? Array.from(new Set(group.screenings.flatMap((s) => s.screeningTags ?? [])))
+    : (specialTags ?? []);
   const sessionFormats = displayFilmFormats(sessionTags);
   // Only the language name goes on the card (per-film); the subtitled/dubbed state is per-showtime
   // and lives on the pills, so it doesn't count towards showing the meta line.
@@ -205,7 +213,8 @@ export default function FilmCard({
 
   return (
     <div className="bg-surface border-4 border-border rounded-card p-4 sm:p-8">
-      <div className="mb-16">
+      {/* In the preview there's no showtime section below, so the big gap collapses to a normal one. */}
+      <div className={preview ? "mb-6" : "mb-16"}>
         <h3 className="text-2xl md:text-3xl tracking-tight">
           {isMystery ? (
             <MysteryTitle text={group.filmTitle} />
@@ -247,22 +256,23 @@ export default function FilmCard({
           </div>
         )}
       </div>
-      {showDayHeaders ? (
-        <div className="flex flex-col gap-6">
-          {dayGroups.map((dg) => (
-            <div key={dg.date}>
-              <p className="text-xs font-bold uppercase text-dim tracking-widest mb-3">
-                {formatDayFriendly(dg.date)}, {formatDayDate(dg.date)}
-              </p>
-              {renderScreeningsRow(dg.screenings)}
-            </div>
-          ))}
-        </div>
-      ) : (
-        renderScreeningsRow(group.screenings)
-      )}
+      {!preview &&
+        (showDayHeaders ? (
+          <div className="flex flex-col gap-6">
+            {dayGroups.map((dg) => (
+              <div key={dg.date}>
+                <p className="text-xs font-bold uppercase text-dim tracking-widest mb-3">
+                  {formatDayFriendly(dg.date)}, {formatDayDate(dg.date)}
+                </p>
+                {renderScreeningsRow(dg.screenings)}
+              </div>
+            ))}
+          </div>
+        ) : (
+          renderScreeningsRow(group.screenings)
+        ))}
       {hasFooter && (
-        <div className="no-print mt-16 flex flex-wrap items-center justify-between gap-4">
+        <div className={`no-print flex flex-wrap items-center justify-between gap-4 ${preview ? "mt-6" : "mt-16"}`}>
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-bold uppercase tracking-wide text-dim">
             {cinemaPageLinks.map((link, i) => (
               <Fragment key={link.url}>

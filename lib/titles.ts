@@ -117,6 +117,10 @@ export function titlesEquivalent(a: string, b: string): boolean {
     s
       .toLowerCase()
       .replace(/\([^)]*\)/g, " ")
+      // General Punctuation (U+2000–206F): curly quotes, en/em dashes, ellipsis… These fall in
+      // the "kept" U+00C0+ range but are punctuation, not script — so "Don't" (curly) would
+      // otherwise not match "Don't" (ASCII). Flatten them before the class strip below.
+      .replace(/[\u2000-\u206f]/g, " ")
       .replace(/[^0-9a-zÀ-￿]+/g, " ")
       .trim();
   return norm(a) === norm(b);

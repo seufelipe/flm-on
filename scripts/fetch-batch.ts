@@ -1,16 +1,18 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { refreshShowtimesForRange } from "@/lib/aggregate";
-import { upcomingDays } from "@/lib/date";
+import { upcomingDays, nextWeekDays } from "@/lib/date";
 import type { Screening } from "@/lib/scrapers/types";
 import { displayScreeningTags } from "@/lib/screeningTags";
 import { displayFilmFormats } from "@/lib/formats";
 import { displayLanguage, hasNonEnglishLanguage } from "@/lib/languages";
 import { loadHiddenFilms } from "@/lib/hidden";
 import { loadLanguageOverrides } from "@/lib/languageOverrides";
+import { selectUpcomingFilms } from "@/lib/upcoming";
 
 const STAGING_FILE = path.join(process.cwd(), "data", "staging-batch.json");
 const LABELS_FILE = path.join(process.cwd(), "data", "film-labels.json");
+const UPCOMING_FILE = path.join(process.cwd(), "data", "upcoming.json");
 
 // Cineworld's "Big Screen Classics" strand doesn't get a ☻ mark (lib/screeningTags.ts) — instead
 // its films get a curated `classic!` label pre-filled here for the user to review.
@@ -227,7 +229,42 @@ async function main() {
     }
   }
 
-  console.log(`\nWrote ${STAGING_FILE}`);
+  // Next week (still unconfirmed) — scrape the following Thursday-week and rewrite
+  // data/upcoming.json with the films worth teasing on the "Next week" preview (new releases +
+  // specials, CLAUDE.md decision #18). Read straight at build time like data/film-labels.json;
+  // trim it and review the diff before committing. `fetch:confirm` is unaffected — this file is
+  // not staged/promoted, it's written in place here.
+  const nextDays = nextWeekDays();
+  console.log(`\nFetching next week ${nextDays[0]} .. ${nextDays[nextDays.length - 1]} for the "Next week" preview...`);
+  const nextResult = await refreshShowtimesForRange(nextDays);
+  for (const e of nextResult.errors) console.log(`  ${e.cinema}: ${e.message}`);
+
+  const upcomingFilms = selectUpcomingFilms(screenings, nextResult.screenings, labels);
+  await fs.writeFile(
+    UPCOMING_FILE,
+    JSON.stringify(
+      { generatedAt, week: { from: nextDays[0], to: nextDays[nextDays.length - 1] }, films: upcomingFilms },
+      null,
+      2,
+    ) + "\n",
+    "utf-8",
+  );
+  console.log(
+    `\nNext week — ${nextDays[0]}..${nextDays[nextDays.length - 1]} (${upcomingFilms.length} candidate films — trim data/upcoming.json):\n`,
+  );
+  if (upcomingFilms.length === 0) {
+    console.log("  none");
+  } else {
+    for (const f of upcomingFilms) {
+      const lb = f.letterboxdUrl ?? "NOT FOUND";
+      const tags = f.screeningTags.length ? `  {${f.screeningTags.join(", ")}}` : "";
+      console.log(
+        `  [${f.reason}] ${f.title}${f.year ? ` (${f.year})` : ""}  ${f.cinemas.join("/")}  — Letterboxd: ${lb}${tags}`,
+      );
+    }
+  }
+
+  console.log(`\nWrote ${STAGING_FILE} + ${UPCOMING_FILE}`);
   console.log("Review the report above, then run `npm run fetch:confirm` to publish.");
 }
 

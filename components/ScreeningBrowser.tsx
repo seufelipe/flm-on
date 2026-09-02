@@ -3,10 +3,11 @@
 import { useMemo, useState, useSyncExternalStore, type ReactNode } from "react";
 import type { CinemaId, Screening } from "@/lib/scrapers/types";
 import { findCombos, withEndTimes, itineraryTransitions, fittingAdditions, type TimedScreening } from "@/lib/clash";
-import { groupByFilm } from "@/lib/groupings";
+import { groupByFilm, type FilmGroup } from "@/lib/groupings";
+import type { UpcomingFilm } from "@/lib/upcoming";
 import { TIMEFRAMES, formatTimeframeRange, timeframeForTime, type Timeframe } from "@/lib/timeframe";
 import { CINEMA_LABEL, CINEMA_LOCATION, CINEMA_ORDER } from "@/lib/cinemas";
-import { formatDayFriendly, formatDayDate, todayISO, nowTimeISO, nextBatchLabel } from "@/lib/date";
+import { formatDayFriendly, formatDayDate, todayISO, nowTimeISO } from "@/lib/date";
 import { isShortFilm } from "@/lib/duration";
 import { isKidFriendly } from "@/lib/certs";
 import { displayScreeningTags } from "@/lib/screeningTags";
@@ -32,6 +33,25 @@ interface Props {
   // Curated editorial tags keyed by FilmGroup.key (filmTitle.trim().toLowerCase()); see
   // data/film-labels.json and CLAUDE.md decision #11.
   labels?: Record<string, string>;
+  // The still-unconfirmed "Next week" preview — cards only, no showtimes (decision #18).
+  upcoming?: UpcomingFilm[];
+  upcomingWeek?: { from: string; to: string } | null;
+}
+
+const EMPTY_KEYS: Set<string> = new Set();
+
+// A FilmCard wants a FilmGroup; an UpcomingFilm has everything but the (unknown) sessions.
+function upcomingGroup(f: UpcomingFilm): FilmGroup {
+  return {
+    key: f.title.trim().toLowerCase(),
+    filmTitle: f.title,
+    originalTitle: f.originalTitle,
+    year: f.year,
+    cert: f.cert,
+    director: f.director,
+    letterboxdUrl: f.letterboxdUrl,
+    screenings: [],
+  };
 }
 
 // bookingUrl is the one field guaranteed unique per actual bookable session — real listings can
@@ -73,9 +93,11 @@ function controlPositionClass(isFirst: boolean, isLast: boolean): string {
 // One filter control (Day / Time / Place). The point of this component is what it does when
 // there's nothing to choose:
 //   - 0 options  → the whole control disappears.
-//   - 1 option   → that single option is shown as a selected-looking segment with no "Any X"
-//                  toggle beside it. One choice isn't a choice — but the row should still say
-//                  what you're looking at, so it's shown, just not as something to press.
+//   - 1 option   → that single option is shown as a plain segment with no "Any X" toggle beside
+//                  it. One choice isn't a choice — but the row should still say what you're
+//                  looking at, so it's shown, just not as something to press. It still takes the
+//                  active fill from `isActive` (so it goes quiet when a trailing control like the
+//                  Day row's "Next week" preview is the thing actually in view).
 //   - 2+ options → the usual "Any X" segment plus one segment per option.
 // `trailing` is an extra node rendered flush after the options (the Day row's "come back
 // tomorrow" note); when present it takes the group's right-hand rounded corner.
@@ -100,17 +122,33 @@ function ControlGroup<T>({
   keyFor: (opt: T) => string;
   trailing?: ReactNode;
 }) {
-  if (options.length === 0) return null;
+  // Even with no options to choose from, a trailing node (the "Next week" preview segment) still
+  // needs somewhere to render — the day picker's one always-present control.
+  if (options.length === 0) return trailing ? <div className="shrink-0 flex">{trailing}</div> : null;
 
   if (options.length === 1) {
+    const only = options[0];
+    // When it's the view you're on, there's nothing to press — a plain non-interactive segment.
+    // When it *isn't* (a trailing control like the Day row's "Next week" preview is what's in
+    // view), clicking it is a real action — "take me back to this" — so it becomes a button.
     return (
       <div className="shrink-0 flex">
-        <div
-          style={{ zIndex: 0 }}
-          className={`${SEGMENT_BASE} cursor-default ${controlPositionClass(true, !trailing)} ${controlSegmentClass(true)}`}
-        >
-          {renderLabel(options[0])}
-        </div>
+        {isActive(only) ? (
+          <div
+            style={{ zIndex: 0 }}
+            className={`${SEGMENT_BASE} cursor-default ${controlPositionClass(true, !trailing)} ${controlSegmentClass(true)}`}
+          >
+            {renderLabel(only)}
+          </div>
+        ) : (
+          <button
+            onClick={() => onToggle(only)}
+            style={{ zIndex: 0 }}
+            className={`${SEGMENT_BASE} cursor-pointer ${controlPositionClass(true, !trailing)} ${controlSegmentClass(false)}`}
+          >
+            {renderLabel(only)}
+          </button>
+        )}
         {trailing}
       </div>
     );
@@ -140,7 +178,7 @@ function ControlGroup<T>({
   );
 }
 
-export default function ScreeningBrowser({ screenings, days, labels }: Props) {
+export default function ScreeningBrowser({ screenings, days, labels, upcoming, upcomingWeek }: Props) {
   const [activeTimeframe, setActiveTimeframe] = useState<Timeframe | null>(null);
   const [activeCinema, setActiveCinema] = useState<CinemaId | null>(null);
   // Defaults to **today** — the day you're most likely to be planning for — which also means the
@@ -173,6 +211,11 @@ export default function ScreeningBrowser({ screenings, days, labels }: Props) {
   // A browsing lens, not a saved preference — show only special screenings and labelled films.
   // Ephemeral (resets on reload), lives in the filter bar next to Day/Cinema/Time. See #14.
   const [highlightsOnly, setHighlightsOnly] = useState(false);
+
+  // The "Next week" preview: swaps the whole view for the unconfirmed upcoming-films list
+  // (cards, no showtimes). Toggled from the day picker's trailing segment; any real day pick
+  // exits it. Ephemeral like the Highlights lens. See CLAUDE.md decision #18.
+  const [nextWeek, setNextWeek] = useState(false);
 
   // Whole days before today are dropped (the committed showtimes.json can still list them if
   // it's being viewed a day or more after its weekly batch was fetched), and today's sessions
@@ -240,9 +283,19 @@ export default function ScreeningBrowser({ screenings, days, labels }: Props) {
     () => days.filter((d) => d >= now.date && preferred.some((s) => s.date === d)),
     [days, now, preferred],
   );
-  // The "Come back tomorrow" note only appears the day before the next weekly batch; when it's
-  // hidden the last day button becomes the group's right end and takes the rounded corner.
-  const showBatchNote = nextBatchLabel(now.date) === "Tomorrow";
+  // The still-unconfirmed next-week films, narrowed by the persisted preferences that still make
+  // sense without sessions (cinema / kids-only / language — not time or hide-shorts). The list is
+  // already hand-trimmed to a teaser length in data/upcoming.json, so there's no extra cap here.
+  // No count is surfaced (decision #8).
+  const upcomingVisible = useMemo(() => {
+    if (!upcoming?.length) return [];
+    return upcoming.filter(
+      (f) =>
+        f.cinemas.some((c) => prefs.cinemas[c]) &&
+        !(prefs.kidsOnly && !isKidFriendly(f.cert)) &&
+        matchesLanguagePref(prefs.language, f.screeningTags),
+    );
+  }, [upcoming, prefs]);
 
   // Mirror of effectiveTimeframe (below): an activeCinema/activeDay that the preferences (or the
   // day rolling past) have removed from its option list is treated as "any" so a now-impossible
@@ -397,8 +450,51 @@ export default function ScreeningBrowser({ screenings, days, labels }: Props) {
           visibly shrink to a restricted view — see CLAUDE.md decision #14. min-height keeps the
           footer from jumping during that frame. */}
       <div className="pb-40 min-h-[60vh]">
-        {prefsLoaded && (
-          <>
+        {prefsLoaded &&
+          (nextWeek ? (
+            <div className="flex flex-col gap-8">
+              <div className="bg-surface border-4 border-border rounded-card shadow-card p-4 sm:p-8">
+                <p className="text-xl font-black uppercase tracking-tight">Next week (maybe)</p>
+                <p className="mt-2 text-dim">
+                  A taste of what&rsquo;s coming
+                  {upcomingWeek ? ` the week of ${formatDayDate(upcomingWeek.from)}` : ""} — the times
+                  aren&rsquo;t set yet. The full, confirmed programme, with showtimes and the day
+                  planner, lands here Thursday morning.
+                </p>
+              </div>
+              {upcomingVisible.length === 0 ? (
+                <p className="bg-surface border-4 border-border rounded-card shadow-card p-4 sm:p-8 font-bold">
+                  Nothing lined up for next week within your current view yet — check back Thursday.
+                </p>
+              ) : (
+                upcomingVisible.map((f) => {
+                  const key = f.title.trim().toLowerCase();
+                  return (
+                    <FilmCard
+                      key={key}
+                      group={upcomingGroup(f)}
+                      selectedKeys={EMPTY_KEYS}
+                      partnersOf={EMPTY_KEYS}
+                      keyOf={keyOf}
+                      onSelect={() => {}}
+                      showCinema={false}
+                      daySpecified
+                      preview
+                      // Live label (data/film-labels.json, editable + rebuild — decision #11)
+                      // wins over the one baked into data/upcoming.json at fetch time.
+                      label={labels?.[key] ?? f.label}
+                      // Drop links for cinemas the viewer has turned off — same as regular cards.
+                      cinemaLinks={f.cinemaLinks
+                        .filter((l) => prefs.cinemas[l.cinema])
+                        .map((l) => ({ label: l.label, url: l.url }))}
+                      specialTags={f.screeningTags}
+                    />
+                  );
+                })
+              )}
+            </div>
+          ) : (
+            <>
             <div className="flex flex-col gap-8">
               {filmGroups.length === 0 && (
                 <p className="bg-surface border-4 border-border rounded-card shadow-card p-4 sm:p-8 font-bold">
@@ -443,12 +539,12 @@ export default function ScreeningBrowser({ screenings, days, labels }: Props) {
                 <ComboSuggestions combos={visibleCombos} onSelect={toggleSelected} keyOf={keyOf} />
               </div>
             )}
-          </>
-        )}
+            </>
+          ))}
       </div>
 
       <div className="no-print fixed bottom-0 left-0 right-0 z-20 flex flex-col">
-        {comboScopeDay && effectiveSelectedKeys.size > 0 && (
+        {!nextWeek && comboScopeDay && effectiveSelectedKeys.size > 0 && (
           <DayPlan
             items={dayPlanItems}
             transitions={dayPlanTransitions}
@@ -462,29 +558,40 @@ export default function ScreeningBrowser({ screenings, days, labels }: Props) {
               segment rather than a ControlGroup. Same accent-fill press language as the rest.
               Sits first: it's the lens you reach for most, ahead of the Day/Time/Place filters.
               One line, so it mirrors the ControlGroups' "any" segment (`flex items-center`) and
-              takes `self-stretch` to match their two-line height instead of sitting short. */}
-          <button
-            type="button"
-            aria-pressed={highlightsOnly}
-            onClick={() => setHighlightsOnly((v) => !v)}
-            className={`relative shrink-0 self-stretch flex items-center gap-1.5 border-2 px-3 py-1 rounded-[10px] transition-[translate,box-shadow] duration-100 cursor-pointer ${controlSegmentClass(highlightsOnly)}`}
-          >
-            {/* Same flat-ink smiley the special-screening marks use (decision #13) — this is the
-                lens that surfaces them, so it wears their glyph. Decorative; the label carries the
-                meaning. */}
-            <span aria-hidden="true" className="text-[1.4em] leading-none [font-variant-emoji:text]">
-              {"☻︎"}
-            </span>
-            <span className="font-bold uppercase text-sm tracking-wide">Specials, etc</span>
-          </button>
+              takes `self-stretch` to match their two-line height instead of sitting short.
+              Hidden in the "Next week" preview — there are no sessions to lens. */}
+          {!nextWeek && (
+            <button
+              type="button"
+              aria-pressed={highlightsOnly}
+              onClick={() => setHighlightsOnly((v) => !v)}
+              className={`relative shrink-0 self-stretch flex items-center gap-1.5 border-2 px-3 py-1 rounded-[10px] transition-[translate,box-shadow] duration-100 cursor-pointer ${controlSegmentClass(highlightsOnly)}`}
+            >
+              {/* Same flat-ink smiley the special-screening marks use (decision #13) — this is the
+                  lens that surfaces them, so it wears their glyph. Decorative; the label carries the
+                  meaning. */}
+              <span aria-hidden="true" className="text-[1.4em] leading-none [font-variant-emoji:text]">
+                {"☻︎"}
+              </span>
+              <span className="font-bold uppercase text-sm tracking-wide">Specials, etc</span>
+            </button>
+          )}
 
           <ControlGroup
             options={visibleDays}
             anyLabel="This week"
-            anyActive={effectiveDay === null}
-            isActive={(day) => effectiveDay === day}
-            onAny={() => setActiveDay(null)}
-            onToggle={(day) => setActiveDay(effectiveDay === day ? null : day)}
+            anyActive={effectiveDay === null && !nextWeek}
+            isActive={(day) => effectiveDay === day && !nextWeek}
+            onAny={() => {
+              setActiveDay(null);
+              setNextWeek(false);
+            }}
+            onToggle={(day) => {
+              // From the preview, tapping a day just drops back to it. Otherwise it's the normal
+              // toggle (tapping the active day clears back to "This week").
+              setActiveDay(nextWeek ? day : effectiveDay === day ? null : day);
+              setNextWeek(false);
+            }}
             keyFor={(day) => day}
             renderLabel={(day) => (
               <>
@@ -493,23 +600,40 @@ export default function ScreeningBrowser({ screenings, days, labels }: Props) {
               </>
             )}
             trailing={
-              showBatchNote ? (
-                /* Not a button — this is an announcement ("more data tomorrow"), not a
-                   temporarily-unavailable control, so it keeps the flush/translated look even
-                   though genuinely ruled-out options are now removed rather than shown disabled.
-                   Only shown the day before the next batch — earlier it just reads as clutter. */
-                <div
-                  style={{ zIndex: visibleDays.length + 1 }}
-                  className={`relative shrink-0 border-2 border-dim px-3 py-1 flex flex-col items-start justify-center gap-0.5 bg-surface text-dim translate-x-[6px] translate-y-[6px] cursor-default ${controlPositionClass(false, true)}`}
-                >
-                  <span className="font-normal uppercase text-xs tracking-wide">Come back</span>
-                  <span className="text-xs text-dim uppercase tracking-widest">Tomorrow!</span>
-                </div>
+              /* The "more is coming" affordance — replaces the old Wednesday-only "come back
+                 tomorrow" note, shown whenever there's an unconfirmed next-week list to preview.
+                 Behaves like a day segment: a real button to switch to it, then non-interactive
+                 once it's the view you're on (you leave it by tapping a day / "This week", same
+                 as any other segment). Takes the group's right rounded corner. See decision #18. */
+              upcoming?.length ? (
+                // Non-interactive once it's the view you're on — but only when there's a day
+                // segment to tap as the way back. With no visible days (stale data) it stays a
+                // toggle so the preview isn't a dead end.
+                nextWeek && visibleDays.length > 0 ? (
+                  <div
+                    style={{ zIndex: visibleDays.length + 1 }}
+                    className={`${SEGMENT_BASE} cursor-default ${controlPositionClass(false, true)} ${controlSegmentClass(true)}`}
+                  >
+                    <span className="font-bold uppercase text-sm tracking-wide">Next week</span>
+                    <span className="text-xs text-dim uppercase tracking-widest">(maybe)</span>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    aria-pressed={nextWeek}
+                    onClick={() => setNextWeek((v) => !v)}
+                    style={{ zIndex: visibleDays.length + 1 }}
+                    className={`${SEGMENT_BASE} cursor-pointer ${controlPositionClass(false, true)} ${controlSegmentClass(nextWeek)}`}
+                  >
+                    <span className="font-bold uppercase text-sm tracking-wide">Next week</span>
+                    <span className="text-xs text-dim uppercase tracking-widest">(maybe)</span>
+                  </button>
+                )
               ) : undefined
             }
           />
 
-          {timeFilterUseful && (
+          {!nextWeek && timeFilterUseful && (
             <ControlGroup
               options={usableTimeframes}
               anyLabel="Any Time"
@@ -527,7 +651,7 @@ export default function ScreeningBrowser({ screenings, days, labels }: Props) {
             />
           )}
 
-          {cinemaFilterUseful && (
+          {!nextWeek && cinemaFilterUseful && (
             <ControlGroup
               options={cinemasPresent}
               anyLabel="Anywhere"

@@ -37,6 +37,7 @@ yarn-error.log*
 # curated override / editorial files below are committed, everything else here is not
 /data/*.json
 !/data/showtimes.json
+!/data/upcoming.json
 !/data/title-overrides.json
 !/data/letterboxd-overrides.json
 !/data/film-labels.json

@@ -1,0 +1,247 @@
+{
+  "generatedAt": "2026-09-02T09:19:32.931Z",
+  "week": {
+    "from": "2026-09-03",
+    "to": "2026-09-09"
+  },
+  "films": [
+    {
+      "title": "Star Trek IV: The Voyage Home",
+      "year": 1986,
+      "cert": "PG",
+      "director": "Leonard Nimoy",
+      "letterboxdUrl": "https://letterboxd.com/film/star-trek-iv-the-voyage-home/",
+      "cinemas": [
+        "cineworld",
+        "lighthouse"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "cineworld",
+          "label": "Cineworld",
+          "url": "https://www.cineworld.ie/movies/1000047484-star-trek-iv-the-voyage-home-40th-anniversary/"
+        },
+        {
+          "cinema": "lighthouse",
+          "label": "Light House",
+          "url": "https://www.lighthousecinema.ie/film/star-trek-iv-the-voyage-home"
+        }
+      ],
+      "screeningTags": [
+        "Big Screen Classics"
+      ],
+      "firstDate": "2026-09-04",
+      "reason": "special"
+    },
+    {
+      "title": "Stop! That! Train!",
+      "year": 2026,
+      "cert": "15A",
+      "director": "Adam Shankman",
+      "letterboxdUrl": "https://letterboxd.com/film/stop-that-train/",
+      "cinemas": [
+        "lighthouse"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "lighthouse",
+          "label": "Light House",
+          "url": "https://www.lighthousecinema.ie/film/stop-that-train"
+        }
+      ],
+      "screeningTags": [],
+      "firstDate": "2026-09-03",
+      "reason": "new"
+    },
+    {
+      "title": "The Incomer",
+      "year": 2026,
+      "cert": "12A",
+      "director": "Louis Paxton",
+      "letterboxdUrl": "https://letterboxd.com/film/the-incomer/",
+      "cinemas": [
+        "cineworld",
+        "ifi"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "cineworld",
+          "label": "Cineworld",
+          "url": "https://www.cineworld.ie/movies/1000037197-the-incomer/"
+        },
+        {
+          "cinema": "ifi",
+          "label": "IFI",
+          "url": "https://ifi.ie/films/the-incomer-2"
+        }
+      ],
+      "screeningTags": [
+        "Open Captioned"
+      ],
+      "firstDate": "2026-09-04",
+      "reason": "new"
+    },
+    {
+      "title": "Celtic Utopia",
+      "year": 2025,
+      "cert": "15A",
+      "director": "Dennis Harvey, Lars Lovén",
+      "originalTitle": "Útóipe Cheilteach",
+      "letterboxdUrl": "https://letterboxd.com/film/celtic-utopia/",
+      "cinemas": [
+        "ifi",
+        "lighthouse"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "ifi",
+          "label": "IFI",
+          "url": "https://ifi.ie/films/celtic-utopia-2"
+        },
+        {
+          "cinema": "lighthouse",
+          "label": "Light House",
+          "url": "https://www.lighthousecinema.ie/film/celtic-utopia"
+        }
+      ],
+      "screeningTags": [],
+      "firstDate": "2026-09-04",
+      "reason": "new"
+    },
+    {
+      "title": "Super Nature",
+      "year": 2025,
+      "cert": "G",
+      "director": "Ed Sayers",
+      "letterboxdUrl": "https://letterboxd.com/film/super-nature/",
+      "cinemas": [
+        "lighthouse"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "lighthouse",
+          "label": "Light House",
+          "url": "https://www.lighthousecinema.ie/film/super-nature"
+        }
+      ],
+      "screeningTags": [],
+      "firstDate": "2026-09-04",
+      "reason": "new"
+    },
+    {
+      "title": "The Young Offenders",
+      "year": 2016,
+      "cert": "15A",
+      "director": "Peter Foott",
+      "letterboxdUrl": "https://letterboxd.com/film/the-young-offenders/",
+      "cinemas": [
+        "lighthouse"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "lighthouse",
+          "label": "Light House",
+          "url": "https://www.lighthousecinema.ie/film/the-young-offenders-10th-anniversary"
+        }
+      ],
+      "screeningTags": [],
+      "firstDate": "2026-09-05",
+      "reason": "new"
+    },
+    {
+      "title": "City of God",
+      "year": 2002,
+      "cert": "18",
+      "director": "Fernando Meirelles, Kátia Lund",
+      "originalTitle": "Cidade de Deus",
+      "letterboxdUrl": "https://letterboxd.com/film/city-of-god/",
+      "cinemas": [
+        "lighthouse"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "lighthouse",
+          "label": "Light House",
+          "url": "https://www.lighthousecinema.ie/film/city-of-god"
+        }
+      ],
+      "screeningTags": [
+        "Portuguese",
+        "Subtitled"
+      ],
+      "firstDate": "2026-09-05",
+      "reason": "special"
+    },
+    {
+      "title": "The Lobster",
+      "year": 2015,
+      "cert": "TBC",
+      "director": "Yorgos Lanthimos",
+      "letterboxdUrl": "https://letterboxd.com/film/the-lobster/",
+      "cinemas": [
+        "lighthouse"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "lighthouse",
+          "label": "Light House",
+          "url": "https://www.lighthousecinema.ie/film/the-lobster-10th-anniversary"
+        }
+      ],
+      "screeningTags": [],
+      "firstDate": "2026-09-06",
+      "reason": "new"
+    },
+    {
+      "title": "Pressure",
+      "year": 2026,
+      "cert": "12A",
+      "director": "Anthony Maras",
+      "letterboxdUrl": "https://letterboxd.com/film/pressure-2026/",
+      "cinemas": [
+        "ifi",
+        "cineworld",
+        "lighthouse"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "ifi",
+          "label": "IFI",
+          "url": "https://ifi.ie/films/pressure-2"
+        },
+        {
+          "cinema": "cineworld",
+          "label": "Cineworld",
+          "url": "https://www.cineworld.ie/movies/1000004458-pressure/"
+        },
+        {
+          "cinema": "lighthouse",
+          "label": "Light House",
+          "url": "https://www.lighthousecinema.ie/film/pressure"
+        }
+      ],
+      "screeningTags": [],
+      "firstDate": "2026-09-09",
+      "reason": "new"
+    },
+    {
+      "title": "Oasis: Don’t Look Back In Anger",
+      "year": 2026,
+      "director": "Dylan Southern, Will Lovelace",
+      "letterboxdUrl": "https://letterboxd.com/film/oasis-dont-look-back-in-anger/",
+      "cinemas": [
+        "cineworld"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "cineworld",
+          "label": "Cineworld",
+          "url": "https://www.cineworld.ie/movies/1000021803-oasis-don-t-look-back-in-anger/"
+        }
+      ],
+      "screeningTags": [],
+      "firstDate": "2026-09-09",
+      "reason": "new"
+    }
+  ]
+}

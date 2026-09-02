@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { daysUntilThursday, upcomingDays, nextBatchLabel, formatDayDate } from "@/lib/date";
+import { daysUntilThursday, upcomingDays, nextWeekDays, nextBatchLabel, formatDayDate } from "@/lib/date";
 
 describe("daysUntilThursday", () => {
   it("returns 0 on Thursday itself", () => {
@@ -42,6 +42,28 @@ describe("upcomingDays", () => {
 
   it("runs up to but excluding this week's Thursday on Monday", () => {
     expect(upcomingDays("2026-08-24")).toEqual(["2026-08-24", "2026-08-25", "2026-08-26"]);
+  });
+});
+
+describe("nextWeekDays", () => {
+  it("is the seven-day Thursday-week after the current batch, from any weekday", () => {
+    expect(nextWeekDays("2026-08-27")).toEqual([
+      // Thursday — current batch is 08-27..09-02, so next week starts the following Thursday
+      "2026-09-03",
+      "2026-09-04",
+      "2026-09-05",
+      "2026-09-06",
+      "2026-09-07",
+      "2026-09-08",
+      "2026-09-09",
+    ]);
+  });
+
+  it("always starts on a Thursday and runs seven days", () => {
+    expect(nextWeekDays("2026-08-24")[0]).toBe("2026-08-27"); // Monday → this coming Thursday
+    expect(nextWeekDays("2026-08-26")[0]).toBe("2026-08-27"); // Wednesday
+    expect(nextWeekDays("2026-08-28")[0]).toBe("2026-09-03"); // Friday → next batch's Thursday
+    expect(nextWeekDays("2026-08-24")).toHaveLength(7);
   });
 });
 

@@ -224,7 +224,9 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
      inline `z-index` (the active segment's `translate` makes a stacking context). **No
      "disabled" variant** — a segment you can't act on is removed from the row (or, if it's the
      last one, shown non-interactive). Don't reintroduce a greyed-out disabled state without
-     asking.
+     asking. The one exception: `ControlGroup`'s sole option renders non-interactive only while
+     `isActive` (it *is* the current view); when something else holds the view — the Day row's
+     "Next week" preview (decision #18) — it becomes a real button, "take me back to this".
 
 8. **No film-count / progress UI.** A "here are X films" counter was tried and rejected — the
    user said counters "add pressure". No running counts, badges, or the like in the main UI
@@ -399,6 +401,42 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
       `matchesLanguagePref`) filters `preferred` on whether `displayLanguage` found a non-English
       original language. `dubbed` is no longer filtered on — just the pill "Dub" mark.
     - `fetch:batch` has a "Languages" section listing every non-English film's resolved language.
+
+18. **"Next week" preview — the unconfirmed tease** (`lib/upcoming.ts`, `data/upcoming.json`).
+    A segment in the day picker's **trailing slot** (`ScreeningBrowser` — it *replaces* the old
+    Wednesday-only "Come back Tomorrow!" note; `nextBatchLabel` is no longer used in the UI).
+    Pressing it (`nextWeek` state, ephemeral like the Highlights lens) swaps the whole view for a
+    short list of films coming *next* week, rendered **cards only, no session pills** (`FilmCard
+    preview` — the sessions aren't confirmed) under a "the full list lands Thursday" banner. It
+    behaves like any other segment: non-interactive once it's the view you're on, and you leave
+    by tapping a day / "This week" (which is why the sole-day segment goes interactive here —
+    decision #7). Only if there are no visible days at all (stale data) does it stay a toggle so
+    the preview can't dead-end. The Time / Cinema / "Specials, etc" controls and the plan/combo
+    tools are hidden while it's on.
+    - **Source:** `fetch:batch` runs a *second* `refreshShowtimesForRange(nextWeekDays())`
+      (`lib/date.ts` — next Thursday through the following Wednesday) and
+      `selectUpcomingFilms(thisWeek, nextWeek, labels)` picks **new** films (title not in this
+      week's set) **plus specials** (any next-week session passing the "Specials, etc" test, or a
+      labelled film); new shorts are dropped, short specials kept. It **rewrites
+      `data/upcoming.json` in place** (`{ generatedAt, week, films }`) — same
+      batch-writes / human-trims / build-time-read pattern as `data/film-labels.json`, **not**
+      staged/promoted (`fetch:confirm` is untouched). Trim the file and review the diff before
+      committing.
+    - `app/page.tsx` reads it at build (`loadUpcoming`), passes `upcoming` / `upcomingWeek` to
+      `ScreeningBrowser`; `upcomingVisible` re-applies the cinema / kids-only / language
+      preferences (not time / hide-shorts) — no length cap, the committed file is already
+      hand-trimmed to a teaser list (**no count shown** — decision #8). The "Next week" segment
+      only renders when `data/upcoming.json` has films. A film shows if *any* enabled cinema
+      plays it, and its film-page links are filtered to the enabled cinemas (each `cinemaLinks`
+      entry carries its `cinema` id for this) — matching a regular card. The card's merged
+      `screeningTags` stay film-level (no per-cinema split), so a format/strand tag from a
+      muted cinema can still ride along; harmless for a session-less tease and none of the
+      surfaced ones render visibly without a pill.
+    - `FilmCard preview`: header + meta line + `FilmNotes` + the film-page/Letterboxd footer,
+      no showtime section at all. The label is the live `film-labels.json` value
+      (`labels?.[key] ?? f.label`), so a label edit + rebuild updates it like any card.
+    - **Coverage caveat:** Light House's site only exposes 9 days out, so next-week coverage
+      leans on Cineworld + IFI plus Light House's first ~3 next-week days.
 
 ## Known gaps
 
