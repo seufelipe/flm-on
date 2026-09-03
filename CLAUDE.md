@@ -526,6 +526,18 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
 - `npm run fetch:confirm` — promote staging to the committed `data/showtimes.json`
 - `npm run gen:icons` — regenerate app icons + favicon (decision #10)
 
+## Working on this
+
+- **Before calling anything done:** `npx vitest run`, then `npm run build` and confirm `/` is still
+  `○ (Static)` (decision #3). A UI change also needs a look in `npm run dev` — the marquee, sticker
+  and segmented-control work is all pixel-level, and type-checking proves nothing about it.
+- **This file is part of the change.** Nearly every feature commit here touches CLAUDE.md in the
+  same commit — a new decision gets a numbered entry with its *reasoning*, a reversed one gets
+  rewritten, not appended to. If a change makes a paragraph here wrong and you don't fix it, the
+  change isn't finished.
+- **Root causes only.** The scrapers already degrade silently (see Known gaps); a patch that papers
+  over a parse failure instead of fixing the selector hides a real break.
+
 ## Data files (`data/`)
 
 **Committed:**
