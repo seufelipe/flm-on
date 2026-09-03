@@ -28,26 +28,22 @@ describe("selectUpcomingFilms", () => {
     expect(films).toEqual([]);
   });
 
-  it("keeps a held-over film when next week has a special screening of it", () => {
+  it("drops a held-over film even when next week has a special screening of it", () => {
     const films = selectUpcomingFilms(
       [sc({ filmTitle: "Alien" })],
       [sc({ filmTitle: "Alien", screeningTags: ["70mm"] })],
       {},
     );
-    expect(films.map((f) => f.title)).toEqual(["Alien"]);
-    expect(films[0].reason).toBe("special");
-    expect(films[0].screeningTags).toContain("70mm");
+    expect(films).toEqual([]);
   });
 
-  it("keeps a held-over film that has a curated label", () => {
+  it("drops a held-over film even when it has a curated label", () => {
     const films = selectUpcomingFilms(
       [sc({ filmTitle: "Trainspotting" })],
       [sc({ filmTitle: "Trainspotting" })],
       { trainspotting: "classic!" },
     );
-    expect(films.map((f) => f.title)).toEqual(["Trainspotting"]);
-    expect(films[0].reason).toBe("special");
-    expect(films[0].label).toBe("classic!");
+    expect(films).toEqual([]);
   });
 
   it("drops a new short film but keeps a short special", () => {

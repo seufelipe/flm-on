@@ -470,9 +470,10 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
     non-empty).
     - **Source:** `fetch:batch` runs a *second* `refreshShowtimesForRange(nextWeekDays())`
       (`lib/date.ts` — next Thursday through the following Wednesday) and
-      `selectUpcomingFilms(thisWeek, nextWeek, labels)` picks **new** films (title not in this
-      week's set) **plus specials** (any next-week session passing the "Specials, etc" test, or a
-      labelled film); new shorts are dropped, short specials kept. It **rewrites
+      `selectUpcomingFilms(thisWeek, nextWeek, labels)` picks **only films not already playing
+      this week** (a held-over film isn't a "coming next week" tease, even if next week's run is
+      a special format / has a label); among those, new shorts are dropped but a short *special*
+      is kept, and specials/labelled films sort first. It **rewrites
       `data/upcoming.json` in place** (`{ generatedAt, week, films }`) — same
       batch-writes / human-trims / build-time-read pattern as `data/film-labels.json`, **not**
       staged/promoted (`fetch:confirm` is untouched). Trim the file and review the diff before
