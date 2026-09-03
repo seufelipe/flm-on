@@ -518,7 +518,11 @@ function DockSegments({
   setActiveCinema,
 }: Props) {
   return (
-    <div className="flex items-center justify-center-safe gap-4 overflow-x-auto scrollbar-none">
+    // `overflow-x-auto` forces `overflow-y` to compute to `auto` too, so a selected segment's
+    // 6px downward `translate` (and the resting segments' 6px shadow) would trip a vertical
+    // scrollbar. `pb-2 -mb-2` gives that reach room inside the scroll box without adding a
+    // visible gap — same trick as SettingsPanel's option rows.
+    <div className="flex items-center justify-center-safe gap-4 overflow-x-auto scrollbar-none pb-2 -mb-2">
       {!nextWeek && (
         <SpecialsToggle
           on={highlightsOnly}
