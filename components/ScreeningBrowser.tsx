@@ -332,6 +332,13 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
 
   const clearPlan = () => writePlan([]);
 
+  // Clicking a day header in the plan filters the film list to that day (leaving the "Next week"
+  // preview if it's on).
+  const pickDay = (date: string) => {
+    setActiveDay(date);
+    setNextWeek(false);
+  };
+
   const filterProps = {
     highlightsOnly,
     setHighlightsOnly,
@@ -481,6 +488,7 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
                 onSelect={toggleSelected}
                 onRemove={toggleSelected}
                 onClear={clearPlan}
+                onPickDay={pickDay}
                 keyOf={keyOf}
               />
             )}
@@ -524,6 +532,7 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
             onSelect={toggleSelected}
             onRemove={toggleSelected}
             onClear={clearPlan}
+            onPickDay={pickDay}
             keyOf={keyOf}
           />
         </div>

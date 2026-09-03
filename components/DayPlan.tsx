@@ -15,6 +15,8 @@ interface Props {
   // itineraryTransitions(items) — transitions[i] is the step from items[i] to items[i+1].
   transitions: ItineraryTransition[];
   onRemove: (s: TimedScreening) => void;
+  // Clicking a day header filters the film list to that day.
+  onPickDay: (date: string) => void;
   keyOf: (s: TimedScreening) => string;
 }
 
@@ -39,7 +41,7 @@ function formatSpan(mins: number): string {
 // the next day's header, not a gap ("Overlaps 840min" would be nonsense). Within a day the
 // transitions between consecutive screenings show as before, flagged when they overlap / are too
 // tight to make.
-export default function DayPlan({ items, transitions, onRemove, keyOf }: Props) {
+export default function DayPlan({ items, transitions, onRemove, onPickDay, keyOf }: Props) {
   const groups: { date: string; rows: { s: TimedScreening; transition: ItineraryTransition | null }[] }[] = [];
   items.forEach((s, idx) => {
     const transition = idx > 0 ? transitions[idx - 1] : null;
@@ -56,11 +58,15 @@ export default function DayPlan({ items, transitions, onRemove, keyOf }: Props) 
           Math.min(...group.rows.map((r) => r.s.startMins));
         return (
           <div key={group.date} className="flex flex-col gap-2">
-            <div className="flex items-baseline justify-between gap-2 border-b-2 border-border pb-1">
-              <span className="font-black uppercase text-sm tracking-tight">
+            <div className="flex items-baseline justify-between gap-2">
+              <button
+                type="button"
+                onClick={() => onPickDay(group.date)}
+                className="font-black uppercase text-sm tracking-tight cursor-pointer text-left hover:underline underline-offset-2"
+              >
                 {formatDayFriendly(group.date)}
                 <span className="ml-1.5 font-bold text-dim">{formatDayDate(group.date)}</span>
-              </span>
+              </button>
               <span className="shrink-0 text-xs font-bold uppercase tracking-wide text-dim">
                 {group.rows.length} {group.rows.length === 1 ? "film" : "films"} · ~{formatSpan(spanMins)}
               </span>

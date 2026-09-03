@@ -18,10 +18,11 @@ interface Props {
   onSelect: (s: TimedScreening) => void;
   onRemove: (s: TimedScreening) => void;
   onClear: () => void;
+  onPickDay: (date: string) => void;
   keyOf: (s: TimedScreening) => string;
 }
 
-export default function PlanButton({ count, combos, items, transitions, suggestionDay, onSelect, onRemove, onClear, keyOf }: Props) {
+export default function PlanButton({ count, combos, items, transitions, suggestionDay, onSelect, onRemove, onClear, onPickDay, keyOf }: Props) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -84,6 +85,10 @@ export default function PlanButton({ count, combos, items, transitions, suggesti
               onRemove={onRemove}
               onClear={onClear}
               onClose={() => setOpen(false)}
+              onPickDay={(date) => {
+                onPickDay(date);
+                setOpen(false);
+              }}
               keyOf={keyOf}
             />
           </div>

@@ -22,6 +22,7 @@ interface Props {
   onRemove: (s: TimedScreening) => void;
   onClear: () => void;
   onClose?: () => void;
+  onPickDay: (date: string) => void;
   keyOf: (s: TimedScreening) => string;
   className?: string;
 }
@@ -35,21 +36,20 @@ export default function PlanPanel({
   onRemove,
   onClear,
   onClose,
+  onPickDay,
   keyOf,
   className = "",
 }: Props) {
   const hasPlan = items.length > 0;
-  const spansWeek = new Set(items.map((s) => s.date)).size > 1;
   // Empty state has no title — the card's own masthead already labels the surface.
-  const title = spansWeek ? "Your week" : "Your plan";
   const showHeader = hasPlan || onClose != null;
 
   return (
     <div className={`flex flex-col overflow-hidden ${className}`}>
       {showHeader && (
-        <div className="flex shrink-0 items-center justify-between gap-3 border-b-2 border-border px-5 py-3">
+        <div className="flex shrink-0 items-center justify-between gap-3 px-5 py-3">
           {hasPlan ? (
-            <h2 className="font-black uppercase text-lg tracking-tight">{title}</h2>
+            <h2 className="font-black uppercase text-lg tracking-tight">Your plan</h2>
           ) : (
             <span />
           )}
@@ -80,7 +80,13 @@ export default function PlanPanel({
 
       <div className="min-h-0 grow overflow-y-auto scrollbar-none p-5">
         {hasPlan ? (
-          <DayPlan items={items} transitions={transitions} onRemove={onRemove} keyOf={keyOf} />
+          <DayPlan
+            items={items}
+            transitions={transitions}
+            onRemove={onRemove}
+            onPickDay={onPickDay}
+            keyOf={keyOf}
+          />
         ) : suggestionDay && combos.length > 0 ? (
           <>
             <p className="mb-3 text-xs font-bold uppercase tracking-wide text-dim">Suggested double bills</p>
