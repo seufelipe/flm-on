@@ -58,7 +58,7 @@ export default function PlanPanel({
               <button
                 type="button"
                 onClick={onClear}
-                className="border-2 border-border rounded-btn px-2.5 py-1 text-xs font-bold uppercase tracking-wide cursor-pointer shadow-btn-secondary transition-transform active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
+                className="text-xs font-bold uppercase tracking-wide text-dim underline underline-offset-2 cursor-pointer"
               >
                 Clear
               </button>
