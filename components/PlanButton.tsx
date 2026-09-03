@@ -72,7 +72,7 @@ export default function PlanButton({ count, combos, items, transitions, suggesti
             role="dialog"
             aria-modal="true"
             aria-label="Your plan"
-            className="relative flex w-full max-h-full sm:max-w-md"
+            className="relative flex w-full max-h-full sm:max-w-md border-4 border-border rounded-card shadow-card-lg overflow-hidden"
           >
             <PlanPanel
               className="max-h-full w-full"

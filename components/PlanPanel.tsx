@@ -1,16 +1,17 @@
 "use client";
 
+import type { ReactNode } from "react";
 import type { ItineraryTransition, ScreeningPair, TimedScreening } from "@/lib/clash";
 import DayPlan from "./DayPlan";
 import { ComboList } from "./ComboSuggestions";
 
 // The one persistent plan surface — what ComboSuggestions + DayPlan used to do between them, in a
-// single card. Lives in the desktop right rail (sticky) and inside the mobile plan sheet
-// (behind the floating button). See CLAUDE.md decision #5.
+// single panel. Flat treatment (no dark header bar): a light label row with a rule under it,
+// then the body. Used inside the desktop right-rail card (pinned below the masthead) and inside
+// the mobile plan sheet (behind the floating button). See CLAUDE.md decision #5.
 //
 // Bounded height + internal scroll is set by the caller via `className` (`lg:max-h-…` in the
-// rail, `grow min-h-0` in the sheet); this component just keeps its dark title bar pinned while
-// the body scrolls.
+// rail, `grow min-h-0` in the sheet); the label row stays pinned while the body scrolls.
 interface Props {
   combos: ScreeningPair[];
   items: TimedScreening[];
@@ -23,6 +24,8 @@ interface Props {
   onClear: () => void;
   onClose?: () => void;
   keyOf: (s: TimedScreening) => string;
+  // A small dim line under the plan body — the desktop rail passes the "data as of …" note here.
+  footer?: ReactNode;
   className?: string;
 }
 
@@ -36,6 +39,7 @@ export default function PlanPanel({
   onClear,
   onClose,
   keyOf,
+  footer,
   className = "",
 }: Props) {
   const hasPlan = items.length > 0;
@@ -43,17 +47,15 @@ export default function PlanPanel({
   const title = !hasPlan ? "Make a plan" : spansWeek ? "Your week" : "Your plan";
 
   return (
-    <div
-      className={`flex flex-col overflow-hidden border-4 border-border bg-surface shadow-card-lg rounded-card ${className}`}
-    >
-      <div className="flex shrink-0 items-center justify-between gap-3 bg-fg text-surface px-5 py-3.5">
+    <div className={`flex flex-col overflow-hidden bg-surface ${className}`}>
+      <div className="flex shrink-0 items-center justify-between gap-3 border-b-2 border-border px-5 py-3">
         <h2 className="font-black uppercase text-lg tracking-tight">{title}</h2>
         <div className="flex shrink-0 items-center gap-1">
           {hasPlan && (
             <button
               type="button"
               onClick={onClear}
-              className="border-2 border-surface rounded-btn px-2.5 py-1 text-xs font-bold uppercase tracking-wide cursor-pointer transition-transform active:translate-x-[2px] active:translate-y-[2px]"
+              className="border-2 border-border rounded-btn px-2.5 py-1 text-xs font-bold uppercase tracking-wide cursor-pointer shadow-btn-secondary transition-transform active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
             >
               Clear
             </button>
@@ -85,6 +87,10 @@ export default function PlanPanel({
             Tap a showtime to start a plan
             {suggestionDay ? "." : ", or pick a day for suggested double bills."}
           </p>
+        )}
+
+        {footer && (
+          <p className="mt-6 border-t-2 border-border pt-3 text-xs text-dim">{footer}</p>
         )}
       </div>
     </div>

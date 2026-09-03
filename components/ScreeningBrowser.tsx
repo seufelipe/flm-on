@@ -24,7 +24,7 @@ import {
 } from "@/lib/preferences";
 import { planSnapshot, PLAN_SERVER_SNAPSHOT, subscribePlan, writePlan } from "@/lib/plan";
 import FilmCard from "./FilmCard";
-import Masthead from "./Masthead";
+import Masthead, { MastheadTitle } from "./Masthead";
 import ComboSuggestions from "./ComboSuggestions";
 import FilterControls from "./FilterControls";
 import PlanPanel from "./PlanPanel";
@@ -33,6 +33,8 @@ import PlanButton from "./PlanButton";
 interface Props {
   screenings: Screening[];
   days: string[];
+  // Formatted "data as of" date for the desktop plan-card footer; blank when there's no data.
+  dataAsOf?: string;
   // Curated editorial tags keyed by FilmGroup.key (filmTitle.trim().toLowerCase()); see
   // data/film-labels.json and CLAUDE.md decision #11.
   labels?: Record<string, string>;
@@ -63,7 +65,7 @@ function keyOf(s: Screening): string {
   return s.bookingUrl;
 }
 
-export default function ScreeningBrowser({ screenings, days, labels, upcoming, upcomingWeek }: Props) {
+export default function ScreeningBrowser({ screenings, days, dataAsOf, labels, upcoming, upcomingWeek }: Props) {
   const [activeTimeframe, setActiveTimeframe] = useState<Timeframe | null>(null);
   const [activeCinema, setActiveCinema] = useState<CinemaId | null>(null);
   // Defaults to **today** — the day you're most likely to be planning for — which also means the
@@ -453,14 +455,26 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
             stacked above the film list; the plan panel is desktop-only (the mobile plan lives
             behind the floating button). */}
         <div className="lg:col-start-2 lg:row-start-1 min-w-0">
-          <Masthead />
-          <div className="hidden lg:block lg:sticky lg:top-4">
+          {/* Mobile: the page header (title / tagline / Preferences button). */}
+          <div className="lg:hidden">
+            <Masthead />
+          </div>
+
+          {/* Desktop: one rail card — the masthead sits at the top and scrolls away, the plan
+              panel pins with it. The negative sticky `top` ≈ the masthead's height, so the title
+              clears the viewport just before the plan holds (CLAUDE.md decision #5). ~10rem is a
+              fixed estimate of the masthead block; nudge it if a sliver of the tagline shows. */}
+          <div className="hidden lg:block lg:sticky lg:top-[calc(1rem-10.5rem)] border-4 border-border bg-surface shadow-card-lg rounded-card">
+            <div className="px-5 pt-5 pb-4">
+              <MastheadTitle />
+            </div>
             {/* Hidden in the "Next week" preview only while the plan is empty — a saved week-plan
                 stays visible (it's yours regardless of the view), but there's nothing to seed a
                 new one from (no confirmed showtimes). */}
             {planLoaded && !(nextWeek && dayPlanItems.length === 0) && (
               <PlanPanel
-                className="lg:max-h-[calc(100vh-2rem)]"
+                className="border-t-2 border-border"
+                footer={dataAsOf ? `Data as of ${dataAsOf}` : undefined}
                 combos={visibleCombos}
                 items={dayPlanItems}
                 transitions={dayPlanTransitions}

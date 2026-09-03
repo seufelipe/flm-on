@@ -56,20 +56,22 @@ export default async function Home() {
   const labels = await loadFilmLabels();
   const upcoming = await loadUpcoming();
 
+  const dataAsOf = generatedAt ? new Date(generatedAt).toLocaleDateString("en-IE") : "";
+
   return (
     <main className="max-w-4xl lg:max-w-6xl mx-auto w-full px-4 py-8 flex-1">
       <ScreeningBrowser
         screenings={screenings}
         days={days}
+        dataAsOf={dataAsOf}
         labels={labels}
         upcoming={upcoming.films}
         upcomingWeek={upcoming.week}
       />
 
-      <div className="no-print flex items-center justify-between mt-16 pt-4 border-t-2 border-border gap-4">
-        <p className="text-xs text-dim">
-          {generatedAt ? `Data as of ${new Date(generatedAt).toLocaleDateString("en-IE")}` : "No data yet"}
-        </p>
+      {/* Desktop moves this into the plan-card footer (decision #5); mobile keeps it here. */}
+      <div className="no-print lg:hidden flex items-center justify-between mt-16 pt-4 border-t-2 border-border gap-4">
+        <p className="text-xs text-dim">{dataAsOf ? `Data as of ${dataAsOf}` : "No data yet"}</p>
       </div>
     </main>
   );
