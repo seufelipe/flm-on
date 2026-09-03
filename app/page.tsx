@@ -56,7 +56,13 @@ export default async function Home() {
   const labels = await loadFilmLabels();
   const upcoming = await loadUpcoming();
 
-  const dataAsOf = generatedAt ? new Date(generatedAt).toLocaleDateString("en-IE") : "";
+  const updated = generatedAt ? new Date(generatedAt) : null;
+  const lastUpdate = updated
+    ? `Last update ${updated.toLocaleDateString("en-IE", { weekday: "long" })}, ${updated.toLocaleDateString(
+        "en-IE",
+        { day: "numeric", month: "numeric", year: "2-digit" },
+      )}`
+    : "No data yet";
 
   return (
     <main className="max-w-4xl lg:max-w-6xl mx-auto w-full px-4 py-8 flex-1">
@@ -68,9 +74,7 @@ export default async function Home() {
         upcomingWeek={upcoming.week}
       />
 
-      <div className="no-print flex items-center justify-between mt-16 pt-4 border-t-2 border-border gap-4">
-        <p className="text-xs text-dim">{dataAsOf ? `Data as of ${dataAsOf}` : "No data yet"}</p>
-      </div>
+      <p className="no-print mt-16 text-xs text-dim">{lastUpdate}</p>
     </main>
   );
 }
