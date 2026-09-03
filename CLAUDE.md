@@ -13,6 +13,11 @@ so a future session can pick up without re-deriving the reasoning.
 manually-run script fetches the week, prints a plain-text report to review, and confirming
 promotes it to the one committed data file the deployed app reads statically.
 
+**Before any layout change, sketch the proposed result as ASCII and get sign-off first** — the
+user iterates on layout a lot and wants to see the shape before code. This covers anything that
+moves, resizes, reflows, merges or splits regions (columns, cards, bars, headers, panels), not
+one-off spacing tweaks.
+
 ## Stack
 
 Next.js 16 (App Router) + TypeScript, Tailwind v4, cheerio (Light House / IFI HTML; Cineworld is
