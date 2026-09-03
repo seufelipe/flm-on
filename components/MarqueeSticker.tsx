@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-  type CSSProperties,
-  type ReactNode,
-} from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 
 // A small fixed-width sticker whose text scrolls on a seamless loop — two identical copies
 // on one track, and the `flm-marquee` keyframe (app/globals.css) translates the track by exactly
@@ -22,12 +15,11 @@ import {
 // a keyframe that reads a custom property can't run on the compositor (custom props resolve on
 // the main thread), which is what made the tilted header sticker judder. Duration is measured
 // too (~40px/s, 4s floor) so a long note doesn't whip by. SSR / first paint fall back to the
-// CSS defaults until the measure lands.
+// CSS defaults until the measure lands — so a plain `useEffect` is fine (no need for a
+// `useLayoutEffect` that has to be branched away on the server).
 
 const SCROLL_PX_PER_SEC = 40;
 const MIN_DURATION_SEC = 4;
-
-const useIsomorphicLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 export default function MarqueeSticker({
   text,
@@ -57,7 +49,7 @@ export default function MarqueeSticker({
   const itemRef = useRef<HTMLSpanElement>(null);
   const [vars, setVars] = useState<CSSProperties>();
 
-  useIsomorphicLayoutEffect(() => {
+  useEffect(() => {
     const item = itemRef.current;
     if (!item) return;
 
