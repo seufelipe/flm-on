@@ -3,8 +3,6 @@ import path from "path";
 import type { Screening } from "@/lib/scrapers/types";
 import type { UpcomingFilm } from "@/lib/upcoming";
 import ScreeningBrowser from "@/components/ScreeningBrowser";
-import PreferencesButton from "@/components/PreferencesButton";
-import ActivePreferenceNote from "@/components/ActivePreferenceNote";
 
 const DATA_FILE = path.join(process.cwd(), "data", "showtimes.json");
 const LABELS_FILE = path.join(process.cwd(), "data", "film-labels.json");
@@ -59,23 +57,7 @@ export default async function Home() {
   const upcoming = await loadUpcoming();
 
   return (
-    <main className="max-w-4xl mx-auto w-full px-4 py-8 flex-1">
-      <header className="mb-8 flex items-start justify-between gap-4">
-        <div>
-          {/* relative + w-fit: the anchor for <ActivePreferenceNote>'s layered stickers —
-              the kids marquee sits absolutely over the title's top edge, the language tag
-              tucks under it like a subtitle. */}
-          <div className="relative w-fit">
-            <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter">FLM ON</h1>
-            <ActivePreferenceNote />
-          </div>
-          <p className="mt-3 font-bold text-dim uppercase text-sm tracking-widest">
-            See what&rsquo;s on, make a plan. Updated every Thursday morning
-          </p>
-        </div>
-        <PreferencesButton />
-      </header>
-
+    <main className="max-w-4xl lg:max-w-6xl mx-auto w-full px-4 py-8 flex-1">
       <ScreeningBrowser
         screenings={screenings}
         days={days}

@@ -19,6 +19,10 @@ interface Props {
   group: FilmGroup;
   selectedKeys: Set<string>;
   partnersOf: Set<string>;
+  // The dates the plan currently has screenings on. Pills only fade to "wouldn't fit" on those
+  // days — a plan can span the week now (decision #5), and a day it doesn't touch yet is a fresh
+  // start, not a set of clashes. Omitted for the preview cards (nothing is ever selected there).
+  planDates?: Set<string>;
   keyOf: (s: TimedScreening) => string;
   onSelect: (s: TimedScreening) => void;
   showCinema: boolean;
@@ -80,6 +84,7 @@ export default function FilmCard({
   group,
   selectedKeys,
   partnersOf,
+  planDates,
   keyOf,
   onSelect,
   showCinema,
@@ -123,7 +128,12 @@ export default function FilmCard({
     const isPartner = partnersOf.has(k);
     // Once a plan is underway, pills that wouldn't fit (not selected, not a valid next pick) fade
     // out — a film can have screenings all over the day and only some of them are still viable.
-    const dimPill = selectedKeys.size > 0 && !isSelected && !isPartner;
+    // Only on days the plan already touches, though: an untouched day is a fresh start.
+    const dimPill =
+      selectedKeys.size > 0 &&
+      (!planDates || planDates.has(s.date)) &&
+      !isSelected &&
+      !isPartner;
     return (
       <div
         key={k}

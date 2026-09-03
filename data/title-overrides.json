@@ -1,5 +1,5 @@
 {
-  "stripPrefixes": ["ARCHIVE AT LUNCHTIME:", "CINEMA BOOK CLUB:"],
+  "stripPrefixes": ["Irish Focus:", "The Bigger Picture:", "CINEMA BOOK CLUB:"],
   "stripAnnotations": [
     "\\d{1,3}(?:st|nd|rd|th)\\s+anniversary",
     "\\d+k(?:\\s+digital)?\\s+restoration",
@@ -7,10 +7,6 @@
     "(?:january|february|march|april|may|june|july|august|september|october|november|december)\\s+\\d{4}"
   ],
   "corrections": {
-    "Archive at Lunchtime August 2026: Programme 1": "Horse Plays",
-    "Archive at Lunchtime August 2026: Programme 2": "Horse Plays",
-    "Archive at Lunchtime August 2026: Double Bill": "Horse Plays",
-    "Archive at Lunchtime September 2026: Programme 1": "The Irish Riviera",
     "Coyote vs Acme": "Coyote vs. Acme",
     "De Gaulle: Résistance": "De Gaulle Part One: Résistance",
     "I (Ai)": "I"

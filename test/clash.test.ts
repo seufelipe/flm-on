@@ -3,6 +3,7 @@ import {
   findCombos,
   withEndTimes,
   fittingAdditions,
+  itineraryTransitions,
   WALK_BUFFER_MINUTES,
   SAME_CINEMA_BUFFER_MINUTES,
   MAX_COMBO_GAP_MINUTES,
@@ -38,6 +39,47 @@ describe("withEndTimes", () => {
     const [timed] = withEndTimes([screening({ durationMins: 90 })]);
     expect(timed.durationEstimated).toBe(false);
     expect(timed.endMins - timed.startMins).toBe(90);
+  });
+
+  it("encodes the date into startMins so a later day sorts after an earlier day's late show", () => {
+    const [late, nextMorning] = withEndTimes([
+      screening({ time: "23:00", durationMins: 120, date: "2026-08-23" }),
+      screening({ time: "09:00", durationMins: 90, date: "2026-08-24" }),
+    ]);
+    expect(nextMorning.startMins).toBeGreaterThan(late.endMins);
+  });
+});
+
+describe("itineraryTransitions", () => {
+  it("flags a same-day overlap", () => {
+    const items = withEndTimes([
+      screening({ filmTitle: "Film A", time: "12:00", durationMins: 120 }),
+      screening({ filmTitle: "Film B", time: "13:30", durationMins: 90, bookingUrl: "b" }),
+    ]);
+    const [t] = itineraryTransitions(items);
+    expect(t.overlap).toBe(true);
+    expect(t.crossDay).toBe(false);
+  });
+
+  it("flags a same-day gap that's too tight to make", () => {
+    const items = withEndTimes([
+      screening({ cinema: "lighthouse", filmTitle: "Film A", time: "12:00", durationMins: 90 }),
+      screening({ cinema: "ifi", filmTitle: "Film B", time: "13:35", durationMins: 90, bookingUrl: "b" }),
+    ]);
+    const [t] = itineraryTransitions(items);
+    expect(t.tooTight).toBe(true);
+    expect(t.crossDay).toBe(false);
+  });
+
+  it("marks a step across a day boundary as crossDay with no clash flags", () => {
+    const items = withEndTimes([
+      screening({ filmTitle: "Film A", time: "20:00", durationMins: 120, date: "2026-08-23" }),
+      screening({ filmTitle: "Film B", time: "11:00", durationMins: 90, date: "2026-08-24", bookingUrl: "b" }),
+    ]);
+    const [t] = itineraryTransitions(items);
+    expect(t.crossDay).toBe(true);
+    expect(t.overlap).toBe(false);
+    expect(t.tooTight).toBe(false);
   });
 });
 
@@ -140,5 +182,27 @@ describe("fittingAdditions", () => {
     ]);
     const result = fittingAdditions([item], [candidate]);
     expect(result.has("b")).toBe(false);
+  });
+
+  it("does not hint a candidate on a day the plan has nothing on", () => {
+    const [item] = withEndTimes([
+      screening({ filmTitle: "Film A", time: "17:00", durationMins: 120, date: "2026-08-23" }),
+    ]);
+    const [candidate] = withEndTimes([
+      screening({ filmTitle: "Film B", time: "19:30", durationMins: 100, date: "2026-08-24", bookingUrl: "b" }),
+    ]);
+    expect(fittingAdditions([item], [candidate]).has("b")).toBe(false);
+  });
+
+  it("allows the same film on a different day than the one already in the plan", () => {
+    const itinerary = withEndTimes([
+      screening({ filmTitle: "Repeat Film", time: "12:00", durationMins: 90, date: "2026-08-23" }),
+      screening({ filmTitle: "Film C", time: "12:00", durationMins: 90, date: "2026-08-24", bookingUrl: "c" }),
+    ]);
+    const [candidate] = withEndTimes([
+      screening({ filmTitle: "Repeat Film", time: "14:30", durationMins: 90, date: "2026-08-24", bookingUrl: "b" }),
+    ]);
+    const result = fittingAdditions(itinerary, [candidate]);
+    expect(result.has("b")).toBe(true);
   });
 });

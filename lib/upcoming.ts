@@ -1,7 +1,8 @@
 // The "Next week" tease (CLAUDE.md decision #18). `fetch:batch` scrapes the following
 // Thursday-week — still unconfirmed — and this picks the films worth showing as a preview:
-// anything not already playing this week, plus any held-over film with a special screening next
-// week (the same test as the "Specials, etc" lens). No session data goes to the UI; the cards
+// anything not already playing this week (a held-over film isn't news, even if next week's run
+// is a special format — you can already see it). New shorts are dropped (matching the
+// hideShortFilms default); a short *special* is kept. No session data goes to the UI; the cards
 // render without showtime pills. The result is written to data/upcoming.json for the user to
 // trim during the weekly review, then read straight at build time like data/film-labels.json.
 
@@ -58,9 +59,9 @@ export function selectUpcomingFilms(
 
   const films: UpcomingFilm[] = [];
   for (const g of groups) {
+    // Already playing this week → not a "coming next week" tease, whatever next week's run is.
+    if (thisWeekKeys.has(g.key)) continue;
     const special = g.screenings.some((s) => isSpecialSession(s.screeningTags, g.key, labels));
-    const isNew = !thisWeekKeys.has(g.key);
-    if (!isNew && !special) continue;
     // Archive shorts are noise here, matching the hideShortFilms default — keep one only if it's
     // an actual special (a relaxed screening, a 35mm print).
     if (isShortFilm(g.durationMins) && !special) continue;

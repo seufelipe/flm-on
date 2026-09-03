@@ -59,11 +59,14 @@ the curated override / editorial files (`title-overrides`, `letterboxd-overrides
   checked before the Letterboxd language; `null` forces a film unmarked.
 - `lib/groupings.ts` — `groupByFilm`: groups by cleaned title across cinemas *and* dates
   (case/whitespace-insensitive), so one film = one card with many pills.
-- `lib/clash.ts` — `findCombos` (valid double-bill pairs: same day, different film, gap between a
-  cross-/same-cinema minimum and `MAX_COMBO_GAP_MINUTES`), `itineraryTransitions` (gap/overlap/
-  too-tight between consecutive plan items — no max cap, a deliberate plan can have a long gap),
-  `fittingAdditions` (which candidates slot into a plan — checks each against both its would-be
-  chronological neighbours once inserted, not each selected screening independently; decision #5).
+- `lib/clash.ts` — `startMins`/`endMins` are **absolute-ordinal minutes** (`toOrdinalMinutes` =
+  minutes since a fixed epoch), so a plan can span days and every gap calc stays a plain
+  subtraction (decision #5). `findCombos` (valid double-bill pairs: **same day** — the one
+  `date !==` guard left — different film, gap between a cross-/same-cinema minimum and
+  `MAX_COMBO_GAP_MINUTES`), `itineraryTransitions` (gap/overlap/too-tight/`crossDay` between
+  consecutive plan items — no max cap, a deliberate plan can have a long gap), `fittingAdditions`
+  (candidates that slot into a plan — checks each against both its would-be chronological
+  neighbours *on its own day*, allows the same film on another day; decision #5).
 - `scripts/fetch-batch.ts` (`npm run fetch:batch`) — scrapes `upcomingDays()` (`lib/date.ts` —
   full week on a Thursday, else capped at the next Thursday), writes `data/staging-batch.json`,
   prints the review report (titles/casing, Letterboxd matches/misses, special screenings,
@@ -94,14 +97,20 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
 
 ### UI (all client, under `ScreeningBrowser`)
 
-- `components/ScreeningBrowser.tsx` — the interactive core. Day/Cinema/Time filters as
-  single-select segmented controls (`null` = an explicit "This week"/"Anywhere"/"Any Time"
-  segment, not an all-deselected state). Day-plan selection `selectedKeys: Set<string>` (any
-  number of screenings). Owns the persisted preferences and applies them as the `preferred`
-  pre-filter ahead of everything (decision #14). `effectiveCinema`/`effectiveDay`/
-  `effectiveTimeframe`/`effectiveSelectedKeys` all revert a now-impossible value to "any"/none —
-  in particular `effectiveSelectedKeys` drops any selected key whose date ≠ the day in scope
-  (a real bug once: stale selections drove the plan for the wrong day).
+- `components/ScreeningBrowser.tsx` — the interactive core. Day/Cinema/Time filters
+  (`null` = "This week"/"Anywhere"/"Any Time"), rendered by `components/FilterControls.tsx` in
+  two shapes: `layout="dock"` — the mobile fixed-bottom bar, a flush **segmented** row
+  (`ControlGroup`) that scrolls sideways; `layout="bar"` — the desktop sticky bar at the top of
+  the film column, three **dropdown menus** (`FilterMenu`) + the Specials toggle, one compact
+  row (decision #5, #7). Both consume the same `effective*` + `setActive*` prop bag. Plan
+  selection is the persisted `flm-on:plan` store
+  (`lib/plan.ts`, `planKeys` → `selectedKeys: Set<string>`), any number of screenings across any
+  number of days. Owns the persisted preferences and applies them as the `preferred` pre-filter
+  ahead of everything (decision #14). `effectiveCinema`/`effectiveDay`/`effectiveTimeframe` all
+  revert a now-impossible value to "any"; `effectiveSelectedKeys` drops any plan key whose
+  screening has fallen out of the live dataset (past week / now-started / preference change), and
+  `toggleSelected` writes that pruned set back. The two-column shell is a bare `lg:grid` — right
+  rail (`<Masthead>` + sticky `<PlanPanel>`), left column (sticky `FilterControls` + film list).
 - `components/FilmCard.tsx` — one film's card. **Line 1** (`<h3>`): `[original title] TITLE [year]`
   — the black uppercase name flanked by `<TitleMeta>` (`font-normal text-dim`, title-sized,
   natural case); the original-language title shows before the name when `FilmGroup.originalTitle`
@@ -137,11 +146,24 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   `<FilmFormatTag>` = a box on the meta line sized so a bigger format is taller; 35mm/70mm
   are an animated film-strip (`print: true`), IMAX is a static IMAX-blue plaque. Tooltips
   (`*Tooltip` helpers) merge into the whole pill/plan-row `title`.
-- `components/ComboSuggestions.tsx` — the pre-selection "Suggested plans" list. `components/DayPlan.tsx`
-  — replaces it once anything is selected: a chronological vertical rule with the gap / an
-  accent-coloured overlap warning inline between consecutive items.
+- `components/ComboSuggestions.tsx` — the "Suggested plans" list (double bills, one pinned day —
+  decision #5). Exports `ComboList` (the bare `<ul>`); the default export wraps it in a card and
+  is rendered inline on mobile only (`lg:hidden`) when nothing's picked yet.
+- `components/PlanPanel.tsx` — the one persistent plan surface (what `ComboSuggestions` + `DayPlan`
+  used to split between them). Empty → the `ComboList` suggestions (or a prompt if no day pinned);
+  non-empty → `<DayPlan>` + a Clear button. Lives in the desktop right rail (sticky, own
+  `overflow-y-auto`) and inside `components/PlanButton.tsx` — the mobile floating button (a
+  plan-item count, decision #8) + bottom sheet cloned from `SettingsPanel`.
+- `components/DayPlan.tsx` — the plan grouped into a section per day (`formatDayFriendly` +
+  `formatDayDate` header, per-day film count + `~span`); within a day, the gap / an
+  accent-coloured overlap-or-too-tight warning between consecutive screenings. A step across a day
+  boundary (`ItineraryTransition.crossDay`) renders as the next day's header, never a gap.
+- `components/Masthead.tsx` — the "FLM ON" title + tagline, rendered by `ScreeningBrowser` (not
+  `app/page.tsx`) so the `lg:` grid can move it into the right rail. Holds `PreferencesButton`
+  only on mobile (`lg:hidden`) — on desktop that button lives in the filter bar (`FilterControls`
+  `layout="bar"`, room to spare now the filters are menus).
 - `components/{PreferencesButton,SettingsPanel,ActivePreferenceNote}.tsx` + `lib/preferences.ts`
-  + `lib/duration.ts` — the header button, the overlay it opens, and the title-side marquee
+  + `lib/duration.ts` — the preferences button, the overlay it opens, and the title-side marquee
   naming an active kids-only / language pref; all three share the store with `ScreeningBrowser`
   via `useSyncExternalStore`. Decision #14.
 - `components/controlSegment.ts` — `SEGMENT_BASE` + `controlSegmentClass(active)`, the accent-fill
@@ -190,13 +212,22 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
      title** (native script) and the **director(s)** (shown next to the runtime on the card's
      meta line) — see `lib/letterboxd.ts` above.
 
-5. **Day-plan building only activates when the Day filter is one specific date** (`activeDay !==
-   null`) — a plan is single-day. The Day filter **defaults to today** (the next day with
-   sessions if today's slate is done); "This week" is one tap away. Selecting a showtime
-   auto-narrows the Day filter to that date. Pill hints come from `fittingAdditions`
-   (`lib/clash.ts`): a candidate must fit *both* its would-be chronological neighbours once
-   inserted, not each selected screening in isolation. `allDayCombos` exists only to feed the
-   pre-selection `ComboSuggestions` list.
+5. **A plan can span the week; it persists.** `lib/plan.ts` (`flm-on:plan` localStorage, same
+   `useSyncExternalStore` shape as `lib/preferences.ts`) holds the picked `bookingUrl`s across as
+   many days as you like, surviving reloads and return visits — the point of week-planning is
+   coming back to it. Stale keys are filtered on read (`effectiveSelectedKeys`) and pruned on the
+   next write. Tapping a showtime just adds it — the Day filter does **not** snap to it (that
+   jump is disorienting across days now). The Day filter still **defaults to today** for
+   *browsing*. **Double-bill *suggestions* (`findCombos`) stay strictly one day** (`suggestionScopeDay`
+   = the pinned day; `lib/clash.ts:65` `date !==` guard + its test) — a cross-day "pair" isn't a
+   plan. The plan surface: a sticky `<PlanPanel>` in the desktop right rail, a floating
+   `<PlanButton>` + bottom sheet on mobile. `lib/clash.ts` uses an **absolute-ordinal minute**
+   model (`toOrdinalMinutes` = `daysBetweenISO(EPOCH, date)*1440 + toMinutes(time)`), so every
+   gap calc is multi-day-correct and past-midnight end times no longer wrap. `itineraryTransitions`
+   marks a day boundary as `crossDay` (rendered as a header, not "Overlaps 840min").
+   `fittingAdditions` hints are **within-day only** and allow the same film on a *different* day.
+   `FilmCard`'s "wouldn't fit" pill fade only applies on days the plan already touches (`planDates`
+   prop) — an untouched day is a fresh start.
 
 6. **A screening's identity key is its `bookingUrl`.** Real listings can have two distinct
    bookable sessions for the same film at the same time. (They currently render as near-identical
@@ -218,8 +249,8 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
    - **`--shadow-chip`** (two-tone "stacked card", 6px total reach) is the resting elevation of
      screening pills *and* filter-bar segments; pressed/selected translate a matching 6px to land
      where the shadow edge was, hover is a half-press (`--shadow-chip-half`, 3px).
-   - **Segmented controls** (filter bar `ControlGroup`, settings `Segmented`): each segment has
-     its own border + shadow, `-ml-0.5` merges adjacent borders into one line, only the group's
+   - **Segmented controls** (`ControlGroup` in `FilterControls`, settings `Segmented`): each segment
+     has its own border + shadow, `-ml-0.5` merges adjacent borders into one line, only the group's
      end segments round outward, and every segment needs an explicit `relative` + ascending
      inline `z-index` (the active segment's `translate` makes a stacking context). **No
      "disabled" variant** — a segment you can't act on is removed from the row (or, if it's the
@@ -227,12 +258,27 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
      asking. The one exception: `ControlGroup`'s sole option renders non-interactive only while
      `isActive` (it *is* the current view); when something else holds the view — the Day row's
      "Next week" preview (decision #18) — it becomes a real button, "take me back to this".
+   - **Two filter-bar shapes** (`components/FilterControls.tsx`, chosen by `layout`):
+     - `"dock"` — the mobile fixed-bottom bar: the flush **segmented** `ControlGroup` row above,
+       scrolling sideways on overflow.
+     - `"bar"` — the desktop sticky bar at the top of the film column: Day / Time / Place each
+       collapse to a **`FilterMenu`** — a trigger button showing the current choice that opens a
+       chunky dropdown (`shadow-card`, `z-40`, first row is the "any" option, Day's `footer` is
+       the "Next week" affordance). A full week of day chips is far too many flush segments for a
+       bar that isn't pinned to a screen edge. `FilterMenu` is the app's **first popover**: its
+       own click-outside (`pointerdown` on `document`) + Escape dismissal, parent holds
+       `openMenu` so only one is open at a time. Accent fill on a trigger = "this filter is
+       narrowing the view"; open-but-default just presses in.
+     The `"any"` / single-option / pinned-preference logic is the same across both (a menu with
+     one real option, a hidden control when a preference pins it).
 
 8. **No film-count / progress UI.** A "here are X films" counter was tried and rejected — the
    user said counters "add pressure". No running counts, badges, or the like in the main UI
    without asking. (An active kids-only / language preference is named on the title —
    `components/ActivePreferenceNote.tsx` — a gold sticker over the top / dark subtitle pills
-   over the base, not a count.)
+   over the base, not a count.) The two sanctioned exceptions both count **the user's own plan**,
+   never the catalogue: `DayPlan`'s per-day "{n} films · ~span" line, and the mobile
+   `PlanButton` badge (how many screenings are in the plan).
 
 9. **Public release = weekly curated pipeline, not live per-visitor scraping.** Live scraping on
    every request let any visitor trigger a scrape and gave no chance to catch mangled titles /
@@ -284,8 +330,10 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
       "Archive at Lunchtime" strand (sole signal is the `filmPageUrl` slug — slug-derivation
       deliberately not done).
 
-14. **Settings panel — persisted viewing preferences (localStorage).** The app's *only*
-    persisted state. `lib/preferences.ts`: `Preferences` = `cinemas` / `timeframes` maps +
+14. **Settings panel — persisted viewing preferences (localStorage).** One of two persisted
+    stores — the other is `lib/plan.ts` (`flm-on:plan`, the saved plan — decision #5), a separate
+    key with the same `useSyncExternalStore` + `normalize` shape.
+    `lib/preferences.ts`: `Preferences` = `cinemas` / `timeframes` maps +
     `hideShortFilms` (**defaults on** — the archive strands are noise) + `kidsOnly` + `language`
     (`"any"`/`"english"`/`"non-english"`). `normalize` is a pure deep-merge onto
     `DEFAULT_PREFERENCES` that coerces bad types and drops unknown keys — the forward-compat seam
@@ -310,8 +358,12 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
       Cineworld's ordinary multiplex programme
       out of view (decision #16) — with it off and Cineworld on, you get the full slate. The
       empty-state Reset clears prefs **and** this toggle.
-    - UI: header button (`PreferencesButton`, sliders icon not a gear — no badge) →
-      `SettingsPanel` (responsive modal / bottom sheet). An active **kids-only** or **language**
+    - UI: `PreferencesButton` (sliders icon not a gear — no badge) → `SettingsPanel` (responsive
+      modal / bottom sheet). Sits in the desktop filter bar (`FilterControls layout="bar"`) and,
+      on mobile, top-right of the masthead. **The desktop filter-bar wrapper is opaque `bg-bg`,
+      not `backdrop-blur`** — `backdrop-filter` would make it a containing block for the
+      `position: fixed` `SettingsPanel` and trap the modal inside the sticky strip. An active
+      **kids-only** or **language**
       preference (the two that narrow the films with no filter-bar trace) is surfaced instead by
       `components/ActivePreferenceNote.tsx`, layered on the "FLM ON" title (its wrapper is
       `relative w-fit`): **kids-only** → a `MarqueeSticker` (`tone="accent" tilted`, the one
@@ -403,21 +455,25 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
     - `fetch:batch` has a "Languages" section listing every non-English film's resolved language.
 
 18. **"Next week" preview — the unconfirmed tease** (`lib/upcoming.ts`, `data/upcoming.json`).
-    A segment in the day picker's **trailing slot** (`ScreeningBrowser` — it *replaces* the old
-    Wednesday-only "Come back Tomorrow!" note; `nextBatchLabel` is no longer used in the UI).
+    The day picker's **trailing "Next week (maybe)" affordance** (`ScreeningBrowser` — it
+    *replaces* the old Wednesday-only "Come back Tomorrow!" note; `nextBatchLabel` is no longer
+    used in the UI): on the mobile **dock** a trailing segment on the Day `ControlGroup`, on the
+    desktop **bar** the `footer` row of the Day `FilterMenu`.
     Pressing it (`nextWeek` state, ephemeral like the Highlights lens) swaps the whole view for a
     short list of films coming *next* week, rendered **cards only, no session pills** (`FilmCard
-    preview` — the sessions aren't confirmed) under a "the full list lands Thursday" banner. It
-    behaves like any other segment: non-interactive once it's the view you're on, and you leave
-    by tapping a day / "This week" (which is why the sole-day segment goes interactive here —
-    decision #7). Only if there are no visible days at all (stale data) does it stay a toggle so
-    the preview can't dead-end. The Time / Cinema / "Specials, etc" controls and the plan/combo
-    tools are hidden while it's on.
+    preview` — the sessions aren't confirmed) under a "the full list lands Thursday" banner. You
+    leave by tapping a day / "This week" (which is why the mobile sole-day segment goes
+    interactive here — decision #7); it's non-interactive / the selected row once it's the view
+    you're on. Only if there are no visible days at all (stale data) does it stay a plain toggle
+    so the preview can't dead-end. The Time / Cinema / "Specials, etc" controls and the
+    plan/combo tools are hidden while it's on (the desktop plan rail too, unless the plan is
+    non-empty).
     - **Source:** `fetch:batch` runs a *second* `refreshShowtimesForRange(nextWeekDays())`
       (`lib/date.ts` — next Thursday through the following Wednesday) and
-      `selectUpcomingFilms(thisWeek, nextWeek, labels)` picks **new** films (title not in this
-      week's set) **plus specials** (any next-week session passing the "Specials, etc" test, or a
-      labelled film); new shorts are dropped, short specials kept. It **rewrites
+      `selectUpcomingFilms(thisWeek, nextWeek, labels)` picks **only films not already playing
+      this week** (a held-over film isn't a "coming next week" tease, even if next week's run is
+      a special format / has a label); among those, new shorts are dropped but a short *special*
+      is kept, and specials/labelled films sort first. It **rewrites
       `data/upcoming.json` in place** (`{ generatedAt, week, films }`) — same
       batch-writes / human-trims / build-time-read pattern as `data/film-labels.json`, **not**
       staged/promoted (`fetch:confirm` is untouched). Trim the file and review the diff before
