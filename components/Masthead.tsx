@@ -12,7 +12,9 @@ export function MastheadTitle() {
           marquee sits absolutely over the title's top edge, the language tag tucks under it
           like a subtitle. */}
       <div className="relative w-fit">
-        <h1 className="text-4xl md:text-6xl lg:text-5xl font-black uppercase tracking-tighter">FLM ON</h1>
+        {/* lg: inside the rail card, matched to the film-card titles (FilmCard's h3 is
+            `text-2xl md:text-3xl`). */}
+        <h1 className="text-4xl md:text-6xl lg:text-3xl font-black uppercase tracking-tighter">FLM ON</h1>
         <ActivePreferenceNote />
       </div>
       <p className="mt-3 font-bold text-dim uppercase text-sm tracking-widest">

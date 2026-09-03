@@ -464,7 +464,9 @@ export default function ScreeningBrowser({ screenings, days, dataAsOf, labels, u
               panel pins with it. The negative sticky `top` ≈ the masthead's height, so the title
               clears the viewport just before the plan holds (CLAUDE.md decision #5). ~10rem is a
               fixed estimate of the masthead block; nudge it if a sliver of the tagline shows. */}
-          <div className="hidden lg:block lg:sticky lg:top-[calc(1rem-10.5rem)] border-4 border-border bg-surface shadow-card-lg rounded-card">
+          {/* `lg:mt-[86px]` drops the card so its top lines up with the first film card — the
+              left column's sticky filter bar (~62px) plus its `mb-6` (24px). */}
+          <div className="hidden lg:block lg:mt-[86px] lg:sticky lg:top-[calc(1rem-9.5rem)] border-4 border-border bg-surface shadow-card-lg rounded-card">
             <div className="px-5 pt-5 pb-4">
               <MastheadTitle />
             </div>
