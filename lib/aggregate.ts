@@ -5,6 +5,7 @@ import { resolveLetterboxd, type LetterboxdMatch } from "./letterboxd";
 import { cleanFilmTitle, titleAnnotation, titlesEquivalent, loadTitleOverrides } from "./titles";
 import { loadHiddenFilms, isHiddenFilm } from "./hidden";
 import { loadLanguageOverrides, languageOverrideFor } from "./languageOverrides";
+import { loadDirectorOverrides, directorOverrideFor } from "./directorOverrides";
 import { displayLanguage } from "./languages";
 
 export interface AdapterError {
@@ -95,6 +96,7 @@ async function getCinemaRange(
 // a fallback for films with no match.
 async function withLetterboxdLinks(screenings: Screening[]): Promise<Screening[]> {
   const languageOverrides = await loadLanguageOverrides();
+  const directorOverrides = await loadDirectorOverrides();
 
   const unique = new Map<string, { title: string; year?: number }>();
   for (const s of screenings) {
@@ -148,7 +150,7 @@ async function withLetterboxdLinks(screenings: Screening[]): Promise<Screening[]
       ...s,
       screeningTags,
       originalTitle,
-      director: match?.director ?? s.director,
+      director: directorOverrideFor(s.filmTitle, directorOverrides) ?? match?.director ?? s.director,
       letterboxdUrl: match?.url,
       year: match?.year ?? s.year,
     };

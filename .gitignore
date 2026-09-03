@@ -43,6 +43,7 @@ yarn-error.log*
 !/data/film-labels.json
 !/data/hidden-films.json
 !/data/language-overrides.json
+!/data/director-overrides.json
 
 # vercel
 .vercel
