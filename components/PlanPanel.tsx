@@ -1,6 +1,5 @@
 "use client";
 
-import type { ReactNode } from "react";
 import type { ItineraryTransition, ScreeningPair, TimedScreening } from "@/lib/clash";
 import DayPlan from "./DayPlan";
 import { ComboList } from "./ComboSuggestions";
@@ -10,8 +9,8 @@ import { ComboList } from "./ComboSuggestions";
 // then the body. Used inside the desktop right-rail card (pinned below the masthead) and inside
 // the mobile plan sheet (behind the floating button). See CLAUDE.md decision #5.
 //
-// Bounded height + internal scroll is set by the caller via `className` (`lg:max-h-…` in the
-// rail, `grow min-h-0` in the sheet); the label row stays pinned while the body scrolls.
+// No `bg-*` of its own — the caller's card (rail) / dialog (sheet) provides the surface, so the
+// panel doesn't square off that card's rounded corners.
 interface Props {
   combos: ScreeningPair[];
   items: TimedScreening[];
@@ -24,8 +23,6 @@ interface Props {
   onClear: () => void;
   onClose?: () => void;
   keyOf: (s: TimedScreening) => string;
-  // A small dim line under the plan body — the desktop rail passes the "data as of …" note here.
-  footer?: ReactNode;
   className?: string;
 }
 
@@ -39,40 +36,47 @@ export default function PlanPanel({
   onClear,
   onClose,
   keyOf,
-  footer,
   className = "",
 }: Props) {
   const hasPlan = items.length > 0;
   const spansWeek = new Set(items.map((s) => s.date)).size > 1;
-  const title = !hasPlan ? "Make a plan" : spansWeek ? "Your week" : "Your plan";
+  // Empty state has no title — the card's own masthead already labels the surface.
+  const title = spansWeek ? "Your week" : "Your plan";
+  const showHeader = hasPlan || onClose != null;
 
   return (
-    <div className={`flex flex-col overflow-hidden bg-surface ${className}`}>
-      <div className="flex shrink-0 items-center justify-between gap-3 border-b-2 border-border px-5 py-3">
-        <h2 className="font-black uppercase text-lg tracking-tight">{title}</h2>
-        <div className="flex shrink-0 items-center gap-1">
-          {hasPlan && (
-            <button
-              type="button"
-              onClick={onClear}
-              className="border-2 border-border rounded-btn px-2.5 py-1 text-xs font-bold uppercase tracking-wide cursor-pointer shadow-btn-secondary transition-transform active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
-            >
-              Clear
-            </button>
+    <div className={`flex flex-col overflow-hidden ${className}`}>
+      {showHeader && (
+        <div className="flex shrink-0 items-center justify-between gap-3 border-b-2 border-border px-5 py-3">
+          {hasPlan ? (
+            <h2 className="font-black uppercase text-lg tracking-tight">{title}</h2>
+          ) : (
+            <span />
           )}
-          {onClose && (
-            <button
-              type="button"
-              autoFocus
-              onClick={onClose}
-              aria-label="Close plan"
-              className="-mr-1 p-1 text-2xl leading-none cursor-pointer"
-            >
-              &times;
-            </button>
-          )}
+          <div className="flex shrink-0 items-center gap-1">
+            {hasPlan && (
+              <button
+                type="button"
+                onClick={onClear}
+                className="border-2 border-border rounded-btn px-2.5 py-1 text-xs font-bold uppercase tracking-wide cursor-pointer shadow-btn-secondary transition-transform active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
+              >
+                Clear
+              </button>
+            )}
+            {onClose && (
+              <button
+                type="button"
+                autoFocus
+                onClick={onClose}
+                aria-label="Close plan"
+                className="-mr-1 p-1 text-2xl leading-none cursor-pointer"
+              >
+                &times;
+              </button>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="min-h-0 grow overflow-y-auto scrollbar-none p-5">
         {hasPlan ? (
@@ -87,10 +91,6 @@ export default function PlanPanel({
             Tap a showtime to start a plan
             {suggestionDay ? "." : ", or pick a day for suggested double bills."}
           </p>
-        )}
-
-        {footer && (
-          <p className="mt-6 border-t-2 border-border pt-3 text-xs text-dim">{footer}</p>
         )}
       </div>
     </div>

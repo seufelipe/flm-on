@@ -63,14 +63,12 @@ export default async function Home() {
       <ScreeningBrowser
         screenings={screenings}
         days={days}
-        dataAsOf={dataAsOf}
         labels={labels}
         upcoming={upcoming.films}
         upcomingWeek={upcoming.week}
       />
 
-      {/* Desktop moves this into the plan-card footer (decision #5); mobile keeps it here. */}
-      <div className="no-print lg:hidden flex items-center justify-between mt-16 pt-4 border-t-2 border-border gap-4">
+      <div className="no-print flex items-center justify-between mt-16 pt-4 border-t-2 border-border gap-4">
         <p className="text-xs text-dim">{dataAsOf ? `Data as of ${dataAsOf}` : "No data yet"}</p>
       </div>
     </main>

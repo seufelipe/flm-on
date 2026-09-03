@@ -33,8 +33,6 @@ import PlanButton from "./PlanButton";
 interface Props {
   screenings: Screening[];
   days: string[];
-  // Formatted "data as of" date for the desktop plan-card footer; blank when there's no data.
-  dataAsOf?: string;
   // Curated editorial tags keyed by FilmGroup.key (filmTitle.trim().toLowerCase()); see
   // data/film-labels.json and CLAUDE.md decision #11.
   labels?: Record<string, string>;
@@ -65,7 +63,7 @@ function keyOf(s: Screening): string {
   return s.bookingUrl;
 }
 
-export default function ScreeningBrowser({ screenings, days, dataAsOf, labels, upcoming, upcomingWeek }: Props) {
+export default function ScreeningBrowser({ screenings, days, labels, upcoming, upcomingWeek }: Props) {
   const [activeTimeframe, setActiveTimeframe] = useState<Timeframe | null>(null);
   const [activeCinema, setActiveCinema] = useState<CinemaId | null>(null);
   // Defaults to **today** — the day you're most likely to be planning for — which also means the
@@ -476,7 +474,6 @@ export default function ScreeningBrowser({ screenings, days, dataAsOf, labels, u
             {planLoaded && !(nextWeek && dayPlanItems.length === 0) && (
               <PlanPanel
                 className="border-t-2 border-border"
-                footer={dataAsOf ? `Data as of ${dataAsOf}` : undefined}
                 combos={visibleCombos}
                 items={dayPlanItems}
                 transitions={dayPlanTransitions}
