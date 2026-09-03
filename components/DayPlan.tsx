@@ -62,7 +62,7 @@ export default function DayPlan({ items, transitions, onRemove, onPickDay, keyOf
               <button
                 type="button"
                 onClick={() => onPickDay(group.date)}
-                className="font-black uppercase text-sm tracking-tight cursor-pointer text-left hover:underline underline-offset-2"
+                className="font-black uppercase text-sm tracking-tight cursor-pointer text-left"
               >
                 {formatDayFriendly(group.date)}
                 <span className="ml-1.5 font-bold text-dim">{formatDayDate(group.date)}</span>
