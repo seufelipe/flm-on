@@ -22,7 +22,7 @@ one-off spacing tweaks.
 
 Next.js 16 (App Router) + TypeScript, Tailwind v4, cheerio (Light House / IFI HTML; Cineworld is
 a JSON API), vitest. Component primitives are Radix, vendored in via neobrutalism.dev's shadcn
-registry and restyled to our own tokens (decision #22). No database. Committed in `data/`: `showtimes.json` (the published week) and
+registry and restyled to our own tokens (decision #22); icons are lucide-react (#23). No database. Committed in `data/`: `showtimes.json` (the published week) and
 the curated override / editorial files (`title-overrides`, `letterboxd-overrides`, `film-labels`,
 `hidden-films`, `language-overrides`, `director-overrides`); everything else in `data/` is
 gitignored cache/staging.
@@ -412,7 +412,7 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
       Cineworld's ordinary multiplex programme
       out of view (decision #16) — with it off and Cineworld on, you get the full slate. The
       empty-state Reset clears prefs **and** this toggle.
-    - UI: `PreferencesButton` (sliders icon not a gear — no badge) → `SettingsPanel` (responsive
+    - UI: `PreferencesButton` (Lucide `Settings2`, which draws sliders not a gear — no badge) → `SettingsPanel` (responsive
       modal / bottom sheet). Sits in the desktop filter bar (`FilterControls layout="bar"`) and,
       on mobile, top-right of the masthead. **The desktop filter-bar wrapper is opaque `bg-bg`,
       not `backdrop-blur`** — `backdrop-filter` would make it a containing block for the
@@ -698,6 +698,26 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
       second trigger while a menu is open fires both a close (the press is outside the first
       menu) and an open, in either order; clearing `openMenu` unconditionally on close would
       sometimes wipe the menu that had just opened, so moving between filters took two clicks.
+
+23. **Icons are `lucide-react`.** Chosen because it needs nothing bent to fit: Lucide's defaults
+    *are* this app's drawing spec — 24 viewBox, `fill: none`, `currentColor`, 2px stroke, round
+    caps — which is exactly what the hand-rolled preferences glyph had already been written to.
+    It's also in Next 16's built-in `optimizePackageImports` list, so a named import is
+    tree-shaken with no config; verified on a real build — the one icon's path data ships in a
+    single chunk and no other icon's does.
+    - **It replaces drawn UI icons, not the typographic marks.** `☻` (a surfaced special, #13)
+      and `★` (National Cinema Weekend, #19) carry *meaning* and are deliberately text: they sit
+      inline in a pill or a day name, inherit the type's size and weight, and are read out.
+      Swapping them for glyph components would flatten a distinction the app leans on. Likewise
+      untouched: the **Letterboxd** three-dot mark (a brand identity, #7), the `<LanguageTag>`
+      speech bubble (drawn to a measured text box, #17) and the film-format strips (#15) — all
+      bespoke SVG that no icon set has.
+    - Adopted so far: **`Settings2`** on `PreferencesButton`. Despite the name it draws sliders,
+      so #14's "sliders, not a gear" still holds; it cost one of the previous three tracks and
+      kept the round knobs, which was the trade the user picked over `SlidersHorizontal`'s
+      three-tracks-with-tick-marks.
+    - The `▲`/`▼` on the filter-bar triggers and the `×` close controls are still text
+      characters. Converting them is a live option, deliberately not taken yet.
 
 ## Known gaps
 

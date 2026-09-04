@@ -7,34 +7,14 @@ import {
   subscribePreferences,
   writePreferences,
 } from "@/lib/preferences";
+import { Settings2 } from "lucide-react";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import SettingsPanel from "./SettingsPanel";
 
-// "Preference"-style sliders glyph (three horizontal tracks, knobs at different positions) —
-// the filters/preferences convention, distinct from a gear.
-function PreferenceIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-      className="h-5 w-5"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-    >
-      <line x1="3" y1="6" x2="13" y2="6" />
-      <line x1="19" y1="6" x2="21" y2="6" />
-      <circle cx="16" cy="6" r="2.5" />
-      <line x1="3" y1="12" x2="6" y2="12" />
-      <line x1="12" y1="12" x2="21" y2="12" />
-      <circle cx="9" cy="12" r="2.5" />
-      <line x1="3" y1="18" x2="10" y2="18" />
-      <line x1="16" y1="18" x2="21" y2="18" />
-      <circle cx="13" cy="18" r="2.5" />
-    </svg>
-  );
-}
+// The glyph is Lucide's `Settings2` — despite the name it draws sliders (two tracks with circular
+// knobs), NOT a gear, so decision #14's "sliders, not a gear" still holds. It replaced a
+// hand-rolled three-track version; the trade was one fewer track for keeping the round knobs.
+// Lucide's defaults are already this app's: 24 viewBox, 2px stroke, round caps (decision #23).
 
 // The preferences entry point — a header button that opens the settings modal / sheet. Shares
 // the localStorage-backed store with ScreeningBrowser (both subscribe independently), so no
@@ -66,7 +46,7 @@ export default function PreferencesButton({ className }: { className?: string })
               : "shadow-chip hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-chip-half active:translate-x-[6px] active:translate-y-[6px] active:shadow-none"
           }`}
         >
-          <PreferenceIcon />
+          <Settings2 aria-hidden="true" className="h-5 w-5" />
         </button>
       </DialogTrigger>
       <SettingsPanel prefs={prefs} onChange={writePreferences} onClose={() => setOpen(false)} />
