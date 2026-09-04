@@ -214,7 +214,11 @@ export default function SettingsPanel({ prefs, onChange, onClose }: Props) {
           <Group legend="Language" description="By the film's original language">
             <Segmented<LanguagePref>
               value={prefs.language}
-              onChange={(value) => onChange({ ...prefs, language: value })}
+              // Same gesture as a filter-bar control: pressing the option you're already on
+              // clears it back to the default ("any") rather than being a no-op.
+              onChange={(value) =>
+                onChange({ ...prefs, language: value === prefs.language ? "any" : value })
+              }
               options={[
                 { value: "any", label: "Any language" },
                 { value: "english", label: "English", sublabel: "only" },

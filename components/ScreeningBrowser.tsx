@@ -166,7 +166,11 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
   // When the preferences pin a group to a single value there's nothing left for that filter to
   // do (it can't broaden past your own preference), so it drops out of the filter bar entirely
   // rather than showing as a lone non-interactive segment.
-  const cinemaFilterUseful = CINEMA_ORDER.filter((id) => prefs.cinemas[id]).length > 1;
+  //
+  // The cinemas the preferences allow are passed through rather than reduced to a boolean: the
+  // Place filter's "any" option names them ("3 cinemas") instead of saying "Anywhere", and
+  // FilterControls derives "is this filter useful" from the same list.
+  const cinemasEnabled = useMemo(() => CINEMA_ORDER.filter((id) => prefs.cinemas[id]), [prefs]);
   const timeFilterUseful = TIMEFRAMES.filter((tf) => prefs.timeframes[tf.id]).length > 1;
 
   // `days` comes from the committed showtimes.json, which can still list days before today if
@@ -352,7 +356,7 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
     usableTimeframes,
     effectiveTimeframe,
     setActiveTimeframe,
-    cinemaFilterUseful,
+    cinemasEnabled,
     cinemasPresent,
     effectiveCinema,
     setActiveCinema,

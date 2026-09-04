@@ -80,7 +80,7 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
 ### UI (all client, under `ScreeningBrowser`)
 
 - `components/ScreeningBrowser.tsx` — the interactive core. Day/Cinema/Time filters
-  (`null` = "This week"/"Anywhere"/"Any Time"), rendered by `components/FilterControls.tsx` in
+  (`null` = "This week"/"N cinemas"/"Any Time"), rendered by `components/FilterControls.tsx` in
   two shapes: `layout="dock"` — the mobile fixed-bottom bar, a flush **segmented** row
   (`ControlGroup`) that scrolls sideways; `layout="bar"` — the desktop sticky bar at the top of
   the film column, three **dropdown menus** (`FilterMenu`) + the Specials toggle, one compact
@@ -234,6 +234,13 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
        narrowing the view"; open-but-default just presses in.
      The `"any"` / single-option / pinned-preference logic is the same across both (a menu with
      one real option, a hidden control when a preference pins it).
+     - **The Place filter's "any" option names the cinemas it covers** — `cinemaAnyLabel` in
+       `FilterControls`: "3 cinemas", or the place's own name if a single one is enabled. Not
+       "Anywhere", which was a promise the filter can't keep (it only ever spans the cinemas the
+       preferences allow). Counted from the **preferences** (`cinemasEnabled`, which also decides
+       whether the control renders at all), not from `cinemasPresent`, so it doesn't flicker as
+       you page through days. Same label in both shapes: the dock's "any" segment, and the bar's
+       trigger + first menu row.
 
 8. **No film-count / progress UI.** A "here are X films" counter was tried and rejected — the
    user said counters "add pressure". No running counts, badges, or the like in the main UI
@@ -241,7 +248,8 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
    `components/ActivePreferenceNote.tsx` — a gold sticker over the top / dark subtitle pills
    over the base, not a count.) The two sanctioned exceptions both count **the user's own plan**,
    never the catalogue: `DayPlan`'s per-day "{n} films · ~span" line, and the mobile
-   `PlanButton` badge (how many screenings are in the plan).
+   `PlanButton` badge (how many screenings are in the plan). The Place filter's "3 cinemas"
+   label (decision #7) is a count of *your own preferences*, not of what's on — same principle.
 
 9. **Public release = weekly curated pipeline, not live per-visitor scraping.** Live scraping on
    every request let any visitor trigger a scrape and gave no chance to catch mangled titles /
@@ -337,7 +345,9 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
       `not in english`). Both can show at once. Cinemas / times / hide-shorts get no indicator.
       Options are toggle
       buttons in `controlSegment.ts` style; the **Language** group is a `Segmented` single-select
-      (flush, same treatment as the filter bar). Each group is one non-wrapping full-bleed
+      (flush, same treatment as the filter bar) where **pressing the option you're already on
+      reverts to the default** (`any`) — the same gesture as a filter-bar control, rather than a
+      dead click. Each group is one non-wrapping full-bleed
       `overflow-x-auto` strip (the film-card pill idiom) — options scroll sideways rather than
       stacking on a narrow screen. Cinemas + Times each require ≥1 on — the last
       remaining one locks (keeps the selected look, click is a no-op — not a greyed disabled

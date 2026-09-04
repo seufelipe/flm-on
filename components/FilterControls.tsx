@@ -55,6 +55,18 @@ function SpecialsToggle({
   );
 }
 
+// --- shared: the Place filter's "any" label ------------------------------------------------------
+// "Anywhere" was a promise the filter can't keep — it only ever spans the cinemas the preferences
+// allow. So the option (and the desktop trigger showing it) names them instead: "3 cinemas", or
+// the place's own name when a single cinema is enabled. Counted from the *preferences*, not from
+// the cinemas that happen to have something on today, so the label doesn't flicker as you page
+// through days.
+function cinemaAnyLabel(cinemasEnabled: CinemaId[]): string {
+  return cinemasEnabled.length === 1
+    ? CINEMA_LABEL[cinemasEnabled[0]]
+    : `${cinemasEnabled.length} cinemas`;
+}
+
 // ================================================================================================
 // dock (mobile) — the flush segmented row
 // ================================================================================================
@@ -333,7 +345,7 @@ interface Props {
   usableTimeframes: TimeframeDef[];
   effectiveTimeframe: Timeframe | null;
   setActiveTimeframe: Dispatch<SetStateAction<Timeframe | null>>;
-  cinemaFilterUseful: boolean;
+  cinemasEnabled: CinemaId[];
   cinemasPresent: CinemaId[];
   effectiveCinema: CinemaId | null;
   setActiveCinema: Dispatch<SetStateAction<CinemaId | null>>;
@@ -358,7 +370,7 @@ function BarMenus({
   usableTimeframes,
   effectiveTimeframe,
   setActiveTimeframe,
-  cinemaFilterUseful,
+  cinemasEnabled,
   cinemasPresent,
   effectiveCinema,
   setActiveCinema,
@@ -464,13 +476,15 @@ function BarMenus({
         />
       )}
 
-      {!nextWeek && cinemaFilterUseful && (
+      {!nextWeek && cinemasEnabled.length > 1 && (
         <FilterMenu
-          triggerLabel={effectiveCinema === null ? "Anywhere" : CINEMA_LABEL[effectiveCinema]}
+          triggerLabel={
+            effectiveCinema === null ? cinemaAnyLabel(cinemasEnabled) : CINEMA_LABEL[effectiveCinema]
+          }
           active={effectiveCinema !== null}
           open={openMenu === "place"}
           onOpenChange={(o) => setOpenMenu(o ? "place" : null)}
-          anyLabel="Anywhere"
+          anyLabel={cinemaAnyLabel(cinemasEnabled)}
           anyActive={effectiveCinema === null}
           onAny={() => setActiveCinema(null)}
           options={cinemasPresent}
@@ -512,7 +526,7 @@ function DockSegments({
   usableTimeframes,
   effectiveTimeframe,
   setActiveTimeframe,
-  cinemaFilterUseful,
+  cinemasEnabled,
   cinemasPresent,
   effectiveCinema,
   setActiveCinema,
@@ -600,10 +614,10 @@ function DockSegments({
         />
       )}
 
-      {!nextWeek && cinemaFilterUseful && (
+      {!nextWeek && cinemasEnabled.length > 1 && (
         <ControlGroup
           options={cinemasPresent}
-          anyLabel="Anywhere"
+          anyLabel={cinemaAnyLabel(cinemasEnabled)}
           anyActive={effectiveCinema === null}
           isActive={(id) => effectiveCinema === id}
           onAny={() => setActiveCinema(null)}
