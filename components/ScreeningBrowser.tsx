@@ -68,6 +68,12 @@ function keyOf(s: Screening): string {
   return s.bookingUrl;
 }
 
+// One film across every cinema and date — the same key FilmGroup, film-labels.json and the
+// override files use.
+function filmKeyOf(s: Screening): string {
+  return s.filmTitle.trim().toLowerCase();
+}
+
 export default function ScreeningBrowser({ screenings, days, labels, upcoming, upcomingWeek }: Props) {
   const [activeTimeframe, setActiveTimeframe] = useState<Timeframe | null>(null);
   const [activeCinema, setActiveCinema] = useState<CinemaId | null>(null);
@@ -106,6 +112,13 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
     () => PLAN_SERVER_SNAPSHOT,
   );
   const selectedKeys = useMemo(() => new Set(planKeys), [planKeys]);
+
+  // Films taken back out of the plan this session. Suggesting one straight back is the whole
+  // point of a removal undone — you've just said no to it — so the ghosts skip them. Ephemeral
+  // (like the Highlights lens below): a reload is a fresh slate, and a persisted "never show me
+  // this" list with no UI to review or undo it would be a trap. Suggestions only: the film's
+  // pills stay live, and this never touches the "wouldn't fit" pill fade.
+  const [dismissed, setDismissed] = useState<Set<string>>(() => new Set());
 
   // A browsing lens, not a saved preference — show only special screenings and labelled films.
   // Ephemeral (resets on reload), lives in the filter bar next to Day/Cinema/Time. See #14.
@@ -256,7 +269,10 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
   // Two readings of the same set: the film cards fade every pill that *isn't* in it, and the plan
   // panel offers the single best fit for each open slot as a "choose this next" ghost row.
   const partnersOf = useMemo(() => new Set(additions.map((a) => a.screening.bookingUrl)), [additions]);
-  const planSuggestions = useMemo(() => bestAdditionPerSlot(additions, dayPlanItems), [additions, dayPlanItems]);
+  const planSuggestions = useMemo(
+    () => bestAdditionPerSlot(additions.filter((a) => !dismissed.has(filmKeyOf(a.screening))), dayPlanItems),
+    [additions, dismissed, dayPlanItems],
+  );
 
   // With nothing picked there are no slots to fill, so the plan surface seeds itself instead: one
   // screening per timeframe, specials first (lib/startingPoints.ts). Scoped to the pinned day, or
@@ -265,9 +281,11 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
   // the Time and Cinema filters don't narrow it.
   const seeds = useMemo(() => {
     if (dayPlanItems.length > 0) return [];
-    if (effectiveDay) return startingPoints(timed.filter((s) => s.date === effectiveDay), labels);
-    return startingPoints(timed, labels, true);
-  }, [dayPlanItems, timed, effectiveDay, labels]);
+    const pool = timed.filter(
+      (s) => !dismissed.has(filmKeyOf(s)) && (effectiveDay === null || s.date === effectiveDay),
+    );
+    return startingPoints(pool, labels, effectiveDay === null);
+  }, [dayPlanItems, timed, effectiveDay, labels, dismissed]);
 
   const visible = timed.filter(
     (s) =>
@@ -320,15 +338,29 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
 
   function toggleSelected(s: TimedScreening) {
     const k = keyOf(s);
+    // Taking a film out drops it from the suggestions; putting one back in lets it be suggested
+    // again later (a re-add is a change of mind, not a standing rejection).
+    const removing = effectiveSelectedKeys.has(k);
+    setDismissed((prev) => {
+      const next = new Set(prev);
+      if (removing) next.add(filmKeyOf(s));
+      else next.delete(filmKeyOf(s));
+      return next;
+    });
     // Write the *effective* (live-filtered) set, minus/plus this key — so any stale keys left in
     // storage from a past week get pruned on the way through. The Day filter is left alone: with
     // a persistent, week-spanning plan surface there's no need to jump the view to each pick, and
     // across days that jump is disorienting (decision #5).
     const base = [...effectiveSelectedKeys];
-    writePlan(effectiveSelectedKeys.has(k) ? base.filter((x) => x !== k) : [...base, k]);
+    writePlan(removing ? base.filter((x) => x !== k) : [...base, k]);
   }
 
-  const clearPlan = () => writePlan([]);
+  // Clearing is a removal of everything, so everything cleared drops out of the suggestions too —
+  // otherwise the empty state would seed itself with the films you just threw away.
+  function clearPlan() {
+    setDismissed((prev) => new Set([...prev, ...dayPlanItems.map(filmKeyOf)]));
+    writePlan([]);
+  }
 
   // Clicking a day header in the plan filters the film list to that day (leaving the "Next week"
   // preview if it's on).

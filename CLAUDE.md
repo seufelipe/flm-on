@@ -101,7 +101,8 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   ahead of everything (decision #14). `effectiveCinema`/`effectiveDay`/`effectiveTimeframe` all
   revert a now-impossible value to "any"; `effectiveSelectedKeys` drops any plan key whose
   screening has fallen out of the live dataset (past week / now-started / preference change), and
-  `toggleSelected` writes that pruned set back. The two-column shell is a bare `lg:grid` — right
+  `toggleSelected` writes that pruned set back. Three pieces of ephemeral `useState` live here
+  rather than in preferences — `highlightsOnly`, `nextWeek` (#18) and `dismissed` (#5). The two-column shell is a bare `lg:grid` — right
   rail (`<Masthead>` + sticky `<PlanPanel>`), left column (sticky `FilterControls` + film list).
 - `components/FilmCard.tsx` — one film's card. **Line 1** (`<h3>`): `[original title] TITLE [year]`
   — the black uppercase name flanked by `<TitleMeta>` (`font-normal text-dim`, title-sized,
@@ -211,7 +212,14 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
    already in the plan is never *suggested*, on any day** — `bestAdditionPerSlot` filters it out.
    The looser same-day-only rule inside `planAdditions` stays, because it's also what fades the
    card pills, and choosing to see a film twice in a week is legitimate; volunteering one you've
-   already committed to is just handing a decision back to you.
+   already committed to is just handing a decision back to you. Nor is a film you've **taken back
+   out** this session (`dismissed`, a `Set` of film keys in `ScreeningBrowser`): re-offering what
+   you just removed makes the removal look broken — the solid row simply goes dashed. `Clear`
+   dismisses everything it clears, for the same reason. Ephemeral like the Highlights lens — a
+   reload is a fresh slate, since a persisted "never show me this" list with no UI to review or
+   undo it would be a trap. **Suggestions only**: the film's pills stay live, and this never feeds
+   the "wouldn't fit" fade (it filters `additions` on the way into `bestAdditionPerSlot`, not
+   `planAdditions`), so the next-best candidate takes the slot rather than the slot going empty.
    An **empty** plan has no slots, so it seeds itself instead: `lib/startingPoints.ts` offers one
    ghost per timeframe (Early/Mid/Late), **specials first** — if the app volunteers something
    unprompted it should be the 70mm print, not whichever wide release sorted first. Scoped to the
