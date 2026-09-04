@@ -16,11 +16,13 @@ export const CINEMA_WEEKEND_NAME = "National Cinema Weekend";
 // segment carries (decision #7).
 export const CINEMA_WEEKEND_MARK = "★";
 
-// ISO date → the label the banner prose uses. Written out rather than formatted so no month-name
-// CLDR mismatch can hydration-warn (same reason lib/date.ts hand-rolls its short months).
+// ISO date → the label the banner prose uses. No month: the banner only ever shows on days that
+// are hours away, so "Saturday 5" is unambiguous and "September" is just noise in a short line.
+// Written out rather than formatted so no month-name CLDR mismatch can hydration-warn (same
+// reason lib/date.ts hand-rolls its short months).
 const CINEMA_WEEKEND_DAYS: Record<string, string> = {
-  "2026-09-05": "Saturday 5 September",
-  "2026-09-06": "Sunday 6 September",
+  "2026-09-05": "Saturday 5",
+  "2026-09-06": "Sunday 6",
 };
 
 export function isCinemaWeekendDay(dateISO: string): boolean {
@@ -31,7 +33,7 @@ export function isCinemaWeekendDay(dateISO: string): boolean {
 // rule and its prose both come from this.
 //
 // `visibleDays` is already "still ahead of us, and with something on within your preferences", so
-// a passed Saturday drops out on its own and the banner narrows to "Sunday 6 September" rather
+// a passed Saturday drops out on its own and the banner narrows to "Sunday 6" rather
 // than promising a day that's gone. Pinned to a day → only that day counts; on "This week" the
 // list spans the weekend, so every campaign day still in it does.
 export function cinemaWeekendDaysInView(
@@ -43,7 +45,7 @@ export function cinemaWeekendDaysInView(
   return days.includes(effectiveDay) ? [effectiveDay] : [];
 }
 
-// "Saturday 5 September and Sunday 6 September" — or just the one day, once the other has passed.
+// "Saturday 5 and Sunday 6" — or just the one day, once the other has passed.
 export function cinemaWeekendLabel(daysInView: string[]): string {
   return daysInView.map((d) => CINEMA_WEEKEND_DAYS[d]).join(" and ");
 }

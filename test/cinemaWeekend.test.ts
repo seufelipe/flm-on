@@ -42,8 +42,8 @@ describe("cinemaWeekendDaysInView", () => {
 
 describe("cinemaWeekendLabel", () => {
   it("names the days the banner is actually claiming", () => {
-    expect(cinemaWeekendLabel([SAT, SUN])).toBe("Saturday 5 September and Sunday 6 September");
-    expect(cinemaWeekendLabel([SUN])).toBe("Sunday 6 September");
+    expect(cinemaWeekendLabel([SAT, SUN])).toBe("Saturday 5 and Sunday 6");
+    expect(cinemaWeekendLabel([SUN])).toBe("Sunday 6");
     expect(cinemaWeekendLabel([])).toBe("");
   });
 });
