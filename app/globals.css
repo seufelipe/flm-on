@@ -51,7 +51,9 @@
   --main-foreground: #2f2525;
   --border: #2f2525;
   --ring: #2f2525;
-  --overlay: rgb(47 37 37 / 0.6);
+  /* Matches the `bg-fg/35` backdrop the hand-rolled overlays used, so the dialog swap is
+     invisible (decision #22). */
+  --overlay: rgb(47 37 37 / 0.35);
 
   /* Their single radius. Mapped to our button radius, not the card's — the components that read
      it are buttons, tooltips and menu rows; cards keep `rounded-card`. */

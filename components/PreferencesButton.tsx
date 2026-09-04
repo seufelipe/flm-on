@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useState, useSyncExternalStore } from "react";
 import {
   preferencesSnapshot,
   PREFERENCES_SERVER_SNAPSHOT,
   subscribePreferences,
   writePreferences,
 } from "@/lib/preferences";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import SettingsPanel from "./SettingsPanel";
 
 // "Preference"-style sliders glyph (three horizontal tracks, knobs at different positions) —
@@ -37,7 +38,8 @@ function PreferenceIcon() {
 
 // The preferences entry point — a header button that opens the settings modal / sheet. Shares
 // the localStorage-backed store with ScreeningBrowser (both subscribe independently), so no
-// prop drilling. Active kids-only / language prefs are surfaced by <ActivePreferenceNote> beside
+// prop drilling. Escape / scroll-lock / focus-trap / focus-restore are Radix's now (decision
+// #22) — this used to run an effect for the first two and simply didn't do the last two. Active kids-only / language prefs are surfaced by <ActivePreferenceNote> beside
 // the title, not here. See CLAUDE.md #14.
 // `className` sets the button's shell (layout + border + bg); the hard-press behaviour and the
 // `open` pressed-in state are always appended. Default is the compact icon chip used in the
@@ -50,39 +52,24 @@ export default function PreferencesButton({ className }: { className?: string })
   );
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    if (!open) return;
-    document.body.style.overflow = "hidden";
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", onKey);
-    };
-  }, [open]);
-
   return (
-    <>
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        aria-label="Preferences"
-        aria-haspopup="dialog"
-        className={`${
-          className ?? "no-print shrink-0 border-2 border-border rounded-btn bg-surface text-fg p-2"
-        } transition-[translate,box-shadow] duration-100 cursor-pointer ${
-          open
-            ? "translate-x-[6px] translate-y-[6px]"
-            : "shadow-chip hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-chip-half active:translate-x-[6px] active:translate-y-[6px] active:shadow-none"
-        }`}
-      >
-        <PreferenceIcon />
-      </button>
-      {open && (
-        <SettingsPanel prefs={prefs} onChange={writePreferences} onClose={() => setOpen(false)} />
-      )}
-    </>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <button
+          type="button"
+          aria-label="Preferences"
+          className={`${
+            className ?? "no-print shrink-0 border-2 border-border rounded-btn bg-surface text-fg p-2"
+          } transition-[translate,box-shadow] duration-100 cursor-pointer ${
+            open
+              ? "translate-x-[6px] translate-y-[6px]"
+              : "shadow-chip hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-chip-half active:translate-x-[6px] active:translate-y-[6px] active:shadow-none"
+          }`}
+        >
+          <PreferenceIcon />
+        </button>
+      </DialogTrigger>
+      <SettingsPanel prefs={prefs} onChange={writePreferences} onClose={() => setOpen(false)} />
+    </Dialog>
   );
 }

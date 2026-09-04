@@ -2,11 +2,14 @@ import { CINEMA_LABEL, CINEMA_LOCATION, CINEMA_ORDER } from "@/lib/cinemas";
 import { TIMEFRAMES, formatTimeframeRange } from "@/lib/timeframe";
 import { SHORT_FILM_MAX_MINS } from "@/lib/duration";
 import { DEFAULT_PREFERENCES, isDefault, type LanguagePref, type Preferences } from "@/lib/preferences";
+import { DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { SEGMENT_BASE, controlSegmentClass } from "./controlSegment";
 
-// The settings overlay: a centered modal on desktop, a bottom sheet on mobile (pure CSS via the
-// `sm:` breakpoint). Standing viewing preferences — see CLAUDE.md decision #14. No hooks: Escape
-// / scroll-lock are handled by PreferencesButton's effect; the close button just autoFocuses.
+// The settings overlay: a centered modal on desktop, a bottom sheet on mobile — both now from
+// the shared <DialogContent> (CLAUDE.md decision #22), which owns that responsive frame. Standing
+// viewing preferences — see decision #14. Escape, scroll-lock, the backdrop press, the focus trap
+// and focus restore all come from Radix; PreferencesButton no longer runs an effect for any of
+// it, and there is no hand-rolled backdrop <button> here any more.
 //
 // Each option is a toggle button in the same accent-fill / hard-press style as the filter-bar
 // segments (`controlSegment.ts`) — "on" reads the same as a selected filter.
@@ -120,114 +123,100 @@ export default function SettingsPanel({ prefs, onChange, onClose }: Props) {
   const timeframesOn = TIMEFRAMES.filter((tf) => prefs.timeframes[tf.id]).length;
 
   return (
-    <div className="no-print fixed inset-0 z-50 flex items-end justify-center p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] sm:items-center sm:p-4 sm:pb-4">
-      <button
-        type="button"
-        aria-label="Close preferences"
-        tabIndex={-1}
-        onClick={onClose}
-        className="absolute inset-0 bg-fg/35 cursor-default"
-      />
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-label="Preferences"
-        className="relative w-full max-h-full overflow-y-auto border-4 border-border bg-surface shadow-card-lg rounded-card p-6 sm:w-auto sm:max-w-xl sm:p-8"
-      >
-        <div className="mb-5 flex items-start justify-between gap-4">
-          <div>
-            <h2 className="font-black uppercase text-xl tracking-tight">Preferences</h2>
-            <p className="mt-1 text-xs text-dim">
-              Saved on this device — kept across sessions.
-              {!isDefault(prefs) && (
-                <>
-                  {" · "}
-                  <button
-                    type="button"
-                    onClick={() => onChange(DEFAULT_PREFERENCES)}
-                    className="underline underline-offset-2 cursor-pointer"
-                  >
-                    Reset to defaults
-                  </button>
-                </>
-              )}
-            </p>
-          </div>
-          {/* autoFocus gives the dialog a sensible initial focus target without needing a hook. */}
-          <button
-            type="button"
-            autoFocus
-            onClick={onClose}
-            aria-label="Close preferences"
-            className="-m-2 shrink-0 p-2 text-2xl leading-none cursor-pointer"
-          >
-            &times;
-          </button>
+    <DialogContent className="overflow-y-auto p-6 sm:w-auto sm:max-w-xl sm:p-8">
+      <div className="mb-5 flex items-start justify-between gap-4">
+        <div>
+          <DialogTitle className="text-xl">Preferences</DialogTitle>
+          <DialogDescription className="mt-1">
+            Saved on this device — kept across sessions.
+            {!isDefault(prefs) && (
+              <>
+                {" · "}
+                <button
+                  type="button"
+                  onClick={() => onChange(DEFAULT_PREFERENCES)}
+                  className="underline underline-offset-2 cursor-pointer"
+                >
+                  Reset to defaults
+                </button>
+              </>
+            )}
+          </DialogDescription>
         </div>
-
-        <div className="flex flex-col gap-5">
-          {/* Cinemas and Times each require at least one on — the last remaining one locks
-              rather than letting you empty the whole view. */}
-          <Group legend="Available cinemas" description="Only see your favourite places">
-            {CINEMA_ORDER.map((id) => (
-              <Toggle
-                key={id}
-                label={CINEMA_LABEL[id]}
-                sublabel={CINEMA_LOCATION[id]}
-                on={prefs.cinemas[id]}
-                locked={prefs.cinemas[id] && cinemasOn === 1}
-                onChange={(value) => onChange({ ...prefs, cinemas: { ...prefs.cinemas, [id]: value } })}
-              />
-            ))}
-          </Group>
-
-          <Group legend="Times of day" description="When you normally go">
-            {TIMEFRAMES.map((tf) => (
-              <Toggle
-                key={tf.id}
-                label={tf.label}
-                sublabel={formatTimeframeRange(tf)}
-                on={prefs.timeframes[tf.id]}
-                locked={prefs.timeframes[tf.id] && timeframesOn === 1}
-                onChange={(value) =>
-                  onChange({ ...prefs, timeframes: { ...prefs.timeframes, [tf.id]: value } })
-                }
-              />
-            ))}
-          </Group>
-
-          <Group legend="General">
-            <Toggle
-              label="Hide shorts *"
-              sublabel={`* films under ${SHORT_FILM_MAX_MINS} min`}
-              on={prefs.hideShortFilms}
-              onChange={(value) => onChange({ ...prefs, hideShortFilms: value })}
-            />
-            <Toggle
-              label="Only kid-friendly"
-              sublabel="g, pg & 12a"
-              on={prefs.kidsOnly}
-              onChange={(value) => onChange({ ...prefs, kidsOnly: value })}
-            />
-          </Group>
-
-          <Group legend="Language" description="By the film's original language">
-            <Segmented<LanguagePref>
-              value={prefs.language}
-              // Same gesture as a filter-bar control: pressing the option you're already on
-              // clears it back to the default ("any") rather than being a no-op.
-              onChange={(value) =>
-                onChange({ ...prefs, language: value === prefs.language ? "any" : value })
-              }
-              options={[
-                { value: "any", label: "Any language" },
-                { value: "english", label: "English", sublabel: "only" },
-                { value: "non-english", label: "Non-English", sublabel: "only" },
-              ]}
-            />
-          </Group>
-        </div>
+        {/* autoFocus gives the dialog a sensible initial focus target without needing a hook. */}
+        <button
+          type="button"
+          autoFocus
+          onClick={onClose}
+          aria-label="Close preferences"
+          className="-m-2 shrink-0 p-2 text-2xl leading-none cursor-pointer"
+        >
+          &times;
+        </button>
       </div>
-    </div>
+
+      <div className="flex flex-col gap-5">
+        {/* Cinemas and Times each require at least one on — the last remaining one locks
+            rather than letting you empty the whole view. */}
+        <Group legend="Available cinemas" description="Only see your favourite places">
+          {CINEMA_ORDER.map((id) => (
+            <Toggle
+              key={id}
+              label={CINEMA_LABEL[id]}
+              sublabel={CINEMA_LOCATION[id]}
+              on={prefs.cinemas[id]}
+              locked={prefs.cinemas[id] && cinemasOn === 1}
+              onChange={(value) => onChange({ ...prefs, cinemas: { ...prefs.cinemas, [id]: value } })}
+            />
+          ))}
+        </Group>
+
+        <Group legend="Times of day" description="When you normally go">
+          {TIMEFRAMES.map((tf) => (
+            <Toggle
+              key={tf.id}
+              label={tf.label}
+              sublabel={formatTimeframeRange(tf)}
+              on={prefs.timeframes[tf.id]}
+              locked={prefs.timeframes[tf.id] && timeframesOn === 1}
+              onChange={(value) =>
+                onChange({ ...prefs, timeframes: { ...prefs.timeframes, [tf.id]: value } })
+              }
+            />
+          ))}
+        </Group>
+
+        <Group legend="General">
+          <Toggle
+            label="Hide shorts *"
+            sublabel={`* films under ${SHORT_FILM_MAX_MINS} min`}
+            on={prefs.hideShortFilms}
+            onChange={(value) => onChange({ ...prefs, hideShortFilms: value })}
+          />
+          <Toggle
+            label="Only kid-friendly"
+            sublabel="g, pg & 12a"
+            on={prefs.kidsOnly}
+            onChange={(value) => onChange({ ...prefs, kidsOnly: value })}
+          />
+        </Group>
+
+        <Group legend="Language" description="By the film's original language">
+          <Segmented<LanguagePref>
+            value={prefs.language}
+            // Same gesture as a filter-bar control: pressing the option you're already on
+            // clears it back to the default ("any") rather than being a no-op.
+            onChange={(value) =>
+              onChange({ ...prefs, language: value === prefs.language ? "any" : value })
+            }
+            options={[
+              { value: "any", label: "Any language" },
+              { value: "english", label: "English", sublabel: "only" },
+              { value: "non-english", label: "Non-English", sublabel: "only" },
+            ]}
+          />
+        </Group>
+      </div>
+    </DialogContent>
   );
 }

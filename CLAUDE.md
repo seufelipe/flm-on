@@ -186,10 +186,14 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
 - `components/controlSegment.ts` — `SEGMENT_BASE` + `controlSegmentClass(active)`, the accent-fill
   / hard-press "selected" segment styling shared by the filter bar and the settings panel.
 - `components/ui/` — vendored shadcn/Radix primitives, restyled to our tokens (decision #22).
-  `tooltip.tsx` so far: the Radix structure verbatim so a future `shadcn add` diffs cleanly, with
-  only `TooltipContent`'s class list ours (the dark-sticker `bg-fg text-bg`, `rounded-base`,
+  `tooltip.tsx`: the Radix structure verbatim so a future `shadcn add` diffs cleanly, with only
+  `TooltipContent`'s class list ours (the dark-sticker `bg-fg text-bg`, `rounded-base`,
   `shadow-shadow`). Portals to `body`, which is also what keeps it out of the film card's
-  `overflow-x-auto` pill strip. `lib/utils.ts` holds the `cn` helper every such component wants.
+  `overflow-x-auto` pill strip. `dialog.tsx`: the one overlay shell for **both** the settings
+  modal and the mobile plan sheet — `DialogContent` carries the responsive bottom-sheet-to-centred
+  -modal positioning itself and the app's `border-4 / rounded-card / shadow-card-lg` shell, with
+  no animation and no built-in close button (both call sites draw their own).
+  `lib/utils.ts` holds the `cn` helper every such component wants.
 
 ## Decisions worth knowing before changing anything
 
@@ -644,10 +648,34 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
       tooltip: that's what gives the "already showing one, move along the row of showtimes, no
       fresh delay" grouping. `delayDuration` is 300ms — Radix's own default of 0 makes a row of
       pills flash tooltips as you scan across it.
+    - **No enter/exit animation on the dialog, and that is a correctness rule rather than taste.**
+      A page that isn't being rendered — a backgrounded tab, the installed app behind the home
+      screen — doesn't tick CSS animations at all, while `animation-fill-mode` still pins the
+      element to frame 0. Radix keeps a node mounted until its exit animation fires
+      `animationend`, and it mounts the scroll lock on the **overlay**, so a stalled exit strands
+      `data-scroll-locked` on `<body>` — `overflow: hidden !important`, an unscrollable page —
+      until the tab is looked at again. A stalled *enter* is the mirror image: the panel sits at
+      `opacity: 0`, 16px low, i.e. it opens invisible. Both self-heal the moment the page renders
+      again, which is precisely what makes them impossible to reproduce on demand. The surfaces
+      these replaced had no animation either, so removing it also kept the swap invisible. Add
+      motion to a Radix surface here only with a plan for the not-rendered case. (The tooltip
+      still carries its registry animations: it's a hover surface, so it can only open on a page
+      that is already rendering, and a stalled exit merely leaves it on screen until you look
+      back. Same class, much smaller blast radius — but it is the same trap.)
+    - **`DialogContent` positions itself; it is a direct child of `DialogPortal`.** `DialogPortal`
+      wraps each of its children in its own `<Presence>`, so a positioning `<div>` around Content
+      makes Content a grandchild and the wrapper unmounts out from under it. Centring at `sm:` is
+      `inset-4` + `m-auto` rather than `-translate-1/2`, so that if motion is ever added back the
+      keyframes' own `transform` can't drop a static translate mid-animation.
     - `components.json` points the shadcn CLI at our root-level `@/` layout (no `src/`), so
       `npx shadcn@latest add https://neobrutalism.dev/r/<name>.json` lands in `components/ui/`.
-      Adopted so far: **tooltip**. `dialog`/`sheet` (for `SettingsPanel` + `PlanButton`) and
-      `popover` (for `FilterMenu`) are the obvious next ones and are not done yet.
+      Adopted so far: **tooltip** and **dialog** — the latter covering both overlays, since
+      neither the registry's centred-only `dialog` nor its edge-anchored `sheet` matches this
+      app's one shape (a bottom sheet on mobile that becomes a centred modal at `sm:`).
+      `SettingsPanel` and `PlanButton` render `<DialogContent>` and no longer hand-roll a
+      backdrop, an Escape listener or a scroll lock; `PreferencesButton` and `PlanButton` each
+      dropped an entire `useEffect`. **`popover` for `FilterMenu`'s own `pointerdown` +
+      Escape listener is the remaining one** and is not done yet.
 ## Known gaps
 
 - No tests for the interactive UI layer — only `lib/` unit tests (`test/*.test.ts`).
