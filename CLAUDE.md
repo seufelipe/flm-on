@@ -193,7 +193,10 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   modal and the mobile plan sheet — `DialogContent` carries the responsive bottom-sheet-to-centred
   -modal positioning itself and the app's `border-4 / rounded-card / shadow-card-lg` shell, with
   no animation and no built-in close button (both call sites draw their own).
-  `lib/utils.ts` holds the `cn` helper every such component wants.
+  `dropdown-menu.tsx`: trimmed to Root / Trigger / Content / Item / Separator, `modal={false}`,
+  `bg-surface` rather than the registry's gold `bg-main`, and positioned by Radix's Popper —
+  which also makes the panel collision-aware, where the old `absolute left-0 top-full` could run
+  off a narrow viewport. `lib/utils.ts` holds the `cn` helper every such component wants.
 
 ## Decisions worth knowing before changing anything
 
@@ -306,8 +309,8 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
        collapse to a **`FilterMenu`** — a trigger button showing the current choice that opens a
        chunky dropdown (`shadow-card`, `z-40`, first row is the "any" option, Day's `footer` is
        the "Next week" affordance). A full week of day chips is far too many flush segments for a
-       bar that isn't pinned to a screen edge. `FilterMenu` is the app's **first popover**: its
-       own click-outside (`pointerdown` on `document`) + Escape dismissal, parent holds
+       bar that isn't pinned to a screen edge. Built on Radix's dropdown-menu (decision #22) —
+       dismissal, roving focus and keyboard navigation come from there; the parent still holds
        `openMenu` so only one is open at a time. Accent fill on a trigger = "this filter is
        narrowing the view"; open-but-default just presses in.
      The `"any"` / single-option / pinned-preference logic is the same across both (a menu with
@@ -674,8 +677,28 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
       app's one shape (a bottom sheet on mobile that becomes a centred modal at `sm:`).
       `SettingsPanel` and `PlanButton` render `<DialogContent>` and no longer hand-roll a
       backdrop, an Escape listener or a scroll lock; `PreferencesButton` and `PlanButton` each
-      dropped an entire `useEffect`. **`popover` for `FilterMenu`'s own `pointerdown` +
-      Escape listener is the remaining one** and is not done yet.
+      dropped an entire `useEffect`. `FilterMenu` uses **dropdown-menu** (not `popover`): its rows
+      already claimed `role="menuitemradio"`, so the menu primitive is the honest one — and it
+      brings the arrow-key / Home / End / typeahead navigation those rows had always advertised
+      and never had. Nothing hand-rolled is left.
+    - **`modal={false}` on the dropdown, and that is not cosmetic.** Radix defaults menus to
+      modal, which mounts `RemoveScroll` and puts `pointer-events: none` on `<body>`. For a
+      filter bar that is wrong twice over: the film list underneath should stay scrollable while
+      you pick a day, and a scroll lock is precisely what strands `data-scroll-locked` if its
+      exit ever stalls.
+    - **Two things Radix's `asChild` will not let a child override.** `role` is applied by the
+      Radix primitive *before* it spreads your props, so `role="menuitemradio"` has to be handed
+      to `DropdownMenuItem` — set on the child button it is silently replaced by `menuitem`
+      (`aria-checked`, by contrast, does survive from the child). And `data-highlighted`, Radix's
+      own keyboard-cursor flag, never lands on these rows at all, so **the menu's focus cursor is
+      anchored on `:focus`** — an inset outline, applied in both states so it still reads on the
+      gold selected row. Suppressing the outline centrally in `ui/dropdown-menu.tsx` would remove
+      that cursor from every caller, which is why `DropdownMenuItem` sets no `outline-hidden`.
+    - **A close only clears the slot it owns** (`menuOpenChange` in `FilterControls`). Pressing a
+      second trigger while a menu is open fires both a close (the press is outside the first
+      menu) and an open, in either order; clearing `openMenu` unconditionally on close would
+      sometimes wipe the menu that had just opened, so moving between filters took two clicks.
+
 ## Known gaps
 
 - No tests for the interactive UI layer — only `lib/` unit tests (`test/*.test.ts`).

@@ -1,12 +1,26 @@
 "use client";
 
-import { useEffect, useRef, useState, type Dispatch, type ReactNode, type SetStateAction } from "react";
+import {
+  forwardRef,
+  useState,
+  type ComponentPropsWithoutRef,
+  type Dispatch,
+  type ReactNode,
+  type SetStateAction,
+} from "react";
 import type { CinemaId } from "@/lib/scrapers/types";
 import type { UpcomingFilm } from "@/lib/upcoming";
 import { formatTimeframeRange, type Timeframe, type TimeframeDef } from "@/lib/timeframe";
 import { CINEMA_LABEL, CINEMA_LOCATION } from "@/lib/cinemas";
 import { formatDayFriendly, formatDayDate } from "@/lib/date";
 import { CINEMA_WEEKEND_MARK, CINEMA_WEEKEND_NAME, isCinemaWeekendDay } from "@/lib/cinemaWeekend";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { SEGMENT_BASE, controlSegmentClass } from "./controlSegment";
 import PreferencesButton from "./PreferencesButton";
 
@@ -214,38 +228,50 @@ function ControlGroup<T>({
 // ================================================================================================
 
 // One row of the open menu panel. Left-aligned label, right-aligned sublabel (date / time range).
-function MenuRow({
-  selected,
-  onClick,
-  children,
-}: {
-  selected: boolean;
-  onClick: () => void;
-  children: ReactNode;
-}) {
+// One row of a FilterMenu. Wrapped by <DropdownMenuItem asChild>, which supplies the roving
+// focus and keyboard selection. `aria-checked` lives here (it survives the Slot merge) but the
+// matching `role="menuitemradio"` has to be handed to DropdownMenuItem instead: Radix's Primitive
+// sets `role="menuitem"` *before* spreading props, so only a role passed on the Radix side wins.
+// `data-highlighted` is Radix's keyboard/pointer focus flag — it has to light the row the same
+// way hover does, or arrow-keying through the menu shows no cursor.
+const MenuRow = forwardRef<
+  HTMLButtonElement,
+  { selected: boolean; onClick?: () => void; children: ReactNode } & ComponentPropsWithoutRef<"button">
+>(function MenuRow({ selected, onClick, children, className, ...props }, ref) {
+  // The keyboard cursor is anchored on `:focus`, not on Radix's `data-highlighted` — that flag
+  // tracks Radix's own focus state and was never landing on these rows, which with the outline
+  // suppressed left arrow-key navigation with no visible cursor at all. Radix does move real DOM
+  // focus, so `:focus` is the reliable hook. An inset outline rather than a fill so it also reads
+  // on the gold selected row; `data-highlighted:bg-bg` is kept as the matching hover-style tint
+  // for the cases where Radix does set it.
+  const focusRing =
+    "focus:outline-solid focus:outline-2 focus:-outline-offset-2 focus:outline-border";
   return (
     <button
+      ref={ref}
       type="button"
-      role="menuitemradio"
       aria-checked={selected}
       onClick={onClick}
       className={`w-full flex items-center justify-between gap-6 px-3 py-2 text-sm font-bold uppercase tracking-wide cursor-pointer ${
         selected
           ? "bg-accent text-fg [&_[data-sub]]:text-accent-ink"
-          : "bg-surface text-fg hover:bg-bg [&_[data-sub]]:text-dim"
-      }`}
+          : "bg-surface text-fg hover:bg-bg data-highlighted:bg-bg [&_[data-sub]]:text-dim"
+      } ${focusRing} ${className ?? ""}`}
+      {...props}
     >
       {children}
     </button>
   );
-}
+});
 
 // A single-select filter as a dropdown: a trigger button showing the current choice, opening a
-// chunky panel below it. The parent owns `open` so only one menu is open at a time. First row is
-// always the "any" option; `footer` is the Day menu's "Next week" affordance.
+// chunky panel below it. The parent still owns `open` so only one menu is open at a time. First
+// row is always the "any" option; `footer` is the Day menu's "Next week" affordance.
 //
-// This is the app's first popover — its own click-outside + Escape dismissal, panel at `z-40`
-// (above the sticky bar / dock at z-20 and the FAB at z-30, below the modals at z-50).
+// Radix supplies the dismissal (outside press, Escape), the roving focus and arrow-key/typeahead
+// navigation these rows always claimed with `role="menuitemradio"` but never actually had, and
+// collision-aware placement — the old `absolute left-0 top-full` could run off the viewport on a
+// narrow window. See CLAUDE.md decision #22; `modal={false}` lives in the ui/ component.
 function FilterMenu<T>({
   triggerLabel,
   active,
@@ -275,24 +301,6 @@ function FilterMenu<T>({
   keyFor: (opt: T) => string;
   footer?: ReactNode;
 }) {
-  const wrapRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!open) return;
-    const onPointerDown = (e: PointerEvent) => {
-      if (wrapRef.current && !wrapRef.current.contains(e.target as Node)) onOpenChange(false);
-    };
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onOpenChange(false);
-    };
-    document.addEventListener("pointerdown", onPointerDown);
-    window.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("pointerdown", onPointerDown);
-      window.removeEventListener("keydown", onKey);
-    };
-  }, [open, onOpenChange]);
-
   // Accent fill only means "this filter is narrowing the view"; an open-but-default menu just
   // presses in (same as PreferencesButton while its modal is open).
   const triggerClass = active
@@ -302,50 +310,39 @@ function FilterMenu<T>({
       : controlSegmentClass(false);
 
   return (
-    <div ref={wrapRef} className="relative shrink-0">
-      <button
-        type="button"
-        aria-haspopup="menu"
-        aria-expanded={open}
-        onClick={() => onOpenChange(!open)}
-        className={`${BAR_CONTROL} ${triggerClass}`}
-      >
-        <span className="font-bold uppercase text-sm tracking-wide">{triggerLabel}</span>
-        <span aria-hidden="true" className="text-[0.7em] leading-none">
-          {open ? "▲" : "▼"}
-        </span>
-      </button>
+    <DropdownMenu open={open} onOpenChange={onOpenChange}>
+      <DropdownMenuTrigger asChild>
+        <button type="button" className={`shrink-0 ${BAR_CONTROL} ${triggerClass}`}>
+          <span className="font-bold uppercase text-sm tracking-wide">{triggerLabel}</span>
+          <span aria-hidden="true" className="text-[0.7em] leading-none">
+            {open ? "▲" : "▼"}
+          </span>
+        </button>
+      </DropdownMenuTrigger>
 
-      {open && (
-        <div
-          role="menu"
-          className="absolute left-0 top-full mt-1.5 z-40 w-max min-w-full border-2 border-border bg-surface rounded-[10px] shadow-card overflow-hidden"
-        >
-          <MenuRow
-            selected={anyActive}
-            onClick={() => {
-              onAny();
-              onOpenChange(false);
-            }}
-          >
+      <DropdownMenuContent>
+        <DropdownMenuItem asChild role="menuitemradio" onSelect={onAny}>
+          <MenuRow selected={anyActive}>
             <span>{anyLabel}</span>
           </MenuRow>
-          {options.map((opt) => (
-            <MenuRow
-              key={keyFor(opt)}
-              selected={isActive(opt)}
-              onClick={() => {
-                onSelect(opt);
-                onOpenChange(false);
-              }}
-            >
-              {renderOption(opt)}
-            </MenuRow>
-          ))}
-          {footer && <div className="border-t-2 border-border">{footer}</div>}
-        </div>
-      )}
-    </div>
+        </DropdownMenuItem>
+        {options.map((opt) => (
+          <DropdownMenuItem key={keyFor(opt)} asChild role="menuitemradio" onSelect={() => onSelect(opt)}>
+            <MenuRow selected={isActive(opt)}>{renderOption(opt)}</MenuRow>
+          </DropdownMenuItem>
+        ))}
+        {footer && (
+          <>
+            <DropdownMenuSeparator />
+            {/* asChild so the footer row joins the same roving-focus ring as the options above
+                it; its own onClick still does the work. */}
+            <DropdownMenuItem asChild role="menuitemradio">
+              {footer}
+            </DropdownMenuItem>
+          </>
+        )}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
 
@@ -396,6 +393,14 @@ function BarMenus({
   setActiveCinema,
 }: Props) {
   const [openMenu, setOpenMenu] = useState<null | "day" | "time" | "place">(null);
+
+  // Pressing a second trigger while one menu is open fires two things: Radix closes the open menu
+  // (the press is outside it) and the new menu opens. Those can arrive in either order, so a
+  // close that cleared the slot unconditionally would sometimes wipe the menu that had just
+  // opened — leaving you to click twice to move between filters. A close only clears its own slot.
+  const menuOpenChange =
+    (id: "day" | "time" | "place") => (open: boolean) =>
+      setOpenMenu((cur) => (open ? id : cur === id ? null : cur));
 
   const dayTriggerLabel = nextWeek ? (
     "Next week"
@@ -455,7 +460,7 @@ function BarMenus({
           triggerLabel={dayTriggerLabel}
           active={nextWeek || effectiveDay !== null}
           open={openMenu === "day"}
-          onOpenChange={(o) => setOpenMenu(o ? "day" : null)}
+          onOpenChange={menuOpenChange("day")}
           anyLabel="This week"
           anyActive={effectiveDay === null && !nextWeek}
           onAny={() => {
@@ -487,7 +492,7 @@ function BarMenus({
           triggerLabel={timeTriggerLabel}
           active={effectiveTimeframe !== null}
           open={openMenu === "time"}
-          onOpenChange={(o) => setOpenMenu(o ? "time" : null)}
+          onOpenChange={menuOpenChange("time")}
           anyLabel="Any time"
           anyActive={effectiveTimeframe === null}
           onAny={() => setActiveTimeframe(null)}
@@ -511,7 +516,7 @@ function BarMenus({
           }
           active={effectiveCinema !== null}
           open={openMenu === "place"}
-          onOpenChange={(o) => setOpenMenu(o ? "place" : null)}
+          onOpenChange={menuOpenChange("place")}
           anyLabel={cinemaAnyLabel(cinemasEnabled)}
           anyActive={effectiveCinema === null}
           onAny={() => setActiveCinema(null)}
