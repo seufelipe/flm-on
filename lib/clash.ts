@@ -45,45 +45,16 @@ export function withEndTimes(screenings: Screening[]): TimedScreening[] {
   });
 }
 
-function sortedPair(a: TimedScreening, b: TimedScreening): [TimedScreening, TimedScreening] {
-  return a.startMins <= b.startMins ? [a, b] : [b, a];
-}
-
 function gapBetween(first: TimedScreening, second: TimedScreening): number {
   return second.startMins - first.endMins;
 }
 
+function filmKey(s: TimedScreening): string {
+  return s.filmTitle.trim().toLowerCase();
+}
+
 function sameFilm(a: TimedScreening, b: TimedScreening): boolean {
-  return a.filmTitle.trim().toLowerCase() === b.filmTitle.trim().toLowerCase();
-}
-
-export interface ScreeningPair {
-  a: TimedScreening;
-  b: TimedScreening;
-  gapMins: number;
-}
-
-// Valid double bills: same day, different films (the same film showing twice isn't a double
-// bill), with enough of a gap between them but not an unreasonably long wait — anything past
-// MAX_COMBO_GAP_MINUTES isn't a realistic plan. Cross-cinema pairs need WALK_BUFFER_MINUTES to
-// cover walking between buildings (e.g. Smithfield to Temple Bar); same-cinema pairs only need
-// SAME_CINEMA_BUFFER_MINUTES since you're just moving between screens.
-export function findCombos(screenings: Screening[], limit = 10): ScreeningPair[] {
-  const timed = withEndTimes(screenings);
-  const combos: ScreeningPair[] = [];
-  for (let i = 0; i < timed.length; i++) {
-    for (let j = i + 1; j < timed.length; j++) {
-      if (timed[i].date !== timed[j].date) continue;
-      if (sameFilm(timed[i], timed[j])) continue;
-      const [first, second] = sortedPair(timed[i], timed[j]);
-      const gap = gapBetween(first, second);
-      const minGap = first.cinema === second.cinema ? SAME_CINEMA_BUFFER_MINUTES : WALK_BUFFER_MINUTES;
-      if (gap >= minGap && gap <= MAX_COMBO_GAP_MINUTES) {
-        combos.push({ a: first, b: second, gapMins: gap });
-      }
-    }
-  }
-  return combos.sort((a, b) => a.gapMins - b.gapMins).slice(0, limit);
+  return filmKey(a) === filmKey(b);
 }
 
 export interface ItineraryTransition {
@@ -96,10 +67,10 @@ export interface ItineraryTransition {
 }
 
 // Transitions between consecutive screenings in a chronologically-sorted, manually-built plan
-// (which may now span several days). Same minimum-gap rule as findCombos (WALK_BUFFER_MINUTES
-// cross-cinema, SAME_CINEMA_BUFFER_MINUTES same-cinema), but deliberately no MAX_COMBO_GAP_MINUTES
-// cap here — unlike a suggested pair, a plan the user built on purpose can have a long gap
-// (lunch, a browse break) and that's not something to flag as wrong.
+// (which may now span several days). Minimum-gap rule: WALK_BUFFER_MINUTES cross-cinema,
+// SAME_CINEMA_BUFFER_MINUTES same-cinema — but deliberately no MAX_COMBO_GAP_MINUTES cap here.
+// Unlike a *suggested* addition, a plan the user built on purpose can have a long gap (lunch, a
+// browse break) and that's not something to flag as wrong.
 export function itineraryTransitions(sortedByStart: TimedScreening[]): ItineraryTransition[] {
   const transitions: ItineraryTransition[] = [];
   for (let i = 0; i < sortedByStart.length - 1; i++) {
@@ -116,6 +87,10 @@ export function itineraryTransitions(sortedByStart: TimedScreening[]): Itinerary
   return transitions;
 }
 
+// Cross-cinema pairs need WALK_BUFFER_MINUTES to cover walking between buildings (e.g. Smithfield
+// to Temple Bar); same-cinema pairs only need SAME_CINEMA_BUFFER_MINUTES since you're just moving
+// between screens. The MAX_COMBO_GAP_MINUTES ceiling is what keeps a *suggestion* realistic —
+// anything past it isn't a plan you'd actually make, it's two separate outings.
 function fits(a: TimedScreening, b: TimedScreening): number | null {
   if (a.date !== b.date) return null;
   const gap = gapBetween(a, b);
@@ -123,20 +98,28 @@ function fits(a: TimedScreening, b: TimedScreening): number | null {
   return gap >= minGap && gap <= MAX_COMBO_GAP_MINUTES ? gap : null;
 }
 
+// A screening that could join the plan, with the shape of the slot it would take. `afterKey` is
+// the identity of the plan item it would follow (null = it would go *before* that day's first
+// film), which is what makes a slot addressable — see `bestAdditionPerSlot`.
+export interface PlanAddition {
+  screening: TimedScreening;
+  gapBefore: number | null;
+  gapAfter: number | null;
+  afterKey: string | null;
+}
+
 // Which not-yet-selected screenings could be added to a chronologically-sorted itinerary without
 // breaking a transition. A newly-inserted screening only touches the transitions immediately
-// adjacent to it (its neighbor by start time on either side) — not every other screening already
-// in the plan — so this checks the candidate against its actual would-be neighbors, not a flat
-// "pairs with something in the plan" check. A candidate with only one neighbor (inserting before
-// the first item or after the last) only needs to satisfy that one side. Same buffer/cap rules as
-// findCombos — a suggested addition should still be a realistic pairing, unlike the itinerary
-// display itself, which doesn't cap a gap the user already committed to.
+// adjacent to it (its neighbour by start time on either side) — not every other screening already
+// in the plan — so this checks the candidate against its actual would-be neighbours, not a flat
+// "pairs with something in the plan" check. A candidate with only one neighbour (inserting before
+// the first item or after the last) only needs to satisfy that one side.
 //
-// Hints are within-day only: a candidate is checked against the plan items on *its own* date, so
-// a plan spanning the week only ever gets slot-in hints for days it already has something on. The
+// Within-day only: a candidate is checked against the plan items on *its own* date, so a plan
+// spanning the week only ever gets slot-in suggestions for days it already has something on. The
 // same film on a *different* day is fair game (see it Tuesday and again Friday).
-export function fittingAdditions(itinerary: TimedScreening[], candidates: TimedScreening[]): Map<string, number> {
-  const result = new Map<string, number>();
+export function planAdditions(itinerary: TimedScreening[], candidates: TimedScreening[]): PlanAddition[] {
+  const result: PlanAddition[] = [];
   for (const candidate of candidates) {
     const sameDayItinerary = itinerary.filter((item) => item.date === candidate.date);
     if (sameDayItinerary.length === 0) continue;
@@ -153,16 +136,61 @@ export function fittingAdditions(itinerary: TimedScreening[], candidates: TimedS
       }
     }
 
-    const gaps: number[] = [];
-    const gapBefore = predecessor ? fits(predecessor, candidate) : undefined;
+    const gapBefore = predecessor ? fits(predecessor, candidate) : null;
     if (predecessor && gapBefore === null) continue;
-    if (gapBefore != null) gaps.push(gapBefore);
 
-    const gapAfter = successor ? fits(candidate, successor) : undefined;
+    const gapAfter = successor ? fits(candidate, successor) : null;
     if (successor && gapAfter === null) continue;
-    if (gapAfter != null) gaps.push(gapAfter);
 
-    if (gaps.length > 0) result.set(candidate.bookingUrl, Math.min(...gaps));
+    if (gapBefore === null && gapAfter === null) continue;
+    result.push({
+      screening: candidate,
+      gapBefore,
+      gapAfter,
+      afterKey: predecessor ? predecessor.bookingUrl : null,
+    });
   }
   return result;
+}
+
+// The tightness of a candidate's fit — the smaller of the two gaps it would create. Also the
+// ranking key: the least dead time wins.
+function fitGap(a: PlanAddition): number {
+  const gaps = [a.gapBefore, a.gapAfter].filter((g): g is number => g !== null);
+  return Math.min(...gaps);
+}
+
+// Collapsed view of `planAdditions` for the film-card pill hints: bookingUrl → tightness of fit.
+// Every key in this map is a screening that would slot cleanly into the plan.
+export function fittingAdditions(itinerary: TimedScreening[], candidates: TimedScreening[]): Map<string, number> {
+  return new Map(planAdditions(itinerary, candidates).map((a) => [a.screening.bookingUrl, fitGap(a)]));
+}
+
+// One suggestion per open slot — a slot being "before this day's first film", "between these two
+// consecutive films" or "after this day's last film", addressed by the plan item it follows. The
+// tightest fit wins; ties break on the earlier start, then the title, so the suggestion doesn't
+// shuffle between renders.
+//
+// A film already in the plan is never suggested, **on any day**. `planAdditions` is deliberately
+// looser (same-day only), because that rule is also what fades the film-card pills, and seeing a
+// film twice in a week is a legitimate thing to *choose* — but volunteering something you've
+// already committed to isn't a suggestion, it's a decision handed back to you.
+export function bestAdditionPerSlot(additions: PlanAddition[], itinerary: TimedScreening[]): PlanAddition[] {
+  const planned = new Set(itinerary.map(filmKey));
+  const bySlot = new Map<string, PlanAddition>();
+  for (const addition of additions) {
+    if (planned.has(filmKey(addition.screening))) continue;
+    const slot = `${addition.screening.date}:${addition.afterKey ?? "start"}`;
+    const held = bySlot.get(slot);
+    if (!held || betterFit(addition, held)) bySlot.set(slot, addition);
+  }
+  return [...bySlot.values()];
+}
+
+function betterFit(a: PlanAddition, b: PlanAddition): boolean {
+  const byGap = fitGap(a) - fitGap(b);
+  if (byGap !== 0) return byGap < 0;
+  const byStart = a.screening.startMins - b.screening.startMins;
+  if (byStart !== 0) return byStart < 0;
+  return a.screening.filmTitle.localeCompare(b.screening.filmTitle) < 0;
 }

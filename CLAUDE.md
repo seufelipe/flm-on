@@ -49,12 +49,14 @@ The two pipeline outputs the **UI** actually depends on:
   (case/whitespace-insensitive), so one film = one card with many pills.
 - `lib/clash.ts` — `startMins`/`endMins` are **absolute-ordinal minutes** (`toOrdinalMinutes` =
   minutes since a fixed epoch), so a plan can span days and every gap calc stays a plain
-  subtraction (decision #5). `findCombos` (valid double-bill pairs: **same day** — the one
-  `date !==` guard left — different film, gap between a cross-/same-cinema minimum and
-  `MAX_COMBO_GAP_MINUTES`), `itineraryTransitions` (gap/overlap/too-tight/`crossDay` between
-  consecutive plan items — no max cap, a deliberate plan can have a long gap), `fittingAdditions`
-  (candidates that slot into a plan — checks each against both its would-be chronological
-  neighbours *on its own day*, allows the same film on another day; decision #5).
+  subtraction (decision #5). `itineraryTransitions` (gap/overlap/too-tight/`crossDay` between
+  consecutive plan items — no max cap, a deliberate plan can have a long gap) and the one
+  suggestion engine: **`planAdditions`** (every candidate that slots into a plan — checked against
+  both its would-be chronological neighbours *on its own day*, gap between a cross-/same-cinema
+  minimum and `MAX_COMBO_GAP_MINUTES`, allows the same film on another day), read two ways —
+  `fittingAdditions` collapses it to `bookingUrl → tightness` for the card pills, and
+  `bestAdditionPerSlot(additions, itinerary)` keeps the single tightest fit per open slot for the
+  plan's ghost rows — dropping any film already in the plan **on any day** (decision #5).
 - `app/page.tsx` — server component, reads `data/showtimes.json` directly. Static per deploy
   (decision #3).
 
@@ -128,11 +130,8 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   `<FilmFormatTag>` = a box on the meta line sized so a bigger format is taller; 35mm/70mm
   are an animated film-strip (`print: true`), IMAX is a static IMAX-blue plaque. Tooltips
   (`*Tooltip` helpers) merge into the whole pill/plan-row `title`.
-- `components/ComboSuggestions.tsx` — the "Suggested plans" list (double bills, one pinned day —
-  decision #5). Exports `ComboList` (the bare `<ul>`); the default export wraps it in a card and
-  is rendered inline on mobile only (`lg:hidden`) when nothing's picked yet.
-- `components/PlanPanel.tsx` — the one persistent plan surface (what `ComboSuggestions` + `DayPlan`
-  used to split between them). Empty → the `ComboList` suggestions (or a prompt if no day pinned);
+- `components/PlanPanel.tsx` — the one persistent plan surface. Empty → just a prompt (there are
+  no suggestions to give: they only exist relative to something you've picked);
   non-empty → `<DayPlan>` + a Clear button. Lives in the desktop right rail (sticky, own
   `overflow-y-auto`) and inside `components/PlanButton.tsx` — the mobile floating button (a
   plan-item count, decision #8) + bottom sheet cloned from `SettingsPanel`.
@@ -140,6 +139,16 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   `formatDayDate` header, per-day film count + `~span`); within a day, the gap / an
   accent-coloured overlap-or-too-tight warning between consecutive screenings. A step across a day
   boundary (`ItineraryTransition.crossDay`) renders as the next day's header, never a gap.
+  Also draws the **"choose this next" ghost rows** (`suggestions`, from `bestAdditionPerSlot`):
+  a dashed, dim, unfilled `GhostRow` sitting at the slot it would take —
+  addressed by the plan item it follows (`PlanAddition.afterKey`, `null` = before that day's
+  first film). A ghost **replaces the real transition label of its slot**: instead of the one gap
+  you have now you see the two you'd have if you took it (`gapBefore` above, `gapAfter` below,
+  the latter emitted as the next row's incoming label). Click a ghost → `onAdd` → it's a real
+  `PlanRow`; click that → `onRemove` → gone, and the ghost re-derives. **Neither row carries an
+  affordance glyph** (the ghost's leading `+` and the plan row's trailing `×` were both removed —
+  user's call): the whole row is the target, dashed-vs-solid already says which way a click goes,
+  and the `aria-label` carries it for anyone who can't see that.
 - `components/Masthead.tsx` — the "FLM ON" title + tagline, rendered by `ScreeningBrowser` (not
   `app/page.tsx`) so the `lg:` grid can move it into the right rail. Holds `PreferencesButton`
   only on mobile (`lg:hidden`) — on desktop that button lives in the filter bar (`FilterControls`
@@ -181,14 +190,27 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
    coming back to it. Stale keys are filtered on read (`effectiveSelectedKeys`) and pruned on the
    next write. Tapping a showtime just adds it — the Day filter does **not** snap to it (that
    jump is disorienting across days now). The Day filter still **defaults to today** for
-   *browsing*. **Double-bill *suggestions* (`findCombos`) stay strictly one day** (`suggestionScopeDay`
-   = the pinned day; `lib/clash.ts:65` `date !==` guard + its test) — a cross-day "pair" isn't a
-   plan. The plan surface: a sticky `<PlanPanel>` in the desktop right rail, a floating
+   *browsing*. **Suggestions are one mechanism, and they live inside the plan**: once you've
+   picked something, each open slot on a day the plan touches offers one dashed ghost row — the
+   tightest-fitting candidate for that gap (`planAdditions` → `bestAdditionPerSlot` → `DayPlan`).
+   Taking one is a plain `toggleSelected`, so it's the same gesture as tapping a pill. **A film
+   already in the plan is never *suggested*, on any day** — `bestAdditionPerSlot` filters it out.
+   The looser same-day-only rule inside `planAdditions` stays, because it's also what fades the
+   card pills, and choosing to see a film twice in a week is legitimate; volunteering one you've
+   already committed to is just handing a decision back to you. The old
+   pinned-day "Suggested double bills" list (`findCombos` / `ComboSuggestions` / `suggestionScopeDay`)
+   is **gone** — it was a second, differently-shaped suggestion surface that only existed before
+   your first pick, and a cross-day "pair" was never a plan anyway. Consequence, accepted: an
+   **empty** plan now gets no suggestions at all, just "Tap a showtime to start a plan."
+   The plan surface: a sticky `<PlanPanel>` in the desktop right rail, a floating
    `<PlanButton>` + bottom sheet on mobile. `lib/clash.ts` uses an **absolute-ordinal minute**
    model (`toOrdinalMinutes` = `daysBetweenISO(EPOCH, date)*1440 + toMinutes(time)`), so every
    gap calc is multi-day-correct and past-midnight end times no longer wrap. `itineraryTransitions`
    marks a day boundary as `crossDay` (rendered as a header, not "Overlaps 840min").
-   `fittingAdditions` hints are **within-day only** and allow the same film on a *different* day.
+   `planAdditions` is **within-day only** and allows the same film on a *different* day — so a
+   week-spanning plan only ever gets ghosts (and pill fades) on days it already touches. Both ends
+   count as slots, so a plan gets a ghost *before* its first film and *after* its last whenever
+   something actually fits there.
    `FilmCard`'s "wouldn't fit" pill fade only applies on days the plan already touches (`planDates`
    prop) — an untouched day is a fresh start.
 
@@ -250,6 +272,8 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
    never the catalogue: `DayPlan`'s per-day "{n} films · ~span" line, and the mobile
    `PlanButton` badge (how many screenings are in the plan). The Place filter's "3 cinemas"
    label (decision #7) is a count of *your own preferences*, not of what's on — same principle.
+   A ghost row's gap numbers (decision #5) are in the same category as `DayPlan`'s existing
+   transition labels: facts about *your* plan, not a tally of the catalogue.
 
 9. **Public release = weekly curated pipeline, not live per-visitor scraping.** Live scraping on
    every request let any visitor trigger a scrape and gave no chance to catch mangled titles /
@@ -280,7 +304,7 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
     (IFI's are placeholders anyway) and render the title via `MysteryTitle.tsx` (each word behind
     a `--color-fg` block, transparent text under it for AT, click to reveal). The trailing
     `Month YYYY` is handled by a `stripAnnotations` regex so future months need no correction.
-    `DayPlan`/`ComboSuggestions` still show its runtime (gap math). `ScreeningBrowser` attaches a
+    `DayPlan` still shows its runtime (gap math). `ScreeningBrowser` attaches a
     synthetic `"Mystery Matinee"` `screeningTag` render-time so it passes the Highlights filter;
     its `KNOWN` entry is `mark: false` (no glyph/sticker — the redacted card is treatment enough).
 

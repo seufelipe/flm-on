@@ -1,5 +1,5 @@
-import { Fragment } from "react";
-import { type ItineraryTransition, type TimedScreening } from "@/lib/clash";
+import { Fragment, type ReactNode } from "react";
+import { type ItineraryTransition, type PlanAddition, type TimedScreening } from "@/lib/clash";
 import { ScreeningTagMarks } from "@/components/ScreeningTags";
 import { FilmFormatMarks } from "@/components/FilmFormats";
 import { LanguageMarks } from "@/components/ScreeningLanguage";
@@ -14,7 +14,11 @@ interface Props {
   items: TimedScreening[];
   // itineraryTransitions(items) — transitions[i] is the step from items[i] to items[i+1].
   transitions: ItineraryTransition[];
+  // At most one "choose this next" suggestion per open slot (bestAdditionPerSlot). Each is drawn
+  // as a dashed ghost row at the position it would take.
+  suggestions: PlanAddition[];
   onRemove: (s: TimedScreening) => void;
+  onAdd: (s: TimedScreening) => void;
   // Clicking a day header filters the film list to that day.
   onPickDay: (date: string) => void;
   keyOf: (s: TimedScreening) => string;
@@ -36,12 +40,96 @@ function formatSpan(mins: number): string {
   return m === 0 ? `${h}h` : `${h}h ${m}m`;
 }
 
-// The plan, grouped into a section per day. A plan can now span the whole week (CLAUDE.md
-// decision #5); each day gets its own header + span, and the step between two days is drawn as
-// the next day's header, not a gap ("Overlaps 840min" would be nonsense). Within a day the
-// transitions between consecutive screenings show as before, flagged when they overlap / are too
-// tight to make.
-export default function DayPlan({ items, transitions, onRemove, onPickDay, keyOf }: Props) {
+function tooltipFor(s: TimedScreening): string | undefined {
+  return (
+    [screeningTagsTooltip(s.screeningTags), filmFormatsTooltip(s.screeningTags), languageTooltip(s.screeningTags)]
+      .filter(Boolean)
+      .join(" · ") || undefined
+  );
+}
+
+// The step between two rows. Warned (accent) only for a real transition that overlaps or is too
+// tight — a suggestion's gaps are fits by construction.
+function GapLabel({ children, warn = false }: { children: ReactNode; warn?: boolean }) {
+  return (
+    <div
+      className={`flex items-center gap-1.5 pl-1 text-xs font-bold uppercase tracking-wide ${
+        warn ? "text-accent-ink" : "text-dim"
+      }`}
+    >
+      <span aria-hidden="true">&darr;</span>
+      {children}
+    </div>
+  );
+}
+
+function Marks({ s }: { s: TimedScreening }) {
+  return (
+    <>
+      <ScreeningTagMarks tags={s.screeningTags} />
+      <FilmFormatMarks tags={s.screeningTags} />
+      <LanguageMarks tags={s.screeningTags} />
+    </>
+  );
+}
+
+const ROW_BASE =
+  "rounded-btn px-3 py-2 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-left cursor-pointer transition-transform active:translate-x-[2px] active:translate-y-[2px]";
+
+// A picked screening. Clicking it takes it back out of the plan.
+function PlanRow({ s, onRemove }: { s: TimedScreening; onRemove: (s: TimedScreening) => void }) {
+  return (
+    <button
+      type="button"
+      aria-label={`Remove ${s.filmTitle} from your plan`}
+      title={tooltipFor(s)}
+      onClick={() => onRemove(s)}
+      className={`border-2 border-border bg-surface text-fg ${ROW_BASE}`}
+    >
+      <span className="font-bold">{s.filmTitle}</span>
+      <span className="text-xs uppercase tracking-wide whitespace-nowrap text-dim">
+        {CINEMA_LABEL[s.cinema]} {s.time}
+      </span>
+      <Marks s={s} />
+    </button>
+  );
+}
+
+// "Choose this next" — a proposal, not a pick: dashed and dim, with no fill and no resting
+// elevation, so it reads as an outline of a row rather than one. Deliberately not the accent —
+// that's reserved for what you've actually selected (CLAUDE.md decision #7). Clicking it makes it
+// a real PlanRow; clicking that takes it out again and the ghost comes back.
+//
+// No affordance glyph on either row (there used to be a leading + here and a trailing × on a
+// PlanRow): the whole row is the target, the dashed/solid treatment already says which way a
+// click goes, and the aria-label carries it for anyone who can't see that. User's call.
+function GhostRow({ s, onAdd }: { s: TimedScreening; onAdd: (s: TimedScreening) => void }) {
+  return (
+    <button
+      type="button"
+      aria-label={`Add ${s.filmTitle} at ${s.time} to your plan`}
+      title={tooltipFor(s)}
+      onClick={() => onAdd(s)}
+      className={`border-2 border-dashed border-dim text-dim hover:border-border hover:text-fg ${ROW_BASE}`}
+    >
+      <span className="font-bold">{s.filmTitle}</span>
+      <span className="text-xs uppercase tracking-wide whitespace-nowrap">
+        {CINEMA_LABEL[s.cinema]} {s.time}
+      </span>
+      <Marks s={s} />
+    </button>
+  );
+}
+
+// The plan, grouped into a section per day. A plan can span the whole week (CLAUDE.md decision
+// #5); each day gets its own header + span, and the step between two days is drawn as the next
+// day's header, not a gap ("Overlaps 840min" would be nonsense). Within a day the transitions
+// between consecutive screenings show as before, flagged when they overlap / are too tight.
+//
+// Each open slot may also carry one dashed ghost row — a suggested next pick, sitting where it
+// would actually go. A ghost *replaces* the real transition label of its slot: instead of the one
+// gap you have now, you see the two gaps you'd have if you took it.
+export default function DayPlan({ items, transitions, suggestions, onRemove, onAdd, onPickDay, keyOf }: Props) {
   const groups: { date: string; rows: { s: TimedScreening; transition: ItineraryTransition | null }[] }[] = [];
   items.forEach((s, idx) => {
     const transition = idx > 0 ? transitions[idx - 1] : null;
@@ -50,12 +138,18 @@ export default function DayPlan({ items, transitions, onRemove, onPickDay, keyOf
     else groups.push({ date: s.date, rows: [{ s, transition }] });
   });
 
+  // Slot key mirrors bestAdditionPerSlot: the plan item a suggestion would follow, or "start" for
+  // one that would go before the day's first film.
+  const bySlot = new Map(suggestions.map((a) => [`${a.screening.date}:${a.afterKey ?? "start"}`, a]));
+  const ghostAfter = (s: TimedScreening) => bySlot.get(`${s.date}:${keyOf(s)}`);
+
   return (
     <div className="flex flex-col gap-6">
       {groups.map((group) => {
         const spanMins =
           Math.max(...group.rows.map((r) => r.s.endMins)) -
           Math.min(...group.rows.map((r) => r.s.startMins));
+        const leadGhost = bySlot.get(`${group.date}:start`);
         return (
           <div key={group.date} className="flex flex-col gap-2">
             <div className="flex items-baseline justify-between gap-2">
@@ -71,46 +165,40 @@ export default function DayPlan({ items, transitions, onRemove, onPickDay, keyOf
                 {group.rows.length} {group.rows.length === 1 ? "film" : "films"} · ~{formatSpan(spanMins)}
               </span>
             </div>
-            {group.rows.map(({ s, transition }, i) => (
-              <Fragment key={keyOf(s)}>
-                {i > 0 && transition && !transition.crossDay && (
-                  <div
-                    className={`flex items-center gap-1.5 pl-1 text-xs font-bold uppercase tracking-wide ${
-                      transition.overlap || transition.tooTight ? "text-accent-ink" : "text-dim"
-                    }`}
-                  >
-                    <span aria-hidden="true">&darr;</span>
-                    {transitionLabel(transition)}
-                  </div>
-                )}
-                <button
-                  type="button"
-                  aria-label={`Remove ${s.filmTitle} from your plan`}
-                  title={
-                    [
-                      screeningTagsTooltip(s.screeningTags),
-                      filmFormatsTooltip(s.screeningTags),
-                      languageTooltip(s.screeningTags),
-                    ]
-                      .filter(Boolean)
-                      .join(" · ") || undefined
-                  }
-                  onClick={() => onRemove(s)}
-                  className="border-2 border-border rounded-btn bg-surface text-fg px-3 py-2 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-left cursor-pointer transition-transform active:translate-x-[2px] active:translate-y-[2px]"
-                >
-                  <span className="font-bold">{s.filmTitle}</span>
-                  <span className="text-xs uppercase tracking-wide whitespace-nowrap text-dim">
-                    {CINEMA_LABEL[s.cinema]} {s.time}
-                  </span>
-                  <ScreeningTagMarks tags={s.screeningTags} />
-                  <FilmFormatMarks tags={s.screeningTags} />
-                  <LanguageMarks tags={s.screeningTags} />
-                  <span aria-hidden="true" className="ml-auto shrink-0 self-center text-dim">
-                    &times;
-                  </span>
-                </button>
-              </Fragment>
-            ))}
+            {leadGhost && (
+              <>
+                <GhostRow s={leadGhost.screening} onAdd={onAdd} />
+                <GapLabel>{leadGhost.gapAfter}min</GapLabel>
+              </>
+            )}
+            {group.rows.map(({ s, transition }, i) => {
+              // A ghost sitting between the previous row and this one owns that step: its
+              // `gapAfter` is the label leading into this row, in place of the real transition.
+              const previousGhost = i > 0 ? ghostAfter(group.rows[i - 1].s) : undefined;
+              const ghost = ghostAfter(s);
+              return (
+                <Fragment key={keyOf(s)}>
+                  {i > 0 &&
+                    (previousGhost ? (
+                      <GapLabel>{previousGhost.gapAfter}min</GapLabel>
+                    ) : (
+                      transition &&
+                      !transition.crossDay && (
+                        <GapLabel warn={transition.overlap || transition.tooTight}>
+                          {transitionLabel(transition)}
+                        </GapLabel>
+                      )
+                    ))}
+                  <PlanRow s={s} onRemove={onRemove} />
+                  {ghost && (
+                    <>
+                      <GapLabel>{ghost.gapBefore}min</GapLabel>
+                      <GhostRow s={ghost.screening} onAdd={onAdd} />
+                    </>
+                  )}
+                </Fragment>
+              );
+            })}
           </div>
         );
       })}

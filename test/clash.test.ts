@@ -1,8 +1,9 @@
 import { describe, it, expect } from "vitest";
 import {
-  findCombos,
   withEndTimes,
   fittingAdditions,
+  planAdditions,
+  bestAdditionPerSlot,
   itineraryTransitions,
   WALK_BUFFER_MINUTES,
   SAME_CINEMA_BUFFER_MINUTES,
@@ -83,57 +84,131 @@ describe("itineraryTransitions", () => {
   });
 });
 
-describe("findCombos", () => {
-  it("includes a cross-cinema pair with a gap inside the valid window", () => {
-    const a = screening({ cinema: "lighthouse", filmTitle: "Film A", time: "17:00", durationMins: 120 });
-    const b = screening({ cinema: "ifi", filmTitle: "Film B", time: "19:30", durationMins: 100 });
-    const combos = findCombos([a, b]);
-    expect(combos).toHaveLength(1);
-    expect(combos[0].gapMins).toBe(30);
+describe("planAdditions", () => {
+  it("records both gaps and the item it would follow, for a candidate between two items", () => {
+    const itinerary = withEndTimes([
+      screening({ filmTitle: "Film A", time: "12:00", durationMins: 90 }),
+      screening({ filmTitle: "Film C", time: "16:30", durationMins: 90, bookingUrl: "c" }),
+    ]);
+    const [candidate] = withEndTimes([
+      screening({ filmTitle: "Film B", time: "14:30", durationMins: 90, bookingUrl: "b" }),
+    ]);
+    const [addition] = planAdditions(itinerary, [candidate]);
+    expect(addition.afterKey).toBe(itinerary[0].bookingUrl);
+    expect(addition.gapBefore).toBe(60); // Film A ends 13:30, candidate starts 14:30
+    expect(addition.gapAfter).toBe(30); // candidate ends 16:00, Film C starts 16:30
   });
 
-  it("excludes a cross-cinema pair with a gap below WALK_BUFFER_MINUTES", () => {
-    const a = screening({ cinema: "lighthouse", filmTitle: "Film A", time: "17:00", durationMins: 120 });
-    const b = screening({ cinema: "ifi", filmTitle: "Film B", time: "19:10", durationMins: 100 });
-    expect(WALK_BUFFER_MINUTES).toBeGreaterThan(0);
-    expect(findCombos([a, b])).toHaveLength(0);
+  it("leaves gapBefore and afterKey null for a candidate before the day's first film", () => {
+    const [item] = withEndTimes([screening({ filmTitle: "Film A", time: "17:00", durationMins: 120 })]);
+    const [candidate] = withEndTimes([
+      screening({ filmTitle: "Film B", time: "15:00", durationMins: 60, bookingUrl: "b" }),
+    ]);
+    const [addition] = planAdditions([item], [candidate]);
+    expect(addition.afterKey).toBeNull();
+    expect(addition.gapBefore).toBeNull();
+    expect(addition.gapAfter).toBe(item.startMins - candidate.endMins);
   });
 
-  it("excludes a cross-cinema pair with a gap beyond MAX_COMBO_GAP_MINUTES", () => {
-    const aStart = 600; // 10:00
-    const aDuration = 90;
-    const aEnd = aStart + aDuration;
-    const bStart = aEnd + MAX_COMBO_GAP_MINUTES + 5; // just past the allowed window
-    const a = screening({ cinema: "lighthouse", filmTitle: "Film A", time: minutesToTime(aStart), durationMins: aDuration });
-    const b = screening({ cinema: "ifi", filmTitle: "Film B", time: minutesToTime(bStart), durationMins: 100 });
-    expect(findCombos([a, b])).toHaveLength(0);
+  it("leaves gapAfter null for a candidate after the day's last film", () => {
+    const [item] = withEndTimes([screening({ filmTitle: "Film A", time: "12:00", durationMins: 90 })]);
+    const [candidate] = withEndTimes([
+      screening({ filmTitle: "Film B", time: "14:00", durationMins: 120, bookingUrl: "b" }),
+    ]);
+    const [addition] = planAdditions([item], [candidate]);
+    expect(addition.afterKey).toBe(item.bookingUrl);
+    expect(addition.gapAfter).toBeNull();
+    expect(addition.gapBefore).toBe(candidate.startMins - item.endMins);
   });
 
-  it("includes a same-cinema pair with a gap inside its shorter valid window", () => {
-    const a = screening({ cinema: "lighthouse", filmTitle: "Film A", time: "17:00", durationMins: 120 });
-    const b = screening({ cinema: "lighthouse", filmTitle: "Film B", time: "19:30", durationMins: 100 });
-    const combos = findCombos([a, b]);
-    expect(combos).toHaveLength(1);
-    expect(combos[0].gapMins).toBe(30);
+  it("excludes a cross-cinema candidate with a gap below WALK_BUFFER_MINUTES", () => {
+    const [item] = withEndTimes([
+      screening({ cinema: "lighthouse", filmTitle: "Film A", time: "17:00", durationMins: 120 }),
+    ]);
+    const [candidate] = withEndTimes([
+      screening({ cinema: "ifi", filmTitle: "Film B", time: "19:10", durationMins: 100, bookingUrl: "b" }),
+    ]);
+    expect(WALK_BUFFER_MINUTES).toBeGreaterThan(SAME_CINEMA_BUFFER_MINUTES);
+    expect(planAdditions([item], [candidate])).toHaveLength(0);
+    // The same 10-minute turnaround is fine when you're only moving between screens.
+    const [sameCinema] = withEndTimes([
+      screening({ cinema: "lighthouse", filmTitle: "Film B", time: "19:10", durationMins: 100, bookingUrl: "b" }),
+    ]);
+    expect(planAdditions([item], [sameCinema])).toHaveLength(1);
   });
 
-  it("excludes a same-cinema pair with a gap below SAME_CINEMA_BUFFER_MINUTES", () => {
-    const a = screening({ cinema: "lighthouse", filmTitle: "Film A", time: "17:00", durationMins: 120 });
-    const b = screening({ cinema: "lighthouse", filmTitle: "Film B", time: "19:05", durationMins: 100 });
-    expect(SAME_CINEMA_BUFFER_MINUTES).toBeGreaterThan(0);
-    expect(findCombos([a, b])).toHaveLength(0);
+  it("excludes a candidate whose wait is beyond MAX_COMBO_GAP_MINUTES", () => {
+    const itemStart = 600; // 10:00
+    const itemDuration = 90;
+    const candidateStart = itemStart + itemDuration + MAX_COMBO_GAP_MINUTES + 5;
+    const [item] = withEndTimes([
+      screening({ filmTitle: "Film A", time: minutesToTime(itemStart), durationMins: itemDuration }),
+    ]);
+    const [candidate] = withEndTimes([
+      screening({ filmTitle: "Film B", time: minutesToTime(candidateStart), durationMins: 100, bookingUrl: "b" }),
+    ]);
+    expect(planAdditions([item], [candidate])).toHaveLength(0);
+  });
+});
+
+describe("bestAdditionPerSlot", () => {
+  const [item] = withEndTimes([screening({ filmTitle: "Film A", time: "12:00", durationMins: 90 })]);
+
+  it("keeps only the tightest fit when several candidates want the same slot", () => {
+    const candidates = withEndTimes([
+      screening({ filmTitle: "Film B", time: "14:30", durationMins: 90, bookingUrl: "b" }),
+      screening({ filmTitle: "Film C", time: "13:45", durationMins: 90, bookingUrl: "c" }),
+    ]);
+    const best = bestAdditionPerSlot(planAdditions([item], candidates), [item]);
+    expect(best).toHaveLength(1);
+    expect(best[0].screening.bookingUrl).toBe("c");
   });
 
-  it("excludes the same film showing at two different cinemas", () => {
-    const a = screening({ cinema: "lighthouse", filmTitle: "Same Film", time: "17:00", durationMins: 120 });
-    const b = screening({ cinema: "ifi", filmTitle: "Same Film", time: "19:30", durationMins: 100 });
-    expect(findCombos([a, b])).toHaveLength(0);
+  it("offers one candidate for each open slot", () => {
+    const candidates = withEndTimes([
+      screening({ filmTitle: "Film B", time: "14:00", durationMins: 90, bookingUrl: "b" }),
+      screening({ filmTitle: "Film C", time: "10:00", durationMins: 60, bookingUrl: "c" }),
+    ]);
+    const best = bestAdditionPerSlot(planAdditions([item], candidates), [item]);
+    expect(best.map((a) => a.afterKey).sort()).toEqual([item.bookingUrl, null].sort());
   });
 
-  it("excludes a pair on different dates even if the time-of-day gap would be valid", () => {
-    const a = screening({ cinema: "lighthouse", filmTitle: "Film A", time: "17:00", durationMins: 120, date: "2026-08-23" });
-    const b = screening({ cinema: "ifi", filmTitle: "Film B", time: "19:30", durationMins: 100, date: "2026-08-24" });
-    expect(findCombos([a, b])).toHaveLength(0);
+  it("treats the same slot position on two different days as two slots", () => {
+    const itinerary = withEndTimes([
+      screening({ filmTitle: "Film A", time: "12:00", durationMins: 90, date: "2026-08-23" }),
+      screening({ filmTitle: "Film A", time: "12:00", durationMins: 90, date: "2026-08-24", bookingUrl: "a2" }),
+    ]);
+    const candidates = withEndTimes([
+      screening({ filmTitle: "Film B", time: "14:00", durationMins: 90, date: "2026-08-23", bookingUrl: "b" }),
+      screening({ filmTitle: "Film B", time: "14:00", durationMins: 90, date: "2026-08-24", bookingUrl: "b2" }),
+    ]);
+    const best = bestAdditionPerSlot(planAdditions(itinerary, candidates), itinerary);
+    expect(best.map((a) => a.screening.bookingUrl).sort()).toEqual(["b", "b2"]);
+  });
+
+  it("never suggests a film that is already in the plan on another day", () => {
+    const itinerary = withEndTimes([
+      screening({ filmTitle: "Film A", time: "12:00", durationMins: 90, date: "2026-08-23" }),
+      screening({ filmTitle: "Repeat Film", time: "12:00", durationMins: 90, date: "2026-08-24", bookingUrl: "r" }),
+    ]);
+    const [candidate] = withEndTimes([
+      screening({ filmTitle: "Repeat Film", time: "14:00", durationMins: 90, date: "2026-08-23", bookingUrl: "b" }),
+    ]);
+    // It still *fits* — the pills for it stay pickable and un-faded (see fittingAdditions below).
+    expect(planAdditions(itinerary, [candidate])).toHaveLength(1);
+    // But volunteering a film you've already committed to isn't a suggestion.
+    expect(bestAdditionPerSlot(planAdditions(itinerary, [candidate]), itinerary)).toHaveLength(0);
+  });
+
+  it("breaks a tie on the earlier start so the suggestion doesn't shuffle between renders", () => {
+    // Both start 30min after Film A ends, at the same cinema — identical fit.
+    const candidates = withEndTimes([
+      screening({ filmTitle: "Film C", time: "14:00", durationMins: 90, bookingUrl: "c" }),
+      screening({ filmTitle: "Film B", time: "14:00", durationMins: 60, bookingUrl: "b" }),
+    ]);
+    const best = bestAdditionPerSlot(planAdditions([item], candidates), [item]);
+    expect(best).toHaveLength(1);
+    expect(best[0].screening.bookingUrl).toBe("b");
   });
 });
 

@@ -2,7 +2,13 @@
 
 import { useMemo, useState, useSyncExternalStore } from "react";
 import type { CinemaId, Screening } from "@/lib/scrapers/types";
-import { findCombos, withEndTimes, itineraryTransitions, fittingAdditions, type TimedScreening } from "@/lib/clash";
+import {
+  withEndTimes,
+  itineraryTransitions,
+  planAdditions,
+  bestAdditionPerSlot,
+  type TimedScreening,
+} from "@/lib/clash";
 import { groupByFilm, type FilmGroup } from "@/lib/groupings";
 import type { UpcomingFilm } from "@/lib/upcoming";
 import { TIMEFRAMES, timeframeForTime, type Timeframe } from "@/lib/timeframe";
@@ -25,7 +31,6 @@ import {
 import { planSnapshot, PLAN_SERVER_SNAPSHOT, subscribePlan, writePlan } from "@/lib/plan";
 import FilmCard from "./FilmCard";
 import Masthead, { MastheadTitle } from "./Masthead";
-import ComboSuggestions from "./ComboSuggestions";
 import FilterControls from "./FilterControls";
 import PlanPanel from "./PlanPanel";
 import PlanButton from "./PlanButton";
@@ -220,28 +225,6 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
 
   const timed = useMemo(() => withEndTimes(preferred), [preferred]);
 
-  // Double-bill *suggestions* still only make sense pinned to one specific day — a suggested
-  // "pair" across two dates isn't a realistic plan (the hand-built plan itself may span the
-  // week; see decision #5). So the suggestion list is scoped to the pinned day; the plan is not.
-  const suggestionScopeDay = effectiveDay;
-
-  // Combos across the whole day (ignoring the cinema filter) drive the "pairs well" pill hints,
-  // so building a plan across both cinemas still gets correct hints even while the browsing view
-  // is narrowed to one cinema. findCombos allows same-cinema pairs too (just moving between
-  // screens), not only cross-cinema ones.
-  const allDayCombos = useMemo(() => {
-    if (!suggestionScopeDay) return [];
-    return findCombos(preferred.filter((s) => s.date === suggestionScopeDay));
-  }, [preferred, suggestionScopeDay]);
-
-  // The initial "Suggested double bills" browsing list (shown before anything is picked) is
-  // further narrowed to the active cinema filter — otherwise it'd suggest a pair referencing a
-  // cinema the user has filtered out of view.
-  const visibleCombos = useMemo(() => {
-    if (effectiveCinema === null) return allDayCombos;
-    return allDayCombos.filter((c) => c.a.cinema === effectiveCinema && c.b.cinema === effectiveCinema);
-  }, [allDayCombos, effectiveCinema]);
-
   // Every still-valid pick, on any day — a plan spans the week now (decision #5). Keys whose
   // screening has dropped out of the live dataset (a past week's plan, a now-started session, a
   // preference change) are filtered out here; `toggleSelected` writes the survivors back so the
@@ -259,21 +242,25 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
     return timed.filter((s) => effectiveSelectedKeys.has(keyOf(s))).sort((a, b) => a.startMins - b.startMins);
   }, [timed, effectiveSelectedKeys]);
 
-  // Screenings that would slot cleanly into the plan get highlighted as a suggested next pick.
-  // This checks each candidate against its actual neighbors once inserted chronologically — not
-  // just "pairs with something already selected" — so a 3rd (or 4th, ...) pick only gets hinted
-  // if it fits *both* the film before and the film after it, not just one of them. Hints are
-  // within-day only (fittingAdditions enforces that): candidates are limited to days the plan
-  // already touches, so a week-spanning plan doesn't light up every day.
+  // Screenings that would slot cleanly into the plan, checked against their actual neighbours
+  // once inserted chronologically — not just "pairs with something already selected" — so a 3rd
+  // (or 4th, ...) pick only counts if it fits *both* the film before and the film after it.
+  // Within-day only (planAdditions enforces that): candidates are limited to days the plan
+  // already touches, so a week-spanning plan doesn't light up every day. Deliberately derived
+  // from `timed` rather than `visible`, so the plan tools stay correct across both cinemas even
+  // while the browsing view is narrowed to one.
   const planDates = useMemo(() => new Set(dayPlanItems.map((s) => s.date)), [dayPlanItems]);
 
-  const additionHints = useMemo(() => {
-    if (dayPlanItems.length === 0) return new Map<string, number>();
+  const additions = useMemo(() => {
+    if (dayPlanItems.length === 0) return [];
     const candidates = timed.filter((s) => planDates.has(s.date) && !effectiveSelectedKeys.has(keyOf(s)));
-    return fittingAdditions(dayPlanItems, candidates);
+    return planAdditions(dayPlanItems, candidates);
   }, [dayPlanItems, timed, planDates, effectiveSelectedKeys]);
 
-  const partnersOf = useMemo(() => new Set(additionHints.keys()), [additionHints]);
+  // Two readings of the same set: the film cards fade every pill that *isn't* in it, and the plan
+  // panel offers the single best fit for each open slot as a "choose this next" ghost row.
+  const partnersOf = useMemo(() => new Set(additions.map((a) => a.screening.bookingUrl)), [additions]);
+  const planSuggestions = useMemo(() => bestAdditionPerSlot(additions, dayPlanItems), [additions, dayPlanItems]);
 
   const visible = timed.filter(
     (s) =>
@@ -446,13 +433,6 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
             />
           ))}
         </div>
-
-        {/* Mobile only — desktop shows suggestions in the sticky rail panel instead. */}
-        {suggestionScopeDay && effectiveSelectedKeys.size === 0 && visibleCombos.length > 0 && (
-          <div className="mt-10 lg:hidden">
-            <ComboSuggestions combos={visibleCombos} onSelect={toggleSelected} keyOf={keyOf} />
-          </div>
-        )}
       </>
     )
   );
@@ -485,11 +465,10 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
             {planLoaded && !(nextWeek && dayPlanItems.length === 0) && (
               <PlanPanel
                 className="border-t-2 border-border"
-                combos={visibleCombos}
                 items={dayPlanItems}
                 transitions={dayPlanTransitions}
-                suggestionDay={nextWeek ? null : suggestionScopeDay}
-                onSelect={toggleSelected}
+                suggestions={planSuggestions}
+                onAdd={toggleSelected}
                 onRemove={toggleSelected}
                 onClear={clearPlan}
                 onPickDay={pickDay}
@@ -529,11 +508,10 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
         <div className="lg:hidden">
           <PlanButton
             count={dayPlanItems.length}
-            combos={visibleCombos}
             items={dayPlanItems}
             transitions={dayPlanTransitions}
-            suggestionDay={suggestionScopeDay}
-            onSelect={toggleSelected}
+            suggestions={planSuggestions}
+            onAdd={toggleSelected}
             onRemove={toggleSelected}
             onClear={clearPlan}
             onPickDay={pickDay}

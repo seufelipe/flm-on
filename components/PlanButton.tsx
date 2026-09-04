@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { ItineraryTransition, ScreeningPair, TimedScreening } from "@/lib/clash";
+import type { ItineraryTransition, PlanAddition, TimedScreening } from "@/lib/clash";
 import PlanPanel from "./PlanPanel";
 
 // The mobile plan surface: a floating button carrying the plan-item count (the sanctioned
@@ -11,18 +11,17 @@ import PlanPanel from "./PlanPanel";
 // PreferencesButton + SettingsPanel. See CLAUDE.md decision #5.
 interface Props {
   count: number;
-  combos: ScreeningPair[];
   items: TimedScreening[];
   transitions: ItineraryTransition[];
-  suggestionDay: string | null;
-  onSelect: (s: TimedScreening) => void;
+  suggestions: PlanAddition[];
+  onAdd: (s: TimedScreening) => void;
   onRemove: (s: TimedScreening) => void;
   onClear: () => void;
   onPickDay: (date: string) => void;
   keyOf: (s: TimedScreening) => string;
 }
 
-export default function PlanButton({ count, combos, items, transitions, suggestionDay, onSelect, onRemove, onClear, onPickDay, keyOf }: Props) {
+export default function PlanButton({ count, items, transitions, suggestions, onAdd, onRemove, onClear, onPickDay, keyOf }: Props) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -77,11 +76,10 @@ export default function PlanButton({ count, combos, items, transitions, suggesti
           >
             <PlanPanel
               className="max-h-full w-full"
-              combos={combos}
               items={items}
               transitions={transitions}
-              suggestionDay={suggestionDay}
-              onSelect={onSelect}
+              suggestions={suggestions}
+              onAdd={onAdd}
               onRemove={onRemove}
               onClear={onClear}
               onClose={() => setOpen(false)}
