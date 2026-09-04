@@ -57,6 +57,14 @@ The two pipeline outputs the **UI** actually depends on:
   `fittingAdditions` collapses it to `bookingUrl → tightness` for the card pills, and
   `bestAdditionPerSlot(additions, itinerary)` keeps the single tightest fit per open slot for the
   plan's ghost rows — dropping any film already in the plan **on any day** (decision #5).
+- `lib/highlights.ts` — `isHighlight(screening, labels)`: the single definition of "interesting"
+  (a surfaced special / a film format / a non-English original language / a `film-labels.json`
+  film). Gates the "☻ Specials, etc" lens (#14) *and* ranks the empty-plan seeds.
+- `lib/startingPoints.ts` — `startingPoints(candidates, labels, spreadDays)`: what an **empty**
+  plan offers, since there's no itinerary to slot into. One screening per timeframe
+  (Early/Mid/Late), **specials first** (`isHighlight`), then — when `spreadDays` is on ("This
+  week") — a day nothing's been picked from yet, then the earlier start, then the title. A film is
+  only ever offered once. Decision #5.
 - `app/page.tsx` — server component, reads `data/showtimes.json` directly. Static per deploy
   (decision #3).
 
@@ -130,11 +138,17 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   `<FilmFormatTag>` = a box on the meta line sized so a bigger format is taller; 35mm/70mm
   are an animated film-strip (`print: true`), IMAX is a static IMAX-blue plaque. Tooltips
   (`*Tooltip` helpers) merge into the whole pill/plan-row `title`.
-- `components/PlanPanel.tsx` — the one persistent plan surface. Empty → just a prompt (there are
-  no suggestions to give: they only exist relative to something you've picked);
-  non-empty → `<DayPlan>` + a Clear button. Lives in the desktop right rail (sticky, own
-  `overflow-y-auto`) and inside `components/PlanButton.tsx` — the mobile floating button (a
-  plan-item count, decision #8) + bottom sheet cloned from `SettingsPanel`.
+- `components/PlanRow.tsx` — the two row treatments both plan surfaces are built from:
+  `<PlanRow>` (solid, ink, `bg-surface` — a pick; click removes) and `<GhostRow>` (dashed, dim,
+  unfilled — a suggestion; click adds). `showDay` names the day on a ghost, for the whole-week
+  starting points. Neither carries an affordance glyph — see decision #7.
+- `components/PlanPanel.tsx` — the one persistent plan surface. Empty → **"Start a plan"** and the
+  `startingPoints` seeds as bare `<GhostRow>`s (a plain prompt only when there's nothing to seed
+  from); non-empty → `<DayPlan>` + a Clear button. Lives in the desktop right rail (sticky, own
+  `overflow-y-auto`) and inside `components/PlanButton.tsx` — the mobile floating button + bottom
+  sheet cloned from `SettingsPanel`. The button carries the plan-item count (decision #8) once
+  there's a plan, shows **unbadged** while the plan is empty but seeds exist (the sheet is
+  mobile's only route to them), and hides entirely when there's neither.
 - `components/DayPlan.tsx` — the plan grouped into a section per day (`formatDayFriendly` +
   `formatDayDate` header, per-day film count + `~span`); within a day, the gap / an
   accent-coloured overlap-or-too-tight warning between consecutive screenings. A step across a day
@@ -197,7 +211,13 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
    already in the plan is never *suggested*, on any day** — `bestAdditionPerSlot` filters it out.
    The looser same-day-only rule inside `planAdditions` stays, because it's also what fades the
    card pills, and choosing to see a film twice in a week is legitimate; volunteering one you've
-   already committed to is just handing a decision back to you. The old
+   already committed to is just handing a decision back to you.
+   An **empty** plan has no slots, so it seeds itself instead: `lib/startingPoints.ts` offers one
+   ghost per timeframe (Early/Mid/Late), **specials first** — if the app volunteers something
+   unprompted it should be the 70mm print, not whichever wide release sorted first. Scoped to the
+   pinned day (which defaults to today); on "This week" it draws from the whole week, prefers a
+   distinct day per pick and each ghost names its own day. Like every plan tool it reads the full
+   `preferred` set, so the Time and Cinema filters don't narrow it. The old
    pinned-day "Suggested double bills" list (`findCombos` / `ComboSuggestions` / `suggestionScopeDay`)
    is **gone** — it was a second, differently-shaped suggestion surface that only existed before
    your first pick, and a cross-day "pair" was never a plan anyway. Consequence, accepted: an

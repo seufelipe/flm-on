@@ -1,12 +1,6 @@
 import { Fragment, type ReactNode } from "react";
 import { type ItineraryTransition, type PlanAddition, type TimedScreening } from "@/lib/clash";
-import { ScreeningTagMarks } from "@/components/ScreeningTags";
-import { FilmFormatMarks } from "@/components/FilmFormats";
-import { LanguageMarks } from "@/components/ScreeningLanguage";
-import { screeningTagsTooltip } from "@/lib/screeningTags";
-import { filmFormatsTooltip } from "@/lib/formats";
-import { languageTooltip } from "@/lib/languages";
-import { CINEMA_LABEL } from "@/lib/cinemas";
+import { PlanRow, GhostRow } from "@/components/PlanRow";
 import { formatDayFriendly, formatDayDate } from "@/lib/date";
 
 interface Props {
@@ -40,14 +34,6 @@ function formatSpan(mins: number): string {
   return m === 0 ? `${h}h` : `${h}h ${m}m`;
 }
 
-function tooltipFor(s: TimedScreening): string | undefined {
-  return (
-    [screeningTagsTooltip(s.screeningTags), filmFormatsTooltip(s.screeningTags), languageTooltip(s.screeningTags)]
-      .filter(Boolean)
-      .join(" · ") || undefined
-  );
-}
-
 // The step between two rows. Warned (accent) only for a real transition that overlaps or is too
 // tight — a suggestion's gaps are fits by construction.
 function GapLabel({ children, warn = false }: { children: ReactNode; warn?: boolean }) {
@@ -60,64 +46,6 @@ function GapLabel({ children, warn = false }: { children: ReactNode; warn?: bool
       <span aria-hidden="true">&darr;</span>
       {children}
     </div>
-  );
-}
-
-function Marks({ s }: { s: TimedScreening }) {
-  return (
-    <>
-      <ScreeningTagMarks tags={s.screeningTags} />
-      <FilmFormatMarks tags={s.screeningTags} />
-      <LanguageMarks tags={s.screeningTags} />
-    </>
-  );
-}
-
-const ROW_BASE =
-  "rounded-btn px-3 py-2 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-left cursor-pointer transition-transform active:translate-x-[2px] active:translate-y-[2px]";
-
-// A picked screening. Clicking it takes it back out of the plan.
-function PlanRow({ s, onRemove }: { s: TimedScreening; onRemove: (s: TimedScreening) => void }) {
-  return (
-    <button
-      type="button"
-      aria-label={`Remove ${s.filmTitle} from your plan`}
-      title={tooltipFor(s)}
-      onClick={() => onRemove(s)}
-      className={`border-2 border-border bg-surface text-fg ${ROW_BASE}`}
-    >
-      <span className="font-bold">{s.filmTitle}</span>
-      <span className="text-xs uppercase tracking-wide whitespace-nowrap text-dim">
-        {CINEMA_LABEL[s.cinema]} {s.time}
-      </span>
-      <Marks s={s} />
-    </button>
-  );
-}
-
-// "Choose this next" — a proposal, not a pick: dashed and dim, with no fill and no resting
-// elevation, so it reads as an outline of a row rather than one. Deliberately not the accent —
-// that's reserved for what you've actually selected (CLAUDE.md decision #7). Clicking it makes it
-// a real PlanRow; clicking that takes it out again and the ghost comes back.
-//
-// No affordance glyph on either row (there used to be a leading + here and a trailing × on a
-// PlanRow): the whole row is the target, the dashed/solid treatment already says which way a
-// click goes, and the aria-label carries it for anyone who can't see that. User's call.
-function GhostRow({ s, onAdd }: { s: TimedScreening; onAdd: (s: TimedScreening) => void }) {
-  return (
-    <button
-      type="button"
-      aria-label={`Add ${s.filmTitle} at ${s.time} to your plan`}
-      title={tooltipFor(s)}
-      onClick={() => onAdd(s)}
-      className={`border-2 border-dashed border-dim text-dim hover:border-border hover:text-fg ${ROW_BASE}`}
-    >
-      <span className="font-bold">{s.filmTitle}</span>
-      <span className="text-xs uppercase tracking-wide whitespace-nowrap">
-        {CINEMA_LABEL[s.cinema]} {s.time}
-      </span>
-      <Marks s={s} />
-    </button>
   );
 }
 

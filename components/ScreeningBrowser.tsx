@@ -16,10 +16,10 @@ import { CINEMA_LABEL, CINEMA_ORDER } from "@/lib/cinemas";
 import { formatDayDate, todayISO, nowTimeISO } from "@/lib/date";
 import { isShortFilm } from "@/lib/duration";
 import { isKidFriendly } from "@/lib/certs";
-import { displayScreeningTags } from "@/lib/screeningTags";
-import { displayFilmFormats } from "@/lib/formats";
-import { hasNonEnglishLanguage, matchesLanguagePref } from "@/lib/languages";
+import { matchesLanguagePref } from "@/lib/languages";
 import { isMysteryFilm } from "@/lib/mystery";
+import { isHighlight } from "@/lib/highlights";
+import { startingPoints } from "@/lib/startingPoints";
 import {
   DEFAULT_PREFERENCES,
   isDefault,
@@ -154,11 +154,7 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
           !(prefs.hideShortFilms && isShortFilm(s.durationMins)) &&
           !(prefs.kidsOnly && !isKidFriendly(s.cert)) &&
           matchesLanguagePref(prefs.language, s.screeningTags) &&
-          (!highlightsOnly ||
-            displayScreeningTags(s.screeningTags).length > 0 ||
-            displayFilmFormats(s.screeningTags).length > 0 ||
-            hasNonEnglishLanguage(s.screeningTags) ||
-            labels?.[s.filmTitle.trim().toLowerCase()] !== undefined),
+          (!highlightsOnly || isHighlight(s, labels)),
       ),
     [upcomingScreenings, prefs, labels, highlightsOnly],
   );
@@ -261,6 +257,17 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
   // panel offers the single best fit for each open slot as a "choose this next" ghost row.
   const partnersOf = useMemo(() => new Set(additions.map((a) => a.screening.bookingUrl)), [additions]);
   const planSuggestions = useMemo(() => bestAdditionPerSlot(additions, dayPlanItems), [additions, dayPlanItems]);
+
+  // With nothing picked there are no slots to fill, so the plan surface seeds itself instead: one
+  // screening per timeframe, specials first (lib/startingPoints.ts). Scoped to the pinned day, or
+  // drawn from the whole week when the Day filter is on "This week" — in which case the picks
+  // spread across distinct days and each ghost names its own. Like every other plan tool this reads `timed` (the full preferred set), so
+  // the Time and Cinema filters don't narrow it.
+  const seeds = useMemo(() => {
+    if (dayPlanItems.length > 0) return [];
+    if (effectiveDay) return startingPoints(timed.filter((s) => s.date === effectiveDay), labels);
+    return startingPoints(timed, labels, true);
+  }, [dayPlanItems, timed, effectiveDay, labels]);
 
   const visible = timed.filter(
     (s) =>
@@ -468,6 +475,8 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
                 items={dayPlanItems}
                 transitions={dayPlanTransitions}
                 suggestions={planSuggestions}
+                startingPoints={seeds}
+                startingPointsShowDay={effectiveDay === null}
                 onAdd={toggleSelected}
                 onRemove={toggleSelected}
                 onClear={clearPlan}
@@ -511,6 +520,8 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
             items={dayPlanItems}
             transitions={dayPlanTransitions}
             suggestions={planSuggestions}
+            startingPoints={seeds}
+            startingPointsShowDay={effectiveDay === null}
             onAdd={toggleSelected}
             onRemove={toggleSelected}
             onClear={clearPlan}
