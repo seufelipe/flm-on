@@ -507,11 +507,13 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
       scanning the row for, so it shouldn't sit behind the label. Ink in both places, never
       accent: a selected day segment is already filled gold and the mark has to stay readable on
       it (decision #7), and the accent's one status use is spoken for (#14).
-    - **The copy says "tickets from €4 at all three cinemas here"** — Light House Cinema, IFI
+    - **The copy says "all three cinemas have tickets from €4"** — Light House Cinema, IFI
       Cinemas and Cineworld are all on the campaign's published participant list, so the app can
       say so flatly. **"From €4" stays hedged** because the campaign's own wording is a floor,
-      not a flat rate. The one other line is that screenings will go faster than usual — the
-      actionable part for a planner.
+      not a flat rate. The days are named **without the month** ("On Saturday 5 and Sunday 6…"):
+      the banner only ever shows on days that are hours away, and the sentence still reads right
+      once a passed Saturday leaves it "On Sunday 6". The one other line is that screenings will
+      go faster than usual — the actionable part for a planner.
     - **It expires by itself.** The days are two hard-coded ISO dates with their written-out
       labels (no general "campaign" facility for a thing that happens once), and `visibleDays`
       already drops days that have passed — so on the Sunday the banner narrows to Sunday, and

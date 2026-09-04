@@ -22,8 +22,8 @@ export default function CinemaWeekendBanner({ days }: { days: string[] }) {
         It&rsquo;s {CINEMA_WEEKEND_NAME}!
       </p>
       <p className="mt-2 text-dim">
-        {cinemaWeekendLabel(days)} — tickets from €4 at all three cinemas here. Expect screenings
-        to sell out faster than usual.
+        On {cinemaWeekendLabel(days)} all three cinemas have tickets from €4. Expect screenings to
+        sell out faster than usual!
       </p>
     </div>
   );
