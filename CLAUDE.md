@@ -100,7 +100,8 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   number of days. Owns the persisted preferences and applies them as the `preferred` pre-filter
   ahead of everything (decision #14). `effectiveCinema`/`effectiveDay`/`effectiveTimeframe` all
   revert a now-impossible value to "any"; `effectiveSelectedKeys` drops any plan key whose
-  screening has fallen out of the live dataset (past week / now-started / preference change), and
+  screening has genuinely gone (past week / now-started) — resolved against `timedAll`, **not**
+  the preference-filtered `timed`, so a preference change never counts as gone — and
   `toggleSelected` writes that pruned set back. Three pieces of ephemeral `useState` live here
   rather than in preferences — `highlightsOnly`, `nextWeek` (#18) and the two suggestion mutes,
   `dismissed` + `planCleared` (#5). The two-column shell is a bare `lg:grid` — right
@@ -204,7 +205,13 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
    `useSyncExternalStore` shape as `lib/preferences.ts`) holds the picked `bookingUrl`s across as
    many days as you like, surviving reloads and return visits — the point of week-planning is
    coming back to it. Stale keys are filtered on read (`effectiveSelectedKeys`) and pruned on the
-   next write. Tapping a showtime just adds it — the Day filter does **not** snap to it (that
+   next write. **The plan resolves against reality, the suggestions against your preferences.**
+   `dayPlanItems` / `effectiveSelectedKeys` read `timedAll` (everything still ahead of us, before
+   the preferences narrow it), so muting a cinema — or flipping the Highlights lens — leaves a
+   confirmed film confirmed; only the day passing, the session starting or the screening leaving
+   `showtimes.json` prunes a pick. That matters twice over: without it `toggleSelected` writes the
+   pruned set back and the pick is gone for good. Ghosts and seeds are the other way round and
+   read `preferred` — what to *offer* you next is exactly what a viewing preference should steer. Tapping a showtime just adds it — the Day filter does **not** snap to it (that
    jump is disorienting across days now). The Day filter still **defaults to today** for
    *browsing*. **Suggestions are one mechanism, and they live inside the plan**: once you've
    picked something, each open slot on a day the plan touches offers one dashed ghost row — the
@@ -366,8 +373,9 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
     House + IFI are the everyday view; Cineworld is opt-in) — and a blob saved before the key
     existed takes that default. Read via `useSyncExternalStore` so SSR + first client render
     agree (no hydration warning); a `storage` listener syncs across tabs.
-    - **Model: standing pre-filter.** `preferred` (memo in `ScreeningBrowser`) carves the dataset
-      down before anything else derives from it, so turning a cinema/time off just shrinks a
+    - **Model: standing pre-filter — over browsing, not over your plan.** `preferred` (memo in
+      `ScreeningBrowser`) carves the dataset down before anything else derives from it (the
+      exception is the saved plan itself, which resolves against `timedAll` — decision #5), so turning a cinema/time off just shrinks a
       `ControlGroup`'s option list and it collapses on its own. When a preference pins a group to
       one value the corresponding filter-bar control isn't rendered at all
       (`cinemaFilterUseful` / `timeFilterUseful`). Controls-only — pills still label their cinema.

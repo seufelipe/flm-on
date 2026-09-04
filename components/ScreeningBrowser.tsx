@@ -240,22 +240,31 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
 
   const timed = useMemo(() => withEndTimes(preferred), [preferred]);
 
+  // Everything still ahead of us, *before* the preferences narrow it. The plan resolves against
+  // this rather than `timed`: a viewing preference is a lens on what you're browsing, not a
+  // statement about what's on, so muting a cinema (or flipping the Highlights lens) must not
+  // quietly delete a film you'd already committed to. Only reality prunes a plan — the day
+  // passing, the session starting, the screening leaving showtimes.json. Suggestions are the
+  // other way round and stay on `timed`: what to offer you next is exactly the kind of thing your
+  // preferences should steer.
+  const timedAll = useMemo(() => withEndTimes(upcomingScreenings), [upcomingScreenings]);
+
   // Every still-valid pick, on any day — a plan spans the week now (decision #5). Keys whose
-  // screening has dropped out of the live dataset (a past week's plan, a now-started session, a
-  // preference change) are filtered out here; `toggleSelected` writes the survivors back so the
-  // stored plan is pruned on the next edit.
+  // screening has genuinely gone (a past week's plan, a now-started session) are filtered out
+  // here; `toggleSelected` writes the survivors back so the stored plan is pruned on the next
+  // edit. Resolved against `timedAll`, so a preference change never counts as "gone".
   const effectiveSelectedKeys = useMemo(() => {
-    const present = new Set(timed.map((t) => keyOf(t)));
+    const present = new Set(timedAll.map((t) => keyOf(t)));
     const result = new Set<string>();
     for (const k of selectedKeys) if (present.has(k)) result.add(k);
     return result;
-  }, [selectedKeys, timed]);
+  }, [selectedKeys, timedAll]);
 
-  // The plan itself ignores the cinema filter — screenings already picked should stay in the
-  // plan even while browsing a single cinema to add more.
+  // The plan itself ignores the filter bar *and* the preferences — a screening you've picked
+  // stays in the plan while you browse one cinema to add more, and while a cinema is muted.
   const dayPlanItems = useMemo(() => {
-    return timed.filter((s) => effectiveSelectedKeys.has(keyOf(s))).sort((a, b) => a.startMins - b.startMins);
-  }, [timed, effectiveSelectedKeys]);
+    return timedAll.filter((s) => effectiveSelectedKeys.has(keyOf(s))).sort((a, b) => a.startMins - b.startMins);
+  }, [timedAll, effectiveSelectedKeys]);
 
   // Screenings that would slot cleanly into the plan, checked against their actual neighbours
   // once inserted chronologically — not just "pairs with something already selected" — so a 3rd
