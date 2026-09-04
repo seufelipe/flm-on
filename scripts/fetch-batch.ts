@@ -1,4 +1,5 @@
 import { promises as fs } from "fs";
+import { execFileSync } from "child_process";
 import path from "path";
 import { refreshShowtimesForRange } from "@/lib/aggregate";
 import { upcomingDays, nextWeekDays } from "@/lib/date";
@@ -8,7 +9,8 @@ import { displayFilmFormats } from "@/lib/formats";
 import { displayLanguage, hasNonEnglishLanguage } from "@/lib/languages";
 import { loadHiddenFilms } from "@/lib/hidden";
 import { loadLanguageOverrides } from "@/lib/languageOverrides";
-import { selectUpcomingFilms } from "@/lib/upcoming";
+import { selectUpcomingFilms, type UpcomingFilm } from "@/lib/upcoming";
+import { diffFilms } from "@/lib/filmDiff";
 
 const STAGING_FILE = path.join(process.cwd(), "data", "staging-batch.json");
 const LABELS_FILE = path.join(process.cwd(), "data", "film-labels.json");
@@ -50,6 +52,33 @@ function summarizeFilms(screenings: Screening[]): FilmSummary[] {
   return Array.from(seen.values()).sort((a, b) => a.filmTitle.localeCompare(b.filmTitle));
 }
 
+// The last *committed* version of a data file. Read from git rather than disk because by the
+// time this reports, `fetch:batch` has already overwritten data/upcoming.json in place — and
+// data/showtimes.json may already have been promoted by an earlier `fetch:confirm` in the same
+// review loop. Returns undefined outside a git checkout or before the file's first commit.
+function committed<T>(relPath: string): T | undefined {
+  try {
+    return JSON.parse(execFileSync("git", ["show", `HEAD:${relPath}`], { encoding: "utf-8" })) as T;
+  } catch {
+    return undefined;
+  }
+}
+
+// Letterboxd's own search, for a film the slug guess couldn't resolve (CLAUDE.md decision #4).
+// Cloudflare 403s /search for anything automated, but it's fine in a browser — which is exactly
+// how this gets used: open it, find the film, paste the URL into data/letterboxd-overrides.json.
+function letterboxdSearchUrl(title: string): string {
+  return `https://letterboxd.com/search/films/${encodeURIComponent(title)}/`;
+}
+
+// The exact data/letterboxd-overrides.json key for a film — lib/letterboxd.ts's `cacheKey`
+// verbatim, `title|year`, where `year` is the year the *cinema* reported (often empty). For a
+// NOT FOUND film that's what survives into the report, since lib/aggregate.ts only overwrites
+// `year` when Letterboxd matched — so this can be printed exactly rather than guessed at.
+function overrideKey(title: string, year?: number): string {
+  return `${title}|${year ?? ""}`;
+}
+
 async function main() {
   // Run this on a Thursday for a full 7-day week — on any other day it caps at the upcoming
   // Thursday, matching the boundary of the current cinema programme (see lib/date.ts).
@@ -82,7 +111,40 @@ async function main() {
     console.log(
       `- ${titleLabel}${f.year ? ` (${f.year})` : ""}${f.director ? ` — dir. ${f.director}` : ""} — Letterboxd: ${letterboxd}`,
     );
+    // Hand a NOT FOUND straight to the manual fix: the search to run, and the override line to
+    // paste once you've found the film.
+    if (!f.letterboxdUrl) {
+      console.log(`    search: ${letterboxdSearchUrl(f.filmTitle)}`);
+      console.log(`    pin as: ${JSON.stringify(overrideKey(f.filmTitle, f.year))}: "https://letterboxd.com/film/…/"`);
+    }
   }
+
+  // What changed since the last published week — read first, it orients everything below.
+  // Baselines are the committed files, not the working copy (see `committed` above). On a
+  // Thursday the whole programme turns over, so a long NEW/GONE list is normal; on a mid-week
+  // adjustment run the windows overlap, so anything here is a real change worth a second look.
+  const prevWeek = committed<{ days: string[]; screenings: Screening[] }>("data/showtimes.json");
+  const prevUpcoming = committed<{ films: UpcomingFilm[] }>("data/upcoming.json");
+  const diff = diffFilms(prevWeek?.screenings ?? [], screenings, prevUpcoming?.films ?? []);
+  const prevDays = prevWeek?.days ?? [];
+  const prevWindow = prevDays.length ? `${prevDays[0]} .. ${prevDays[prevDays.length - 1]}` : "nothing committed yet";
+  console.log(`\nSince the last published week (${prevWindow}):\n`);
+  console.log(`  NEW (${diff.added.length}):`);
+  for (const f of diff.added) {
+    const cinemas = f.cinemas.join("/");
+    const previewed = f.previewed ? "  [was in last week's Next-week preview]" : "  [not previewed]";
+    console.log(`    + ${f.title}${f.year ? ` (${f.year})` : ""}  ${cinemas}${previewed}`);
+  }
+  if (diff.added.length === 0) console.log("    none");
+  console.log(`  GONE (${diff.gone.length}):`);
+  for (const f of diff.gone) console.log(`    - ${f.title}${f.year ? ` (${f.year})` : ""}`);
+  if (diff.gone.length === 0) console.log("    none");
+  // The reverse check on the Next-week tease (decision #18): a film we previewed that then
+  // didn't appear means the preview was wrong, or the run moved.
+  console.log(`  PREVIEWED BUT ABSENT (${diff.previewedButAbsent.length}):`);
+  for (const t of diff.previewedButAbsent) console.log(`    ? ${t}  — teased last week, not in this batch`);
+  if (diff.previewedButAbsent.length === 0) console.log("    none");
+  console.log(`  HELD OVER (${diff.heldOver.length}): ${diff.heldOver.join(", ") || "none"}`);
 
   // Curated editorial tags (data/film-labels.json) — not part of the published showtimes,
   // read straight at build time. List every film's exact key so a label can be pasted in

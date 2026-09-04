@@ -28,44 +28,23 @@ gitignored cache/staging.
 
 ## Architecture
 
-### Data pipeline (server-only — `app/page.tsx` never runs it)
+### Data pipeline (server-only, weekly — `app/page.tsx` never runs it)
 
-- `lib/scrapers/{lighthouse,ifi,cineworld}.ts` — `CinemaAdapter`s. Light House / IFI are HTML
-  scrapers; Cineworld is a JSON-API adapter (decision #16). All three return every screening;
-  `lib/scrapers/index.ts` is the registry — adding a cinema is one file + one array entry
-  (deliberately no in-app settings UI).
-- `lib/aggregate.ts` — `getShowtimesForRange` / `refreshShowtimesForRange`. Fetches each adapter's
-  *missing* dates in one batched call, caches per `(cinema, date)` (incl. an explicit empty array
-  for dates a cinema has nothing on). Then, per screening: `cleanFilmTitle` → drop hidden films →
-  resolve Letterboxd (URL, year, language, original title, director) → fold the language into
-  `screeningTags`. Returns `DayResult` incl. `titleAnnotations` (for the label pre-fill).
-- `lib/cache.ts` — in-memory Map + `data/cache.json` fallback, 6h TTL. Only `fetch-batch` + dev.
-- `lib/titles.ts` — `cleanFilmTitle(raw, overrides)`: exact `corrections`, then `stripPrefixes`
-  (programme strands), then `stripAnnotations` (regex sources for trailing junk not in the name —
-  `4K Restoration`, `Nth Anniversary`, a `Month YYYY` suffix; matched at end, bare / dash- or
-  colon-prefixed / in `(…)`). The cleaned title is what the UI shows *and* what Letterboxd
-  resolution + its cache/override keys use. `titleAnnotation()` returns what `stripAnnotations`
-  removed (for the label pre-fill, decision #11). `titlesEquivalent(a, b)`
-  (case/punctuation/parenthetical-insensitive, Unicode-aware) gates whether an `originalTitle` is
-  worth keeping.
-- `lib/hidden.ts` — `data/hidden-films.json` (`{ titleSubstrings: string[] }`), a case-insensitive
-  substring blocklist on the cleaned title, applied in `aggregate` before Letterboxd. A hidden
-  film never reaches staged/published data, from any cinema.
-- `lib/letterboxd.ts` — `resolveLetterboxd(title, year)` → `{ url?, year?, language?, originalTitle?, director?, animated? }`
-  (decision #4). One page fetch yields the `og:title` year (adopted as the film's real year),
-  `parsePrimaryLanguage` (non-English only, decision #17), `parseOriginalTitle`
-  (`<h2 class="originalname">`, native script), `parseDirector` (the `twitter:label*/data*`
-  "Directed by" meta pair, comma-joined co-directors), `parseIsAnimated` (an
-  `/films/genre/animation/` anchor — gates the assumed-subtitles rule, decision #17; not shown).
-  Cache: `data/letterboxd-cache.json`, keyed
-  `title|year` (`year` = *scraped* year, often empty → `"I (Ai)|"`), no TTL, an entry missing any
-  field re-resolves once (gitignored, so churn is invisible). `data/letterboxd-overrides.json`
-  (`Record<"title|year", url|null>`) is checked first and always wins.
-- `lib/languageOverrides.ts` — `data/language-overrides.json` (`Record<title, language|null>`),
-  checked before the Letterboxd language; `null` forces a film unmarked.
-- `lib/directorOverrides.ts` — `data/director-overrides.json` (`Record<title, string>`), checked
-  before the Letterboxd director. Letterboxd's meta only carries the primary director, so a
-  co-directed film (City of God — Meirelles & Kátia Lund) needs the full credit pinned here.
+Runs only from `npm run fetch:batch`, i.e. once a week. `lib/scrapers/{lighthouse,ifi,cineworld}.ts`
+(adapters, registry in `index.ts`) → `lib/aggregate.ts`, which per screening does
+**`cleanFilmTitle` → drop hidden films → resolve Letterboxd (url, year, language, original title,
+director) → fold the language into `screeningTags`** → `scripts/fetch-batch.ts` writes
+`data/staging-batch.json` + the review report, `scripts/confirm-batch.ts` promotes it.
+
+Supporting modules: `lib/{cache,titles,hidden,letterboxd,languageOverrides,directorOverrides,filmDiff}.ts`.
+
+**All of that lives in the `fetch-films` skill** — `reference/pipeline.md` for the modules,
+`reference/cinemas.md` for the three cinemas, `SKILL.md` for the weekly procedure. It's out of
+context here on purpose: it's a weekly ritual, not something a UI change touches. Load the skill
+before editing any of those files or debugging a wrong title / year / language / director.
+
+The two pipeline outputs the **UI** actually depends on:
+
 - `lib/groupings.ts` — `groupByFilm`: groups by cleaned title across cinemas *and* dates
   (case/whitespace-insensitive), so one film = one card with many pills.
 - `lib/clash.ts` — `startMins`/`endMins` are **absolute-ordinal minutes** (`toOrdinalMinutes` =
@@ -76,12 +55,6 @@ gitignored cache/staging.
   consecutive plan items — no max cap, a deliberate plan can have a long gap), `fittingAdditions`
   (candidates that slot into a plan — checks each against both its would-be chronological
   neighbours *on its own day*, allows the same film on another day; decision #5).
-- `scripts/fetch-batch.ts` (`npm run fetch:batch`) — scrapes `upcomingDays()` (`lib/date.ts` —
-  full week on a Thursday, else capped at the next Thursday), writes `data/staging-batch.json`,
-  prints the review report (titles/casing, Letterboxd matches/misses, special screenings,
-  unrecognised tags, Cineworld's ordinary (lens-hidden) titles, resolved languages, Labels), and *writes*
-  `data/film-labels.json` pre-fills (decision #11). `scripts/confirm-batch.ts`
-  (`npm run fetch:confirm`) copies staging → `data/showtimes.json`; git stays manual.
 - `app/page.tsx` — server component, reads `data/showtimes.json` directly. Static per deploy
   (decision #3).
 
@@ -180,46 +153,27 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
 
 ## Decisions worth knowing before changing anything
 
-1. **Light House multi-day data comes from `/ajax/films-by-day/{n}` (`n`=1..9) despite
-   `robots.txt` disallowing `/ajax/*`.** The `/films` page only renders *today* in static HTML;
-   the other day-tabs are empty placeholders filled client-side by that endpoint (same
-   `div.film` markup). Justified only because this is now **one deliberate fetch a week from a
-   manual script** (decision #9), not per-visitor scraping. If it ever goes back to a live
-   per-request model, revisit — the original "continuous automated access against an explicit
-   disallow" objection applies again.
+1. **Light House multi-day data is fetched from an endpoint its `robots.txt` disallows.**
+   Justified **only** because this is one deliberate fetch a week from a manual script
+   (decision #9), not per-visitor scraping. If it ever goes back to a live per-request model,
+   revisit — the "continuous automated access against an explicit disallow" objection comes
+   straight back. Which endpoint and why it's the only way: `fetch-films` skill.
 
-2. **IFI's `/whats-on?date=YYYY-MM-DD` renders every screening for that day inline** (one request
-   per date, concurrency 4). Parse `article.screening-card` → title, `.screening-card__runtime`,
-   `.age-rating img[alt]` cert, `.tags .tag` (first = year, second = director), the "Learn more"
-   CTA → `filmPageUrl`, and one `a.screening-card__screening` per bookable session
-   (`shop.ifi.ie/performance/{id}/`, unique per session — decision #6). `robots.txt` allows it.
-   - IFI's **year** is often the programme/season year (e.g. `+Sons`, a 2025 doc, tagged 2026).
-     It's only the Letterboxd slug-guess hint; the displayed year comes from the matched page
-     (decision #4).
-   - IFI **titles** a recurring-strand session by the *strand*, not the film (`Archive at
-     Lunchtime August 2026: Programme 1` is really "Horse Plays"). Only reliable signal is the
-     poster filename / synopsis first line. Handled reactively via `corrections` per month; a
-     strand-aware model is still wanted (same open question as `CINEMA BOOK CLUB:` / Mystery
-     Matinee).
+2. **Cinema-reported titles and years are not trustworthy** — IFI names a recurring-strand
+   session after the *strand* rather than the film and tags it with the season's year; Light
+   House and Cineworld stamp re-releases with the current year. Hence the curated override files
+   and the weekly human review. A strand-aware model is still wanted (open question, same as
+   `CINEMA BOOK CLUB:` / Mystery Matinee). Per-cinema detail: `fetch-films` skill.
 
 3. **`app/page.tsx` is static, not `force-dynamic`.** It reads the committed `showtimes.json`;
    content changes only on redeploy. Don't reintroduce `force-dynamic` unless the page goes back
    to calling the live pipeline at request time.
 
-4. **Letterboxd links are resolved by guessing the slug, not searching.** `/search/…` is behind
-   a Cloudflare challenge (verified: 403, `cf-mitigated: challenge`, even with full browser
-   headers); `/film/{slug}/` pages aren't blocked and aren't in robots.txt's disallow. Slugify the cleaned title,
-   try `-{year}` first when known, and verify the resolved page's own `og:title` year (±1) before
-   accepting. The matched page's year is also **what the UI shows** — the cinema-reported year is
-   only the slug hint + a fallback for NOT-FOUND films (so `Kiki's Delivery Service` shows 1989,
-   not "2026").
-   - **Light House / Cineworld stamp re-releases with the current year**, which can match a
-     *different* real film of that name from this year (`The Sacrifice` → `the-sacrifice-2026`).
-     Pinned in `letterboxd-overrides.json` keyed on the *wrong* year (`"The Sacrifice|2026"`).
-     When reviewing a batch, sanity-check every repertory/restoration link, not just NOT FOUND.
-   - The same page fetch also yields the **Primary Language** (decision #17), the **original
-     title** (native script) and the **director(s)** (shown next to the runtime on the card's
-     meta line) — see `lib/letterboxd.ts` above.
+4. **Letterboxd is the source of truth for a film's own facts.** The matched page supplies the
+   **year the UI shows** (not the cinema's — so `Kiki's Delivery Service` reads 1989, not 2026),
+   the primary language (#17), the original title, and the director(s) on the card's meta line.
+   Links are resolved by **guessing the slug, not searching** (`/search/…` is Cloudflare-blocked).
+   How the guess works, how it fails, and how to pin a bad match: `fetch-films` skill.
 
 5. **A plan can span the week; it persists.** `lib/plan.ts` (`flm-on:plan` localStorage, same
    `useSyncExternalStore` shape as `lib/preferences.ts`) holds the picked `bookingUrl`s across as
@@ -291,10 +245,11 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
 
 9. **Public release = weekly curated pipeline, not live per-visitor scraping.** Live scraping on
    every request let any visitor trigger a scrape and gave no chance to catch mangled titles /
-   wrong Letterboxd matches before users saw them. Now `npm run fetch:batch` (intended for
-   Thursdays, when both cinemas' programmes turn over) → review the report → `npm run
-   fetch:confirm` promotes staging to the one committed `showtimes.json`. Drove decisions #1 & #3.
-   `app/actions.ts` + `RefreshButton` are gone.
+   wrong Letterboxd matches before users saw them. Now `fetch:batch` → human review →
+   `fetch:confirm`, on Thursdays when the programmes turn over. Drove decisions #1 & #3;
+   `app/actions.ts` + `RefreshButton` are gone. **`fetch:confirm` is not the publish gate — the
+   push is**; `git checkout data/` reverts a whole run. **The review is the `fetch-films`
+   skill** — don't run the refresh freehand.
 
 10. **Installable as "flm on" (lowercase).** `<title>`, `appleWebApp.title`, and `manifest.ts`
     `name`/`short_name` are the lowercase string; the descriptive text is `description`.
@@ -309,10 +264,8 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
     string>` (e.g. `"classic!"`). **Render/build-time only** — `app/page.tsx` reads it and threads
     a `labels` map to `FilmCard`; not in `showtimes.json`, so editing a label needs only a
     rebuild. Rendered by `FilmNotes` in the same sticker as the special-screening name(s), joined
-    by ` · ` — decorative (`--color-fg`/`--color-bg`, never accent/count). `fetch:batch` **writes**
-    the file (sorted), pre-filling a label for any film without one: a stripped annotation
-    (`"25th anniversary"`, `"4k restoration"` — `titleAnnotation`, filtered to
-    `/anniversary|restoration/`) wins over a Cineworld "Big Screen Classics" → `classic!`.
+    by ` · ` — decorative (`--color-fg`/`--color-bg`, never accent/count). `fetch:batch` also
+    **writes** pre-fills into this file during the weekly review (rules: `fetch-films` skill).
 
 12. **The IFI "Mystery Matinee" strand is a redacted card.** `lib/mystery.ts` `isMysteryFilm`
     (`/^mystery matinee\b/i` on the cleaned title) gates `FilmCard` to drop the year + duration
@@ -404,56 +357,24 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
     are recognised but deliberately unsurfaced.
 
 16. **Cineworld Dublin — a JSON-API adapter, scraped in full** (`lib/scrapers/cineworld.ts`).
-    Cineworld.ie is a Gatsby site with a public, unauthenticated JSON API (`robots.txt` empty).
-    Theatre id **`X07A4`**. Two calls per batch window (`fetchCineworldRaw`):
-    - `GET /api/gatsby-source-boxofficeapi/schedule?from={ISO}&to={ISO}&theaters={"id":"X07A4","timeZone":"Europe/Dublin"}`
-      (`theaters` = URL-encoded JSON; day boundary 03:00 local; accepts an arbitrary range) →
-      `{ X07A4: { schedule: { <movieId>: { <YYYY-MM-DD>: [ {id, startsAt, tags[], data.ticketing} ] } } } }`.
-      The `provider:"default"` URL (`web.cineworld.ie/order/showtimes/0001-NNNNNN/seats`) is the
-      `bookingUrl` (unique per session, decision #6).
-    - `GET /api/gatsby-source-boxofficeapi/movies?…&ids=…` (chunked at 30) → `[{ id, title,
-      originalTitle, runtime (SECONDS — ÷60), certificate, release / releases[].releasedAt }]`.
-      `filmPageUrl` = `cineworld.ie/movies/{id}-{slug}/`.
+    Not a scrape: a public, unauthenticated JSON API on a Gatsby site (`robots.txt` empty).
+    What matters outside a fetch is that **an ordinary wide-release showing ends up with no
+    `screeningTags` at all** — nothing is dropped at scrape time, so the whole multiplex slate is
+    in `showtimes.json` and it's the **"Specials, etc" Highlights lens** (decision #14) that keeps
+    it out of view. **Cineworld also defaults off** in preferences. Consequence: its git diffs
+    churn with wide-release showtimes.
 
-    **`normaliseTags`** maps each showtime's raw tag tokens onto the shared `screeningTags` vocab
-    (`Format.Projection.Imax` → `IMAX`, `Showtime.Event.BigScreenClassics` → `Big Screen
-    Classics`, `Localization.Language.Tamil` → `Tamil`, `Showtime.Accessibility.AutismFriendly` →
-    relaxed) and drops the tokens with no display meaning (`IGNORED_TAGS` —
-    `Format.Projection.Digital`/`.Laser`, `Auditorium.Experience.4dx`/`.ScreenX`/`.Superscreen`,
-    `Showtime.Accessibility.AudioDescription`). An ordinary wide-release showing therefore ends
-    up with **no `screeningTags`** — still scraped, just not a "highlight". **Unknown
-    `Showtime.Event.*` kept verbatim** → shows in the report's "unrecognised screening tags".
-    **Big Screen Classics** is `mark: false` — `fetch:batch` pre-fills a `classic!` label instead
-    (decision #11). Nothing is dropped at scrape time: the multiplex firehose is hidden by the
-    **"Specials, etc" Highlights lens** (decision #14), and the batch report's
-    "Cineworld — ordinary screenings" section lists what that lens hides so a mistitled /
-    label-worthy film is caught in review.
-
-    Also: **Cineworld defaults off** in preferences (decision #14). IMAX may be a **separate
-    movie** (`"…: The IMAX Experience"`) — the adapter strips that + synthesises an `IMAX` tag so
-    `groupByFilm` merges it. Re-releases get a current-year `release` (fix via
-    `letterboxd-overrides.json`). Foreign titles carry a trailing `(Tamil)` — stripped.
-    `originalTitle` from the `movies` API is only the **fallback** for the card's original title
-    (Letterboxd's `originalname` is canonical, decision #4).
+    Endpoints, the tag-normalisation vocabulary, the separate `"…: The IMAX Experience"` movie
+    record and the rest: the `fetch-films` skill's `reference/cinemas.md`.
 
 17. **International / foreign-language support — `lib/languages.ts`.** The third `screeningTags`
     reader. `displayLanguage` → `{ language?, subtitled, dubbed } | null` (`LANGUAGE_NAMES`, ~90
     entries).
-    - **Language is per-film, from Letterboxd's "Primary Language"** (`parsePrimaryLanguage` —
-      the details panel uses `<h3><span>Language>` for single-language, `Primary Language` +
-      `Spoken Languages` for multi). `aggregate` folds it into every screening's `screeningTags`
-      (case-insensitively de-duped so a cinema's own token wins). Covers **every non-English film
-      across all three cinemas**, not just the ones a cinema tags. Fix wrong/missing values in
-      `data/language-overrides.json`; Cineworld's `Localization.Language.*` is the fallback for a
-      NOT-FOUND film.
-    - **Subtitled/dubbed is per-session** — Cineworld `Showtime.Accessibility.*`, Light House
-      `Subtitled`/`Dubbed`/`Open Captioned` (long captured, surface only now). When a non-English
-      film's session carries *no* caption tag, `aggregate` assumes `Subtitled` (the Irish norm
-      for a foreign-language release) — **unless** Letterboxd files the film under *Animation*
-      (`parseIsAnimated` → `LetterboxdMatch.animated`), since animations often screen
-      English-dubbed. So an animated foreign film shows a language chip but no ST/Dub mark until a
-      cinema tags one. The batch report's "Languages" section tallies ST / Dub / UNMARKED per
-      film so a wrongly-unmarked one is caught.
+    - **Language is per-film** (from Letterboxd, folded into every screening's `screeningTags` at
+      fetch time — so it covers every non-English film across all three cinemas, not just the
+      ones a cinema tags), while **subtitled/dubbed is per-session** (the cinema's own caption
+      tags, with `Subtitled` assumed for an untagged non-English screening — except animation,
+      which often screens dubbed). How that's resolved and how to correct it: `fetch-films` skill.
     - Render: `<LanguageTag>` = the language name only (meta-line chip); `<LanguageMarks>` = the
       per-showtime `ST`/`Dub` on a pill (not repeated with the language). Not part of the
       `FilmNotes` sticker. **A non-English original language counts toward Highlights
@@ -461,7 +382,6 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
     - The **`language` preference** (segmented control `any`/`english`/`non-english`,
       `matchesLanguagePref`) filters `preferred` on whether `displayLanguage` found a non-English
       original language. `dubbed` is no longer filtered on — just the pill "Dub" mark.
-    - `fetch:batch` has a "Languages" section listing every non-English film's resolved language.
 
 18. **"Next week" preview — the unconfirmed tease** (`lib/upcoming.ts`, `data/upcoming.json`).
     The day picker's **trailing "Next week (maybe)" affordance** (`ScreeningBrowser` — it
@@ -477,16 +397,10 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
     so the preview can't dead-end. The Time / Cinema / "Specials, etc" controls and the
     plan/combo tools are hidden while it's on (the desktop plan rail too, unless the plan is
     non-empty).
-    - **Source:** `fetch:batch` runs a *second* `refreshShowtimesForRange(nextWeekDays())`
-      (`lib/date.ts` — next Thursday through the following Wednesday) and
-      `selectUpcomingFilms(thisWeek, nextWeek, labels)` picks **only films not already playing
-      this week** (a held-over film isn't a "coming next week" tease, even if next week's run is
-      a special format / has a label); among those, new shorts are dropped but a short *special*
-      is kept, and specials/labelled films sort first. It **rewrites
-      `data/upcoming.json` in place** (`{ generatedAt, week, films }`) — same
-      batch-writes / human-trims / build-time-read pattern as `data/film-labels.json`, **not**
-      staged/promoted (`fetch:confirm` is untouched). Trim the file and review the diff before
-      committing.
+    - **Source:** `fetch:batch` writes `data/upcoming.json` (`{ generatedAt, week, films }`) from
+      a second scrape of next week, then it's **hand-trimmed** during the weekly review — same
+      batch-writes / human-trims / build-time-read pattern as `data/film-labels.json`, and not
+      staged or promoted. Selection rules and the trimming order: `fetch-films` skill.
     - `app/page.tsx` reads it at build (`loadUpcoming`), passes `upcoming` / `upcomingWeek` to
       `ScreeningBrowser`; `upcomingVisible` re-applies the cinema / kids-only / language
       preferences (not time / hide-shorts) — no length cap, the committed file is already
@@ -500,39 +414,30 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
     - `FilmCard preview`: header + meta line + `FilmNotes` + the film-page/Letterboxd footer,
       no showtime section at all. The label is the live `film-labels.json` value
       (`labels?.[key] ?? f.label`), so a label edit + rebuild updates it like any card.
-    - **Coverage caveat:** Light House's site only exposes 9 days out, so next-week coverage
-      leans on Cineworld + IFI plus Light House's first ~3 next-week days.
+    - **Coverage caveat:** Light House only exposes 9 days out, so next-week coverage leans on
+      Cineworld + IFI.
 
 ## Known gaps
 
 - No tests for the interactive UI layer — only `lib/` unit tests (`test/*.test.ts`).
 - Duplicate-session pills aren't visually distinguished (#6).
-- **No silent-failure alerting** — scrapers degrade to cached data via try/catch, but nothing
-  flags a long-term structural break in a cinema's HTML or Cineworld's JSON shape.
-- **Nothing enforces the Thursday cadence** — a skipped `fetch:batch`/`fetch:confirm` just keeps
-  serving last week's `showtimes.json` silently.
-- **IFI**: special-audience strands not tagged (#13); a new format `svg[data-icon]` is silently
-  dropped (#15); no automatic check for a new `em.additional` value beyond the batch report;
-  titles often ALL CAPS (`[CASING DIFFERS]` in the report, but new mismatches aren't caught).
+- **Nothing enforces the Thursday cadence** — a skipped refresh just keeps serving last week's
+  `showtimes.json` silently.
+- **Nothing alerts on a silent scrape failure**, and several classes of bad data (a wrong
+  Letterboxd match, an untagged strand, a wrong language, a dropped format icon) are only ever
+  caught by eye during the weekly review. The batch report has a section for each; the
+  **`fetch-films` skill** enumerates them and says what to look for. Nothing is automatic.
 - **Cineworld "highlight" detection is tag-based only** — a plain-digital showing of an
-  interesting film shows only with the Highlights lens *off* (i.e. buried in the full multiplex
-  slate), with no per-title allowlist to promote it. The report's "Cineworld — ordinary
-  screenings" section is the manual check. The committed `showtimes.json` now carries the whole
-  Cineworld programme, so its git diffs churn with wide-release showtimes.
-- **Language marking** needs the film to resolve on Letterboxd and its "Primary Language" to be
-  in `LANGUAGE_NAMES` (a miss shows in the report). Letterboxd's primary language is occasionally
-  wrong for Indian regional films / dubs — the "Languages" report section is the check.
-- `letterboxd-overrides.json` keys are `"exact title|year"` — if a cinema quietly changes a
-  title's punctuation/accents the old key stops matching and the film silently drops to NOT
-  FOUND. Sanity-check the report's NOT FOUND list against what *used* to resolve.
+  interesting film shows only with the Highlights lens *off*, buried in the full multiplex slate,
+  with no per-title allowlist to promote it.
 
 ## Running it
 
 - `npm run dev` — dev server
 - `npx vitest run` — unit tests
 - `npm run build` — production build; check `/` stays `○ (Static)` (decision #3)
-- `npm run fetch:batch` — weekly scrape → `data/staging-batch.json` + review report (decision #9)
-- `npm run fetch:confirm` — promote staging to the committed `data/showtimes.json`
+- `npm run fetch:batch` / `npm run fetch:confirm` — the weekly refresh (decision #9). **Driven by
+  the `fetch-films` skill**; don't run them freehand
 - `npm run gen:icons` — regenerate app icons + favicon (decision #10)
 
 ## Working on this
@@ -544,26 +449,26 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   same commit — a new decision gets a numbered entry with its *reasoning*, a reversed one gets
   rewritten, not appended to. If a change makes a paragraph here wrong and you don't fix it, the
   change isn't finished.
+- **So is the `fetch-films` skill** (`.claude/skills/fetch-films/`) — the weekly-refresh runbook
+  and the per-cinema reference. A change to a scraper, an override file, the report or the
+  aggregate pipeline updates the skill in the same commit, exactly like this file. It's out of
+  context most sessions, which is the point *and* the risk: nothing will tell you it has rotted.
 - **Root causes only.** The scrapers already degrade silently (see Known gaps); a patch that papers
   over a parse failure instead of fixing the selector hides a real break.
 
 ## Data files (`data/`)
 
-**Committed:**
-- `showtimes.json` — the published week. Only file that gets pushed. Screenings may carry
-  `screeningTags: string[]` (shared vocab — decisions #13/#15/#17), `originalTitle` (#16) and
-  `director` (from Letterboxd, decision #4).
-- `title-overrides.json` — `{ stripPrefixes, stripAnnotations (regex sources), corrections }`.
-- `letterboxd-overrides.json` — `Record<"title|year", string | null>`; `year` is the *scraped*
-  year, often empty (`"I (Ai)|"`).
-- `film-labels.json` — `Record<"<normalized title>", string>`, render-time only (decision #11);
-  `fetch:batch` writes pre-fills into it.
-- `hidden-films.json` — `{ titleSubstrings: string[] }`, editorial blocklist (`lib/hidden.ts`).
-- `language-overrides.json` — `Record<"<normalized title>", string | null>` (decision #17).
-- `director-overrides.json` — `Record<"<normalized title>", string>`; wins over Letterboxd's
-  parsed director (which only carries the primary name).
+**Committed and read at build time:**
+- `showtimes.json` — the published week. Screenings may carry `screeningTags: string[]` (shared
+  vocab — decisions #13/#15/#17), `originalTitle` (#16) and `director` (#4).
+- `upcoming.json` — the hand-trimmed "Next week" tease (#18).
+- `film-labels.json` — the curated editorial labels (#11). **The only override file a rebuild
+  picks up**; edit it and reload.
 
-**Gitignored** (regenerated by scripts / dev):
-- `cache.json` — live-scrape cache, 6h TTL, incl. explicit empty entries.
-- `letterboxd-cache.json` — long-lived match cache (`{ url, year, language, originalTitle, director, animated }`), no TTL.
-- `staging-batch.json` — this week's not-yet-confirmed fetch.
+**Committed, but applied at fetch time** (baked into `showtimes.json`, so editing one needs a
+re-fetch): `title-overrides`, `letterboxd-overrides`, `hidden-films`, `language-overrides`,
+`director-overrides`. Exact key formats are in the `fetch-films` skill's fix table — don't guess
+one from memory.
+
+**Gitignored**, regenerated by the weekly scripts: `cache.json`, `letterboxd-cache.json`,
+`staging-batch.json`.
