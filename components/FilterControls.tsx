@@ -6,6 +6,7 @@ import type { UpcomingFilm } from "@/lib/upcoming";
 import { formatTimeframeRange, type Timeframe, type TimeframeDef } from "@/lib/timeframe";
 import { CINEMA_LABEL, CINEMA_LOCATION } from "@/lib/cinemas";
 import { formatDayFriendly, formatDayDate } from "@/lib/date";
+import { CINEMA_WEEKEND_MARK, CINEMA_WEEKEND_NAME, isCinemaWeekendDay } from "@/lib/cinemaWeekend";
 import { SEGMENT_BASE, controlSegmentClass } from "./controlSegment";
 import PreferencesButton from "./PreferencesButton";
 
@@ -52,6 +53,25 @@ function SpecialsToggle({
       </span>
       <span className="font-bold uppercase text-sm tracking-wide">Specials, etc</span>
     </button>
+  );
+}
+
+// --- shared: the National Cinema Weekend mark ------------------------------------------------
+// A ★ beside the two campaign days in both day pickers (CLAUDE.md decision #19). Ink, not accent:
+// a selected segment is already filled gold, and the mark has to stay readable on it. Deliberately
+// not the ☻ of a special screening — that means a strand within a day, this means the whole day
+// is cheap. The glyph is decorative, so the name rides along as screen-reader text (safe inside
+// the button: SEGMENT_BASE is `relative`, so the absolutely-positioned sr-only span can't escape
+// the dock's horizontal scroll box and give the row a phantom scrollbar).
+function DayMark({ day }: { day: string }) {
+  if (!isCinemaWeekendDay(day)) return null;
+  return (
+    <>
+      <span aria-hidden="true" className="mr-1.5 [font-variant-emoji:text]">
+        {CINEMA_WEEKEND_MARK}
+      </span>
+      <span className="sr-only">{CINEMA_WEEKEND_NAME}: </span>
+    </>
   );
 }
 
@@ -377,11 +397,16 @@ function BarMenus({
 }: Props) {
   const [openMenu, setOpenMenu] = useState<null | "day" | "time" | "place">(null);
 
-  const dayTriggerLabel = nextWeek
-    ? "Next week"
-    : effectiveDay === null
-      ? "This week"
-      : `${formatDayFriendly(effectiveDay)} ${formatDayDate(effectiveDay)}`;
+  const dayTriggerLabel = nextWeek ? (
+    "Next week"
+  ) : effectiveDay === null ? (
+    "This week"
+  ) : (
+    <>
+      <DayMark day={effectiveDay} />
+      {`${formatDayFriendly(effectiveDay)} ${formatDayDate(effectiveDay)}`}
+    </>
+  );
 
   const timeTriggerLabel =
     effectiveTimeframe === null
@@ -446,7 +471,10 @@ function BarMenus({
           keyFor={(day) => day}
           renderOption={(day) => (
             <>
-              <span>{formatDayFriendly(day)}</span>
+              <span>
+                <DayMark day={day} />
+                {formatDayFriendly(day)}
+              </span>
               <span data-sub className="text-xs tracking-widest">{formatDayDate(day)}</span>
             </>
           )}
@@ -562,7 +590,10 @@ function DockSegments({
         keyFor={(day) => day}
         renderLabel={(day) => (
           <>
-            <span className="font-bold uppercase text-sm tracking-wide">{formatDayFriendly(day)}</span>
+            <span className="font-bold uppercase text-sm tracking-wide">
+              <DayMark day={day} />
+              {formatDayFriendly(day)}
+            </span>
             <span className="text-xs text-dim uppercase tracking-widest">{formatDayDate(day)}</span>
           </>
         )}

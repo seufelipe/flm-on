@@ -170,6 +170,9 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   `app/page.tsx`) so the `lg:` grid can move it into the right rail. Holds `PreferencesButton`
   only on mobile (`lg:hidden`) — on desktop that button lives in the filter bar (`FilterControls`
   `layout="bar"`, room to spare now the filters are menus).
+- `components/CinemaWeekendBanner.tsx` + `lib/cinemaWeekend.ts` — the National Cinema Weekend
+  note over the film list, and the `★` beside those two days in both day pickers
+  (`DayMark` in `FilterControls`). Decision #19; self-expiring, deletable whole.
 - `components/{PreferencesButton,SettingsPanel,ActivePreferenceNote}.tsx` + `lib/preferences.ts`
   + `lib/duration.ts` — the preferences button, the overlay it opens, and the title-side marquee
   naming an active kids-only / language pref; all three share the store with `ScreeningBrowser`
@@ -489,6 +492,31 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
       (`labels?.[key] ?? f.label`), so a label edit + rebuild updates it like any card.
     - **Coverage caveat:** Light House only exposes 9 days out, so next-week coverage leans on
       Cineworld + IFI.
+
+19. **National Cinema Weekend — a date-boxed campaign note** (`lib/cinemaWeekend.ts`,
+    `components/CinemaWeekendBanner.tsx`). Sat 5 / Sun 6 September 2026: admission from €4 at
+    participating cinemas across the Republic (Screen Ireland-backed). Two surfaces, both fed by
+    `cinemaWeekendDaysInView(effectiveDay, visibleDays)`: a **`★` before the day name** in both
+    day pickers (the dock segment, the desktop menu row *and* its collapsed trigger — `DayMark`),
+    and a **banner card above the film list**, same shell as the "Next week (maybe)" one.
+    - **Shown on a pinned Sat/Sun *and* on "This week"** (user's call): "This week" lists those
+      days' screenings, so hiding the note there would keep the offer from the view most likely
+      to be open. Not shown on an ordinary day, and never in the Next-week preview.
+    - **`★`, not `☻`** — the specials mark means a strand *within* a day; this means the whole
+      day is cheap. It **leads** the day name / the banner heading — the mark is what you're
+      scanning the row for, so it shouldn't sit behind the label. Ink in both places, never
+      accent: a selected day segment is already filled gold and the mark has to stay readable on
+      it (decision #7), and the accent's one status use is spoken for (#14).
+    - **The copy says "tickets from €4 at all three cinemas here"** — Light House Cinema, IFI
+      Cinemas and Cineworld are all on the campaign's published participant list, so the app can
+      say so flatly. **"From €4" stays hedged** because the campaign's own wording is a floor,
+      not a flat rate. The one other line is that screenings will go faster than usual — the
+      actionable part for a planner.
+    - **It expires by itself.** The days are two hard-coded ISO dates with their written-out
+      labels (no general "campaign" facility for a thing that happens once), and `visibleDays`
+      already drops days that have passed — so on the Sunday the banner narrows to Sunday, and
+      after the weekend nothing renders. The module and its component can then be deleted whole,
+      with no edit to any caller.
 
 ## Known gaps
 

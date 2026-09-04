@@ -20,6 +20,7 @@ import { matchesLanguagePref } from "@/lib/languages";
 import { isMysteryFilm } from "@/lib/mystery";
 import { isHighlight } from "@/lib/highlights";
 import { startingPoints } from "@/lib/startingPoints";
+import { cinemaWeekendDaysInView } from "@/lib/cinemaWeekend";
 import {
   DEFAULT_PREFERENCES,
   isDefault,
@@ -30,6 +31,7 @@ import {
 } from "@/lib/preferences";
 import { planSnapshot, PLAN_SERVER_SNAPSHOT, subscribePlan, writePlan } from "@/lib/plan";
 import FilmCard from "./FilmCard";
+import CinemaWeekendBanner from "./CinemaWeekendBanner";
 import Masthead, { MastheadTitle } from "./Masthead";
 import FilterControls from "./FilterControls";
 import PlanPanel from "./PlanPanel";
@@ -221,6 +223,11 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
   const effectiveCinema =
     activeCinema !== null && cinemasPresent.includes(activeCinema) ? activeCinema : null;
   const effectiveDay = activeDay !== null && visibleDays.includes(activeDay) ? activeDay : null;
+
+  // The National Cinema Weekend days the current view covers — a pinned Saturday/Sunday, or every
+  // campaign day still in "This week" (decision #19). Empty every other day of the year, and
+  // empty for good once the weekend has passed, since `visibleDays` has dropped it by then.
+  const cinemaWeekendDays = cinemaWeekendDaysInView(effectiveDay, visibleDays);
 
   // A time window is only offered while it's still ahead of us — and only *dropped* for being
   // past when today is the pinned day (a future day's "Early" hasn't happened yet) — plus
@@ -451,6 +458,7 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
     ) : (
       <>
         <div className="flex flex-col gap-8">
+          <CinemaWeekendBanner days={cinemaWeekendDays} />
           {filmGroups.length === 0 && (
             <p className="bg-surface border-4 border-border rounded-card shadow-card p-4 sm:p-8 font-bold">
               {preferred.length === 0 && (!isDefault(prefs) || highlightsOnly) ? (
