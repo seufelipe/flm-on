@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
 @theme {
   --color-bg: #fcf0ed;
@@ -27,6 +28,65 @@
      so a pressed element translated by that amount lands exactly where its shadow edge was. */
   --shadow-chip: 4px 4px 0 0 var(--color-shadow), 4px 4px 0 2px var(--color-border);
   --shadow-chip-half: 2px 2px 0 0 var(--color-shadow), 2px 2px 0 1px var(--color-border);
+}
+
+/* ---------------------------------------------------------------------------------------------
+   neobrutalism.dev / shadcn token bridge — CLAUDE.md decision #22.
+   Their components are written against a fixed vocabulary (`bg-main`, `rounded-base`,
+   `shadow-shadow`, `translate-x-boxShadowX`…). These are those names carrying OUR values, so a
+   copied-in component comes out looking like this app rather than like the demo site. Shaped as
+   `:root` raw values + an `@theme inline` mapping — the shape the styling customizer emits, so a
+   future paste from it drops into the `:root` block and nothing else moves.
+
+   The one value that is NOT a straight copy: --box-shadow-x/y is the shadow's total REACH (6px),
+   not its 4px offset. Their shadow is single-tone so offset == reach; ours wraps a 4px grey block
+   in a 2px ink ring, and the press translate has to clear both or a button lands 2px shy of the
+   edge it is meant to fall into.
+   --------------------------------------------------------------------------------------------- */
+:root {
+  --background: #fcf0ed;
+  --secondary-background: #fafafa;
+  --foreground: #2f2525;
+  --main: #fdc732;
+  --main-foreground: #2f2525;
+  --border: #2f2525;
+  --ring: #2f2525;
+  --overlay: rgb(47 37 37 / 0.6);
+
+  /* Their single radius. Mapped to our button radius, not the card's — the components that read
+     it are buttons, tooltips and menu rows; cards keep `rounded-card`. */
+  --border-radius: 10px;
+
+  --box-shadow-x: 6px;
+  --box-shadow-y: 6px;
+  --reverse-box-shadow-x: -6px;
+  --reverse-box-shadow-y: -6px;
+  --shadow: 4px 4px 0 0 var(--color-shadow), 4px 4px 0 2px var(--color-border);
+
+  --base-font-weight: 500;
+  --heading-font-weight: 700;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-secondary-background: var(--secondary-background);
+  --color-foreground: var(--foreground);
+  --color-main: var(--main);
+  --color-main-foreground: var(--main-foreground);
+  --color-ring: var(--ring);
+  --color-overlay: var(--overlay);
+
+  --radius-base: var(--border-radius);
+  --shadow-shadow: var(--shadow);
+
+  --font-weight-base: var(--base-font-weight);
+  --font-weight-heading: var(--heading-font-weight);
+
+  /* Feeds `translate-x-boxShadowX` / `translate-y-boxShadowY` in the component press states. */
+  --spacing-boxShadowX: var(--box-shadow-x);
+  --spacing-boxShadowY: var(--box-shadow-y);
+  --spacing-reverseBoxShadowX: var(--reverse-box-shadow-x);
+  --spacing-reverseBoxShadowY: var(--reverse-box-shadow-y);
 }
 
 /* Horizontal-scroll rows (the screening pills in components/FilmCard.tsx) — the pills clipped

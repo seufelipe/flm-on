@@ -9,6 +9,7 @@ import {
   bestAdditionPerSlot,
   type TimedScreening,
 } from "@/lib/clash";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { groupByFilm, type FilmGroup } from "@/lib/groupings";
 import type { UpcomingFilm } from "@/lib/upcoming";
 import { TIMEFRAMES, timeframeForTime, type Timeframe } from "@/lib/timeframe";
@@ -544,93 +545,97 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
   );
 
   return (
-    <div>
-      <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-8">
-        {/* Right rail. Source order first: on mobile this collapses to just the masthead,
-          stacked above the film list; the plan panel is desktop-only (the mobile plan lives
-          behind the floating button). */}
-        <div className="lg:col-start-2 lg:row-start-1 min-w-0">
-          {/* Mobile: the page header (title / tagline / Preferences button). */}
-          <div className="lg:hidden">
-            <Masthead />
+    // One Provider for the whole browser, so moving along a row of showtime pills doesn't
+    // re-serve the open delay on every pill (CLAUDE.md decision #22).
+    <TooltipProvider>
+      <div>
+        <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-8">
+          {/* Right rail. Source order first: on mobile this collapses to just the masthead,
+            stacked above the film list; the plan panel is desktop-only (the mobile plan lives
+            behind the floating button). */}
+          <div className="lg:col-start-2 lg:row-start-1 min-w-0">
+            {/* Mobile: the page header (title / tagline / Preferences button). */}
+            <div className="lg:hidden">
+              <Masthead />
+            </div>
+
+            {/* Desktop: one rail card — the masthead sits at the top and scrolls away, the plan
+              panel pins with it. The negative sticky `top` ≈ the masthead's height, so the title
+              clears the viewport just before the plan holds (CLAUDE.md decision #5). ~10rem is a
+              fixed estimate of the masthead block; nudge it if a sliver of the tagline shows. */}
+            {/* `lg:mt-[86px]` drops the card so its top lines up with the first film card — the
+              left column's sticky filter bar (~62px) plus its `mb-6` (24px). */}
+            <div className="hidden lg:block lg:mt-[86px] lg:sticky lg:top-[calc(1rem-9.5rem)] border-4 border-border bg-surface shadow-card-lg rounded-card">
+              <div className="px-5 pt-5 pb-4">
+                <MastheadTitle />
+              </div>
+              {/* Hidden in the "Next week" preview only while the plan is empty — a saved week-plan
+                stays visible (it's yours regardless of the view), but there's nothing to seed a
+                new one from (no confirmed showtimes). */}
+              {planLoaded && !(nextWeek && dayPlanItems.length === 0) && (
+                <PlanPanel
+                  className="border-t-2 border-border"
+                  items={dayPlanItems}
+                  transitions={dayPlanTransitions}
+                  suggestions={planSuggestions}
+                  startingPoints={seeds}
+                  startingPointsShowDay={effectiveDay === null}
+                  onAdd={toggleSelected}
+                  onRemove={toggleSelected}
+                  onClear={clearPlan}
+                  onExport={exportPlan}
+                  onPickDay={pickDay}
+                  keyOf={keyOf}
+                />
+              )}
+            </div>
           </div>
 
-          {/* Desktop: one rail card — the masthead sits at the top and scrolls away, the plan
-            panel pins with it. The negative sticky `top` ≈ the masthead's height, so the title
-            clears the viewport just before the plan holds (CLAUDE.md decision #5). ~10rem is a
-            fixed estimate of the masthead block; nudge it if a sliver of the tagline shows. */}
-          {/* `lg:mt-[86px]` drops the card so its top lines up with the first film card — the
-            left column's sticky filter bar (~62px) plus its `mb-6` (24px). */}
-          <div className="hidden lg:block lg:mt-[86px] lg:sticky lg:top-[calc(1rem-9.5rem)] border-4 border-border bg-surface shadow-card-lg rounded-card">
-            <div className="px-5 pt-5 pb-4">
-              <MastheadTitle />
-            </div>
-            {/* Hidden in the "Next week" preview only while the plan is empty — a saved week-plan
-              stays visible (it's yours regardless of the view), but there's nothing to seed a
-              new one from (no confirmed showtimes). */}
-            {planLoaded && !(nextWeek && dayPlanItems.length === 0) && (
-              <PlanPanel
-                className="border-t-2 border-border"
-                items={dayPlanItems}
-                transitions={dayPlanTransitions}
-                suggestions={planSuggestions}
-                startingPoints={seeds}
-                startingPointsShowDay={effectiveDay === null}
-                onAdd={toggleSelected}
-                onRemove={toggleSelected}
-                onClear={clearPlan}
-                onExport={exportPlan}
-                onPickDay={pickDay}
-                keyOf={keyOf}
-              />
+          {/* Left column: the film list, with the filter controls as a sticky bar at its top on
+            desktop (the mobile filter bar is the fixed bottom dock further down). */}
+          <div className="lg:col-start-1 lg:row-start-1 min-w-0">
+            {/* Solid bg, no backdrop-blur: `backdrop-filter` would make this a containing block for
+              the `position: fixed` Preferences modal that now lives in the bar, trapping it inside
+              the sticky strip. The mobile dock is opaque for the same reason. */}
+            {prefsLoaded && (
+              <div className="no-print hidden lg:block lg:sticky lg:top-0 z-20 -mx-4 mb-6 border-b-2 border-border bg-bg px-4 py-3">
+                <FilterControls layout="bar" {...filterProps} />
+              </div>
             )}
+            {/* Held until preferences load (one frame) so the list doesn't render everything and
+              then visibly shrink to a restricted view — see CLAUDE.md decision #14. min-height
+              keeps the footer from jumping during that frame. `pb-28` clears the mobile dock. */}
+            <div className="pb-28 lg:pb-4 min-h-[60vh]">{filmList}</div>
           </div>
         </div>
 
-        {/* Left column: the film list, with the filter controls as a sticky bar at its top on
-          desktop (the mobile filter bar is the fixed bottom dock further down). */}
-        <div className="lg:col-start-1 lg:row-start-1 min-w-0">
-          {/* Solid bg, no backdrop-blur: `backdrop-filter` would make this a containing block for
-            the `position: fixed` Preferences modal that now lives in the bar, trapping it inside
-            the sticky strip. The mobile dock is opaque for the same reason. */}
-          {prefsLoaded && (
-            <div className="no-print hidden lg:block lg:sticky lg:top-0 z-20 -mx-4 mb-6 border-b-2 border-border bg-bg px-4 py-3">
-              <FilterControls layout="bar" {...filterProps} />
-            </div>
-          )}
-          {/* Held until preferences load (one frame) so the list doesn't render everything and
-            then visibly shrink to a restricted view — see CLAUDE.md decision #14. min-height
-            keeps the footer from jumping during that frame. `pb-28` clears the mobile dock. */}
-          <div className="pb-28 lg:pb-4 min-h-[60vh]">{filmList}</div>
-        </div>
+        {/* Mobile filter dock — fixed to the bottom of the viewport, scrolls sideways on overflow. */}
+        {prefsLoaded && (
+          <div className="lg:hidden no-print fixed bottom-0 left-0 right-0 z-20 border-t-2 border-border bg-bg px-4 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
+            <FilterControls layout="dock" {...filterProps} />
+          </div>
+        )}
+
+        {/* Mobile plan — floating button + bottom sheet, above the filter dock. */}
+        {planLoaded && (
+          <div className="lg:hidden">
+            <PlanButton
+              count={dayPlanItems.length}
+              items={dayPlanItems}
+              transitions={dayPlanTransitions}
+              suggestions={planSuggestions}
+              startingPoints={seeds}
+              startingPointsShowDay={effectiveDay === null}
+              onAdd={toggleSelected}
+              onRemove={toggleSelected}
+              onClear={clearPlan}
+              onExport={exportPlan}
+              onPickDay={pickDay}
+              keyOf={keyOf}
+            />
+          </div>
+        )}
       </div>
-
-      {/* Mobile filter dock — fixed to the bottom of the viewport, scrolls sideways on overflow. */}
-      {prefsLoaded && (
-        <div className="lg:hidden no-print fixed bottom-0 left-0 right-0 z-20 border-t-2 border-border bg-bg px-4 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
-          <FilterControls layout="dock" {...filterProps} />
-        </div>
-      )}
-
-      {/* Mobile plan — floating button + bottom sheet, above the filter dock. */}
-      {planLoaded && (
-        <div className="lg:hidden">
-          <PlanButton
-            count={dayPlanItems.length}
-            items={dayPlanItems}
-            transitions={dayPlanTransitions}
-            suggestions={planSuggestions}
-            startingPoints={seeds}
-            startingPointsShowDay={effectiveDay === null}
-            onAdd={toggleSelected}
-            onRemove={toggleSelected}
-            onClear={clearPlan}
-            onExport={exportPlan}
-            onPickDay={pickDay}
-            keyOf={keyOf}
-          />
-        </div>
-      )}
-    </div>
+    </TooltipProvider>
   );
 }

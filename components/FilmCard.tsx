@@ -8,6 +8,7 @@ import { groupScreeningsByTimeframe } from "@/lib/timeframe";
 import { ScreeningTagMarks } from "@/components/ScreeningTags";
 import { FilmFormatTag, FilmFormatMarks } from "@/components/FilmFormats";
 import { LanguageTag, LanguageMarks } from "@/components/ScreeningLanguage";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { screeningTagsTooltip } from "@/lib/screeningTags";
 import { displayFilmFormats, filmFormatsTooltip } from "@/lib/formats";
 import { displayLanguage, languageTooltip } from "@/lib/languages";
@@ -134,20 +135,25 @@ export default function FilmCard({
       (!planDates || planDates.has(s.date)) &&
       !isSelected &&
       !isPartner;
-    return (
+    // Same three builders composing the same string as the native `title` did — what changed is
+    // only what renders it (CLAUDE.md decision #22). A pill with nothing to explain skips the
+    // Radix wrapper rather than mounting a tooltip that can never open. The text also goes on
+    // `aria-label`, since a Radix tooltip is a hover/focus surface and touch never opens one.
+    const tip =
+      [
+        screeningTagsTooltip(s.screeningTags),
+        filmFormatsTooltip(s.screeningTags),
+        languageTooltip(s.screeningTags),
+      ]
+        .filter(Boolean)
+        .join(" · ") || undefined;
+
+    const pill = (
       <div
         key={k}
         role="button"
         tabIndex={0}
-        title={
-          [
-            screeningTagsTooltip(s.screeningTags),
-            filmFormatsTooltip(s.screeningTags),
-            languageTooltip(s.screeningTags),
-          ]
-            .filter(Boolean)
-            .join(" · ") || undefined
-        }
+        aria-label={tip ? `${s.time} — ${tip}` : undefined}
         onClick={() => onSelect(s)}
         onKeyDown={(e) => handleKeyDown(e, s)}
         className={`shrink-0 border-2 border-border rounded-btn px-3 py-2 flex items-center gap-2 font-bold transition-[translate,box-shadow] duration-100 ${
@@ -166,6 +172,15 @@ export default function FilmCard({
         <FilmFormatMarks tags={s.screeningTags} />
         <LanguageMarks tags={s.screeningTags} />
       </div>
+    );
+
+    if (!tip) return pill;
+
+    return (
+      <Tooltip key={k}>
+        <TooltipTrigger asChild>{pill}</TooltipTrigger>
+        <TooltipContent>{tip}</TooltipContent>
+      </Tooltip>
     );
   }
 

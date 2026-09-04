@@ -21,7 +21,8 @@ one-off spacing tweaks.
 ## Stack
 
 Next.js 16 (App Router) + TypeScript, Tailwind v4, cheerio (Light House / IFI HTML; Cineworld is
-a JSON API), vitest. No database. Committed in `data/`: `showtimes.json` (the published week) and
+a JSON API), vitest. Component primitives are Radix, vendored in via neobrutalism.dev's shadcn
+registry and restyled to our own tokens (decision #22). No database. Committed in `data/`: `showtimes.json` (the published week) and
 the curated override / editorial files (`title-overrides`, `letterboxd-overrides`, `film-labels`,
 `hidden-films`, `language-overrides`, `director-overrides`); everything else in `data/` is
 gitignored cache/staging.
@@ -184,6 +185,11 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   via `useSyncExternalStore`. Decision #14.
 - `components/controlSegment.ts` — `SEGMENT_BASE` + `controlSegmentClass(active)`, the accent-fill
   / hard-press "selected" segment styling shared by the filter bar and the settings panel.
+- `components/ui/` — vendored shadcn/Radix primitives, restyled to our tokens (decision #22).
+  `tooltip.tsx` so far: the Radix structure verbatim so a future `shadcn add` diffs cleanly, with
+  only `TooltipContent`'s class list ours (the dark-sticker `bg-fg text-bg`, `rounded-base`,
+  `shadow-shadow`). Portals to `body`, which is also what keeps it out of the film card's
+  `overflow-x-auto` pill strip. `lib/utils.ts` holds the `cn` helper every such component wants.
 
 ## Decisions worth knowing before changing anything
 
@@ -603,6 +609,45 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
       (`test/calendar.test.ts`); the component half stays thin. Line folding is UTF-8-octet-aware
       and never splits an escape pair.
 
+22. **Component primitives are vendored from neobrutalism.dev's shadcn registry — their
+    structure, our values** (`components/ui/`, `lib/utils.ts`, the token bridge in
+    `app/globals.css`). The app had hand-rolled every interactive surface: tooltips were the
+    native `title` attribute (unstyleable, unpositionable, ~1s on the OS's own timer, and it
+    never fires on touch at all), and three separate overlays — `FilterMenu`'s own `pointerdown`
+    + Escape listener, `SettingsPanel` and `PlanButton` — each declared `role="dialog"
+    aria-modal="true"` with no focus trap, no focus restore and no inert background. Radix does
+    all of that properly, and shadcn components are **copied source, not a dependency**, so
+    taking them costs nothing in control.
+    - **Decision #7 is unchanged — still chunky, not brutalist.** What was adopted is their token
+      *vocabulary* (`bg-main`, `rounded-base`, `shadow-shadow`, `translate-x-boxShadowX`), not
+      their look: 5px corners, a flat single-tone black shadow and pure black on cool grey are
+      exactly what #7 was written to rule out. The bridge maps every one of those names onto the
+      values we already had, so a copied-in component comes out looking like this app.
+    - **The bridge is shaped as `:root` raw values + an `@theme inline` mapping**, which is the
+      shape neobrutalism.dev's styling customizer emits. A future paste from it drops into the
+      `:root` block and nothing else moves. Note the customizer itself caps radius at 15px and
+      only emits a single-tone shadow — its output is a *starting point* to hand-edit, which is
+      why our `--border-radius: 16px`-class values and two-tone `--shadow` live there directly.
+    - **`--box-shadow-x/y` is the shadow's total REACH (6px), not its 4px offset.** Their shadow
+      is single-tone so the two are the same number; ours wraps a 4px grey block in a 2px ink
+      ring. Set it to 4 and every component's press lands 2px shy of the edge it's meant to fall
+      into. This is the one value in the bridge that is not a straight copy of theirs.
+    - **`--main` is our gold, so never take `variant="default"` unexamined.** Their components
+      default to `bg-main` as an ordinary fill; ours reserves the accent for actionable and
+      selected things (#7). Restyle to `neutral`, or to the dark-sticker treatment, on the way
+      in — the tooltip is `bg-fg text-bg` for exactly this reason, not `bg-main`.
+    - **A Radix tooltip is a hover/focus surface: touch never opens one.** That's not a
+      regression (native `title` did nothing on touch either), but it does mean the text has to
+      exist somewhere a screen reader and a phone can reach — hence the `aria-label` on the
+      screening pill carrying the same string. Don't let the tooltip become the only copy.
+    - One shared `TooltipProvider` is mounted at the `ScreeningBrowser` root rather than one per
+      tooltip: that's what gives the "already showing one, move along the row of showtimes, no
+      fresh delay" grouping. `delayDuration` is 300ms — Radix's own default of 0 makes a row of
+      pills flash tooltips as you scan across it.
+    - `components.json` points the shadcn CLI at our root-level `@/` layout (no `src/`), so
+      `npx shadcn@latest add https://neobrutalism.dev/r/<name>.json` lands in `components/ui/`.
+      Adopted so far: **tooltip**. `dialog`/`sheet` (for `SettingsPanel` + `PlanButton`) and
+      `popover` (for `FilterMenu`) are the obvious next ones and are not done yet.
 ## Known gaps
 
 - No tests for the interactive UI layer — only `lib/` unit tests (`test/*.test.ts`).
