@@ -120,6 +120,12 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
   // pills stay live, and this never touches the "wouldn't fit" pill fade.
   const [dismissed, setDismissed] = useState<Set<string>>(() => new Set());
 
+  // Clear is the emphatic version of the same gesture, so it silences the empty-state seeds
+  // outright rather than just dismissing what it threw away: having binned a whole plan you don't
+  // want three fresh films pushed at you in its place. Ephemeral like `dismissed` — a reload
+  // brings the seeds back. In-plan slot ghosts are unaffected: build a new plan and they return.
+  const [planCleared, setPlanCleared] = useState(false);
+
   // A browsing lens, not a saved preference — show only special screenings and labelled films.
   // Ephemeral (resets on reload), lives in the filter bar next to Day/Cinema/Time. See #14.
   const [highlightsOnly, setHighlightsOnly] = useState(false);
@@ -280,12 +286,12 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
   // spread across distinct days and each ghost names its own. Like every other plan tool this reads `timed` (the full preferred set), so
   // the Time and Cinema filters don't narrow it.
   const seeds = useMemo(() => {
-    if (dayPlanItems.length > 0) return [];
+    if (planCleared || dayPlanItems.length > 0) return [];
     const pool = timed.filter(
       (s) => !dismissed.has(filmKeyOf(s)) && (effectiveDay === null || s.date === effectiveDay),
     );
     return startingPoints(pool, labels, effectiveDay === null);
-  }, [dayPlanItems, timed, effectiveDay, labels, dismissed]);
+  }, [planCleared, dayPlanItems, timed, effectiveDay, labels, dismissed]);
 
   const visible = timed.filter(
     (s) =>
@@ -355,10 +361,12 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
     writePlan(removing ? base.filter((x) => x !== k) : [...base, k]);
   }
 
-  // Clearing is a removal of everything, so everything cleared drops out of the suggestions too —
-  // otherwise the empty state would seed itself with the films you just threw away.
+  // Clearing is a removal of everything: the films it throws away are dismissed like any other
+  // removal (so they can't come back as slot ghosts in a later plan), and the empty state itself
+  // goes quiet for the session.
   function clearPlan() {
     setDismissed((prev) => new Set([...prev, ...dayPlanItems.map(filmKeyOf)]));
+    setPlanCleared(true);
     writePlan([]);
   }
 

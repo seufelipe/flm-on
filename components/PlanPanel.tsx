@@ -7,7 +7,8 @@ import { GhostRow } from "./PlanRow";
 // The one persistent plan surface. Flat treatment (no dark header bar): a light label row with a
 // rule under it, then the body. Used inside the desktop right-rail card (pinned below the
 // masthead) and inside the mobile plan sheet (behind the floating button). Empty, it offers a few
-// starting points (one per timeframe, specials first — lib/startingPoints.ts) as bare ghost rows,
+// starting points (one per timeframe, specials first — lib/startingPoints.ts) as bare ghost rows
+// with no heading over them — dashed rows on an otherwise empty panel already read as an offer —
 // falling back to a plain prompt when there's nothing to seed from. Once the plan has something
 // in it the ghosts move inside <DayPlan>, at the slot each would take. See CLAUDE.md decision #5.
 //
@@ -96,14 +97,11 @@ export default function PlanPanel({
             keyOf={keyOf}
           />
         ) : startingPoints.length > 0 ? (
-          <>
-            <p className="mb-3 text-xs font-bold uppercase tracking-wide text-dim">Start a plan</p>
-            <div className="flex flex-col gap-2">
-              {startingPoints.map((s) => (
-                <GhostRow key={keyOf(s)} s={s} onAdd={onAdd} showDay={startingPointsShowDay} />
-              ))}
-            </div>
-          </>
+          <div className="flex flex-col gap-2">
+            {startingPoints.map((s) => (
+              <GhostRow key={keyOf(s)} s={s} onAdd={onAdd} showDay={startingPointsShowDay} />
+            ))}
+          </div>
         ) : (
           <p className="text-dim">Tap a showtime to start a plan.</p>
         )}

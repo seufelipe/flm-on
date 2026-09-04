@@ -102,7 +102,8 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   revert a now-impossible value to "any"; `effectiveSelectedKeys` drops any plan key whose
   screening has fallen out of the live dataset (past week / now-started / preference change), and
   `toggleSelected` writes that pruned set back. Three pieces of ephemeral `useState` live here
-  rather than in preferences — `highlightsOnly`, `nextWeek` (#18) and `dismissed` (#5). The two-column shell is a bare `lg:grid` — right
+  rather than in preferences — `highlightsOnly`, `nextWeek` (#18) and the two suggestion mutes,
+  `dismissed` + `planCleared` (#5). The two-column shell is a bare `lg:grid` — right
   rail (`<Masthead>` + sticky `<PlanPanel>`), left column (sticky `FilterControls` + film list).
 - `components/FilmCard.tsx` — one film's card. **Line 1** (`<h3>`): `[original title] TITLE [year]`
   — the black uppercase name flanked by `<TitleMeta>` (`font-normal text-dim`, title-sized,
@@ -143,9 +144,9 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   `<PlanRow>` (solid, ink, `bg-surface` — a pick; click removes) and `<GhostRow>` (dashed, dim,
   unfilled — a suggestion; click adds). `showDay` names the day on a ghost, for the whole-week
   starting points. Neither carries an affordance glyph — see decision #7.
-- `components/PlanPanel.tsx` — the one persistent plan surface. Empty → **"Start a plan"** and the
-  `startingPoints` seeds as bare `<GhostRow>`s (a plain prompt only when there's nothing to seed
-  from); non-empty → `<DayPlan>` + a Clear button. Lives in the desktop right rail (sticky, own
+- `components/PlanPanel.tsx` — the one persistent plan surface. Empty → the `startingPoints` seeds
+  as bare `<GhostRow>`s, no heading over them (dashed rows on an otherwise empty panel already
+  read as an offer), falling back to a plain prompt when there's nothing to seed from; non-empty → `<DayPlan>` + a Clear button. Lives in the desktop right rail (sticky, own
   `overflow-y-auto`) and inside `components/PlanButton.tsx` — the mobile floating button + bottom
   sheet cloned from `SettingsPanel`. The button carries the plan-item count (decision #8) once
   there's a plan, shows **unbadged** while the plan is empty but seeds exist (the sheet is
@@ -214,9 +215,11 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
    card pills, and choosing to see a film twice in a week is legitimate; volunteering one you've
    already committed to is just handing a decision back to you. Nor is a film you've **taken back
    out** this session (`dismissed`, a `Set` of film keys in `ScreeningBrowser`): re-offering what
-   you just removed makes the removal look broken — the solid row simply goes dashed. `Clear`
-   dismisses everything it clears, for the same reason. Ephemeral like the Highlights lens — a
-   reload is a fresh slate, since a persisted "never show me this" list with no UI to review or
+   you just removed makes the removal look broken — the solid row simply goes dashed. **`Clear`
+   goes further**: it dismisses everything it threw away *and* silences the empty-state seeds
+   outright (`planCleared`) — having binned a whole plan you don't want three fresh films pushed
+   at you in its place. Slot ghosts are untouched by that, so building a new plan gets them back.
+   Both are ephemeral like the Highlights lens — a reload is a fresh slate, since a persisted "never show me this" list with no UI to review or
    undo it would be a trap. **Suggestions only**: the film's pills stay live, and this never feeds
    the "wouldn't fit" fade (it filters `additions` on the way into `bestAdditionPerSlot`, not
    `planAdditions`), so the next-best candidate takes the slot rather than the slot going empty.
@@ -224,7 +227,7 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
    ghost per timeframe (Early/Mid/Late), **specials first** — if the app volunteers something
    unprompted it should be the 70mm print, not whichever wide release sorted first. Scoped to the
    pinned day (which defaults to today); on "This week" it draws from the whole week, prefers a
-   distinct day per pick and each ghost names its own day. Like every plan tool it reads the full
+   distinct day per pick and each ghost names its own day. No heading over them. Like every plan tool it reads the full
    `preferred` set, so the Time and Cinema filters don't narrow it. The old
    pinned-day "Suggested double bills" list (`findCombos` / `ComboSuggestions` / `suggestionScopeDay`)
    is **gone** — it was a second, differently-shaped suggestion surface that only existed before
