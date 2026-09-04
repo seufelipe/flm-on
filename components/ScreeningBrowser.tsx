@@ -13,8 +13,15 @@ import { groupByFilm, type FilmGroup } from "@/lib/groupings";
 import type { UpcomingFilm } from "@/lib/upcoming";
 import { TIMEFRAMES, timeframeForTime, type Timeframe } from "@/lib/timeframe";
 import { CINEMA_LABEL, CINEMA_ORDER } from "@/lib/cinemas";
-import { formatDayDate, todayISO, nowTimeISO } from "@/lib/date";
+import {
+  formatDayDate,
+  todayISO,
+  nowTimeISO,
+  screeningCutoff,
+  daysBetweenISO,
+} from "@/lib/date";
 import { isShortFilm } from "@/lib/duration";
+import { planToICS, ICS_FILENAME, ICS_MIME } from "@/lib/calendar";
 import { isKidFriendly } from "@/lib/certs";
 import { matchesLanguagePref } from "@/lib/languages";
 import { isMysteryFilm } from "@/lib/mystery";
@@ -86,8 +93,11 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
   // away on the Day control; it's just not where you land.
   const [activeDay, setActiveDay] = useState<string | null>(() => {
     const nowDate = todayISO();
-    const nowTime = nowTimeISO();
-    const todayHasScreenings = screenings.some((s) => s.date === nowDate && s.time >= nowTime);
+    const cutoff = screeningCutoff();
+    // The same "still on" test as the main filter below (grace included), narrowed to today.
+    const todayHasScreenings = screenings.some(
+      (s) => s.date === nowDate && (nowDate > cutoff.date || s.time >= cutoff.time),
+    );
     if (todayHasScreenings) return nowDate;
     // `d > nowDate` (not `>=`) — today is already confirmed done above, and a bare "any screening
     // on that date" check with no time bound would just match today's now-past screenings again.
@@ -139,18 +149,22 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
 
   // Whole days before today are dropped (the committed showtimes.json can still list them if
   // it's being viewed a day or more after its weekly batch was fetched), and today's sessions
-  // that have already started are dropped too — if it's evening, this morning's screenings for
-  // today no longer show. Fixed to whenever the component mounted (not re-evaluated every render)
-  // since a stale-by-a-few-minutes cutoff is harmless and re-deriving it constantly isn't worth it.
+  // that started more than the grace ago are dropped too — if it's evening, this morning's
+  // screenings for today no longer show. Fixed to whenever the component mounted (not
+  // re-evaluated every render) since a stale-by-a-few-minutes cutoff is harmless and re-deriving
+  // it constantly isn't worth it.
   const now = useMemo(() => ({ date: todayISO(), time: nowTimeISO() }), []);
-  const nowMins = useMemo(() => {
-    const [h, m] = now.time.split(":").map(Number);
-    return h * 60 + m;
-  }, [now]);
+  const cutoff = useMemo(() => screeningCutoff(now.date, now.time), [now]);
+  // Where the cutoff sits in minutes from the start of *today* — negative in the first minutes
+  // after midnight, while the cutoff is still on yesterday, which correctly retires no timeframe.
+  const cutoffMinsToday = useMemo(() => {
+    const [h, m] = cutoff.time.split(":").map(Number);
+    return daysBetweenISO(now.date, cutoff.date) * 1440 + h * 60 + m;
+  }, [now, cutoff]);
   const upcomingScreenings = useMemo(
     () =>
       screenings
-        .filter((s) => s.date > now.date || (s.date === now.date && s.time >= now.time))
+        .filter((s) => s.date > cutoff.date || (s.date === cutoff.date && s.time >= cutoff.time))
         // The Mystery Matinee strand isn't tagged by the scraper (it's title-detected — see
         // lib/mystery.ts); attach the tag here so it rides the same mark / sticker / Highlights
         // path as the scraped special screenings.
@@ -159,7 +173,7 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
             ? { ...s, screeningTags: [...(s.screeningTags ?? []), "Mystery Matinee"] }
             : s,
         ),
-    [screenings, now],
+    [screenings, cutoff],
   );
 
   // Standing pre-filter: the persisted preferences carve down the whole dataset here, before the
@@ -200,8 +214,8 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
   // Monday) — a day chip for a date that's already passed isn't a day you can still plan. Also
   // drop days the preferences have emptied out entirely.
   const visibleDays = useMemo(
-    () => days.filter((d) => d >= now.date && preferred.some((s) => s.date === d)),
-    [days, now, preferred],
+    () => days.filter((d) => d >= cutoff.date && preferred.some((s) => s.date === d)),
+    [days, cutoff, preferred],
   );
   // The still-unconfirmed next-week films, narrowed by the persisted preferences that still make
   // sense without sessions (cinema / kids-only / language — not time or hide-shorts). The list is
@@ -236,9 +250,9 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
   const usableTimeframes = useMemo(
     () =>
       TIMEFRAMES.filter(
-        (tf) => prefs.timeframes[tf.id] && !(effectiveDay === now.date && nowMins >= tf.endMins),
+        (tf) => prefs.timeframes[tf.id] && !(effectiveDay === now.date && cutoffMinsToday >= tf.endMins),
       ),
-    [prefs, effectiveDay, now.date, nowMins],
+    [prefs, effectiveDay, now.date, cutoffMinsToday],
   );
   // Mirror of effectiveSelectedKeys: an activeTimeframe that's no longer in usableTimeframes
   // (the day rolled past it, or a preference turned it off) is treated as "Any Time".
@@ -386,6 +400,34 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
     writePlan([]);
   }
 
+  // The plan as an .ics, handed to the OS. Exports `dayPlanItems` — the plan resolved against
+  // reality rather than the preference-filtered view (decision #5), so muting a cinema never
+  // silently drops a confirmed film out of the file.
+  //
+  // No route can serve this (`output: "export"`, and a basePath that differs between local and
+  // CI), so it's built in the browser. Web Share first: installed to the home screen this is the
+  // difference between the iOS share sheet offering Calendar directly and a file landing in
+  // Downloads for you to go find. Desktop has no file share, and falls through to the anchor.
+  async function exportPlan() {
+    const text = planToICS(dayPlanItems);
+    const file = new File([text], ICS_FILENAME, { type: ICS_MIME });
+    try {
+      if (navigator.canShare?.({ files: [file] })) {
+        await navigator.share({ files: [file] });
+        return;
+      }
+    } catch {
+      // A share the user dismissed is not a failure, and neither is a browser that advertises
+      // canShare then throws. Either way the download below is a fine second answer.
+    }
+    const url = URL.createObjectURL(file);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = ICS_FILENAME;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
   // Clicking a day header in the plan filters the film list to that day (leaving the "Next week"
   // preview if it's on).
   const pickDay = (date: string) => {
@@ -505,8 +547,8 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
     <div>
       <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-8">
         {/* Right rail. Source order first: on mobile this collapses to just the masthead,
-            stacked above the film list; the plan panel is desktop-only (the mobile plan lives
-            behind the floating button). */}
+          stacked above the film list; the plan panel is desktop-only (the mobile plan lives
+          behind the floating button). */}
         <div className="lg:col-start-2 lg:row-start-1 min-w-0">
           {/* Mobile: the page header (title / tagline / Preferences button). */}
           <div className="lg:hidden">
@@ -514,18 +556,18 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
           </div>
 
           {/* Desktop: one rail card — the masthead sits at the top and scrolls away, the plan
-              panel pins with it. The negative sticky `top` ≈ the masthead's height, so the title
-              clears the viewport just before the plan holds (CLAUDE.md decision #5). ~10rem is a
-              fixed estimate of the masthead block; nudge it if a sliver of the tagline shows. */}
+            panel pins with it. The negative sticky `top` ≈ the masthead's height, so the title
+            clears the viewport just before the plan holds (CLAUDE.md decision #5). ~10rem is a
+            fixed estimate of the masthead block; nudge it if a sliver of the tagline shows. */}
           {/* `lg:mt-[86px]` drops the card so its top lines up with the first film card — the
-              left column's sticky filter bar (~62px) plus its `mb-6` (24px). */}
+            left column's sticky filter bar (~62px) plus its `mb-6` (24px). */}
           <div className="hidden lg:block lg:mt-[86px] lg:sticky lg:top-[calc(1rem-9.5rem)] border-4 border-border bg-surface shadow-card-lg rounded-card">
             <div className="px-5 pt-5 pb-4">
               <MastheadTitle />
             </div>
             {/* Hidden in the "Next week" preview only while the plan is empty — a saved week-plan
-                stays visible (it's yours regardless of the view), but there's nothing to seed a
-                new one from (no confirmed showtimes). */}
+              stays visible (it's yours regardless of the view), but there's nothing to seed a
+              new one from (no confirmed showtimes). */}
             {planLoaded && !(nextWeek && dayPlanItems.length === 0) && (
               <PlanPanel
                 className="border-t-2 border-border"
@@ -537,6 +579,7 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
                 onAdd={toggleSelected}
                 onRemove={toggleSelected}
                 onClear={clearPlan}
+                onExport={exportPlan}
                 onPickDay={pickDay}
                 keyOf={keyOf}
               />
@@ -545,19 +588,19 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
         </div>
 
         {/* Left column: the film list, with the filter controls as a sticky bar at its top on
-            desktop (the mobile filter bar is the fixed bottom dock further down). */}
+          desktop (the mobile filter bar is the fixed bottom dock further down). */}
         <div className="lg:col-start-1 lg:row-start-1 min-w-0">
           {/* Solid bg, no backdrop-blur: `backdrop-filter` would make this a containing block for
-              the `position: fixed` Preferences modal that now lives in the bar, trapping it inside
-              the sticky strip. The mobile dock is opaque for the same reason. */}
+            the `position: fixed` Preferences modal that now lives in the bar, trapping it inside
+            the sticky strip. The mobile dock is opaque for the same reason. */}
           {prefsLoaded && (
             <div className="no-print hidden lg:block lg:sticky lg:top-0 z-20 -mx-4 mb-6 border-b-2 border-border bg-bg px-4 py-3">
               <FilterControls layout="bar" {...filterProps} />
             </div>
           )}
           {/* Held until preferences load (one frame) so the list doesn't render everything and
-              then visibly shrink to a restricted view — see CLAUDE.md decision #14. min-height
-              keeps the footer from jumping during that frame. `pb-28` clears the mobile dock. */}
+            then visibly shrink to a restricted view — see CLAUDE.md decision #14. min-height
+            keeps the footer from jumping during that frame. `pb-28` clears the mobile dock. */}
           <div className="pb-28 lg:pb-4 min-h-[60vh]">{filmList}</div>
         </div>
       </div>
@@ -582,6 +625,7 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
             onAdd={toggleSelected}
             onRemove={toggleSelected}
             onClear={clearPlan}
+            onExport={exportPlan}
             onPickDay={pickDay}
             keyOf={keyOf}
           />

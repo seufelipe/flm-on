@@ -65,6 +65,8 @@ The two pipeline outputs the **UI** actually depends on:
   (Early/Mid/Late), **specials first** (`isHighlight`), then — when `spreadDays` is on ("This
   week") — a day nothing's been picked from yet, then the earlier start, then the title. A film is
   only ever offered once. Decision #5.
+- `lib/calendar.ts` — `planToICS(items, now?)`: the saved plan as one iCalendar file, a bare
+  what/where/when VEVENT per pick. Pure and DOM-free (the browser half lives in `ScreeningBrowser.exportPlan`). Decision #21.
 - `app/page.tsx` — server component, reads `data/showtimes.json` directly. Static per deploy
   (decision #3).
 
@@ -100,7 +102,8 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   number of days. Owns the persisted preferences and applies them as the `preferred` pre-filter
   ahead of everything (decision #14). `effectiveCinema`/`effectiveDay`/`effectiveTimeframe` all
   revert a now-impossible value to "any"; `effectiveSelectedKeys` drops any plan key whose
-  screening has genuinely gone (past week / now-started) — resolved against `timedAll`, **not**
+  screening has genuinely gone (past week / started over ten minutes ago, decision #20) —
+  resolved against `timedAll`, **not**
   the preference-filtered `timed`, so a preference change never counts as gone — and
   `toggleSelected` writes that pruned set back. Three pieces of ephemeral `useState` live here
   rather than in preferences — `highlightsOnly`, `nextWeek` (#18) and the two suggestion mutes,
@@ -147,7 +150,9 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   starting points. Neither carries an affordance glyph — see decision #7.
 - `components/PlanPanel.tsx` — the one persistent plan surface. Empty → the `startingPoints` seeds
   as bare `<GhostRow>`s, no heading over them (dashed rows on an otherwise empty panel already
-  read as an offer), falling back to a plain prompt when there's nothing to seed from; non-empty → `<DayPlan>` + a Clear button. Lives in the desktop right rail (sticky, own
+  read as an offer), falling back to a plain prompt when there's nothing to seed from; non-empty → `<DayPlan>`, a
+  Clear button in the header and, at the foot of the list, the **Add to calendar** primary button
+  (decision #21). Lives in the desktop right rail (sticky, own
   `overflow-y-auto`) and inside `components/PlanButton.tsx` — the mobile floating button + bottom
   sheet cloned from `SettingsPanel`. The button carries the plan-item count (decision #8) once
   there's a plan, shows **unbadged** while the plan is empty but seeds exist (the sheet is
@@ -211,8 +216,8 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
    next write. **The plan resolves against reality, the suggestions against your preferences.**
    `dayPlanItems` / `effectiveSelectedKeys` read `timedAll` (everything still ahead of us, before
    the preferences narrow it), so muting a cinema — or flipping the Highlights lens — leaves a
-   confirmed film confirmed; only the day passing, the session starting or the screening leaving
-   `showtimes.json` prunes a pick. That matters twice over: without it `toggleSelected` writes the
+   confirmed film confirmed; only the day passing, the session starting (plus the ten-minute
+   grace — decision #20) or the screening leaving `showtimes.json` prunes a pick. That matters twice over: without it `toggleSelected` writes the
    pruned set back and the pick is gone for good. Ghosts and seeds are the other way round and
    read `preferred` — what to *offer* you next is exactly what a viewing preference should steer. Tapping a showtime just adds it — the Day filter does **not** snap to it (that
    jump is disorienting across days now). The Day filter still **defaults to today** for
@@ -520,6 +525,84 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
       after the weekend nothing renders. The module and its component can then be deleted whole,
       with no edit to any caller.
 
+20. **A screening lingers ten minutes past its start time** (`GRACE_MINUTES` + `screeningCutoff`
+    in `lib/date.ts`). Every "is this still on?" test in `ScreeningBrowser` — the
+    `upcomingScreenings` filter, `visibleDays`, the initial `activeDay`, the `usableTimeframes`
+    retirement — compares against that cutoff rather than the wall clock, so it also governs
+    the plan (`timedAll` derives from it, so a pick isn't pruned the instant its film starts —
+    decision #5). Why: you can still walk into a film ten minutes late, and a session
+    disappearing out from under a plan you're halfway through is a worse failure than one you
+    can no longer quite make.
+    - `screeningCutoff` returns the same `{ date, time }` shape as `todayISO()`/`nowTimeISO()`,
+      so it string-compares straight against a `Screening` with no parsing. It **crosses
+      midnight rather than clamping** (at 00:05 it reads yesterday 23:55) so a late-night
+      screening gets the same grace as any other — the accepted consequence being that
+      yesterday can stay a visible day chip for those few minutes, which is honest: that
+      screening really is still joinable. `cutoffMinsToday` (what retires a finished timeframe)
+      is measured from the start of *today* and so goes negative there, retiring nothing.
+    - `now` is still fixed at mount (not re-evaluated per render), so in practice a film leaves
+      on the next load after the grace expires — the grace is also what keeps that staleness
+      from ever reading as a film blinking out mid-glance.
+
+21. **The plan exports to a calendar as one `.ics` file** (`lib/calendar.ts`, `planToICS`; the
+    button at the foot of `PlanPanel`, the browser half in `ScreeningBrowser.exportPlan`). The plan
+    is the app's one piece of durable user state and it only existed inside the app; this is the
+    way out. **One file for the whole plan**, not one per day or per screening: the plan is framed
+    as a single week-spanning thing (decision #5), and an `.ics` holds many VEVENTs, so it imports
+    as one ordinary calendar event per pick — in its own slot, on its own day, in whichever
+    calendar the OS picker chooses. It does **not** create an "FLM ON" calendar.
+    - **It's an export, not a sync, and that asymmetry is the thing to know.** Import can add and
+      update but never delete, so a film you take back out of the plan stays in the calendar until
+      you remove it there. What it *can* avoid is duplicating: each `UID` is a stable FNV-1a hash
+      of the screening's `bookingUrl`, so exporting again after adding a film updates the events
+      already there. The caveat lives in the button's `title` — it can't fit in a label, and
+      leaving it unsaid would make the first surprising re-import read as a bug. Keying the `UID`
+      on the `bookingUrl` alone (not the time) is deliberate: a cinema moving a session should
+      *update* the event, not leave a stale one beside a new one. Light House's scraped
+      `bookingUrl`s carry a literal newline mid-query-string, so whitespace is stripped before
+      hashing — otherwise the "stable" id rests on an accident of the scrape.
+    - **Times are `TZID=Europe/Dublin` with a static `VTIMEZONE`**, not floating. Nothing in this
+      repo computes a UTC offset and this avoids having to: the EU DST rules are fixed, so two
+      `RRULE`s are correct in any year. Floating times are shorter but silently wrong the moment
+      the device leaves Irish time. `DTEND` is derived from `endMins`, never from `s.date` — those
+      are absolute ordinal minutes (`lib/clash.ts`), so a late film genuinely ends on the next date.
+    - **The export reads `dayPlanItems`**, so it inherits decision #5: your plan resolved against
+      reality, not the preference-filtered view. Muting a cinema never silently drops a confirmed
+      film out of the file.
+    - **The event is what / where / when and nothing else** (user's call) — `SUMMARY`, `DTSTART`,
+      `DTEND`, `LOCATION`. No `URL` and no `DESCRIPTION`: the film's own details (director, year,
+      cert, runtime, format / language / strand notes) are what the app itself is for, and by the
+      time an event is sitting in your calendar you've booked and you know what you're seeing. The
+      accepted consequence is that an event built on the `DEFAULT_DURATION_MINS` fallback no longer
+      says its end time is a guess — nothing in the file marks an estimated runtime.
+      `LOCATION` is `CINEMA_ADDRESS` (`lib/cinemas.ts`),
+      and **its exact shape is load-bearing**: a calendar geocodes LOCATION as a *place lookup*
+      rather than printing it, and only draws a map when that resolves. It needs the venue's
+      registered name on its own first line, then the canonical postal address ending in the
+      country — "Cineworld Cinemas", not the app's "Cineworld Dublin"; "Irish Film Institute
+      (IFI)"; "6 Eustace St", not spelled out; no invented "Temple Bar" line. Written the obvious
+      longhand way it silently resolved to nothing and every event showed no map. The name/address
+      break is a real newline in the constant, escaped to `\n` on the way out. Don't tidy them onto
+      one line and don't substitute `CINEMA_LABEL` — that's the app's short name, not the map's. `DESCRIPTION` carries director/year, cert + runtime, and the format / language /
+      special-strand notes from the same three `screeningTags` readers the card uses. When the
+      runtime is the `DEFAULT_DURATION_MINS` fallback it says "(estimated)" rather than letting the
+      calendar present a made-up end time as fact.
+    - **Built in the browser**, because `output: "export"` plus a `basePath` that differs between
+      local and CI rules out any route. Web Share (`navigator.canShare({ files })`) first — installed
+      to the home screen (decision #10) that's the difference between iOS offering Calendar directly
+      and a file landing in Downloads — falling through to a blob + `<a download>` on desktop.
+    - **The button is the plan panel's one primary control** — the app's accent-fill + 2px border +
+      `shadow-chip` hard-press language, sized to hug its label and centred, sitting inside the
+      panel's scrolling body after the last row (you reach it by reaching the end of the plan). The
+      accent is legitimate here rather than a decoration: decision #7 reserves it for actionable
+      things, and this is the plan's payoff action. Deliberately **not full-width** — a gold slab
+      spanning the panel sits too close to reading as one more plan row — and `Clear` stays a bare
+      underlined text button, so the surface has exactly one primary. `mt-6` clears both the last
+      row and the shadow's offset.
+    - The generator is pure and lives in `lib/`, which is the only reason it has tests
+      (`test/calendar.test.ts`); the component half stays thin. Line folding is UTF-8-octet-aware
+      and never splits an escape pair.
+
 ## Known gaps
 
 - No tests for the interactive UI layer — only `lib/` unit tests (`test/*.test.ts`).
@@ -530,6 +613,12 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   Letterboxd match, an untagged strand, a wrong language, a dropped format icon) are only ever
   caught by eye during the weekly review. The batch report has a section for each; the
   **`fetch-films` skill** enumerates them and says what to look for. Nothing is automatic.
+- **`CINEMA_ADDRESS` is hand-maintained with nothing to verify it** — three constants read only by
+  the calendar export (#21), and correctness there means "a calendar geocodes it to the right
+  pin", which no test can assert: the unit tests only prove the string reaches the file intact.
+  Confirmed once by hand in Calendar. A cinema that moves, a typo'd Eircode, or a tidy-up of the
+  name/address line break all break the map silently. Light House's entry is the thinnest and
+  resolves off the venue name alone.
 - **Cineworld "highlight" detection is tag-based only** — a plain-digital showing of an
   interesting film shows only with the Highlights lens *off*, buried in the full multiplex slate,
   with no per-title allowlist to promote it.

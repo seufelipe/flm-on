@@ -27,6 +27,8 @@ interface Props {
   onAdd: (s: TimedScreening) => void;
   onRemove: (s: TimedScreening) => void;
   onClear: () => void;
+  // Download the whole plan as one .ics — sits at the foot of the list, not up beside Clear.
+  onExport: () => void;
   onClose?: () => void;
   onPickDay: (date: string) => void;
   keyOf: (s: TimedScreening) => string;
@@ -42,6 +44,7 @@ export default function PlanPanel({
   onAdd,
   onRemove,
   onClear,
+  onExport,
   onClose,
   onPickDay,
   keyOf,
@@ -87,15 +90,36 @@ export default function PlanPanel({
 
       <div className="min-h-0 grow overflow-y-auto scrollbar-none p-5">
         {hasPlan ? (
-          <DayPlan
-            items={items}
-            transitions={transitions}
-            suggestions={suggestions}
-            onRemove={onRemove}
-            onAdd={onAdd}
-            onPickDay={onPickDay}
-            keyOf={keyOf}
-          />
+          <>
+            <DayPlan
+              items={items}
+              transitions={transitions}
+              suggestions={suggestions}
+              onRemove={onRemove}
+              onAdd={onAdd}
+              onPickDay={onPickDay}
+              keyOf={keyOf}
+            />
+            {/* At the foot of the plan, after the last film — the header is where you abandon the
+                plan, here is where it ends and you take it somewhere. Scrolls with the list rather
+                than pinning as a footer bar: you reach it by reaching the end of the plan.
+                Primary treatment: the app's accent-fill + hard-press language (decision #7 reserves
+                the accent for actionable things, which this is), sized to hug its label rather than
+                spanning the panel — a full-width gold slab would sit too close to reading as one
+                more plan row. Clear stays a bare text button: one primary action per surface.
+                The mt-6 is doing real work — with no divider it needs the air to clear the shadow
+                and the last row. */}
+            <div className="no-print mt-6 flex justify-center">
+              <button
+                type="button"
+                onClick={onExport}
+                title="Download your plan as a calendar file. Re-exporting updates these events; removing a film here won't remove it from your calendar."
+                className="border-2 border-border rounded-btn bg-accent text-fg px-4 py-2 font-black uppercase text-sm tracking-wide shadow-chip transition-[translate,box-shadow] duration-100 cursor-pointer hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-chip-half active:translate-x-[6px] active:translate-y-[6px] active:shadow-none"
+              >
+                Add to calendar
+              </button>
+            </div>
+          </>
         ) : startingPoints.length > 0 ? (
           <div className="flex flex-col gap-2">
             {startingPoints.map((s) => (

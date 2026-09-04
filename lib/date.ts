@@ -27,6 +27,30 @@ export function addDaysISO(dateISO: string, days: number): string {
   return dt.toISOString().slice(0, 10);
 }
 
+// How long a screening stays listed after it has started. You can still walk into a film ten
+// minutes late (that's the trailers), and a session evaporating out from under a plan the moment
+// its clock ticks over is a worse failure than one you can no longer quite make.
+export const GRACE_MINUTES = 10;
+
+// The "is this still on?" cutoff: the wall clock less the grace, in the same { date, time } shape
+// as todayISO()/nowTimeISO() so it string-compares straight against a Screening. It crosses
+// midnight rather than clamping (at 00:05 it reads yesterday 23:55), so a late-night screening
+// gets the same grace as any other — which does mean yesterday can stay a visible day for those
+// few minutes, correctly: that screening really is still joinable.
+export function screeningCutoff(
+  dateISO: string = todayISO(),
+  timeISO: string = nowTimeISO(),
+): { date: string; time: string } {
+  const [h, m] = timeISO.split(":").map(Number);
+  const mins = h * 60 + m - GRACE_MINUTES;
+  if (mins >= 0) return { date: dateISO, time: formatMinutes(mins) };
+  return { date: addDaysISO(dateISO, -1), time: formatMinutes(mins + 1440) };
+}
+
+function formatMinutes(mins: number): string {
+  return `${String(Math.floor(mins / 60)).padStart(2, "0")}:${String(mins % 60).padStart(2, "0")}`;
+}
+
 export function daysBetweenISO(fromISO: string, toISO: string): number {
   const [fy, fm, fd] = fromISO.split("-").map(Number);
   const [ty, tm, td] = toISO.split("-").map(Number);

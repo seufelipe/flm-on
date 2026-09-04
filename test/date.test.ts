@@ -1,5 +1,13 @@
 import { describe, it, expect } from "vitest";
-import { daysUntilThursday, upcomingDays, nextWeekDays, nextBatchLabel, formatDayDate } from "@/lib/date";
+import {
+  daysUntilThursday,
+  upcomingDays,
+  nextWeekDays,
+  nextBatchLabel,
+  formatDayDate,
+  screeningCutoff,
+  GRACE_MINUTES,
+} from "@/lib/date";
 
 describe("daysUntilThursday", () => {
   it("returns 0 on Thursday itself", () => {
@@ -85,5 +93,24 @@ describe("nextBatchLabel", () => {
     expect(nextBatchLabel("2026-08-24")).toBe("Thursday"); // Monday
     expect(nextBatchLabel("2026-08-25")).toBe("Thursday"); // Tuesday
     expect(nextBatchLabel("2026-08-28")).toBe("Thursday"); // Friday
+  });
+});
+
+describe("screeningCutoff", () => {
+  it("sits GRACE_MINUTES behind the wall clock, so a just-started film is still on", () => {
+    expect(GRACE_MINUTES).toBe(10);
+    expect(screeningCutoff("2026-09-04", "19:35")).toEqual({ date: "2026-09-04", time: "19:25" });
+    // 19:30 >= 19:25, still listed; at 19:41 the cutoff has passed it.
+    expect(screeningCutoff("2026-09-04", "19:41").time > "19:30").toBe(true);
+  });
+
+  it("zero-pads and handles the hour boundary", () => {
+    expect(screeningCutoff("2026-09-04", "09:05")).toEqual({ date: "2026-09-04", time: "08:55" });
+    expect(screeningCutoff("2026-09-04", "00:10")).toEqual({ date: "2026-09-04", time: "00:00" });
+  });
+
+  it("crosses midnight rather than clamping, so a late-night screening keeps its grace", () => {
+    expect(screeningCutoff("2026-09-04", "00:05")).toEqual({ date: "2026-09-03", time: "23:55" });
+    expect(screeningCutoff("2026-09-01", "00:00")).toEqual({ date: "2026-08-31", time: "23:50" });
   });
 });

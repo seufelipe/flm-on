@@ -20,11 +20,12 @@ interface Props {
   onAdd: (s: TimedScreening) => void;
   onRemove: (s: TimedScreening) => void;
   onClear: () => void;
+  onExport: () => void;
   onPickDay: (date: string) => void;
   keyOf: (s: TimedScreening) => string;
 }
 
-export default function PlanButton({ count, items, transitions, suggestions, startingPoints, startingPointsShowDay, onAdd, onRemove, onClear, onPickDay, keyOf }: Props) {
+export default function PlanButton({ count, items, transitions, suggestions, startingPoints, startingPointsShowDay, onAdd, onRemove, onClear, onExport, onPickDay, keyOf }: Props) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -91,6 +92,7 @@ export default function PlanButton({ count, items, transitions, suggestions, sta
               onAdd={onAdd}
               onRemove={onRemove}
               onClear={onClear}
+              onExport={onExport}
               onClose={() => setOpen(false)}
               onPickDay={(date) => {
                 onPickDay(date);
