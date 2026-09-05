@@ -74,6 +74,21 @@ taking them costs nothing in control.
   makes Content a grandchild and the wrapper unmounts out from under it. Centring at `sm:` is
   `inset-4` + `m-auto` rather than `-translate-1/2`, so that if motion is ever added back the
   keyframes' own `transform` can't drop a static translate mid-animation.
+- **Dismissal is `<DialogClose asChild>`, never a hand-rolled `onClick`.** The `×` in
+  `SettingsPanel` started as a plain button calling an `onClose` prop, which meant the modal had
+  two ways to close — Radix's (Escape, the scrim) and ours — and only one of them was Radix's to
+  keep working. Wrapping the button in `DialogClose` folds it into the same path and deleted the
+  prop: `PreferencesButton` no longer threads `onClose` at all, since `setOpen` already sits on
+  the Root's `onOpenChange`. `asChild` keeps our own button markup, so `autoFocus` and the
+  `aria-label` are untouched. (`PlanPanel`'s `×` still takes an `onClose` prop — it is rendered
+  in the desktop rail as well as in a Dialog, and the rail has no Radix Root to close.)
+- **`DialogDescription` is `text-sm`, not the `text-xs` it was vendored at.** The registry's own
+  value is `text-sm`; shrinking it made the panel's only prose 12px, two steps under the 16px the
+  same kind of sentence gets in an `<Alert>` on the page behind it — and the uppercase 12px group
+  legends already had the eyebrow job. `SettingsPanel`'s `Group` description moved with it so the
+  two read as one level. Worth a look if a longer description is ever added: the option strips
+  below are non-wrapping and full-bleed (`-mx-6 px-6`), so anything that changes the panel's
+  width budget wants checking in the drawer at 375px too.
 - `components.json` points the shadcn CLI at our root-level `@/` layout (no `src/`), so
   `npx shadcn@latest add https://neobrutalism.dev/r/<name>.json` lands in `components/ui/`.
   Adopted so far: **tooltip**, **dialog** and **alert** — the dialog covering both overlays,

@@ -141,8 +141,9 @@ single chunk and no other icon's does.
   other half — that at pill size it sits among `OC` / `ST` / the ratio boxes and has to
   inherit the type's size and weight — is handled the way `CinemaWeekendMark` handles it: the
   caller sizes it in `em` and `currentColor` does the rest.
-- **No text glyph is load-bearing any more.** If a third one ever comes up, the bar is
-  whether an `em`-sized icon can carry it — not the old blanket rule.
+- **No text glyph is load-bearing any more** — and since the `×` swap below, none is left at
+  all. If one ever comes up again, the bar is whether an `em`-sized icon can carry it — not the
+  old blanket rule.
 - Likewise untouched: the **Letterboxd** three-dot mark (a brand identity, #7), the
   `<LanguageTag>` speech bubble (drawn to a measured text box, #17) and the film-format strips
   (#15) — all bespoke SVG that no icon set has.
@@ -173,5 +174,11 @@ single chunk and no other icon's does.
   in (and, when it is narrowing the view, by staying gold), and the open menu is right there
   under it. Sized `size-[1.1em]` by the caller like every other icon here, so it tracks the
   trigger's own type.
-- The `×` close controls are still text characters. Converting them is a live option,
-  deliberately not taken yet.
+- **The `×` close controls are now `X`** — the last text glyphs in the UI, converted once the
+  bar above was met: a close control is exactly the case an icon carries, and at 2px round-capped
+  stroke it reads as the same kind of mark as `ChevronsUpDown` on the filter triggers rather than
+  as a character borrowed from the type. Both callers (`SettingsPanel`'s modal, `PlanPanel`'s
+  header) size it `size-5` and drop the `text-2xl leading-none` that was only ever there to size
+  the glyph — the old one set a 24px font to get maybe half that in ink, so the sizes don't
+  correspond. The icon is `aria-hidden` and the button keeps its `aria-label`. Nothing
+  text-based is load-bearing anywhere now.

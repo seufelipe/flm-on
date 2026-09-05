@@ -1,5 +1,6 @@
 "use client";
 
+import { X } from "lucide-react";
 import type { ItineraryTransition, PlanAddition, TimedScreening } from "@/lib/clash";
 import DayPlan from "./DayPlan";
 import { GhostRow } from "./PlanRow";
@@ -88,9 +89,9 @@ export default function PlanPanel({
                 autoFocus
                 onClick={onClose}
                 aria-label="Close plan"
-                className="-mr-1 p-1 text-2xl leading-none cursor-pointer"
+                className="-mr-1 p-1 cursor-pointer"
               >
-                &times;
+                <X aria-hidden="true" className="size-5" />
               </button>
             )}
           </div>

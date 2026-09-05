@@ -120,7 +120,7 @@ function DialogDescription({
   return (
     <DialogPrimitive.Description
       data-slot="dialog-description"
-      className={cn("text-xs text-dim", className)}
+      className={cn("text-sm text-dim", className)}
       {...props}
     />
   );

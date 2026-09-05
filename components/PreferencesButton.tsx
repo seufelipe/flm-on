@@ -53,14 +53,7 @@ export default function PreferencesButton({ className }: { className?: string })
     </button>
   );
 
-  const panel = (
-    <SettingsPanel
-      prefs={prefs}
-      onChange={writePreferences}
-      onClose={() => setOpen(false)}
-      compact={compact}
-    />
-  );
+  const panel = <SettingsPanel prefs={prefs} onChange={writePreferences} compact={compact} />;
 
   if (compact) {
     return (

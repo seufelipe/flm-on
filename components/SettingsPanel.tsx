@@ -1,8 +1,9 @@
+import { X } from "lucide-react";
 import { CINEMA_LABEL, CINEMA_LOCATION, CINEMA_ORDER } from "@/lib/cinemas";
 import { TIMEFRAMES, formatTimeframeRange } from "@/lib/timeframe";
 import { SHORT_FILM_MAX_MINS } from "@/lib/duration";
 import { DEFAULT_PREFERENCES, isDefault, type LanguagePref, type Preferences } from "@/lib/preferences";
-import { DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
+import { DialogClose, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { DrawerContent } from "@/components/ui/drawer";
 import { SEGMENT_BASE, controlSegmentClass } from "./controlSegment";
 
@@ -21,7 +22,6 @@ import { SEGMENT_BASE, controlSegmentClass } from "./controlSegment";
 interface Props {
   prefs: Preferences;
   onChange: (prefs: Preferences) => void;
-  onClose: () => void;
   /** Decided by PreferencesButton so both halves pick the same shell. */
   compact: boolean;
 }
@@ -115,7 +115,7 @@ function Group({
     // scrolls sideways. The computed min-width still reads 0px, which is what makes it a puzzle.
     <fieldset className="border-0 p-0 m-0 min-w-0">
       <legend className="font-bold uppercase text-xs tracking-widest text-fg">{legend}</legend>
-      {description && <p className="mt-0.5 text-xs text-dim">{description}</p>}
+      {description && <p className="mt-0.5 text-sm text-dim">{description}</p>}
       {/* One non-wrapping row that scrolls sideways on overflow rather than stacking the options
           onto several lines (same idiom as the film-card pill strip). `-mx-6 px-6 sm:-mx-8 sm:px-8`
           cancels the modal's padding so the strip is full-bleed — options sit flush under the
@@ -128,7 +128,7 @@ function Group({
   );
 }
 
-export default function SettingsPanel({ prefs, onChange, onClose, compact }: Props) {
+export default function SettingsPanel({ prefs, onChange, compact }: Props) {
   const cinemasOn = CINEMA_ORDER.filter((id) => prefs.cinemas[id]).length;
   const timeframesOn = TIMEFRAMES.filter((tf) => prefs.timeframes[tf.id]).length;
 
@@ -155,17 +155,20 @@ export default function SettingsPanel({ prefs, onChange, onClose, compact }: Pro
         </div>
         {/* Modal only. The drawer is dismissed by dragging it down or pressing the scrim, so a ×
             is redundant there — and it sits exactly where the thumb starts the drag. autoFocus
-            gives the modal a sensible initial focus target without needing a hook. */}
+            gives the modal a sensible initial focus target without needing a hook. Dismissal is
+            Radix's <DialogClose>, not a hand-rolled onClick: one path for the ×, Escape and the
+            scrim, so they can't drift apart. */}
         {!compact && (
-          <button
-            type="button"
-            autoFocus
-            onClick={onClose}
-            aria-label="Close preferences"
-            className="-m-2 shrink-0 p-2 text-2xl leading-none cursor-pointer"
-          >
-            &times;
-          </button>
+          <DialogClose asChild>
+            <button
+              type="button"
+              autoFocus
+              aria-label="Close preferences"
+              className="-m-2 shrink-0 p-2 cursor-pointer"
+            >
+              <X aria-hidden="true" className="size-5" />
+            </button>
+          </DialogClose>
         )}
       </div>
 

@@ -422,8 +422,8 @@ it covers, and update it in the same commit.**
     load-bearing any more**: `★` and `☻` both became icons (`<CinemaWeekendMark>`,
     `<SpecialsMark>`), and the bar for a third is whether an `em`-sized icon can carry it, not the
     old blanket rule. Deliberately still bespoke SVG: the Letterboxd mark, `<LanguageTag>`'s
-    speech bubble, the film-format strips. The `×` close controls are still characters —
-    converting them is a live option, not yet taken.
+    speech bubble, the film-format strips. **The `×` close controls are `X` too** (`SettingsPanel`,
+    `PlanPanel`), sized `size-5` — no text glyph is left in the UI at all.
     - **The meta-line icons label, they don't decorate.** `Hourglass` and `User`/`Users` (split on
       a comma in the comma-joined director string, so the mark doesn't call two people one) are
       the first icons added to text that read fine without one — they earn their place by making
