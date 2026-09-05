@@ -1,10 +1,7 @@
-import type { ReactElement } from "react";
-
 import type { TimedScreening } from "@/lib/clash";
 import { ScreeningTagMarks } from "@/components/ScreeningTags";
 import { FilmFormatMarks } from "@/components/FilmFormats";
 import { LanguageMarks } from "@/components/ScreeningLanguage";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { screeningTooltip } from "@/lib/screeningTooltip";
 import { CINEMA_LABEL } from "@/lib/cinemas";
 import { formatDayFriendly } from "@/lib/date";
@@ -17,23 +14,11 @@ import { formatDayFriendly } from "@/lib/date";
 // on a plan row): the whole row is the target, dashed-vs-solid already says which way a click
 // goes, and the aria-label carries it for anyone who can't see that. User's call.
 //
-// Both rows explain their marks the same way a film-card pill does — the shared
-// `screeningTooltip` string, shown by Radix and repeated on the aria-label (a tooltip is a
-// hover/focus surface, so touch never opens one). These were the last two native `title`s on a
-// whole showtime: unstyled, on the OS's own ~1s timer, and invisible on a phone — which is the
-// only device the mobile plan sheet exists for.
-
-// Wraps a row in a tooltip, or returns it untouched when the screening has nothing to explain
-// (no strand, no format, no language) rather than mounting one that can never open.
-function withTooltip(row: ReactElement, tip: string | undefined) {
-  if (!tip) return row;
-  return (
-    <Tooltip>
-      <TooltipTrigger asChild>{row}</TooltipTrigger>
-      <TooltipContent>{tip}</TooltipContent>
-    </Tooltip>
-  );
-}
+// Neither row shows a hover tooltip for its marks (user's call): the plan is a short list you
+// have already chosen from, and a tooltip on every row made moving down it flicker. The shared
+// `screeningTooltip` string stays on the `aria-label`, which is where the mobile sheet — the
+// surface these rows mostly live on, and one no hover surface ever reached — could read it
+// anyway. The film-card pills keep theirs; that's where you're still deciding.
 
 const ROW_BASE =
   "rounded-btn px-3 py-2 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-left cursor-pointer transition-transform active:translate-x-[2px] active:translate-y-[2px]";
@@ -51,7 +36,7 @@ function Marks({ s }: { s: TimedScreening }) {
 // A picked screening. Clicking it takes it back out of the plan.
 export function PlanRow({ s, onRemove }: { s: TimedScreening; onRemove: (s: TimedScreening) => void }) {
   const tip = screeningTooltip(s.screeningTags);
-  return withTooltip(
+  return (
     <button
       type="button"
       aria-label={`Remove ${s.filmTitle} from your plan${tip ? `. ${tip}` : ""}`}
@@ -63,8 +48,7 @@ export function PlanRow({ s, onRemove }: { s: TimedScreening; onRemove: (s: Time
         {CINEMA_LABEL[s.cinema]} {s.time}
       </span>
       <Marks s={s} />
-    </button>,
-    tip,
+    </button>
   );
 }
 
@@ -86,7 +70,7 @@ export function GhostRow({
   showDay?: boolean;
 }) {
   const tip = screeningTooltip(s.screeningTags);
-  return withTooltip(
+  return (
     <button
       type="button"
       aria-label={`Add ${s.filmTitle}${showDay ? ` on ${formatDayFriendly(s.date)}` : ""} at ${s.time} to your plan${
@@ -101,7 +85,6 @@ export function GhostRow({
         {CINEMA_LABEL[s.cinema]} {s.time}
       </span>
       <Marks s={s} />
-    </button>,
-    tip,
+    </button>
   );
 }

@@ -44,8 +44,10 @@ taking them costs nothing in control.
 - **A Radix tooltip is a hover/focus surface: touch never opens one.** That's not a
   regression (native `title` did nothing on touch either), but it does mean the text has to
   exist somewhere a screen reader and a phone can reach — so every tooltip in the app has the
-  same string on an `aria-label` (the pill, both plan rows, the format box, the `FilmNotes`
-  sticker, the calendar button). Don't let the tooltip become the only copy. Two `title`s were
+  same string on an `aria-label` (the pill, the format box, the `FilmNotes` sticker, the
+  calendar button). Don't let the tooltip become the only copy. The plan rows go further and
+  carry *only* the `aria-label` — their tooltips were dropped for flickering as you move down a
+  list you have already chosen from. Two `title`s were
   *dropped* rather than converted, for saying nothing the visible text didn't already: `"for
   kids!"` on the sticker reading "for kids!", and `"Letterboxd"` on a link already labelled
   "View on Letterboxd".
@@ -81,8 +83,8 @@ taking them costs nothing in control.
   every registry component with a `variant` prop is written against. Hand-rolling around
   `cva` would have made this the first vendored file that *doesn't* diff cleanly against a
   future `shadcn add`, which is the whole point of taking their structure.
-  Every hover surface is a `<Tooltip>`: the showtime pills (`FilmCard`), the plan and ghost
-  rows (`PlanRow`, via `withTooltip`), the format boxes on the meta line (`FilmFormats`), the
+  Every hover surface is a `<Tooltip>`: the showtime pills (`FilmCard`), the format boxes on
+  the meta line (`FilmFormats`), the
   `FilmNotes` marquee and the calendar button (`PlanPanel`). `MarqueeSticker` takes a `ref` and
   spreads the rest of its props onto its outer span purely so `TooltipTrigger asChild` can
   clone it.

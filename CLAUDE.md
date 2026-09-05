@@ -83,7 +83,7 @@ synthetic `Mystery Matinee` at render time (#12).
 - `lib/languages.ts` — `displayLanguage` → `{ language?, subtitled, openCaptioned, dubbed } | null`;
   `matchesLanguagePref` for the Language preference. #17.
 - `lib/screeningTooltip.ts` — the three modules' `*Tooltip` helpers merged into one ` · `-joined
-  string. **The single copy**, used by the card pills and both plan rows; the meta-line format box
+  string. **The single copy**, used by the card pills and by both plan rows' `aria-label`; the meta-line format box
   keeps `filmFormatsTooltip` alone, since it explains only itself.
 
 ### UI (all client, under `ScreeningBrowser`)
@@ -113,8 +113,10 @@ synthetic `Mystery Matinee` at render time (#12).
   draws the bubble as one continuous SVG `<path>` (the box model can't miter a horizontal border
   into a 45° tail arm).
 - `PlanRow.tsx` — `<PlanRow>` (solid, a pick, click removes) and `<GhostRow>` (dashed, a
-  suggestion, click adds). Neither carries an affordance glyph (#7); both put `screeningTooltip`
-  on an `aria-label` as well as the tooltip.
+  suggestion, click adds). Neither carries an affordance glyph (#7), and **neither shows a
+  tooltip** — `screeningTooltip` goes on the `aria-label` only (a tooltip per row flickered down
+  a list you've already chosen from, and the mobile sheet can't open one anyway). Don't add one
+  back without asking.
 - `PlanPanel.tsx` / `PlanButton.tsx` / `DayPlan.tsx` — the one persistent plan surface (desktop
   rail, mobile floating button + sheet), the per-day grouping with its transition labels, and the
   slot ghost rows. A ghost **replaces the real transition label of its slot**: you see the two

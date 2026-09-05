@@ -136,22 +136,21 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   are an animated film-strip (`print: true`), IMAX is a static IMAX-blue plaque.
 - `lib/screeningTooltip.ts` — `screeningTooltip(tags)`: the three modules' `*Tooltip` helpers
   merged into one ` · `-joined string, `undefined` when there's nothing to explain. What a whole
-  showtime says on hover, used by the film-card pills and both plan rows; the format box on the
-  meta line keeps `filmFormatsTooltip` on its own, since it explains only itself. Both callers had
-  grown identical private copies, which is how the plan rows stayed on a native `title` for a
-  release after the pills moved to Radix.
+  showtime says on hover, used by the film-card pills; the format box on the meta line keeps
+  `filmFormatsTooltip` on its own, since it explains only itself. The plan rows still build the
+  same string, but only for their `aria-label` — they show no tooltip.
 - `components/PlanRow.tsx` — the two row treatments both plan surfaces are built from:
   `<PlanRow>` (solid, ink, `bg-surface` — a pick; click removes) and `<GhostRow>` (dashed, dim,
   unfilled — a suggestion; click adds). `showDay` names the day on a ghost, for the whole-week
-  starting points. Neither carries an affordance glyph — see decision #7. Both explain their
-  marks with the shared `screeningTooltip` string (`withTooltip` skips the wrapper entirely when a
-  screening has nothing to say), repeated on the `aria-label` — the mobile plan sheet is the
-  surface a native `title` served worst.
+  starting points. Neither carries an affordance glyph — see decision #7 — and neither shows a
+  hover tooltip: they put the shared `screeningTooltip` string on their `aria-label` only. A
+  tooltip on every row made scanning down the plan flicker, and the plan is mostly read on the
+  mobile sheet, which no hover surface reaches anyway.
 - `components/PlanPanel.tsx` — the one persistent plan surface. Empty → the `startingPoints` seeds
   as bare `<GhostRow>`s, no heading over them (dashed rows on an otherwise empty panel already
   read as an offer), falling back to a plain prompt when there's nothing to seed from; non-empty → `<DayPlan>`, a
   Clear button in the header and, at the foot of the list, the **Add to calendar** primary button
-  (decision #21). Lives in the desktop right rail (sticky, own
+  (decision #21) — neutral `bg-surface` fill, not the accent. Lives in the desktop right rail (sticky, own
   `overflow-y-auto`) and inside `components/PlanButton.tsx` — the mobile floating button + bottom
   sheet cloned from `SettingsPanel`. The button carries the plan-item count (decision #8) once
   there's a plan, shows **unbadged** while the plan is empty but seeds exist (the sheet is

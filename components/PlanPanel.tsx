@@ -112,10 +112,11 @@ export default function PlanPanel({
             {/* At the foot of the plan, after the last film — the header is where you abandon the
                 plan, here is where it ends and you take it somewhere. Scrolls with the list rather
                 than pinning as a footer bar: you reach it by reaching the end of the plan.
-                Primary treatment: the app's accent-fill + hard-press language (decision #7 reserves
-                the accent for actionable things, which this is), sized to hug its label rather than
-                spanning the panel — a full-width gold slab would sit too close to reading as one
-                more plan row. Clear stays a bare text button: one primary action per surface.
+                Primary treatment: the neutral card fill (`bg-surface`) plus the app's hard-press
+                language, sized to hug its label rather than spanning the panel. Gold was tried and
+                dropped — the accent is reserved for actionable things (decision #7) and this is
+                one, but at this size in a rail of ink-on-white rows it read as a warning rather
+                than an offer. Clear stays a bare text button: one primary action per surface.
                 The mt-6 is doing real work — with no divider it needs the air to clear the shadow
                 and the last row. */}
             {/* The export-isn't-sync caveat (decision #21). Radix rather than a native `title`
@@ -130,7 +131,7 @@ export default function PlanPanel({
                     type="button"
                     onClick={onExport}
                     aria-label={`Add to calendar. ${EXPORT_CAVEAT}`}
-                    className="border-2 border-border rounded-btn bg-accent text-fg px-4 py-2 font-black uppercase text-sm tracking-wide shadow-chip transition-[translate,box-shadow] duration-100 cursor-pointer hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-chip-half active:translate-x-[6px] active:translate-y-[6px] active:shadow-none"
+                    className="border-2 border-border rounded-btn bg-surface text-fg px-4 py-2 font-black uppercase text-sm tracking-wide shadow-chip transition-[translate,box-shadow] duration-100 cursor-pointer hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-chip-half active:translate-x-[6px] active:translate-y-[6px] active:shadow-none"
                   >
                     Add to calendar
                   </button>
