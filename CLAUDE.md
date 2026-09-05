@@ -22,7 +22,8 @@ one-off spacing tweaks.
 
 Next.js 16 (App Router) + TypeScript, Tailwind v4, cheerio (Light House / IFI HTML; Cineworld is
 a JSON API), vitest. Component primitives are Radix, vendored in via neobrutalism.dev's shadcn
-registry and restyled to our own tokens (decision #22); icons are lucide-react (#23). No database. Committed in `data/`: `showtimes.json` (the published week) and
+registry and restyled to our own tokens (decision #22) plus vaul for the mobile drawers (#24);
+icons are lucide-react (#23). No database. Committed in `data/`: `showtimes.json` (the published week) and
 the curated override / editorial files (`title-overrides`, `letterboxd-overrides`, `film-labels`,
 `hidden-films`, `language-overrides`, `director-overrides`); everything else in `data/` is
 gitignored cache/staging.
@@ -205,9 +206,9 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   `TooltipContent`'s class list ours (a small light card — `bg-surface text-fg`, `rounded-base`,
   `shadow-shadow`; the dark `bg-fg text-bg` treatment stays MarqueeSticker's, so a tooltip doesn't
   read as one more sticker). Portals to `body`, which is also what keeps it out of the film card's
-  `overflow-x-auto` pill strip. `dialog.tsx`: the one overlay shell for **both** the settings
-  modal and the mobile plan sheet — `DialogContent` carries the responsive bottom-sheet-to-centred
-  -modal positioning itself and the app's `border-4 / rounded-card / shadow-card-lg` shell, with
+  `overflow-x-auto` pill strip. `dialog.tsx`: the modal half of **both** overlays — used above
+  `sm:` only, since below it they are `drawer.tsx` instead (decision #24). `DialogContent` carries
+  its own bottom-sheet-to-centred-modal positioning and the app's `border-4 / rounded-card / shadow-card-lg` shell, with
   no animation and no built-in close button (both call sites draw their own).
   `dropdown-menu.tsx`: trimmed to Root / Trigger / Content / Item / Separator, `modal={false}`,
   `bg-surface` rather than the registry's gold `bg-main`, and positioned by Radix's Popper —
@@ -747,8 +748,9 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
       `FilmNotes` marquee and the calendar button (`PlanPanel`). `MarqueeSticker` takes a `ref` and
       spreads the rest of its props onto its outer span purely so `TooltipTrigger asChild` can
       clone it.
-      `SettingsPanel` and `PlanButton` render `<DialogContent>` and no longer hand-roll a
-      backdrop, an Escape listener or a scroll lock; `PreferencesButton` and `PlanButton` each
+      `SettingsPanel` and `PlanButton` render `<DialogContent>` above `sm:` (and a vaul
+      `<DrawerContent>` below it — #24) and no longer hand-roll a backdrop, an Escape listener or a
+      scroll lock; `PreferencesButton` and `PlanButton` each
       dropped an entire `useEffect`. `FilterMenu` uses **dropdown-menu** (not `popover`): its rows
       already claimed `role="menuitemradio"`, so the menu primitive is the honest one — and it
       brings the arrow-key / Home / End / typeahead navigation those rows had always advertised
@@ -790,6 +792,60 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
       three-tracks-with-tick-marks.
     - The `▲`/`▼` on the filter-bar triggers and the `×` close controls are still text
       characters. Converting them is a live option, deliberately not taken yet.
+
+24. **Below `sm:` both overlays are a vaul drawer; above it they stay the centred modal**
+    (`components/ui/drawer.tsx`, `lib/useIsCompact.ts`). The user's call after feeling both on a
+    phone: a bottom sheet you can fling away beats a modal you have to aim at a close button for,
+    and the plan especially is opened one-handed mid-browse. Above `sm:` a drawer would be wrong —
+    a settings panel glued to the bottom of a 1280px window is not a modal, so `DialogContent`
+    stays there.
+    - **The breakpoint lives in exactly one place** — `useIsCompact()`, 640px, which is the same
+      line `DialogContent` already switches its own positioning on, so the app keeps one idea of
+      "phone-shaped" rather than gaining a second breakpoint. Built on `useSyncExternalStore` like
+      `lib/preferences.ts` and `lib/plan.ts`: the server snapshot resolves "not compact", so SSR
+      and the first client render agree and hydration stays clean; React then re-renders with the
+      real value. Invisible in practice because neither overlay is ever open on first paint. It
+      re-evaluates live — resizing across 640px swaps the shell with no reload.
+    - **`PreferencesButton` owns the decision and passes `compact` down to `SettingsPanel`**, so
+      the Root that opens and the Content that renders can never disagree. Both halves have to
+      match: a `<DrawerContent>` inside a `<Dialog>` finds no context.
+    - **`DialogTitle` / `DialogDescription` are used inside the drawer too, deliberately.** vaul is
+      built on `@radix-ui/react-dialog`'s own primitives (its `Drawer.Title` *is*
+      `DialogPrimitive.Title`) and npm dedupes us to a single copy, so the context is shared. That
+      is the whole reason `SettingsPanel` needs only one set of title components rather than a
+      per-shell pair. If a second copy of `@radix-ui/react-dialog` ever gets installed, this breaks
+      — and it breaks as a context error, not a style bug.
+    - **`shouldScaleBackground` is forced to `false`.** The registry defaults it true, which writes
+      `document.body.style.background` (black) and only does anything if the app wraps its content
+      in a `[vaul-drawer-wrapper]`. On a warm cream page that is a visible regression for an effect
+      nobody asked for.
+    - **vaul is structurally safer than Radix Presence for decision #22's animation trap**, which
+      is why a drawer may animate where the dialog may not: it has **zero** `transitionend` /
+      `animationend` handlers and unmounts on a `setTimeout`, so it does not hang forever on a page
+      that is not being rendered. It has its own scroll lock (`usePreventScroll`, `position: fixed`
+      on `<body>` with a saved offset) rather than Radix's `overflow: hidden`.
+    - **Costs, accepted:** ~68KB of shipped JS (856K → 924K of chunks), and vaul has not published
+      since December 2024. It declares React 19 in peers and works on 19.2.
+    - The sheet is flush to the screen edges, so it carries `pb-[env(safe-area-inset-bottom)]`
+      itself — nothing else is clearing the home indicator for it.
+    - **Bottom-anchored, not right — considered and rejected.** vaul supports `direction="right"`,
+      but its `shouldDrag` returns `true` unconditionally for `left`/`right`: every nested-scroll
+      guard it has (the `scrollTop` checks, the `scrollLockTimeout`) runs only for `top`/`bottom`,
+      and it never reads `scrollLeft`. The settings panel is four full-bleed `overflow-x-auto`
+      option strips (#14), so a side sheet would put the dismiss gesture on the *same axis* as the
+      content's own scrolling — swiping the Cinemas row to reach Cineworld would fling the drawer
+      shut. `data-vaul-no-drag` on the strips does fix it, at the price of not being able to
+      dismiss from an option row at all. A bottom sheet keeps the dismiss axis perpendicular to
+      the scroll axis, which is a large part of why it feels right; that's the reason to keep it,
+      not inertia.
+    - **Neither drawer has a `×`** (user's call): you fling it down or press the scrim, and a close
+      control sits exactly where the thumb starts the drag. `SettingsPanel` gates its button on
+      `!compact`; `PlanButton` passes no `onClose`, which is already how `PlanPanel` decides
+      whether to draw one. Both keep it in the modal, where there is nothing to drag.
+    - **The drawer's horizontal padding goes on the SCROLLING element, not on `DrawerContent`.**
+      The settings option strips full-bleed themselves with `-mx-6 px-6`, which only cancels out
+      when that padding is on the same box that clips them — the modal gets this for free by
+      putting `overflow-y-auto p-6` on one node. Split across two it left ~29px of sideways scroll.
 
 ## Known gaps
 

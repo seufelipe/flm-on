@@ -3,10 +3,14 @@ import { TIMEFRAMES, formatTimeframeRange } from "@/lib/timeframe";
 import { SHORT_FILM_MAX_MINS } from "@/lib/duration";
 import { DEFAULT_PREFERENCES, isDefault, type LanguagePref, type Preferences } from "@/lib/preferences";
 import { DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
+import { DrawerContent } from "@/components/ui/drawer";
 import { SEGMENT_BASE, controlSegmentClass } from "./controlSegment";
 
-// The settings overlay: a centered modal on desktop, a bottom sheet on mobile — both now from
-// the shared <DialogContent> (CLAUDE.md decision #22), which owns that responsive frame. Standing
+// The settings overlay: a vaul drawer below `sm:`, a centred <DialogContent> modal above it
+// (CLAUDE.md decision #24). `compact` is decided once by PreferencesButton and passed down, so the
+// Root it opens and the Content rendered here can never disagree. DialogTitle / DialogDescription
+// are used in BOTH shells deliberately — vaul builds on the same Radix Dialog primitives and we
+// have one deduped copy, so the context is shared. Standing
 // viewing preferences — see decision #14. Escape, scroll-lock, the backdrop press, the focus trap
 // and focus restore all come from Radix; PreferencesButton no longer runs an effect for any of
 // it, and there is no hand-rolled backdrop <button> here any more.
@@ -18,6 +22,8 @@ interface Props {
   prefs: Preferences;
   onChange: (prefs: Preferences) => void;
   onClose: () => void;
+  /** Decided by PreferencesButton so both halves pick the same shell. */
+  compact: boolean;
 }
 
 function Toggle({
@@ -118,12 +124,12 @@ function Group({
   );
 }
 
-export default function SettingsPanel({ prefs, onChange, onClose }: Props) {
+export default function SettingsPanel({ prefs, onChange, onClose, compact }: Props) {
   const cinemasOn = CINEMA_ORDER.filter((id) => prefs.cinemas[id]).length;
   const timeframesOn = TIMEFRAMES.filter((tf) => prefs.timeframes[tf.id]).length;
 
-  return (
-    <DialogContent className="overflow-y-auto p-6 sm:w-auto sm:max-w-xl sm:p-8">
+  const body = (
+    <>
       <div className="mb-5 flex items-start justify-between gap-4">
         <div>
           <DialogTitle className="text-xl">Preferences</DialogTitle>
@@ -143,16 +149,20 @@ export default function SettingsPanel({ prefs, onChange, onClose }: Props) {
             )}
           </DialogDescription>
         </div>
-        {/* autoFocus gives the dialog a sensible initial focus target without needing a hook. */}
-        <button
-          type="button"
-          autoFocus
-          onClick={onClose}
-          aria-label="Close preferences"
-          className="-m-2 shrink-0 p-2 text-2xl leading-none cursor-pointer"
-        >
-          &times;
-        </button>
+        {/* Modal only. The drawer is dismissed by dragging it down or pressing the scrim, so a ×
+            is redundant there — and it sits exactly where the thumb starts the drag. autoFocus
+            gives the modal a sensible initial focus target without needing a hook. */}
+        {!compact && (
+          <button
+            type="button"
+            autoFocus
+            onClick={onClose}
+            aria-label="Close preferences"
+            className="-m-2 shrink-0 p-2 text-2xl leading-none cursor-pointer"
+          >
+            &times;
+          </button>
+        )}
       </div>
 
       <div className="flex flex-col gap-5">
@@ -217,6 +227,24 @@ export default function SettingsPanel({ prefs, onChange, onClose }: Props) {
           />
         </Group>
       </div>
-    </DialogContent>
+    </>
+  );
+
+  // The drawer is scrolled by its own body: DrawerContent is a flex column capped at 85vh, so the
+  // content pane takes the remaining height rather than the sheet growing past the screen.
+  if (compact) {
+    return (
+      <DrawerContent className="pb-6">
+        {/* `px-6` belongs on the SCROLLING element, not on DrawerContent: the Group option strips
+            full-bleed themselves with `-mx-6 px-6`, and that only cancels out when the padding is
+            on the same box that clips them. Split across two elements it left ~29px of sideways
+            overflow — which is how the modal gets away with `overflow-y-auto p-6` on one node. */}
+        <div className="min-h-0 flex-1 overflow-y-auto px-6 pt-2">{body}</div>
+      </DrawerContent>
+    );
+  }
+
+  return (
+    <DialogContent className="overflow-y-auto p-6 sm:w-auto sm:max-w-xl sm:p-8">{body}</DialogContent>
   );
 }
