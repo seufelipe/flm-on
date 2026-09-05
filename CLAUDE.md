@@ -22,7 +22,8 @@ one-off spacing tweaks.
 
 Next.js 16 (App Router) + TypeScript, Tailwind v4, cheerio (Light House / IFI HTML; Cineworld is
 a JSON API), vitest. Component primitives are Radix, vendored in via neobrutalism.dev's shadcn
-registry and restyled to our own tokens (decision #22) plus vaul for the mobile drawers (#24);
+registry and restyled to our own tokens (decision #22) — with `class-variance-authority`, which
+those files' `cva` variant maps need — plus vaul for the mobile drawers (#24);
 icons are lucide-react (#23). No database. Committed in `data/`: `showtimes.json` (the published week) and
 the curated override / editorial files (`title-overrides`, `letterboxd-overrides`, `film-labels`,
 `hidden-films`, `language-overrides`, `director-overrides`); everything else in `data/` is
@@ -193,14 +194,26 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   only on mobile (`lg:hidden`) — on desktop that button lives in the filter bar (`FilterControls`
   `layout="bar"`, room to spare now the filters are menus).
 - `components/CinemaWeekendBanner.tsx` + `lib/cinemaWeekend.ts` — the National Cinema Weekend
-  note over the film list, and the `★` beside those two days in both day pickers
-  (`DayMark` in `FilterControls`). Decision #19; self-expiring, deletable whole.
+  note over the film list (an `<Alert>`), and the star beside those two days in both day pickers
+  (`DayMark` in `FilterControls`, drawing the shared `<CinemaWeekendMark>` this file also exports —
+  it lives here, not in the `.ts` lib module, so that module stays pure TS). Decision #19;
+  self-expiring, the pair deletable whole.
 - `components/{PreferencesButton,SettingsPanel,ActivePreferenceNote}.tsx` + `lib/preferences.ts`
   + `lib/duration.ts` — the preferences button, the overlay it opens, and the title-side marquee
   naming an active kids-only / language pref; all three share the store with `ScreeningBrowser`
   via `useSyncExternalStore`. Decision #14.
 - `components/controlSegment.ts` — `SEGMENT_BASE` + `controlSegmentClass(active)`, the accent-fill
   / hard-press "selected" segment styling shared by the filter bar and the settings panel.
+- **The four notes over the film list are all one `<Alert>`** (`components/ui/alert.tsx`, #22):
+  the National Cinema Weekend banner (#19), the "Next week (maybe)" banner (#18) and the two
+  empty states — "Nothing lined up for next week…" and "Nothing on this week…/No screenings match
+  this filter." (the latter carrying the preferences Reset). They had four copies of the same
+  `bg-surface border-4 border-border rounded-card shadow-card p-4 sm:p-8` shell between
+  `CinemaWeekendBanner` and `ScreeningBrowser`. Each leads with a lucide icon in the alert's
+  gutter — `Star` / `CalendarClock` / `CalendarOff` / `SearchX`, ink, never accent. **The two
+  banners pass `role="note"`; only the two empty states keep the Alert's default `role="alert"`**,
+  which is an assertive live region and so belongs to a note that appears *in answer to* something
+  you just did (a filter change), not to standing page furniture.
 - `components/ui/` — vendored shadcn/Radix primitives, restyled to our tokens (decision #22).
   `tooltip.tsx`: the Radix structure verbatim so a future `shadcn add` diffs cleanly, with only
   `TooltipContent`'s class list ours (a small light card — `bg-surface text-fg`, `rounded-base`,
@@ -213,7 +226,10 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   `dropdown-menu.tsx`: trimmed to Root / Trigger / Content / Item / Separator, `modal={false}`,
   `bg-surface` rather than the registry's gold `bg-main`, and positioned by Radix's Popper —
   which also makes the panel collision-aware, where the old `absolute left-0 top-full` could run
-  off a narrow viewport. `lib/utils.ts` holds the `cn` helper every such component wants.
+  off a narrow viewport. `alert.tsx`: the shell behind the four notes over the film list —
+  registry structure with our card values, one `default` variant (their gold `bg-main` and their
+  `bg-black text-white` `destructive` both dropped), `size-5` icons and no `line-clamp-1` on the
+  title. `lib/utils.ts` holds the `cn` helper every such component wants.
 
 ## Decisions worth knowing before changing anything
 
@@ -573,17 +589,26 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
 19. **National Cinema Weekend — a date-boxed campaign note** (`lib/cinemaWeekend.ts`,
     `components/CinemaWeekendBanner.tsx`). Sat 5 / Sun 6 September 2026: admission from €4 at
     participating cinemas across the Republic (Screen Ireland-backed). Two surfaces, both fed by
-    `cinemaWeekendDaysInView(effectiveDay, visibleDays)`: a **`★` before the day name** in both
+    `cinemaWeekendDaysInView(effectiveDay, visibleDays)`: a **star before the day name** in both
     day pickers (the dock segment, the desktop menu row *and* its collapsed trigger — `DayMark`),
-    and a **banner card above the film list**, same shell as the "Next week (maybe)" one.
+    and a **banner above the film list** — an `<Alert>` (#22) with the same star in its icon
+    gutter, the same shell as the "Next week (maybe)" one.
     - **Shown on a pinned Sat/Sun *and* on "This week"** (user's call): "This week" lists those
       days' screenings, so hiding the note there would keep the offer from the view most likely
       to be open. Not shown on an ordinary day, and never in the Next-week preview.
-    - **`★`, not `☻`** — the specials mark means a strand *within* a day; this means the whole
-      day is cheap. It **leads** the day name / the banner heading — the mark is what you're
+    - **A star, not the specials `☻`** — that mark means a strand *within* a day; this means the
+      whole day is cheap. It **leads** the day name / the banner heading — the mark is what you're
       scanning the row for, so it shouldn't sit behind the label. Ink in both places, never
       accent: a selected day segment is already filled gold and the mark has to stay readable on
       it (decision #7), and the accent's one status use is spoken for (#14).
+    - **It's lucide's `Star`, not the `★` character** (#23) — the one typographic mark that
+      moved. Drawn `fill-current` rather than lucide's default outline, so at day-chip size it
+      still reads as the solid star it replaces. **One `<CinemaWeekendMark>` serves both
+      surfaces**, so the star on a day chip can't drift from the one heading the note that sent
+      you there; the caller sizes it (`size-[1em] align-[-0.14em]` inline in a day name, the
+      alert's own `[&>svg]:size-5` in the gutter). Always `aria-hidden` — the day picker already
+      carried the campaign name in an `sr-only` span beside it, and the banner has it in the
+      heading.
     - **The copy says "all three cinemas have tickets from €4"** — Light House Cinema, IFI
       Cinemas and Cineworld are all on the campaign's published participant list, so the app can
       say so flatly. **"From €4" stays hedged** because the campaign's own wording is a floor,
@@ -740,9 +765,13 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
       keyframes' own `transform` can't drop a static translate mid-animation.
     - `components.json` points the shadcn CLI at our root-level `@/` layout (no `src/`), so
       `npx shadcn@latest add https://neobrutalism.dev/r/<name>.json` lands in `components/ui/`.
-      Adopted so far: **tooltip** and **dialog** — the latter covering both overlays, since
-      neither the registry's centred-only `dialog` nor its edge-anchored `sheet` matches this
-      app's one shape (a bottom sheet on mobile that becomes a centred modal at `sm:`).
+      Adopted so far: **tooltip**, **dialog** and **alert** — the dialog covering both overlays,
+      since neither the registry's centred-only `dialog` nor its edge-anchored `sheet` matches
+      this app's one shape (a bottom sheet on mobile that becomes a centred modal at `sm:`).
+      **`alert` is the first one that brought a dependency**: `class-variance-authority`, which
+      every registry component with a `variant` prop is written against. Hand-rolling around
+      `cva` would have made this the first vendored file that *doesn't* diff cleanly against a
+      future `shadcn add`, which is the whole point of taking their structure.
       Every hover surface is a `<Tooltip>`: the showtime pills (`FilmCard`), the plan and ghost
       rows (`PlanRow`, via `withTooltip`), the format boxes on the meta line (`FilmFormats`), the
       `FilmNotes` marquee and the calendar button (`PlanPanel`). `MarqueeSticker` takes a `ref` and
@@ -768,10 +797,21 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
       anchored on `:focus`** — an inset outline, applied in both states so it still reads on the
       gold selected row. Suppressing the outline centrally in `ui/dropdown-menu.tsx` would remove
       that cursor from every caller, which is why `DropdownMenuItem` sets no `outline-hidden`.
+      **Confirmed by hand in a real browser** — it cannot be checked from an automated pane, where
+      `document.hasFocus()` is false and `:focus` therefore matches nothing however correct the
+      CSS is.
     - **A close only clears the slot it owns** (`menuOpenChange` in `FilterControls`). Pressing a
       second trigger while a menu is open fires both a close (the press is outside the first
       menu) and an open, in either order; clearing `openMenu` unconditionally on close would
       sometimes wipe the menu that had just opened, so moving between filters took two clicks.
+    - **Three things about `alert` worth knowing before editing it.** Its `role="alert"` is an
+      assertive live region, so it is right only for a note that appears in answer to something
+      you just did; the standing banners pass `role="note"`, which works with no edit to the
+      vendored file because it spreads props *after* `role` (the opposite of what `asChild` does
+      two bullets up). `AlertDescription` is a **grid**, so a bare text node and an inline
+      `<button>` beside it become two rows — the empty state's "…your current view. Reset" has to
+      sit inside a `<p>`. And the registry's `line-clamp-1` on `AlertTitle` is dropped: these
+      titles are sentences ("It's National Cinema Weekend!") and truncate on a phone otherwise.
 
 23. **Icons are `lucide-react`.** Chosen because it needs nothing bent to fit: Lucide's defaults
     *are* this app's drawing spec — 24 viewBox, `fill: none`, `currentColor`, 2px stroke, round
@@ -779,17 +819,27 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
     It's also in Next 16's built-in `optimizePackageImports` list, so a named import is
     tree-shaken with no config; verified on a real build — the one icon's path data ships in a
     single chunk and no other icon's does.
-    - **It replaces drawn UI icons, not the typographic marks.** `☻` (a surfaced special, #13)
-      and `★` (National Cinema Weekend, #19) carry *meaning* and are deliberately text: they sit
-      inline in a pill or a day name, inherit the type's size and weight, and are read out.
-      Swapping them for glyph components would flatten a distinction the app leans on. Likewise
-      untouched: the **Letterboxd** three-dot mark (a brand identity, #7), the `<LanguageTag>`
-      speech bubble (drawn to a measured text box, #17) and the film-format strips (#15) — all
-      bespoke SVG that no icon set has.
-    - Adopted so far: **`Settings2`** on `PreferencesButton`. Despite the name it draws sliders,
+    - **The one typographic mark that stays text is `☻`** (a surfaced special, #13), and the
+      reason is mechanical rather than stylistic: it rides inside `MarqueeSticker`'s scrolling
+      track ("☻ parent & baby · 4k restoration"), which measures one copy of that string and pins
+      the track to `2×` its width in px. An SVG in a measured text run is a real complication, and
+      the mark also sits at pill size among `OC` / `ST` / the ratio boxes, where it has to inherit
+      the type's size and weight exactly.
+    - **`★` did move** (National Cinema Weekend, #19) — the original rule covered both marks, and
+      it turned out not to hold for this one. The "it's read out" half was never true of the
+      glyph: `DayMark` has always rendered it `aria-hidden` with an `sr-only` name beside it, so
+      the label was doing that work, not the character. And it sits in plain flow text — a day
+      name, an alert's icon gutter — with nothing measuring it. Drawn `fill-current` so it stays
+      the solid star it was.
+    - Likewise untouched: the **Letterboxd** three-dot mark (a brand identity, #7), the
+      `<LanguageTag>` speech bubble (drawn to a measured text box, #17) and the film-format strips
+      (#15) — all bespoke SVG that no icon set has.
+    - Adopted so far: **`Settings2`** on `PreferencesButton` — despite the name it draws sliders,
       so #14's "sliders, not a gear" still holds; it cost one of the previous three tracks and
       kept the round knobs, which was the trade the user picked over `SlidersHorizontal`'s
-      three-tracks-with-tick-marks.
+      three-tracks-with-tick-marks. Then the four notes over the film list (#22): **`Star`**
+      (shared with the day pickers), **`CalendarClock`** on "Next week (maybe)", **`CalendarOff`**
+      and **`SearchX`** on the two empty states.
     - The `▲`/`▼` on the filter-bar triggers and the `×` close controls are still text
       characters. Converting them is a live option, deliberately not taken yet.
 
@@ -823,7 +873,10 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
       is why a drawer may animate where the dialog may not: it has **zero** `transitionend` /
       `animationend` handlers and unmounts on a `setTimeout`, so it does not hang forever on a page
       that is not being rendered. It has its own scroll lock (`usePreventScroll`, `position: fixed`
-      on `<body>` with a saved offset) rather than Radix's `overflow: hidden`.
+      on `<body>` with a saved offset) rather than Radix's `overflow: hidden`. **Teardown
+      confirmed by hand**: open the drawer, close it, the page still scrolls. Worth knowing that
+      this is not observable in an automated pane — a page that isn't rendered throttles vaul's
+      unmount timer indefinitely, so the sheet appears to hang open there and does not.
     - **Costs, accepted:** ~68KB of shipped JS (856K → 924K of chunks), and vaul has not published
       since December 2024. It declares React 19 in peers and works on 19.2.
     - The sheet is flush to the screen edges, so it carries `pb-[env(safe-area-inset-bottom)]`

@@ -40,6 +40,8 @@ import {
 import { planSnapshot, PLAN_SERVER_SNAPSHOT, subscribePlan, writePlan } from "@/lib/plan";
 import FilmCard from "./FilmCard";
 import CinemaWeekendBanner from "./CinemaWeekendBanner";
+import { CalendarClock, CalendarOff, SearchX } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import Masthead, { MastheadTitle } from "./Masthead";
 import FilterControls from "./FilterControls";
 import PlanPanel from "./PlanPanel";
@@ -458,19 +460,29 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
   const filmList = prefsLoaded && (
     nextWeek ? (
       <div className="flex flex-col gap-8">
-        <div className="bg-surface border-4 border-border rounded-card shadow-card p-4 sm:p-8">
-          <p className="text-xl font-black uppercase tracking-tight">Next week (maybe)</p>
-          <p className="mt-2 text-dim">
-            A taste of what&rsquo;s coming
-            {upcomingWeek ? ` the week of ${formatDayDate(upcomingWeek.from)}` : ""} — the times
-            aren&rsquo;t set yet. The full, confirmed programme, with showtimes and the day
-            planner, lands here Thursday morning.
-          </p>
-        </div>
+        {/* Standing furniture for the view you switched into, so `role="note"` rather than the
+          Alert's default assertive live region. */}
+        <Alert role="note">
+          <CalendarClock />
+          <AlertTitle>Next week (maybe)</AlertTitle>
+          <AlertDescription>
+            <p>
+              A taste of what&rsquo;s coming
+              {upcomingWeek ? ` the week of ${formatDayDate(upcomingWeek.from)}` : ""} — the times
+              aren&rsquo;t set yet. The full, confirmed programme, with showtimes and the day
+              planner, lands here Thursday morning.
+            </p>
+          </AlertDescription>
+        </Alert>
         {upcomingVisible.length === 0 ? (
-          <p className="bg-surface border-4 border-border rounded-card shadow-card p-4 sm:p-8 font-bold">
-            Nothing lined up for next week within your current view yet — check back Thursday.
-          </p>
+          <Alert>
+            <CalendarOff />
+            <AlertDescription className="text-fg font-bold">
+              <p>
+                Nothing lined up for next week within your current view yet — check back Thursday.
+              </p>
+            </AlertDescription>
+          </Alert>
         ) : (
           upcomingVisible.map((f) => {
             const key = f.title.trim().toLowerCase();
@@ -503,25 +515,32 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
         <div className="flex flex-col gap-8">
           <CinemaWeekendBanner days={cinemaWeekendDays} />
           {filmGroups.length === 0 && (
-            <p className="bg-surface border-4 border-border rounded-card shadow-card p-4 sm:p-8 font-bold">
-              {preferred.length === 0 && (!isDefault(prefs) || highlightsOnly) ? (
-                <>
-                  Nothing on this week within your current view.{" "}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      writePreferences(DEFAULT_PREFERENCES);
-                      setHighlightsOnly(false);
-                    }}
-                    className="underline underline-offset-2 cursor-pointer"
-                  >
-                    Reset
-                  </button>
-                </>
-              ) : (
-                "No screenings match this filter."
-              )}
-            </p>
+            /* These two turn up in answer to something you just did, which is what the Alert's
+              default assertive `role` is for — unlike the two standing banners above. */
+            <Alert>
+              <SearchX />
+              <AlertDescription className="text-fg font-bold">
+                <p>
+                  {preferred.length === 0 && (!isDefault(prefs) || highlightsOnly) ? (
+                    <>
+                      Nothing on this week within your current view.{" "}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          writePreferences(DEFAULT_PREFERENCES);
+                          setHighlightsOnly(false);
+                        }}
+                        className="underline underline-offset-2 cursor-pointer"
+                      >
+                        Reset
+                      </button>
+                    </>
+                  ) : (
+                    "No screenings match this filter."
+                  )}
+                </p>
+              </AlertDescription>
+            </Alert>
           )}
           {filmGroups.map((group) => (
             <FilmCard

@@ -13,7 +13,8 @@ import type { UpcomingFilm } from "@/lib/upcoming";
 import { formatTimeframeRange, type Timeframe, type TimeframeDef } from "@/lib/timeframe";
 import { CINEMA_LABEL, CINEMA_LOCATION } from "@/lib/cinemas";
 import { formatDayFriendly, formatDayDate } from "@/lib/date";
-import { CINEMA_WEEKEND_MARK, CINEMA_WEEKEND_NAME, isCinemaWeekendDay } from "@/lib/cinemaWeekend";
+import { CinemaWeekendMark } from "./CinemaWeekendBanner";
+import { CINEMA_WEEKEND_NAME, isCinemaWeekendDay } from "@/lib/cinemaWeekend";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -81,9 +82,7 @@ function DayMark({ day }: { day: string }) {
   if (!isCinemaWeekendDay(day)) return null;
   return (
     <>
-      <span aria-hidden="true" className="mr-1.5 [font-variant-emoji:text]">
-        {CINEMA_WEEKEND_MARK}
-      </span>
+      <CinemaWeekendMark className="mr-1.5 inline-block size-[1em] align-[-0.14em]" />
       <span className="sr-only">{CINEMA_WEEKEND_NAME}: </span>
     </>
   );

@@ -8,13 +8,10 @@
 // Deliberately a hard-coded pair of dates with their own written-out labels rather than a general
 // "campaign" facility: it's two days, once, and the whole thing self-expires. `visibleDays`
 // already drops days that have passed, so once the weekend is behind us nothing here renders and
-// the module can be deleted whole — no cleanup edit to any of its callers.
+// the module can be deleted whole — no cleanup edit to any of its callers. The mark itself is a
+// component, so it lives in `components/CinemaWeekendBanner.tsx` and this file stays pure TS.
 
 export const CINEMA_WEEKEND_NAME = "National Cinema Weekend";
-
-// The picker mark. Ink, never accent — it has to stay legible on the accent fill a selected day
-// segment carries (decision #7).
-export const CINEMA_WEEKEND_MARK = "★";
 
 // ISO date → the label the banner prose uses. No month: the banner only ever shows on days that
 // are hours away, so "Saturday 5" is unambiguous and "September" is just noise in a short line.
