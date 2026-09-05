@@ -874,7 +874,11 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
 
 ## Running it
 
-- `npm run dev` — dev server
+- `npm run dev` — dev server. To open it on a phone over the LAN, that host has to be listed in
+  `allowedDevOrigins` in `next.config.ts` — Next 16 blocks cross-origin requests for `/_next/*` dev
+  resources by default, and the failure is silent and confusing: the HTML arrives, no JS loads, so
+  `ScreeningBrowser` never hydrates and the page just stops after the masthead. Dev-only; it has no
+  effect on `next build` or the export.
 - `npx vitest run` — unit tests
 - `npm run build` — production build; check `/` stays `○ (Static)` (decision #3)
 - `npm run fetch:batch` / `npm run fetch:confirm` — the weekly refresh (decision #9). **Driven by

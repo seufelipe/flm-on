@@ -6,6 +6,11 @@ import type { NextConfig } from "next";
 const repoBasePath = process.env.GITHUB_ACTIONS ? "/flm-on" : "";
 
 const nextConfig: NextConfig = {
+  // Next 16 refuses cross-origin requests for /_next/* dev resources by default, which silently
+  // breaks testing on a phone over the LAN: the HTML arrives but no JS loads, so ScreeningBrowser
+  // never hydrates and the page stops after the masthead. Dev-only — `allowedDevOrigins` has no
+  // effect on `next build`/`output: "export"`.
+  allowedDevOrigins: ["192.168.0.241"],
   output: "export",
   basePath: repoBasePath,
   assetPrefix: repoBasePath,
