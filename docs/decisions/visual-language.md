@@ -153,7 +153,20 @@ single chunk and no other icon's does.
   (shared with the day pickers), **`CalendarClock`** on "Next week (maybe)", **`CalendarOff`**
   and **`SearchX`** on the two empty states. Then **`FaceGrinning`** as the specials mark
   (#13), replacing the last of the two text glyphs. Then **`ChevronsUpDown`** on the
-  `FilterMenu` triggers (#7), replacing the `▲`/`▼` pair.
+  `FilterMenu` triggers (#7), replacing the `▲`/`▼` pair. Then **`Hourglass`** and
+  **`User`**/**`Users`** leading the runtime and the director on the film card's meta line.
+- **The meta-line icons label, they don't decorate.** Until them, every icon here replaced a
+  mark that was already there; these two are the first added to text that read fine without
+  one — so they earn their place by making the line scannable rather than parsed: a bare
+  "111min Pedro Almodóvar" is two facts in identical dim type, and the icons say which is
+  which before you read either. `Hourglass` over a clock face because the runtime is a
+  *duration* and the pills already own time-of-day. `Users` when `group.director` contains a
+  comma (that string is comma-joined for a co-directed film — `lib/scrapers/types.ts`), so
+  the mark doesn't call two people one. Both are `aria-hidden`: the text beside them is
+  already the label, and "hourglass 111min" read aloud is noise. Both `size-[1em]` inside an
+  `inline-flex gap-1.5`, so each icon hugs its own text while the meta line's `gap-x-4`
+  between items is untouched — put them in the flow as bare siblings and the two facts stop
+  being two groups.
 - **The filter-bar trigger no longer flips its mark on open.** `ChevronsUpDown` is the
   combobox indicator — both arrows at once, meaning "this opens a list", where `▼`/`▲`
   claimed to report state. Nothing is lost: the trigger already says it is open by pressing
