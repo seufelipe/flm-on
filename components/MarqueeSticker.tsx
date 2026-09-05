@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 
 // A small fixed-width sticker whose text scrolls on a seamless loop — two identical copies
@@ -24,17 +25,16 @@ const MIN_DURATION_SEC = 4;
 export default function MarqueeSticker({
   text,
   ariaLabel,
-  title,
   className = "",
   tone = "ink",
   tilted = false,
   lower = false,
+  ref,
+  ...rest
 }: {
   text: ReactNode;
   // Required when `text` isn't a plain string (the visible content carries its own markup).
   ariaLabel?: string;
-  // Optional native hover tooltip.
-  title?: string;
   className?: string;
   // "ink" (default) = inverted-ink sticker; "accent" = gold sticker, dark text (header only).
   tone?: "ink" | "accent";
@@ -45,7 +45,10 @@ export default function MarqueeSticker({
   tilted?: boolean;
   // Render lowercase instead of the default all-caps (header "for kids!").
   lower?: boolean;
-}) {
+  // A Radix TooltipTrigger with `asChild` clones this component and hands it a ref plus its own
+  // event/`data-state` props, so the outer span has to accept both — that's what lets FilmNotes
+  // put the sticker's explanation in a real tooltip instead of a native `title`.
+} & React.ComponentPropsWithRef<"span">) {
   const itemRef = useRef<HTMLSpanElement>(null);
   const [vars, setVars] = useState<CSSProperties>();
 
@@ -74,9 +77,10 @@ export default function MarqueeSticker({
 
   return (
     <span
+      ref={ref}
       role="img"
       aria-label={ariaLabel ?? (typeof text === "string" ? text : undefined)}
-      title={title}
+      {...rest}
       className={`flm-marquee cursor-default rounded-[3px] align-middle text-xs font-bold tracking-wide ${
         lower ? "lowercase" : "uppercase"
       } ${tone === "accent" ? "bg-accent text-fg" : "bg-fg text-bg"} ${

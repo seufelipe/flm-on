@@ -51,12 +51,15 @@ function TooltipContent({
         data-slot="tooltip-content"
         sideOffset={sideOffset}
         className={cn(
-          // The app's dark-sticker treatment (MarqueeSticker's `bg-fg text-bg`), plus the stacked
-          // -card shadow so it sits above the page at the same elevation as everything else.
+          // The app's card treatment — near-white `bg-surface` on ink, plus the stacked-card
+          // shadow so it sits above the page at the same elevation as everything else. It reads
+          // as a small card lifted off the cream page rather than a dark sticker: the dark
+          // treatment belongs to MarqueeSticker, which is a decorative label, and a tooltip that
+          // wore it looked like one more sticker rather than an answer to a hover.
           // Deliberately NOT `bg-main`: gold is reserved for actionable/selected things, and a
           // tooltip is neither (decision #7).
-          "z-50 max-w-[16rem] overflow-hidden rounded-base border-2 border-border bg-fg px-2.5 py-1.5",
-          "text-xs font-bold tracking-wide text-bg shadow-shadow",
+          "z-50 max-w-[16rem] overflow-hidden rounded-base border-2 border-border bg-surface px-2.5 py-1.5",
+          "text-xs font-bold tracking-wide text-fg shadow-shadow",
           "animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
           "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
           "origin-(--radix-tooltip-content-transform-origin)",

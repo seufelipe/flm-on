@@ -61,7 +61,6 @@ export default function ActivePreferenceNote() {
           <MarqueeSticker
             text="for kids!"
             ariaLabel="for kids!"
-            title="for kids!"
             tone="accent"
             tilted
             lower

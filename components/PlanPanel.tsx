@@ -3,6 +3,7 @@
 import type { ItineraryTransition, PlanAddition, TimedScreening } from "@/lib/clash";
 import DayPlan from "./DayPlan";
 import { GhostRow } from "./PlanRow";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 // The one persistent plan surface. Flat treatment (no dark header bar): a light label row with a
 // rule under it, then the body. Used inside the desktop right-rail card (pinned below the
@@ -14,6 +15,12 @@ import { GhostRow } from "./PlanRow";
 //
 // No `bg-*` of its own — the caller's card (rail) / dialog (sheet) provides the surface, so the
 // panel doesn't square off that card's rounded corners.
+// Import can add and update but never delete, so a film taken back out of the plan stays in the
+// calendar until it's removed there (CLAUDE.md decision #21). Too long for the button's label and
+// too surprising to leave unsaid — the first re-import would otherwise read as a bug.
+const EXPORT_CAVEAT =
+  "Download your plan as a calendar file. Re-exporting updates these events; removing a film here won't remove it from your calendar.";
+
 interface Props {
   items: TimedScreening[];
   transitions: ItineraryTransition[];
@@ -109,15 +116,25 @@ export default function PlanPanel({
                 more plan row. Clear stays a bare text button: one primary action per surface.
                 The mt-6 is doing real work — with no divider it needs the air to clear the shadow
                 and the last row. */}
+            {/* The export-isn't-sync caveat (decision #21). Radix rather than a native `title`
+                — but note this is the one tooltip in the app whose text you can't get from the
+                UI any other way, and a tooltip is a hover/focus surface, so on a phone it can
+                only be reached via the `aria-label`. That's why the label is spelled out there
+                in full rather than left as "Add to calendar". */}
             <div className="no-print mt-6 flex justify-center">
-              <button
-                type="button"
-                onClick={onExport}
-                title="Download your plan as a calendar file. Re-exporting updates these events; removing a film here won't remove it from your calendar."
-                className="border-2 border-border rounded-btn bg-accent text-fg px-4 py-2 font-black uppercase text-sm tracking-wide shadow-chip transition-[translate,box-shadow] duration-100 cursor-pointer hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-chip-half active:translate-x-[6px] active:translate-y-[6px] active:shadow-none"
-              >
-                Add to calendar
-              </button>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    type="button"
+                    onClick={onExport}
+                    aria-label={`Add to calendar. ${EXPORT_CAVEAT}`}
+                    className="border-2 border-border rounded-btn bg-accent text-fg px-4 py-2 font-black uppercase text-sm tracking-wide shadow-chip transition-[translate,box-shadow] duration-100 cursor-pointer hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-chip-half active:translate-x-[6px] active:translate-y-[6px] active:shadow-none"
+                  >
+                    Add to calendar
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent>{EXPORT_CAVEAT}</TooltipContent>
+              </Tooltip>
             </div>
           </>
         ) : startingPoints.length > 0 ? (

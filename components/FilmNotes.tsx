@@ -1,5 +1,6 @@
 import { Fragment, type ReactNode } from "react";
 import MarqueeSticker from "@/components/MarqueeSticker";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { displayScreeningTags } from "@/lib/screeningTags";
 
 // The one marquee sticker after a film's title + year: its special-screening name(s)
@@ -50,7 +51,18 @@ export default function FilmNotes({
           the way a `margin-left` on the sticker itself would give. The `{" "}` after it is the
           soft-wrap opportunity the sticker breaks at. */}
       <span aria-hidden="true" className="inline-block w-2 align-middle" />{" "}
-      <MarqueeSticker text={<>{text}</>} ariaLabel={aria} title={aria} />
+      {/* The sticker names the strand ("☻ parent & baby"); the tooltip is where the strand is
+          actually explained ("Parent & Baby — The volume is turned down…"). Radix rather than a
+          native `title`, so it matches the pills below it — and so it can be styled at all: the
+          sticker is the app's one dark surface, and the OS's grey box beside it read as a
+          rendering accident. The same string stays on `aria-label`, since a tooltip is a
+          hover/focus surface and touch never opens one. */}
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <MarqueeSticker text={<>{text}</>} ariaLabel={aria} />
+        </TooltipTrigger>
+        <TooltipContent>{aria}</TooltipContent>
+      </Tooltip>
     </>
   );
 }

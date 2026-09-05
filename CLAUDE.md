@@ -128,7 +128,9 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
 - `components/FilmNotes.tsx` + `components/MarqueeSticker.tsx` — the **one** dark scrolling
   sticker per card (`FilmNotes`, beside the year on the title line), carrying the special-screening name(s)
   *and* the curated editorial label (decision #11) joined by ` · ` ("☻ parent & baby ·
-  4k restoration"). `MarqueeSticker` is `"use client"`: measures one copy and pins the track to
+  4k restoration"). The sticker *names* the strand; its tooltip is where the strand is
+  *explained* — the sticker is the app's one dark surface, so a light tooltip beside it reads as
+  an answer rather than a second sticker. `MarqueeSticker` is `"use client"`: measures one copy and pins the track to
   `2×` that width in px so the keyframe's plain `translate3d(-50%…)` lands exactly on one copy
   (var-free keyframe → runs on the compositor; a `%`-of-`max-content` translate stutters at
   speed), plus an inline `animation-duration` (~40px/s, 4s floor). `--color-fg`/`--color-bg`,
@@ -143,12 +145,20 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   continuous SVG `<path>` (the box model can't miter a horizontal border into a 45° tail arm);
   `<LanguageMarks>` = the per-showtime `ST`/`Dub` on a pill.
   `<FilmFormatTag>` = a box on the meta line sized so a bigger format is taller; 35mm/70mm
-  are an animated film-strip (`print: true`), IMAX is a static IMAX-blue plaque. Tooltips
-  (`*Tooltip` helpers) merge into the whole pill/plan-row `title`.
+  are an animated film-strip (`print: true`), IMAX is a static IMAX-blue plaque.
+- `lib/screeningTooltip.ts` — `screeningTooltip(tags)`: the three modules' `*Tooltip` helpers
+  merged into one ` · `-joined string, `undefined` when there's nothing to explain. What a whole
+  showtime says on hover, used by the film-card pills and both plan rows; the format box on the
+  meta line keeps `filmFormatsTooltip` on its own, since it explains only itself. Both callers had
+  grown identical private copies, which is how the plan rows stayed on a native `title` for a
+  release after the pills moved to Radix.
 - `components/PlanRow.tsx` — the two row treatments both plan surfaces are built from:
   `<PlanRow>` (solid, ink, `bg-surface` — a pick; click removes) and `<GhostRow>` (dashed, dim,
   unfilled — a suggestion; click adds). `showDay` names the day on a ghost, for the whole-week
-  starting points. Neither carries an affordance glyph — see decision #7.
+  starting points. Neither carries an affordance glyph — see decision #7. Both explain their
+  marks with the shared `screeningTooltip` string (`withTooltip` skips the wrapper entirely when a
+  screening has nothing to say), repeated on the `aria-label` — the mobile plan sheet is the
+  surface a native `title` served worst.
 - `components/PlanPanel.tsx` — the one persistent plan surface. Empty → the `startingPoints` seeds
   as bare `<GhostRow>`s, no heading over them (dashed rows on an otherwise empty panel already
   read as an offer), falling back to a plain prompt when there's nothing to seed from; non-empty → `<DayPlan>`, a
@@ -187,8 +197,9 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   / hard-press "selected" segment styling shared by the filter bar and the settings panel.
 - `components/ui/` — vendored shadcn/Radix primitives, restyled to our tokens (decision #22).
   `tooltip.tsx`: the Radix structure verbatim so a future `shadcn add` diffs cleanly, with only
-  `TooltipContent`'s class list ours (the dark-sticker `bg-fg text-bg`, `rounded-base`,
-  `shadow-shadow`). Portals to `body`, which is also what keeps it out of the film card's
+  `TooltipContent`'s class list ours (a small light card — `bg-surface text-fg`, `rounded-base`,
+  `shadow-shadow`; the dark `bg-fg text-bg` treatment stays MarqueeSticker's, so a tooltip doesn't
+  read as one more sticker). Portals to `body`, which is also what keeps it out of the film card's
   `overflow-x-auto` pill strip. `dialog.tsx`: the one overlay shell for **both** the settings
   modal and the mobile plan sheet — `DialogContent` carries the responsive bottom-sheet-to-centred
   -modal positioning itself and the app's `border-4 / rounded-card / shadow-card-lg` shell, with
@@ -470,7 +481,7 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
       tags, with `Subtitled` assumed for an untagged non-English screening — except animation,
       which often screens dubbed). How that's resolved and how to correct it: `fetch-films` skill.
     - Render: `<LanguageTag>` = the language name only (meta-line chip); `<LanguageMarks>` = the
-      per-showtime `ST`/`Dub` on a pill (not repeated with the language). Not part of the
+      per-showtime `OC`/`ST`/`Dub` on a pill (not repeated with the language). Not part of the
       `FilmNotes` sticker. **A non-English original language counts toward Highlights
       (`hasNonEnglishLanguage`); a subtitled/dubbed session of an English film does not.**
     - The **`language` preference** (segmented control `any`/`english`/`non-english`,
@@ -568,8 +579,11 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
       update but never delete, so a film you take back out of the plan stays in the calendar until
       you remove it there. What it *can* avoid is duplicating: each `UID` is a stable FNV-1a hash
       of the screening's `bookingUrl`, so exporting again after adding a film updates the events
-      already there. The caveat lives in the button's `title` — it can't fit in a label, and
-      leaving it unsaid would make the first surprising re-import read as a bug. Keying the `UID`
+      already there. The caveat is the button's tooltip (`EXPORT_CAVEAT` in `PlanPanel`) — it
+      can't fit in a label, and leaving it unsaid would make the first surprising re-import read
+      as a bug. It's the one tooltip in the app whose text is nowhere else in the UI, so the
+      button's `aria-label` spells it out in full rather than stopping at "Add to calendar":
+      a tooltip is a hover/focus surface, and on a phone that label is the only way to it. Keying the `UID`
       on the `bookingUrl` alone (not the time) is deliberate: a cinema moving a session should
       *update* the event, not leave a stale one beside a new one. Light House's scraped
       `bookingUrl`s carry a literal newline mid-query-string, so whitespace is stripped before
@@ -620,7 +634,8 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
     structure, our values** (`components/ui/`, `lib/utils.ts`, the token bridge in
     `app/globals.css`). The app had hand-rolled every interactive surface: tooltips were the
     native `title` attribute (unstyleable, unpositionable, ~1s on the OS's own timer, and it
-    never fires on touch at all), and three separate overlays — `FilterMenu`'s own `pointerdown`
+    never fires on touch at all — **no `title` attribute is left in the app**, and adding one
+    back is a regression), and three separate overlays — `FilterMenu`'s own `pointerdown`
     + Escape listener, `SettingsPanel` and `PlanButton` — each declared `role="dialog"
     aria-modal="true"` with no focus trap, no focus restore and no inert background. Radix does
     all of that properly, and shadcn components are **copied source, not a dependency**, so
@@ -641,12 +656,17 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
       into. This is the one value in the bridge that is not a straight copy of theirs.
     - **`--main` is our gold, so never take `variant="default"` unexamined.** Their components
       default to `bg-main` as an ordinary fill; ours reserves the accent for actionable and
-      selected things (#7). Restyle to `neutral`, or to the dark-sticker treatment, on the way
-      in — the tooltip is `bg-fg text-bg` for exactly this reason, not `bg-main`.
+      selected things (#7). Restyle to `neutral` on the way in — the tooltip is the card
+      treatment (`bg-surface text-fg` + ink border + `shadow-shadow`) for exactly this reason,
+      not `bg-main`.
     - **A Radix tooltip is a hover/focus surface: touch never opens one.** That's not a
       regression (native `title` did nothing on touch either), but it does mean the text has to
-      exist somewhere a screen reader and a phone can reach — hence the `aria-label` on the
-      screening pill carrying the same string. Don't let the tooltip become the only copy.
+      exist somewhere a screen reader and a phone can reach — so every tooltip in the app has the
+      same string on an `aria-label` (the pill, both plan rows, the format box, the `FilmNotes`
+      sticker, the calendar button). Don't let the tooltip become the only copy. Two `title`s were
+      *dropped* rather than converted, for saying nothing the visible text didn't already: `"for
+      kids!"` on the sticker reading "for kids!", and `"Letterboxd"` on a link already labelled
+      "View on Letterboxd".
     - One shared `TooltipProvider` is mounted at the `ScreeningBrowser` root rather than one per
       tooltip: that's what gives the "already showing one, move along the row of showtimes, no
       fresh delay" grouping. `delayDuration` is 300ms — Radix's own default of 0 makes a row of
@@ -675,6 +695,11 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
       Adopted so far: **tooltip** and **dialog** — the latter covering both overlays, since
       neither the registry's centred-only `dialog` nor its edge-anchored `sheet` matches this
       app's one shape (a bottom sheet on mobile that becomes a centred modal at `sm:`).
+      Every hover surface is a `<Tooltip>`: the showtime pills (`FilmCard`), the plan and ghost
+      rows (`PlanRow`, via `withTooltip`), the format boxes on the meta line (`FilmFormats`), the
+      `FilmNotes` marquee and the calendar button (`PlanPanel`). `MarqueeSticker` takes a `ref` and
+      spreads the rest of its props onto its outer span purely so `TooltipTrigger asChild` can
+      clone it.
       `SettingsPanel` and `PlanButton` render `<DialogContent>` and no longer hand-roll a
       backdrop, an Escape listener or a scroll lock; `PreferencesButton` and `PlanButton` each
       dropped an entire `useEffect`. `FilterMenu` uses **dropdown-menu** (not `popover`): its rows

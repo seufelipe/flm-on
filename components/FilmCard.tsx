@@ -9,9 +9,9 @@ import { ScreeningTagMarks } from "@/components/ScreeningTags";
 import { FilmFormatTag, FilmFormatMarks } from "@/components/FilmFormats";
 import { LanguageTag, LanguageMarks } from "@/components/ScreeningLanguage";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { screeningTagsTooltip } from "@/lib/screeningTags";
-import { displayFilmFormats, filmFormatsTooltip } from "@/lib/formats";
-import { displayLanguage, languageTooltip } from "@/lib/languages";
+import { screeningTooltip } from "@/lib/screeningTooltip";
+import { displayFilmFormats } from "@/lib/formats";
+import { displayLanguage } from "@/lib/languages";
 import { CINEMA_LABEL } from "@/lib/cinemas";
 import { certColor } from "@/lib/certs";
 import { formatDayFriendly, formatDayDate } from "@/lib/date";
@@ -135,18 +135,10 @@ export default function FilmCard({
       (!planDates || planDates.has(s.date)) &&
       !isSelected &&
       !isPartner;
-    // Same three builders composing the same string as the native `title` did — what changed is
-    // only what renders it (CLAUDE.md decision #22). A pill with nothing to explain skips the
-    // Radix wrapper rather than mounting a tooltip that can never open. The text also goes on
-    // `aria-label`, since a Radix tooltip is a hover/focus surface and touch never opens one.
-    const tip =
-      [
-        screeningTagsTooltip(s.screeningTags),
-        filmFormatsTooltip(s.screeningTags),
-        languageTooltip(s.screeningTags),
-      ]
-        .filter(Boolean)
-        .join(" · ") || undefined;
+    // A pill with nothing to explain skips the Radix wrapper rather than mounting a tooltip that
+    // can never open. The text also goes on `aria-label`, since a Radix tooltip is a hover/focus
+    // surface and touch never opens one (CLAUDE.md decision #22).
+    const tip = screeningTooltip(s.screeningTags);
 
     const pill = (
       <div
@@ -319,7 +311,6 @@ export default function FilmCard({
               target="_blank"
               rel="noreferrer"
               aria-label="View on Letterboxd"
-              title="Letterboxd"
               className="inline-flex items-center transition-opacity hover:opacity-70"
             >
               <LetterboxdLogo />

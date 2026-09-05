@@ -1,3 +1,4 @@
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { displayFilmFormats, type FilmFormat } from "@/lib/formats";
 
 // Two renderings of a film-format descriptor (35mm / 70mm / IMAX), parallel to
@@ -10,7 +11,7 @@ import { displayFilmFormats, type FilmFormat } from "@/lib/formats";
 //    a gate; IMAX (digital) is a static plaque in the IMAX brand blue instead.
 //  - <FilmFormatMarks> — a bare ratio-shaped rectangle after the time on a pill / plan row,
 //    the format equivalent of the special-screening ☻ mark (IMAX blue, others ink). The pill/row
-//    button carries the hover tooltip (via filmFormatsTooltip), not the mark itself.
+//    button carries the hover tooltip (via lib/screeningTooltip.ts), not the mark itself.
 // Decorative, so per CLAUDE.md decision #7 the print boxes use --color-fg / --color-bg, never
 // the gold accent; IMAX's blue is a third-party brand colour, the one allowed exception here
 // (like the Letterboxd mark).
@@ -45,6 +46,9 @@ function Perforations({ side }: { side: "left" | "right" }) {
   );
 }
 
+// The box explains only its own format — unlike a pill or a plan row, which merge strand +
+// format + language into one string (lib/screeningTooltip.ts). Radix rather than a native
+// `title`, same as everywhere else; the `aria-label` still carries the text for touch and AT.
 function Box({ format }: { format: FilmFormat }) {
   const tip = `${format.title} — ${format.description}`;
   const size = { width: `${TAG_WIDTH_REM}rem`, height: `${TAG_WIDTH_REM / format.ratio}rem` };
@@ -53,35 +57,44 @@ function Box({ format }: { format: FilmFormat }) {
   // normal digital projection, so no film-strip treatment. Same size/ratio as the print boxes.
   if (!format.print) {
     return (
-      <span
-        role="img"
-        aria-label={tip}
-        title={tip}
-        className="inline-flex shrink-0 cursor-default items-center justify-center rounded-[3px] px-0.5 text-center text-[0.58rem] font-black uppercase leading-none tracking-tight text-white"
-        style={{ ...size, background: format.brandColor ?? "var(--color-fg)" }}
-      >
-        {format.label}
-      </span>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <span
+            role="img"
+            aria-label={tip}
+            className="inline-flex shrink-0 cursor-default items-center justify-center rounded-[3px] px-0.5 text-center text-[0.58rem] font-black uppercase leading-none tracking-tight text-white"
+            style={{ ...size, background: format.brandColor ?? "var(--color-fg)" }}
+          >
+            {format.label}
+          </span>
+        </TooltipTrigger>
+        <TooltipContent>{tip}</TooltipContent>
+      </Tooltip>
     );
   }
 
   return (
-    <span
-      role="img"
-      aria-label={tip}
-      title={tip}
-      className="relative inline-flex shrink-0 cursor-default overflow-hidden rounded-[3px] bg-fg text-bg text-[0.58rem] font-black uppercase leading-none tracking-tight"
-      style={size}
-    >
-      {/* The label rides a two-copy vertical reel scrolling on a seamless loop, so the box reads
-          as a frame of film advancing through the gate. The perforation rails stay put. */}
-      <span className="flm-filmstrip-reel" aria-hidden="true">
-        <span className="flm-filmstrip-frame">{format.label}</span>
-        <span className="flm-filmstrip-frame">{format.label}</span>
-      </span>
-      <Perforations side="left" />
-      <Perforations side="right" />
-    </span>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <span
+          role="img"
+          aria-label={tip}
+          className="relative inline-flex shrink-0 cursor-default overflow-hidden rounded-[3px] bg-fg text-bg text-[0.58rem] font-black uppercase leading-none tracking-tight"
+          style={size}
+        >
+          {/* The label rides a two-copy vertical reel scrolling on a seamless loop, so the box
+              reads as a frame of film advancing through the gate. The perforation rails stay
+              put. */}
+          <span className="flm-filmstrip-reel" aria-hidden="true">
+            <span className="flm-filmstrip-frame">{format.label}</span>
+            <span className="flm-filmstrip-frame">{format.label}</span>
+          </span>
+          <Perforations side="left" />
+          <Perforations side="right" />
+        </span>
+      </TooltipTrigger>
+      <TooltipContent>{tip}</TooltipContent>
+    </Tooltip>
   );
 }
 
