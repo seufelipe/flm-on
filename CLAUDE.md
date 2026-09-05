@@ -867,9 +867,16 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
       three-tracks-with-tick-marks. Then the four notes over the film list (#22): **`Star`**
       (shared with the day pickers), **`CalendarClock`** on "Next week (maybe)", **`CalendarOff`**
       and **`SearchX`** on the two empty states. Then **`FaceGrinning`** as the specials mark
-      (#13), replacing the last of the two text glyphs.
-    - The `▲`/`▼` on the filter-bar triggers and the `×` close controls are still text
-      characters. Converting them is a live option, deliberately not taken yet.
+      (#13), replacing the last of the two text glyphs. Then **`ChevronsUpDown`** on the
+      `FilterMenu` triggers (#7), replacing the `▲`/`▼` pair.
+    - **The filter-bar trigger no longer flips its mark on open.** `ChevronsUpDown` is the
+      combobox indicator — both arrows at once, meaning "this opens a list", where `▼`/`▲`
+      claimed to report state. Nothing is lost: the trigger already says it is open by pressing
+      in (and, when it is narrowing the view, by staying gold), and the open menu is right there
+      under it. Sized `size-[1.1em]` by the caller like every other icon here, so it tracks the
+      trigger's own type.
+    - The `×` close controls are still text characters. Converting them is a live option,
+      deliberately not taken yet.
 
 24. **Below `sm:` both overlays are a vaul drawer; above it they stay the centred modal**
     (`components/ui/drawer.tsx`, `lib/useIsCompact.ts`). The user's call after feeling both on a

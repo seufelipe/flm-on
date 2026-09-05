@@ -13,6 +13,7 @@ import type { UpcomingFilm } from "@/lib/upcoming";
 import { formatTimeframeRange, type Timeframe, type TimeframeDef } from "@/lib/timeframe";
 import { CINEMA_LABEL, CINEMA_LOCATION } from "@/lib/cinemas";
 import { formatDayFriendly, formatDayDate } from "@/lib/date";
+import { ChevronsUpDown } from "lucide-react";
 import { CinemaWeekendMark } from "./CinemaWeekendBanner";
 import { CINEMA_WEEKEND_NAME, isCinemaWeekendDay } from "@/lib/cinemaWeekend";
 import {
@@ -312,9 +313,7 @@ function FilterMenu<T>({
       <DropdownMenuTrigger asChild>
         <button type="button" className={`shrink-0 ${BAR_CONTROL} ${triggerClass}`}>
           <span className="font-bold uppercase text-sm tracking-wide">{triggerLabel}</span>
-          <span aria-hidden="true" className="text-[0.7em] leading-none">
-            {open ? "▲" : "▼"}
-          </span>
+          <ChevronsUpDown aria-hidden="true" className="size-[1.1em] shrink-0" />
         </button>
       </DropdownMenuTrigger>
 
