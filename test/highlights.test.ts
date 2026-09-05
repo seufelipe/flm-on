@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { isHighlight } from "@/lib/highlights";
 import type { Screening } from "@/lib/scrapers/types";
 
-// The "☻ Specials, etc" lens, and what the app is allowed to volunteer unprompted
+// The "Specials, etc" lens, and what the app is allowed to volunteer unprompted
 // (lib/startingPoints.ts). CLAUDE.md decision #14.
 const screening = (over: Partial<Screening> = {}): Screening =>
   ({

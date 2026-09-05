@@ -22,6 +22,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { SpecialsMark } from "./ScreeningTags";
 import { SEGMENT_BASE, controlSegmentClass } from "./controlSegment";
 import PreferencesButton from "./PreferencesButton";
 
@@ -61,11 +62,9 @@ function SpecialsToggle({
       onClick={onToggle}
       className={`${shell} ${controlSegmentClass(on)}`}
     >
-      {/* The same flat-ink smiley the special-screening marks use (decision #13) — this is the
-          lens that surfaces them. Decorative; the label carries the meaning. */}
-      <span aria-hidden="true" className="text-[1.25em] leading-none [font-variant-emoji:text]">
-        {"☻︎"}
-      </span>
+      {/* The same mark the special-screening pills wear (decision #13) — this is the lens that
+          surfaces them. Decorative; the label carries the meaning. */}
+      <SpecialsMark className="size-[1.15em]" />
       <span className="font-bold uppercase text-sm tracking-wide">Specials, etc</span>
     </button>
   );
@@ -74,7 +73,7 @@ function SpecialsToggle({
 // --- shared: the National Cinema Weekend mark ------------------------------------------------
 // A ★ beside the two campaign days in both day pickers (CLAUDE.md decision #19). Ink, not accent:
 // a selected segment is already filled gold, and the mark has to stay readable on it. Deliberately
-// not the ☻ of a special screening — that means a strand within a day, this means the whole day
+// not the specials mark — that means a strand within a day, this means the whole day
 // is cheap. The glyph is decorative, so the name rides along as screen-reader text (safe inside
 // the button: SEGMENT_BASE is `relative`, so the absolutely-positioned sr-only span can't escape
 // the dock's horizontal scroll box and give the row a phantom scrollbar).

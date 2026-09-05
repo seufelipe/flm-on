@@ -146,7 +146,7 @@ Thursday), writes `data/staging-batch.json`, prints the review report, and **wri
 sorted.
 
 ⚠️ **The label is the ONLY thing a Big Screen Classics film gets.** The strand itself is
-deliberately unsurfaced in the UI (`UNSURFACED` in `lib/screeningTags.ts`, decision #13) — no ☻,
+deliberately unsurfaced in the UI (`UNSURFACED` in `lib/screeningTags.ts`, decision #13) — no mark,
 no sticker, and it no longer passes the Highlights lens on its own. So deleting a `classic!`
 prefill at review doesn't demote that film to a plainer badge, it removes it from the "Specials,
 etc" view entirely. Trim on that basis: keep a label for anything genuinely worth surfacing, and

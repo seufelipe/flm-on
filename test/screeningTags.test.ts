@@ -2,11 +2,12 @@ import { describe, it, expect } from "vitest";
 import { displayScreeningTags, isUnsurfacedTag } from "@/lib/screeningTags";
 
 describe("displayScreeningTags", () => {
-  it("maps a known descriptor to a symbol + session name", () => {
+  it("maps a known descriptor to its session name + tooltip copy", () => {
     const out = displayScreeningTags(["Parent and Baby"]);
     expect(out).toHaveLength(1);
     expect(out[0].label).toBe("parent & baby");
-    expect(out[0].symbol).toContain("☻");
+    expect(out[0].title).toBe("Parent & Baby");
+    expect(out[0].description).toBeTruthy();
   });
 
   it("is case-insensitive and trims", () => {
@@ -27,7 +28,6 @@ describe("displayScreeningTags", () => {
   it("surfaces the Mystery Matinee strand (attached by ScreeningBrowser, not the scraper)", () => {
     const [m] = displayScreeningTags(["Mystery Matinee"]);
     expect(m.label).toBe("mystery matinee");
-    expect(m.symbol).toContain("☻");
   });
 
   it("flags Mystery Matinee as mark:false — a surfaced special with no glyph", () => {
@@ -40,7 +40,6 @@ describe("displayScreeningTags", () => {
   it("surfaces the curated-strand screenings (book club, silver screen)", () => {
     const [bookClub] = displayScreeningTags(["Cinema Book Club"]);
     expect(bookClub.label).toBe("cinema book club");
-    expect(bookClub.symbol).toContain("☻");
     expect(displayScreeningTags(["Silver Screen"])[0].label).toBe("silver screen");
   });
 

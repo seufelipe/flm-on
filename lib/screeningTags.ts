@@ -4,10 +4,9 @@
 // vs dubbed, captions, print gauge) are captured in the data but deliberately not shown — to
 // add one, give it an entry below.
 //
-// U+FE0E forces the text (monochrome) presentation of the smiley so it matches the flat ink UI
-// rather than rendering as a colour emoji. The filled ☻ reads better at small sizes than the
-// outline ☺.
-const MARK = "☻︎";
+// No `symbol` here: every surfaced strand wears the same mark, so it belongs to the renderer,
+// not the data. It's <SpecialsMark> (lucide's FaceGrinning) in components/ScreeningTags.tsx — one
+// component for the pill, the card sticker and the "Specials, etc" lens. See decision #13.
 
 // `label` is the lowercase form shown in the sticker; `title` + `description` fill the tooltip
 // (and the sticker's accessible name). Descriptions started as Light House's own `data-tooltip`
@@ -18,13 +17,12 @@ const MARK = "☻︎";
 // meaning something different. Keep them under ~90 characters for the same reason: the tooltip
 // is `max-w-[16rem]`, and past that it stops being a glance.
 interface KnownTag {
-  symbol: string;
   label: string;
   title: string;
   description: string;
-  // Whether this tag renders a visible ☻ mark / marquee sticker. Default true. A `false` tag
-  // still counts as a surfaced special (Highlights filter, tooltip) but shows no glyph — for
-  // Mystery Matinee, whose card already has its own redacted treatment, so the badge is noise.
+  // Whether this tag renders a visible <SpecialsMark> / marquee sticker. Default true. A
+  // `false` tag still counts as a surfaced special (Highlights filter, tooltip) but shows no mark
+  // — for Mystery Matinee, whose card already has its own redacted treatment, so it's noise.
   mark?: boolean;
 }
 
@@ -52,31 +50,26 @@ export function isUnsurfacedTag(tag: string): boolean {
 
 const KNOWN: Record<string, KnownTag> = {
   "parent and baby": {
-    symbol: MARK,
     label: "parent & baby",
     title: "Parent & Baby",
     description: "The volume is turned down and the lights kept low for the baby's comfort.",
   },
   relaxed: {
-    symbol: MARK,
     label: "relaxed",
     title: "Relaxed screening",
     description: "Lower sound, dimmed lights, and freedom to move about or make noise.",
   },
   "autism friendly": {
-    symbol: MARK,
     label: "relaxed",
     title: "Relaxed screening",
     description: "Lower sound, dimmed lights, and freedom to move about or make noise.",
   },
   "cinema book club": {
-    symbol: MARK,
     label: "cinema book club",
     title: "Cinema Book Club",
     description: "A monthly book-club pick, with a group chat after the screening.",
   },
   "silver screen": {
-    symbol: MARK,
     label: "silver screen",
     title: "Silver Screen",
     description: "A matinee for over-65s, with free tea or coffee and a short introduction.",
@@ -84,7 +77,6 @@ const KNOWN: Record<string, KnownTag> = {
   // Cineworld strands (Showtime.Event.* — see lib/scrapers/cineworld.ts). "Big Screen Classics"
   // is deliberately absent; see UNSURFACED above.
   "movies for juniors": {
-    symbol: MARK,
     label: "movies for juniors",
     title: "Movies for Juniors",
     description: "A cut-price weekend-morning screening of a recent family film.",
@@ -93,7 +85,6 @@ const KNOWN: Record<string, KnownTag> = {
   // scraped descriptor — lib/mystery.ts detects it from the title and ScreeningBrowser attaches
   // this tag so it flows through the same mark / sticker / Highlights path as the rest.
   "mystery matinee": {
-    symbol: MARK,
     label: "mystery matinee",
     title: "Mystery Matinee",
     description: "The film isn't announced until it starts.",

@@ -62,7 +62,7 @@ The two pipeline outputs the **UI** actually depends on:
   plan's ghost rows — dropping any film already in the plan **on any day** (decision #5).
 - `lib/highlights.ts` — `isHighlight(screening, labels)`: the single definition of "interesting"
   (a surfaced special / a film format / a non-English original language / an **open-captioned**
-  session / a `film-labels.json` film). Gates the "☻ Specials, etc" lens (#14) *and* ranks the empty-plan seeds.
+  session / a `film-labels.json` film). Gates the "Specials, etc" lens (#14) *and* ranks the empty-plan seeds.
 - `lib/startingPoints.ts` — `startingPoints(candidates, labels, spreadDays)`: what an **empty**
   plan offers, since there's no itinerary to slot into. One screening per timeframe
   (Early/Mid/Late), **specials first** (`isHighlight`), then — when `spreadDays` is on ("This
@@ -83,9 +83,11 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
 - `lib/screeningTags.ts` — `displayScreeningTags` → surfaced special-audience / event strands
   (`Parent and Baby`, `Relaxed`/`Autism Friendly` → one `relaxed`, `Cinema Book Club`,
   `Silver Screen`, `Movies for Juniors`, `Mystery Matinee`). Each →
-  `{ symbol, label, title, description, mark? }`. `mark: false` (Mystery Matinee) = still a
-  surfaced special (Highlights, tooltip) but no `☻` glyph / `FilmNotes` segment.
-  `<ScreeningTagMarks>` = the bare `☻` on a pill / `DayPlan` row. `UNSURFACED` / `isUnsurfacedTag`
+  `{ label, title, description, mark? }`. `mark: false` (Mystery Matinee) = still a
+  surfaced special (Highlights, tooltip) but no mark / `FilmNotes` segment.
+  `<SpecialsMark>` (`components/ScreeningTags.tsx`) is the mark itself — lucide's `FaceGrinning`, shared by
+  all three surfaces that carry it; `<ScreeningTagMarks>` is the bare one on a pill / `DayPlan`
+  row. `UNSURFACED` / `isUnsurfacedTag`
   is the opposite list — tags we recognise and deliberately don't show (`Big Screen Classics`),
   read only by the batch report. Decision #13.
 - `lib/formats.ts` — `displayFilmFormats` → `35mm` / `70mm` / `IMAX` (`{ id, label, ratio, print,
@@ -131,8 +133,8 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   phantom horizontal scrollbar; `-mx-8 px-8` full-bleeds it past the card padding).
 - `components/FilmNotes.tsx` + `components/MarqueeSticker.tsx` — the **one** dark scrolling
   sticker per card (`FilmNotes`, beside the year on the title line), carrying the special-screening name(s)
-  *and* the curated editorial label (decision #11) joined by ` · ` ("☻ parent & baby ·
-  4k restoration"). The sticker *names* the strand; its tooltip is where the strand is
+  *and* the curated editorial label (decision #11) joined by ` · ` (`<SpecialsMark>` + "parent &
+  baby · 4k restoration"). The sticker *names* the strand; its tooltip is where the strand is
   *explained* — the sticker is the app's one dark surface, so a light tooltip beside it reads as
   an answer rather than a second sticker. **The tooltip is the strands only, and a label-only card
   gets none**: a curated label is already fully readable on the sticker, so repeating it on hover
@@ -143,8 +145,8 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   speed), plus an inline `animation-duration` (~40px/s, 4s floor). `--color-fg`/`--color-bg`,
   never accent; reduced-motion → static. The `tilted` header sticker also gets
   `will-change: transform` (its own layer — it sits in a rotated wrapper). `filmSpecialTags` (in `ScreeningBrowser`) feeds it the tags across the
-  film's *whole* preferred set, so "☻ parent & baby" stays on the card even on a day that
-  session is filtered out. The per-pill `☻` marks stay per-session.
+  film's *whole* preferred set, so "parent & baby" stays on the card even on a day that
+  session is filtered out. The per-pill marks stay per-session.
 - `components/ScreeningTags.tsx` / `FilmFormats.tsx` / `ScreeningLanguage.tsx` — the pill/card
   renderers for the three `screeningTags` readers. `<LanguageTag>` = the per-film language name
   as a `--color-dim` speech bubble on the meta line — a `"use client"` component that measures
@@ -412,9 +414,26 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
     **and none inside a description**, kept under ~90 characters. A pill can show a strand and a
     format at once (joined by ` · `), so a description that spends its own em-dashes leaves four
     or five of them in a row each meaning something different; and past ~90 characters at
-    `max-w-[16rem]` the tooltip stops being a glance. Rendered as a bare `☻` on each matching pill + the name once per card
+    `max-w-[16rem]` the tooltip stops being a glance. Rendered as a bare `<SpecialsMark>` on each matching pill + the name once per card
     in `FilmNotes` — rationale (user): once the card names it you recognise the mark, so don't
-    repeat words on every pill. The `FilmNotes` sticker holds **multiple** notes joined by ` · `
+    repeat words on every pill.
+    - **The mark is lucide's `FaceGrinning`** (`<SpecialsMark>` in `components/ScreeningTags.tsx`),
+      which replaced the `☻` text glyph — see decision #23 for why that one moved to an icon after
+      the original rule had kept it as text. **It is still the same smiley**: the glyph became an
+      icon, the mark itself didn't change. (A `Gem` was tried in passing and rejected — the user
+      likes seeing the face, and the whole point of `☻` was that it reads as one.) **One component serves all three surfaces** — the pill /
+      plan row, the `FilmNotes` sticker that names the strand, and the "Specials, etc" lens that
+      filters on it — so the mark you scan a row of showtimes for can't drift from the one on the
+      control that shows them. Same shape as `<CinemaWeekendMark>` (#19), and for the same reason.
+      Lucide's outline, **not** the star's `fill-current`: the eyes and mouth are strokes drawn
+      *inside* the circle, so filling it paints over the face. That does invert the old glyph's
+      rationale — `☻` was picked over `☺` because a filled smiley held up better at small sizes —
+      but a 2px-stroked circle with dot eyes reads at pill size where a hairline `☺` didn't;
+      confirmed in the browser at 380px and at desktop width. The caller sizes it (`size-[1.1em]` on a pill,
+      `1.15em` in the sticker and on the lens) — an icon fills its box where the smiley's ink sat
+      well inside its em, so 1em would have read smaller than the glyph it replaced.
+      `KnownTag` no longer carries a `symbol`: every surfaced strand wears the same mark, so it
+      belongs to the renderer, not the data. The `FilmNotes` sticker holds **multiple** notes joined by ` · `
     (the old "one sticker max" rule is gone); `mark: false` tags contribute neither glyph nor
     name. Cineworld maps its `Showtime.Event.*` / `Showtime.Accessibility.AutismFriendly` onto
     this vocab (decision #16). `fetch:batch` prints
@@ -457,7 +476,7 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
       strand keeps only its long session); unknown runtime is never short. `kidsOnly` →
       `lib/certs.ts` `isKidFriendly` (IFCO `G`/`PG`/`12A` only; `15A`+ and *no listed cert*
       excluded).
-    - **The Highlights toggle** ("☻ Specials, etc") is a filter-bar `useState`, **not** a saved
+    - **The Highlights toggle** ("Specials, etc", wearing `<SpecialsMark>`) is a filter-bar `useState`, **not** a saved
       preference — ephemeral, first in the bar (the lens reached for most). On → `preferred`
       keeps only screenings that are a surfaced special / a film format / a **non-English
       original language** (`hasNonEnglishLanguage`) / an **open-captioned session**
@@ -596,7 +615,7 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
     - **Shown on a pinned Sat/Sun *and* on "This week"** (user's call): "This week" lists those
       days' screenings, so hiding the note there would keep the offer from the view most likely
       to be open. Not shown on an ordinary day, and never in the Next-week preview.
-    - **A star, not the specials `☻`** — that mark means a strand *within* a day; this means the
+    - **A star, not the specials smiley** — that mark means a strand *within* a day; this means the
       whole day is cheap. It **leads** the day name / the banner heading — the mark is what you're
       scanning the row for, so it shouldn't sit behind the label. Ink in both places, never
       accent: a selected day segment is already filled gold and the mark has to stay readable on
@@ -819,18 +838,26 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
     It's also in Next 16's built-in `optimizePackageImports` list, so a named import is
     tree-shaken with no config; verified on a real build — the one icon's path data ships in a
     single chunk and no other icon's does.
-    - **The one typographic mark that stays text is `☻`** (a surfaced special, #13), and the
-      reason is mechanical rather than stylistic: it rides inside `MarqueeSticker`'s scrolling
-      track ("☻ parent & baby · 4k restoration"), which measures one copy of that string and pins
-      the track to `2×` its width in px. An SVG in a measured text run is a real complication, and
-      the mark also sits at pill size among `OC` / `ST` / the ratio boxes, where it has to inherit
-      the type's size and weight exactly.
-    - **`★` did move** (National Cinema Weekend, #19) — the original rule covered both marks, and
-      it turned out not to hold for this one. The "it's read out" half was never true of the
-      glyph: `DayMark` has always rendered it `aria-hidden` with an `sr-only` name beside it, so
-      the label was doing that work, not the character. And it sits in plain flow text — a day
-      name, an alert's icon gutter — with nothing measuring it. Drawn `fill-current` so it stays
-      the solid star it was.
+    - **Both typographic marks have now moved to icons, and neither reason for keeping them
+      survived contact.** `★` went first (National Cinema Weekend, #19): the "it's read out" half
+      was never true of the glyph — `DayMark` has always rendered it `aria-hidden` with an
+      `sr-only` name beside it, so the label was doing that work, not the character — and it sits
+      in plain flow text with nothing measuring it. Drawn `fill-current` so it stays the solid
+      star it was.
+    - **Then `☻` went too** (a surfaced special, #13 — now `<SpecialsMark>`, lucide's
+      `FaceGrinning`, i.e. the same smiley redrawn as an icon). The
+      objection had been mechanical: the mark rides inside `MarqueeSticker`'s scrolling track,
+      which measures one copy of the string and pins the track to `2×` its width in px, and an SVG
+      in a measured text run looked like a real complication. **It isn't — it's the opposite.** An
+      icon sized in `em` has a deterministic width that doesn't depend on which font has loaded,
+      so it's *more* stable under that measure than the glyph was; confirmed in the browser, where
+      the track measures exactly `2×` the item and the two copies agree to a fraction of a pixel.
+      (The `document.fonts.ready` re-measure still earns its keep for the text beside it.) The
+      other half — that at pill size it sits among `OC` / `ST` / the ratio boxes and has to
+      inherit the type's size and weight — is handled the way `CinemaWeekendMark` handles it: the
+      caller sizes it in `em` and `currentColor` does the rest.
+    - **No text glyph is load-bearing any more.** If a third one ever comes up, the bar is
+      whether an `em`-sized icon can carry it — not the old blanket rule.
     - Likewise untouched: the **Letterboxd** three-dot mark (a brand identity, #7), the
       `<LanguageTag>` speech bubble (drawn to a measured text box, #17) and the film-format strips
       (#15) — all bespoke SVG that no icon set has.
@@ -839,7 +866,8 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
       kept the round knobs, which was the trade the user picked over `SlidersHorizontal`'s
       three-tracks-with-tick-marks. Then the four notes over the film list (#22): **`Star`**
       (shared with the day pickers), **`CalendarClock`** on "Next week (maybe)", **`CalendarOff`**
-      and **`SearchX`** on the two empty states.
+      and **`SearchX`** on the two empty states. Then **`FaceGrinning`** as the specials mark
+      (#13), replacing the last of the two text glyphs.
     - The `▲`/`▼` on the filter-bar triggers and the `×` close controls are still text
       characters. Converting them is a live option, deliberately not taken yet.
 
