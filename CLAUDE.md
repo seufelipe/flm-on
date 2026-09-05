@@ -59,8 +59,8 @@ The two pipeline outputs the **UI** actually depends on:
   `bestAdditionPerSlot(additions, itinerary)` keeps the single tightest fit per open slot for the
   plan's ghost rows — dropping any film already in the plan **on any day** (decision #5).
 - `lib/highlights.ts` — `isHighlight(screening, labels)`: the single definition of "interesting"
-  (a surfaced special / a film format / a non-English original language / a `film-labels.json`
-  film). Gates the "☻ Specials, etc" lens (#14) *and* ranks the empty-plan seeds.
+  (a surfaced special / a film format / a non-English original language / an **open-captioned**
+  session / a `film-labels.json` film). Gates the "☻ Specials, etc" lens (#14) *and* ranks the empty-plan seeds.
 - `lib/startingPoints.ts` — `startingPoints(candidates, labels, spreadDays)`: what an **empty**
   plan offers, since there's no itinerary to slot into. One screening per timeframe
   (Early/Mid/Late), **specials first** (`isHighlight`), then — when `spreadDays` is on ("This
@@ -80,15 +80,17 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
 
 - `lib/screeningTags.ts` — `displayScreeningTags` → surfaced special-audience / event strands
   (`Parent and Baby`, `Relaxed`/`Autism Friendly` → one `relaxed`, `Cinema Book Club`,
-  `Silver Screen`, `Big Screen Classics`, `Movies for Juniors`, `Mystery Matinee`). Each →
-  `{ symbol, label, title, description, mark? }`. `mark: false` (Mystery Matinee, Big Screen
-  Classics) = still a surfaced special (Highlights, tooltip) but no `☻` glyph / `FilmNotes`
-  segment. `<ScreeningTagMarks>` = the bare `☻` on a pill / `DayPlan` row. Decision #13.
+  `Silver Screen`, `Movies for Juniors`, `Mystery Matinee`). Each →
+  `{ symbol, label, title, description, mark? }`. `mark: false` (Mystery Matinee) = still a
+  surfaced special (Highlights, tooltip) but no `☻` glyph / `FilmNotes` segment.
+  `<ScreeningTagMarks>` = the bare `☻` on a pill / `DayPlan` row. `UNSURFACED` / `isUnsurfacedTag`
+  is the opposite list — tags we recognise and deliberately don't show (`Big Screen Classics`),
+  read only by the batch report. Decision #13.
 - `lib/formats.ts` — `displayFilmFormats` → `35mm` / `70mm` / `IMAX` (`{ id, label, ratio, print,
   brandColor? }`). Decision #15.
-- `lib/languages.ts` — `displayLanguage` → `{ language?, subtitled, dubbed } | null` (original
-  non-English language + per-session caption state); `matchesLanguagePref` for the Language
-  preference. Decision #17.
+- `lib/languages.ts` — `displayLanguage` → `{ language?, subtitled, openCaptioned, dubbed } | null`
+  (original non-English language + per-session caption state); `matchesLanguagePref` for the
+  Language preference. Decision #17.
 
 ### UI (all client, under `ScreeningBrowser`)
 
@@ -130,7 +132,10 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   *and* the curated editorial label (decision #11) joined by ` · ` ("☻ parent & baby ·
   4k restoration"). The sticker *names* the strand; its tooltip is where the strand is
   *explained* — the sticker is the app's one dark surface, so a light tooltip beside it reads as
-  an answer rather than a second sticker. `MarqueeSticker` is `"use client"`: measures one copy and pins the track to
+  an answer rather than a second sticker. **The tooltip is the strands only, and a label-only card
+  gets none**: a curated label is already fully readable on the sticker, so repeating it on hover
+  gave a tooltip identical to the thing being hovered. The `aria-label` still carries the label,
+  since the visible marquee track is `aria-hidden` and that's its only copy. `MarqueeSticker` is `"use client"`: measures one copy and pins the track to
   `2×` that width in px so the keyframe's plain `translate3d(-50%…)` lands exactly on one copy
   (var-free keyframe → runs on the compositor; a `%`-of-`max-content` translate stutters at
   speed), plus an inline `animation-duration` (~40px/s, 4s floor). `--color-fg`/`--color-bg`,
@@ -143,7 +148,7 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   as a `--color-dim` speech bubble on the meta line — a `"use client"` component that measures
   its own text box (ResizeObserver) and draws the rounded-rect-plus-tail outline as one
   continuous SVG `<path>` (the box model can't miter a horizontal border into a 45° tail arm);
-  `<LanguageMarks>` = the per-showtime `ST`/`Dub` on a pill.
+  `<LanguageMarks>` = the per-showtime `OC`/`ST`/`Dub` on a pill.
   `<FilmFormatTag>` = a box on the meta line sized so a bigger format is taller; 35mm/70mm
   are an animated film-strip (`print: true`), IMAX is a static IMAX-blue plaque.
 - `lib/screeningTooltip.ts` — `screeningTooltip(tags)`: the three modules' `*Tooltip` helpers
@@ -381,15 +386,35 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
 13. **Special screenings get a per-session marker.** Light House tags them per showtime in
     `.time > em.additional` (`Parent and Baby`, `Cinema Book Club`, `Silver Screen`, plus caption
     notes `Subtitled`/`Dubbed`/`Open Captioned`); the adapter reads them into `Screening.screeningTags`
-    verbatim. `lib/screeningTags.ts` `KNOWN` is the gate on what surfaces (widening = one entry);
-    each entry carries a curated `title` + `description` (from Light House's `data-tooltip`) used
-    as the hover tooltip. Rendered as a bare `☻` on each matching pill + the name once per card
+    verbatim. `lib/screeningTags.ts` `KNOWN` is the gate on what surfaces (widening = one entry),
+    and `UNSURFACED` is its counterpart — tags we've *decided* not to show, kept out of the weekly
+    report's "unrecognised" list so it stays a list of genuinely new strands;
+    each entry carries a curated `title` + `description` (originally Light House's `data-tooltip`)
+    used as the hover tooltip. **House style for those descriptions, and the format ones in
+    `lib/formats.ts`: exactly one ` — ` per rendered string** — the title/description separator —
+    **and none inside a description**, kept under ~90 characters. A pill can show a strand and a
+    format at once (joined by ` · `), so a description that spends its own em-dashes leaves four
+    or five of them in a row each meaning something different; and past ~90 characters at
+    `max-w-[16rem]` the tooltip stops being a glance. Rendered as a bare `☻` on each matching pill + the name once per card
     in `FilmNotes` — rationale (user): once the card names it you recognise the mark, so don't
     repeat words on every pill. The `FilmNotes` sticker holds **multiple** notes joined by ` · `
     (the old "one sticker max" rule is gone); `mark: false` tags contribute neither glyph nor
     name. Cineworld maps its `Showtime.Event.*` / `Showtime.Accessibility.AutismFriendly` onto
     this vocab (decision #16). `fetch:batch` prints
     a "Special screenings" + "unrecognised screening tags" section for review.
+    - **`Big Screen Classics` is deliberately NOT surfaced** (user's call). Every other strand in
+      `KNOWN` *does* something to the screening — Parent & Baby turns the sound down, Relaxed dims
+      the lights, Silver Screen pours the tea, Movies for Juniors cuts the price. Big Screen
+      Classics only states which film was picked, and Cineworld is the only one of the three
+      cinemas that badges that, so an identical re-release at the IFI or Light House carried no
+      mark and the tag read as a difference between the *films* rather than between the cinemas'
+      marketing. The selection is still worth surfacing — via `data/film-labels.json`, which
+      `fetch:batch` still pre-fills from this very tag ("40th anniversary", `classic!`) for the
+      user to review. Curated beats automatic, so the label is the whole of what the strand gets;
+      trimming one at review really does mean that film shows nothing. **The raw tag stays in
+      `showtimes.json`** — the prefill reads it — and `isUnsurfacedTag` keeps it out of the
+      report's unrecognised list. Its films no longer pass the Highlights lens on the strand
+      alone, only on their label.
     - Not tagged: IFI's special-audience strands (only Cineworld + Light House are wired); IFI's
       "Archive at Lunchtime" strand (sole signal is the `filmPageUrl` slug — slug-derivation
       deliberately not done).
@@ -418,8 +443,12 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
     - **The Highlights toggle** ("☻ Specials, etc") is a filter-bar `useState`, **not** a saved
       preference — ephemeral, first in the bar (the lens reached for most). On → `preferred`
       keeps only screenings that are a surfaced special / a film format / a **non-English
-      original language** (`hasNonEnglishLanguage` — a subtitled/open-captioned session of an
-      English film does *not* count) / a `film-labels.json` film. This is also what keeps
+      original language** (`hasNonEnglishLanguage`) / an **open-captioned session**
+      (`hasOpenCaptions`) / a `film-labels.json` film. The two caption cases split here, and the
+      split is the point: open captions are burned in, there are a handful a week, and the people
+      who need them go looking for them specifically — which is exactly the test this lens
+      applies, so they count (user's call, reversing the original rule). A plain subtitle track on
+      an English film is neither scarce nor sought, so it still doesn't. This is also what keeps
       Cineworld's ordinary multiplex programme
       out of view (decision #16) — with it off and Cineworld on, you get the full slate. The
       empty-state Reset clears prefs **and** this toggle.
@@ -473,20 +502,38 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
     record and the rest: the `fetch-films` skill's `reference/cinemas.md`.
 
 17. **International / foreign-language support — `lib/languages.ts`.** The third `screeningTags`
-    reader. `displayLanguage` → `{ language?, subtitled, dubbed } | null` (`LANGUAGE_NAMES`, ~90
-    entries).
+    reader. `displayLanguage` → `{ language?, subtitled, openCaptioned, dubbed } | null`
+    (`LANGUAGE_NAMES`, ~90 entries).
     - **Language is per-film** (from Letterboxd, folded into every screening's `screeningTags` at
       fetch time — so it covers every non-English film across all three cinemas, not just the
-      ones a cinema tags), while **subtitled/dubbed is per-session** (the cinema's own caption
+      ones a cinema tags), while **the caption state is per-session** (the cinema's own caption
       tags, with `Subtitled` assumed for an untagged non-English screening — except animation,
-      which often screens dubbed). How that's resolved and how to correct it: `fetch-films` skill.
+      which often screens dubbed, and except a session that already carries `Open Captioned`).
+      How that's resolved and how to correct it: `fetch-films` skill.
+    - **Open captions are their own state, not a flavour of `subtitled`.** They're burned into
+      the print, always on screen, and carry speaker IDs and sound effects — and the two tags mean
+      different things to different people: on a non-English film subtitles are *translation*,
+      while open captions on an English film are an *accessibility* screening for deaf and
+      hard-of-hearing viewers. Collapsing them (as `displayLanguage` used to) made those two
+      sessions describe themselves with the identical sentence, which is exactly what someone
+      choosing between them needs told apart. So: a separate `openCaptioned` flag, its own pill
+      mark `OC`, and two tooltip sentences — "In Korean, with open captions" (the language
+      already says what they're for; "open" only adds that they can't be switched off) versus
+      "With open captions, including sound descriptions" (on an English film, what they carry
+      beyond dialogue *is* the reason to pick that session). `captionMark` returns `OC` ahead of
+      `ST`: an open-captioned session is always captioned, where `ST` only promises a track.
     - Render: `<LanguageTag>` = the language name only (meta-line chip); `<LanguageMarks>` = the
       per-showtime `OC`/`ST`/`Dub` on a pill (not repeated with the language). Not part of the
       `FilmNotes` sticker. **A non-English original language counts toward Highlights
-      (`hasNonEnglishLanguage`); a subtitled/dubbed session of an English film does not.**
+      (`hasNonEnglishLanguage`), and so does an open-captioned session (`hasOpenCaptions`, #14);
+      a plain subtitled or dubbed session of an English film does not.**
     - The **`language` preference** (segmented control `any`/`english`/`non-english`,
       `matchesLanguagePref`) filters `preferred` on whether `displayLanguage` found a non-English
       original language. `dubbed` is no longer filtered on — just the pill "Dub" mark.
+    - **Every tooltip sentence opens with a preposition** ("In Tamil…", "With open captions…",
+      "Dubbed into English"), so a row of pills reads in one voice; the dubbed-with-a-language
+      case is "Originally in Spanish, dubbed into English" for that reason rather than the
+      "Spanish film…" it used to be.
 
 18. **"Next week" preview — the unconfirmed tease** (`lib/upcoming.ts`, `data/upcoming.json`).
     The day picker's **trailing "Next week (maybe)" affordance** (`ScreeningBrowser` — it

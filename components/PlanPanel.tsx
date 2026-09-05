@@ -17,9 +17,11 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 // panel doesn't square off that card's rounded corners.
 // Import can add and update but never delete, so a film taken back out of the plan stays in the
 // calendar until it's removed there (CLAUDE.md decision #21). Too long for the button's label and
-// too surprising to leave unsaid — the first re-import would otherwise read as a bug.
+// too surprising to leave unsaid — the first re-import would otherwise read as a bug. "never
+// removes them" is carrying that whole asymmetry: spelling out the scenario it applies to cost
+// another clause and made this too long to take in on a hover.
 const EXPORT_CAVEAT =
-  "Download your plan as a calendar file. Re-exporting updates these events; removing a film here won't remove it from your calendar.";
+  "Saves your plan as a calendar file. Re-exporting updates those events, never removes them.";
 
 interface Props {
   items: TimedScreening[];

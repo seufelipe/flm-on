@@ -132,8 +132,17 @@ async function withLetterboxdLinks(screenings: Screening[]): Promise<Screening[]
     // caption tag of its own, assume it's subtitled. Animation is the exception (English-dubbed
     // kids' versions are common, e.g. Kiki), so films Letterboxd files under "Animation" are left
     // unmarked unless the cinema said otherwise. CLAUDE.md decision #17.
+    // `openCaptioned` counts here as much as `subtitled` does: an open-captioned session already
+    // has English text on screen, so assuming a subtitle track on top of it would tag one
+    // screening as both (and the pill would then have to choose a mark).
     const caption = displayLanguage(screeningTags);
-    if (caption?.language && !caption.subtitled && !caption.dubbed && !match?.animated) {
+    if (
+      caption?.language &&
+      !caption.subtitled &&
+      !caption.openCaptioned &&
+      !caption.dubbed &&
+      !match?.animated
+    ) {
       screeningTags = [...(screeningTags ?? []), "Subtitled"];
     }
 

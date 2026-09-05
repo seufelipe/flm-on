@@ -39,9 +39,16 @@ export default function FilmNotes({
   const text = parts.flatMap((part, i) =>
     i === 0 ? [part] : [<Fragment key={`sep:${i}`}> · </Fragment>, part],
   );
+  // The accessible name is the whole sticker, label included — the visible marquee track is
+  // aria-hidden, so this is the only copy of it.
   const aria = [...specials.map((t) => `${t.title} — ${t.description}`), label]
     .filter(Boolean)
     .join(" · ");
+  // The tooltip is the strands only. A curated label ("4k restoration", "🇧🇷🇧🇷🇧🇷") is already
+  // fully readable on the sticker, so repeating it on hover produced a tooltip identical to the
+  // thing being hovered — which is the one thing a tooltip should never be. A label-only card
+  // therefore gets no tooltip at all.
+  const tip = specials.map((t) => `${t.title} — ${t.description}`).join(" · ");
 
   return (
     <>
@@ -55,14 +62,18 @@ export default function FilmNotes({
           actually explained ("Parent & Baby — The volume is turned down…"). Radix rather than a
           native `title`, so it matches the pills below it — and so it can be styled at all: the
           sticker is the app's one dark surface, and the OS's grey box beside it read as a
-          rendering accident. The same string stays on `aria-label`, since a tooltip is a
+          rendering accident. The text stays on `aria-label` too, since a tooltip is a
           hover/focus surface and touch never opens one. */}
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <MarqueeSticker text={<>{text}</>} ariaLabel={aria} />
-        </TooltipTrigger>
-        <TooltipContent>{aria}</TooltipContent>
-      </Tooltip>
+      {tip ? (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <MarqueeSticker text={<>{text}</>} ariaLabel={aria} />
+          </TooltipTrigger>
+          <TooltipContent>{tip}</TooltipContent>
+        </Tooltip>
+      ) : (
+        <MarqueeSticker text={<>{text}</>} ariaLabel={aria} />
+      )}
     </>
   );
 }

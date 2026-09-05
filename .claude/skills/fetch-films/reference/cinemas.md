@@ -90,7 +90,8 @@ window:
 drops the meaningless ones via `IGNORED_TAGS` (`Format.Projection.Digital`/`.Laser`,
 `Auditorium.Experience.4dx`/`.ScreenX`/`.Superscreen`, `Showtime.Accessibility.AudioDescription`).
 **Unknown `Showtime.Event.*` are kept verbatim** so they land in the report's unrecognised-tags
-section.
+section. `Big Screen Classics` is normalised and kept but **not** surfaced in the UI, and
+`isUnsurfacedTag` keeps it out of that section — it's a decision, not a discovery (decision #13).
 
 An ordinary wide-release showing therefore carries **no** `screeningTags` — nothing is dropped at
 scrape time, the multiplex firehose is simply hidden by the "Specials, etc" lens in the UI

@@ -15,7 +15,13 @@
 
 export interface LanguageInfo {
   language?: string; // display-cased original language, e.g. "Tamil" — only when non-English
-  subtitled: boolean; // English subtitles (includes open captions)
+  subtitled: boolean; // a separate English subtitle track
+  // Captions burned into the print, always on screen, carrying speaker IDs and sound effects.
+  // Kept apart from `subtitled` because they are a different thing for a different audience: on
+  // a non-English film subtitles are translation, while open captions on an English film are an
+  // accessibility screening for deaf and hard-of-hearing viewers. Collapsing the two (as this
+  // did) made those two screenings describe themselves identically.
+  openCaptioned: boolean;
   dubbed: boolean; // dubbed into English (usually the kids' matinee version)
 }
 
@@ -61,37 +67,62 @@ export function displayLanguage(tags?: string[]): LanguageInfo | null {
 
   let language: string | undefined;
   let subtitled = false;
+  let openCaptioned = false;
   let dubbed = false;
 
   for (const raw of tags) {
     const tag = raw.trim().toLowerCase();
     if (LANGUAGE_NAMES[tag] && !language) language = LANGUAGE_NAMES[tag];
-    else if (tag === "subtitled" || tag === "open captioned") subtitled = true;
+    else if (tag === "subtitled") subtitled = true;
+    else if (tag === "open captioned") openCaptioned = true;
     else if (tag === "dubbed") dubbed = true;
   }
 
-  if (!language && !subtitled && !dubbed) return null;
-  return { language, subtitled, dubbed };
+  if (!language && !subtitled && !openCaptioned && !dubbed) return null;
+  return { language, subtitled, openCaptioned, dubbed };
 }
 
-// A short human sentence for the hover `title` on the pill / plan-row button, merged alongside
-// screeningTagsTooltip / filmFormatsTooltip.
+// A short human sentence for the hover tooltip on the pill / plan-row button, merged alongside
+// screeningTagsTooltip / filmFormatsTooltip by lib/screeningTooltip.ts.
+//
+// Every sentence opens with a preposition, so a row of pills reads as one voice — which is why
+// the dubbed case is "Originally in Spanish…" rather than the "Spanish film…" it used to be.
+//
+// Open captions get their own two sentences, and the pair deliberately says different things.
+// On a non-English film they are the translation, so the language leads and "open" only notes
+// that they can't be switched off. On an English film they are an accessibility screening, so
+// the sentence names what they carry beyond dialogue — that is the whole reason to pick that
+// session, and it is exactly what the old shared "With English subtitles" hid.
 export function languageTooltip(tags?: string[]): string | undefined {
   const info = displayLanguage(tags);
   if (!info) return undefined;
+  if (info.language && info.openCaptioned) return `In ${info.language}, with open captions`;
   if (info.language && info.subtitled) return `In ${info.language}, with English subtitles`;
-  if (info.language && info.dubbed) return `${info.language} film, dubbed into English`;
+  if (info.language && info.dubbed) return `Originally in ${info.language}, dubbed into English`;
   if (info.language) return `In ${info.language}`;
   if (info.dubbed) return "Dubbed into English";
+  if (info.openCaptioned) return "With open captions, including sound descriptions";
   return "With English subtitles";
 }
 
-// The per-showtime caption mark shown on a pill / plan row — "ST" (subtitled) or "Dub". The
-// language name itself lives on the film card, not repeated on every pill.
-export function captionMark(info: LanguageInfo): "ST" | "Dub" | null {
+// The per-showtime caption mark shown on a pill / plan row — "OC" (open captions), "ST"
+// (subtitles) or "Dub". The language name itself lives on the film card, not repeated on every
+// pill. "OC" leads because it is the more specific claim: an open-captioned session is always
+// captioned, where "ST" only promises a subtitle track.
+export function captionMark(info: LanguageInfo): "OC" | "ST" | "Dub" | null {
+  if (info.openCaptioned) return "OC";
   if (info.subtitled) return "ST";
   if (info.dubbed) return "Dub";
   return null;
+}
+
+// Whether a session carries open captions — burned into the print, always on screen. Its own
+// predicate because it feeds the Highlights lens (lib/highlights.ts): an open-captioned session
+// is something people actively seek out and there are only a handful a week, so it belongs in
+// "Specials, etc" the way a 35mm print does. A plain subtitle track on an English film is NOT
+// in that bracket — it's neither scarce nor sought (CLAUDE.md decision #14).
+export function hasOpenCaptions(tags?: string[]): boolean {
+  return displayLanguage(tags)?.openCaptioned === true;
 }
 
 // The "Language" preference filter (lib/preferences.ts): does this screening's film match?

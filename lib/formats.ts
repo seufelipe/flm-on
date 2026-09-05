@@ -22,6 +22,8 @@ export interface FilmFormat {
   // ratio is a taller box: 35mm (landscape) < 70mm (a touch taller) < IMAX (tallest).
   ratio: number;
   title: string; // tooltip heading
+  // Same house style as the strand descriptions (lib/screeningTags.ts): one ` — ` per rendered
+  // string, none inside the description itself.
   description: string;
   // An actual film print → the animated film-strip box treatment. IMAX (digital) is static.
   print: boolean;
@@ -44,7 +46,7 @@ const FORMAT_70MM: FilmFormat = {
   label: "70mm",
   ratio: 1.2,
   title: "70mm film",
-  description: "Projected from a large-format 70mm print — a bigger, sharper image than 35mm.",
+  description: "Projected from a large-format print, bigger and sharper than 35mm.",
   print: true,
 };
 
@@ -53,7 +55,7 @@ const FORMAT_IMAX: FilmFormat = {
   label: "IMAX",
   ratio: 0.95,
   title: "IMAX",
-  description: "Shown in IMAX — the largest frame and screen format.",
+  description: "Digital projection in the largest frame and screen format.",
   print: false,
   brandColor: "#0057b8",
 };

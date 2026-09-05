@@ -10,8 +10,13 @@
 const MARK = "☻︎";
 
 // `label` is the lowercase form shown in the sticker; `title` + `description` fill the tooltip
-// (and the sticker's accessible name). Descriptions are lightly cleaned-up versions of Light
-// House's own `data-tooltip` text.
+// (and the sticker's accessible name). Descriptions started as Light House's own `data-tooltip`
+// text and have since been rewritten to one house style: **one ` — ` per string**, the
+// title/description separator, and no second em-dash inside a description. A pill can show a
+// strand and a format at once (lib/screeningTooltip.ts joins them with ` · `), so a description
+// that spends its own dashes leaves the reader parsing four or five of them in a row, each
+// meaning something different. Keep them under ~90 characters for the same reason: the tooltip
+// is `max-w-[16rem]`, and past that it stops being a glance.
 interface KnownTag {
   symbol: string;
   label: string;
@@ -21,6 +26,28 @@ interface KnownTag {
   // still counts as a surfaced special (Highlights filter, tooltip) but shows no glyph — for
   // Mystery Matinee, whose card already has its own redacted treatment, so the badge is noise.
   mark?: boolean;
+}
+
+// Raw tags we recognise and deliberately do NOT surface. They're excluded from `KNOWN` on
+// purpose, and listed here so `scripts/fetch-batch.ts` doesn't report them as "unrecognised"
+// every week — the report's job is to catch a *new* strand, and a tag we've already decided
+// about isn't news.
+//
+// "Big Screen Classics" (Cineworld) is here because, unlike every other strand in `KNOWN`, it
+// changes nothing about the screening: Parent & Baby turns the sound down, Relaxed dims the
+// lights, Silver Screen pours the tea, Movies for Juniors cuts the price. Big Screen Classics is
+// only a statement about which film was picked — and Cineworld is the sole cinema that labels
+// that, so an identical re-release at the IFI or Light House carried no mark and the tag read as
+// a difference between the films rather than between the cinemas' marketing. The film-selection
+// value is real, but `data/film-labels.json` already carries it as a human-reviewed editorial
+// label ("40th anniversary"), which `fetch:batch` still pre-fills from this very tag. Curated
+// beats automatic here, so the label is the only surface it gets. User's call.
+const UNSURFACED = new Set(["big screen classics"]);
+
+// Whether a raw tag is one we've deliberately chosen not to surface (as opposed to one we've
+// never seen). Only `scripts/fetch-batch.ts` cares — it keeps the weekly report honest.
+export function isUnsurfacedTag(tag: string): boolean {
+  return UNSURFACED.has(tag.trim().toLowerCase());
 }
 
 const KNOWN: Record<string, KnownTag> = {
@@ -34,15 +61,13 @@ const KNOWN: Record<string, KnownTag> = {
     symbol: MARK,
     label: "relaxed",
     title: "Relaxed screening",
-    description:
-      "Lower sound, lights kept dim, and freedom to move around or make noise — for anyone who'd find a regular screening overwhelming.",
+    description: "Lower sound, dimmed lights, and freedom to move about or make noise.",
   },
   "autism friendly": {
     symbol: MARK,
     label: "relaxed",
     title: "Relaxed screening",
-    description:
-      "Lower sound, lights kept dim, and freedom to move around or make noise — for anyone who'd find a regular screening overwhelming.",
+    description: "Lower sound, dimmed lights, and freedom to move about or make noise.",
   },
   "cinema book club": {
     symbol: MARK,
@@ -54,26 +79,15 @@ const KNOWN: Record<string, KnownTag> = {
     symbol: MARK,
     label: "silver screen",
     title: "Silver Screen",
-    description:
-      "A matinee for over-65s, with complimentary tea or coffee, a short introduction and a chat.",
+    description: "A matinee for over-65s, with free tea or coffee and a short introduction.",
   },
-  // Cineworld strands (Showtime.Event.* — see lib/scrapers/cineworld.ts).
-  // Big Screen Classics gets no ☻ mark or sticker (mark: false) — instead scripts/fetch-batch.ts
-  // pre-fills a curated `classic!` label (data/film-labels.json) for these films, which the user
-  // reviews. It still counts as a surfaced special so it's recognised (not "unrecognised") and
-  // its films pass the Highlights filter.
-  "big screen classics": {
-    symbol: MARK,
-    label: "big screen classics",
-    title: "Big Screen Classics",
-    description: "An older film brought back to the big screen for a limited run.",
-    mark: false,
-  },
+  // Cineworld strands (Showtime.Event.* — see lib/scrapers/cineworld.ts). "Big Screen Classics"
+  // is deliberately absent; see UNSURFACED above.
   "movies for juniors": {
     symbol: MARK,
     label: "movies for juniors",
     title: "Movies for Juniors",
-    description: "A cut-price weekend-morning screening of a recent family film, for kids and parents.",
+    description: "A cut-price weekend-morning screening of a recent family film.",
   },
   // The IFI's recurring strand where the film is kept secret until the lights go down. Not a
   // scraped descriptor — lib/mystery.ts detects it from the title and ScreeningBrowser attaches
@@ -82,7 +96,7 @@ const KNOWN: Record<string, KnownTag> = {
     symbol: MARK,
     label: "mystery matinee",
     title: "Mystery Matinee",
-    description: "The film isn't announced — you find out what you're watching once it starts.",
+    description: "The film isn't announced until it starts.",
     mark: false,
   },
 };

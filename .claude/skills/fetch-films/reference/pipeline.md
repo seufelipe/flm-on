@@ -112,12 +112,21 @@ Language is **per-film**, from Letterboxd's Primary Language, folded into every 
 non-English film across all three cinemas, not just the ones a cinema bothers to tag. Cineworld's
 `Localization.Language.*` is the fallback for a NOT-FOUND film.
 
-Subtitled/dubbed is **per-session**. When a non-English film's session carries no caption tag,
-`aggregate` **assumes `Subtitled`** — the Irish norm for a foreign-language release — *unless*
-Letterboxd files the film under Animation, since animations often screen English-dubbed. So an
-animated foreign film shows a language chip but no ST/Dub mark until a cinema tags one.
+The caption state is **per-session**, and there are three of them: `Subtitled` (a subtitle
+track), `Open Captioned` (burned into the print, always visible) and `Dubbed`. Open captions are
+**not** a flavour of subtitles — `displayLanguage` reports them separately and the pill mark is
+`OC`, not `ST` (decision #17).
 
-That exception is exactly what the report's `UNMARKED` tally surfaces: an unmarked session means
+When a non-English film's session carries **none** of those three, `aggregate` **assumes
+`Subtitled`** — the Irish norm for a foreign-language release — *unless* Letterboxd files the
+film under Animation, since animations often screen English-dubbed. So an animated foreign film
+shows a language chip but no OC/ST/Dub mark until a cinema tags one. The report's per-film
+tally counts `OC` alongside `ST` / `Dub`, so an open-captioned session never lands in
+`UNMARKED`. Note the assumption checks
+`openCaptioned` too: a session already tagged `Open Captioned` has English text on screen, so
+adding `Subtitled` on top would tag one screening as both and force the pill to pick a mark.
+
+That Animation exception is exactly what the report's `UNMARKED` tally surfaces: an unmarked session means
 the film resolved as Animation. Check whether it's really screening dubbed, and if not, pin
 `language-overrides.json` or add a caption-tag source.
 
@@ -135,6 +144,14 @@ Thursday), writes `data/staging-batch.json`, prints the review report, and **wri
 `/anniversary|restoration/` (`"25th anniversary"`, `"4k restoration"`) beats a Cineworld
 "Big Screen Classics" → `classic!`. Existing values are never clobbered; the file is rewritten
 sorted.
+
+⚠️ **The label is the ONLY thing a Big Screen Classics film gets.** The strand itself is
+deliberately unsurfaced in the UI (`UNSURFACED` in `lib/screeningTags.ts`, decision #13) — no ☻,
+no sticker, and it no longer passes the Highlights lens on its own. So deleting a `classic!`
+prefill at review doesn't demote that film to a plainer badge, it removes it from the "Specials,
+etc" view entirely. Trim on that basis: keep a label for anything genuinely worth surfacing, and
+sharpen `classic!` into the real occasion ("40th anniversary") where you can. The raw tag still
+rides in `showtimes.json` purely so this prefill can read it.
 
 **Diff baselines come from git, not disk** (`lib/filmDiff.ts`) — by the time it reports, this
 script has already overwritten `data/upcoming.json`, and `showtimes.json` may already have been

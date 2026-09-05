@@ -4,7 +4,7 @@ import path from "path";
 import { refreshShowtimesForRange } from "@/lib/aggregate";
 import { upcomingDays, nextWeekDays } from "@/lib/date";
 import type { Screening } from "@/lib/scrapers/types";
-import { displayScreeningTags } from "@/lib/screeningTags";
+import { displayScreeningTags, isUnsurfacedTag } from "@/lib/screeningTags";
 import { displayFilmFormats } from "@/lib/formats";
 import { displayLanguage, hasNonEnglishLanguage } from "@/lib/languages";
 import { loadHiddenFilms } from "@/lib/hidden";
@@ -16,8 +16,11 @@ const STAGING_FILE = path.join(process.cwd(), "data", "staging-batch.json");
 const LABELS_FILE = path.join(process.cwd(), "data", "film-labels.json");
 const UPCOMING_FILE = path.join(process.cwd(), "data", "upcoming.json");
 
-// Cineworld's "Big Screen Classics" strand doesn't get a ☻ mark (lib/screeningTags.ts) — instead
-// its films get a curated `classic!` label pre-filled here for the user to review.
+// Cineworld's "Big Screen Classics" strand is deliberately unsurfaced in the UI
+// (lib/screeningTags.ts `UNSURFACED`) — the raw tag survives into showtimes.json purely so this
+// prefill can still read it, giving those films a curated `classic!` label for the user to
+// review. The label is the whole of what the strand gets, so trimming one here really does mean
+// the film shows nothing.
 const BIG_SCREEN_CLASSICS_TAG = "big screen classics";
 const CLASSIC_LABEL = "classic!";
 // Which stripped title annotations are worth pre-filling as a label — a re-release / event note,
@@ -211,16 +214,26 @@ async function main() {
       const key = f.filmTitle.trim().toLowerCase();
       const over = key in langOverrides ? `  [override: ${langOverrides[key] ?? "unmarked"}]` : "";
       let st = 0;
+      let oc = 0;
       let dub = 0;
       let none = 0;
       for (const s of screenings) {
         if (s.filmTitle.trim().toLowerCase() !== key) continue;
         const info = displayLanguage(s.screeningTags);
-        if (info?.subtitled) st++;
+        // Open captions are their own state now (decision #17) — count them, or an
+        // open-captioned foreign screening lands in UNMARKED and the review chases a caption
+        // source it already has.
+        if (info?.openCaptioned) oc++;
+        else if (info?.subtitled) st++;
         else if (info?.dubbed) dub++;
         else none++;
       }
-      const parts = [st && `${st} ST`, dub && `${dub} Dub`, none && `${none} UNMARKED`].filter(Boolean);
+      const parts = [
+        st && `${st} ST`,
+        oc && `${oc} OC`,
+        dub && `${dub} Dub`,
+        none && `${none} UNMARKED`,
+      ].filter(Boolean);
       console.log(`  ${key}  →  ${langByFilm.get(key)}  [${parts.join(", ")}]${over}`);
     }
   }
@@ -242,13 +255,16 @@ async function main() {
 
   // Any raw screeningTag that no display module recognises — catches a new Cineworld strand
   // (ScreenX, a new Showtime.Event.*) or a new Light House em.additional value in one place.
+  // Tags we've seen and deliberately don't surface (isUnsurfacedTag) aren't news, so they're
+  // excluded — otherwise "Big Screen Classics" would head this list every single week.
   const unrecognised = new Map<string, Set<string>>();
   for (const s of screenings) {
     for (const tag of s.screeningTags ?? []) {
       const known =
         displayScreeningTags([tag]).length > 0 ||
         displayFilmFormats([tag]).length > 0 ||
-        displayLanguage([tag]) !== null;
+        displayLanguage([tag]) !== null ||
+        isUnsurfacedTag(tag);
       if (!known) {
         if (!unrecognised.has(tag)) unrecognised.set(tag, new Set());
         unrecognised.get(tag)!.add(s.cinemaName);
