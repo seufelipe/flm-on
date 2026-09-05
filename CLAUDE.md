@@ -846,6 +846,11 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
       The settings option strips full-bleed themselves with `-mx-6 px-6`, which only cancels out
       when that padding is on the same box that clips them — the modal gets this for free by
       putting `overflow-y-auto p-6` on one node. Split across two it left ~29px of sideways scroll.
+    - **`Group`'s `<fieldset>` needs `min-w-0`.** A fieldset defaults to `min-width: min-content`
+      and will not shrink below it, and the strip inside is deliberately 48px wider than the box,
+      so the fieldset propped the panel open ~5px and the whole thing scrolled sideways. Its
+      computed `min-width` still reports `0px`, which is what makes this one hard to see. It
+      applies to the modal too — the bug was latent there, the drawer just made it obvious.
 
 ## Known gaps
 

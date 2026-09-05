@@ -109,7 +109,11 @@ function Group({
   children: React.ReactNode;
 }) {
   return (
-    <fieldset className="border-0 p-0 m-0">
+    // `min-w-0`: a <fieldset> defaults to min-width: min-content and refuses to shrink below it,
+    // and the option strip inside is deliberately 48px wider than this box (`-mx-6 px-6`
+    // full-bleed). Without it the fieldset props the panel open a few px and the whole thing
+    // scrolls sideways. The computed min-width still reads 0px, which is what makes it a puzzle.
+    <fieldset className="border-0 p-0 m-0 min-w-0">
       <legend className="font-bold uppercase text-xs tracking-widest text-fg">{legend}</legend>
       {description && <p className="mt-0.5 text-xs text-dim">{description}</p>}
       {/* One non-wrapping row that scrolls sideways on overflow rather than stacking the options
