@@ -1,4 +1,5 @@
 import { Fragment, type ReactNode } from "react";
+import { Hourglass, User, Users } from "lucide-react";
 import FilmNotes from "@/components/FilmNotes";
 import MysteryTitle from "@/components/MysteryTitle";
 import { isMysteryFilm } from "@/lib/mystery";
@@ -259,14 +260,24 @@ export default function FilmCard({
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-3">
             {group.cert && <Cert cert={group.cert} />}
             {group.durationMins !== undefined && !isMystery && (
-              <span className="text-base text-dim">
+              <span className="text-base text-dim flex items-center gap-1.5">
+                <Hourglass aria-hidden="true" className="size-[1em] shrink-0" />
                 {group.durationMins}min{group.durationEstimated ? " (est.)" : ""}
               </span>
             )}
             {/* Director(s), from the resolved Letterboxd page — sits next to the runtime, same
-                dim treatment. Suppressed for a Mystery Matinee (would narrow the guess). */}
+                dim treatment. Suppressed for a Mystery Matinee (would narrow the guess). The
+                icon pluralises off the comma-joined string (lib/scrapers/types.ts), so a
+                co-directed film gets `Users`. */}
             {group.director && !isMystery && (
-              <span className="text-base text-dim">{group.director}</span>
+              <span className="text-base text-dim flex items-center gap-1.5">
+                {group.director.includes(",") ? (
+                  <Users aria-hidden="true" className="size-[1em] shrink-0" />
+                ) : (
+                  <User aria-hidden="true" className="size-[1em] shrink-0" />
+                )}
+                {group.director}
+              </span>
             )}
             <LanguageTag tags={sessionTags} />
             <FilmFormatTag tags={sessionTags} />

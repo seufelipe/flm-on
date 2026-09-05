@@ -33,18 +33,14 @@ gitignored cache/staging.
 
 ### Data pipeline (server-only, weekly — `app/page.tsx` never runs it)
 
-Runs only from `npm run fetch:batch`, i.e. once a week. `lib/scrapers/{lighthouse,ifi,cineworld}.ts`
-(adapters, registry in `index.ts`) → `lib/aggregate.ts`, which per screening does
-**`cleanFilmTitle` → drop hidden films → resolve Letterboxd (url, year, language, original title,
-director) → fold the language into `screeningTags`** → `scripts/fetch-batch.ts` writes
-`data/staging-batch.json` + the review report, `scripts/confirm-batch.ts` promotes it.
+Runs only from `npm run fetch:batch`, i.e. once a week: `lib/scrapers/` → `lib/aggregate.ts` →
+`scripts/fetch-batch.ts` (staging + review report) → `scripts/confirm-batch.ts` (promote).
 
-Supporting modules: `lib/{cache,titles,hidden,letterboxd,languageOverrides,directorOverrides,filmDiff}.ts`.
-
-**All of that lives in the `fetch-films` skill** — `reference/pipeline.md` for the modules,
-`reference/cinemas.md` for the three cinemas, `SKILL.md` for the weekly procedure. It's out of
-context here on purpose: it's a weekly ritual, not something a UI change touches. Load the skill
-before editing any of those files or debugging a wrong title / year / language / director.
+**The whole of it lives in the `fetch-films` skill** — `reference/pipeline.md` for the modules and
+the order they run in, `reference/cinemas.md` for the three cinemas, `SKILL.md` for the weekly
+procedure. It's out of context here on purpose: it's a weekly ritual, not something a UI change
+touches. Load the skill before editing any of those files, any `data/` override file, or before
+debugging a wrong title / year / language / director — don't work from what's left here.
 
 The two pipeline outputs the **UI** actually depends on:
 
@@ -121,8 +117,9 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   natural case); the original-language title shows before the name when `FilmGroup.originalTitle`
   is set. The `<FilmNotes>` marquee sticker sits right after the year (`ml-3`, its own `text-xs`,
   `vertical-align: middle` against the title) — moved off the meta line once it had grown.
-  **Line 2** (`hasMetaLine`): cert, duration + director (both `text-base text-dim`), `<LanguageTag>`,
-  format box(es).
+  **Line 2** (`hasMetaLine`): cert, duration + director (both `text-base text-dim`, each led by a
+  1em lucide icon that hugs its own text — `Hourglass`, and `User`/`Users` split on the
+  comma-joined director string, #23), `<LanguageTag>`, format box(es).
   **Footer row** (`hasFooter`, `mt-16` — same gap as below the header, no divider): the cinema
   film-page links (`cinemaLinks` prop — one per cinema the film plays at across its *whole*
   preferred set, fixed regardless of the filter bar) as `text-dim` chips on the left, the
@@ -237,15 +234,12 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
 
 1. **Light House multi-day data is fetched from an endpoint its `robots.txt` disallows.**
    Justified **only** because this is one deliberate fetch a week from a manual script
-   (decision #9), not per-visitor scraping. If it ever goes back to a live per-request model,
-   revisit — the "continuous automated access against an explicit disallow" objection comes
-   straight back. Which endpoint and why it's the only way: `fetch-films` skill.
+   (decision #9), not per-visitor scraping — so a return to a live per-request model has to
+   revisit it. Which endpoint and why it's the only way: `fetch-films` skill.
 
-2. **Cinema-reported titles and years are not trustworthy** — IFI names a recurring-strand
-   session after the *strand* rather than the film and tags it with the season's year; Light
-   House and Cineworld stamp re-releases with the current year. Hence the curated override files
-   and the weekly human review. A strand-aware model is still wanted (open question, same as
-   `CINEMA BOOK CLUB:` / Mystery Matinee). Per-cinema detail: `fetch-films` skill.
+2. **Cinema-reported titles and years are not trustworthy.** Which cinema lies about what, and
+   the strand-aware model that's still wanted: `fetch-films` skill. What it means here is that
+   the curated override files and the weekly human review are load-bearing, not belt-and-braces.
 
 3. **`app/page.tsx` is static, not `force-dynamic`.** It reads the committed `showtimes.json`;
    content changes only on redeploy. Don't reintroduce `force-dynamic` unless the page goes back
@@ -254,8 +248,7 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
 4. **Letterboxd is the source of truth for a film's own facts.** The matched page supplies the
    **year the UI shows** (not the cinema's — so `Kiki's Delivery Service` reads 1989, not 2026),
    the primary language (#17), the original title, and the director(s) on the card's meta line.
-   Links are resolved by **guessing the slug, not searching** (`/search/…` is Cloudflare-blocked).
-   How the guess works, how it fails, and how to pin a bad match: `fetch-films` skill.
+   How a link is resolved, how that fails, and how to pin a bad match: `fetch-films` skill.
 
 5. **A plan can span the week; it persists.** `lib/plan.ts` (`flm-on:plan` localStorage, same
    `useSyncExternalStore` shape as `lib/preferences.ts`) holds the picked `bookingUrl`s across as
@@ -373,9 +366,8 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
    every request let any visitor trigger a scrape and gave no chance to catch mangled titles /
    wrong Letterboxd matches before users saw them. Now `fetch:batch` → human review →
    `fetch:confirm`, on Thursdays when the programmes turn over. Drove decisions #1 & #3;
-   `app/actions.ts` + `RefreshButton` are gone. **`fetch:confirm` is not the publish gate — the
-   push is**; `git checkout data/` reverts a whole run. **The review is the `fetch-films`
-   skill** — don't run the refresh freehand.
+   `app/actions.ts` + `RefreshButton` are gone. **The run itself is the `fetch-films` skill**
+   — load it rather than driving the scripts freehand.
 
 10. **Installable as "flm on" (lowercase).** `<title>`, `appleWebApp.title`, and `manifest.ts`
     `name`/`short_name` are the lowercase string; the descriptive text is `description`.
@@ -527,7 +519,6 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
     are recognised but deliberately unsurfaced.
 
 16. **Cineworld Dublin — a JSON-API adapter, scraped in full** (`lib/scrapers/cineworld.ts`).
-    Not a scrape: a public, unauthenticated JSON API on a Gatsby site (`robots.txt` empty).
     What matters outside a fetch is that **an ordinary wide-release showing ends up with no
     `screeningTags` at all** — nothing is dropped at scrape time, so the whole multiplex slate is
     in `showtimes.json` and it's the **"Specials, etc" Highlights lens** (decision #14) that keeps
@@ -868,7 +859,20 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
       (shared with the day pickers), **`CalendarClock`** on "Next week (maybe)", **`CalendarOff`**
       and **`SearchX`** on the two empty states. Then **`FaceGrinning`** as the specials mark
       (#13), replacing the last of the two text glyphs. Then **`ChevronsUpDown`** on the
-      `FilterMenu` triggers (#7), replacing the `▲`/`▼` pair.
+      `FilterMenu` triggers (#7), replacing the `▲`/`▼` pair. Then **`Hourglass`** and
+      **`User`**/**`Users`** leading the runtime and the director on the film card's meta line.
+    - **The meta-line icons label, they don't decorate.** Until them, every icon here replaced a
+      mark that was already there; these two are the first added to text that read fine without
+      one — so they earn their place by making the line scannable rather than parsed: a bare
+      "111min Pedro Almodóvar" is two facts in identical dim type, and the icons say which is
+      which before you read either. `Hourglass` over a clock face because the runtime is a
+      *duration* and the pills already own time-of-day. `Users` when `group.director` contains a
+      comma (that string is comma-joined for a co-directed film — `lib/scrapers/types.ts`), so
+      the mark doesn't call two people one. Both are `aria-hidden`: the text beside them is
+      already the label, and "hourglass 111min" read aloud is noise. Both `size-[1em]` inside an
+      `inline-flex gap-1.5`, so each icon hugs its own text while the meta line's `gap-x-4`
+      between items is untouched — put them in the flow as bare siblings and the two facts stop
+      being two groups.
     - **The filter-bar trigger no longer flips its mark on open.** `ChevronsUpDown` is the
       combobox indicator — both arrows at once, meaning "this opens a list", where `▼`/`▲`
       claimed to report state. Nothing is lost: the trigger already says it is open by pressing
@@ -991,17 +995,13 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
 
 ## Data files (`data/`)
 
-**Committed and read at build time:**
-- `showtimes.json` — the published week. Screenings may carry `screeningTags: string[]` (shared
-  vocab — decisions #13/#15/#17), `originalTitle` (#16) and `director` (#4).
-- `upcoming.json` — the hand-trimmed "Next week" tease (#18).
-- `film-labels.json` — the curated editorial labels (#11). **The only override file a rebuild
-  picks up**; edit it and reload.
+Three are **read at build time**, and they're the only ones a UI change ever touches:
+`showtimes.json` (the published week — screenings may carry `screeningTags: string[]`, shared vocab
+per decisions #13/#15/#17, plus `originalTitle` (#16) and `director` (#4)), `upcoming.json` (the
+hand-trimmed "Next week" tease, #18) and `film-labels.json` (the curated editorial labels, #11 —
+**the only override file a rebuild picks up**; edit it and reload).
 
-**Committed, but applied at fetch time** (baked into `showtimes.json`, so editing one needs a
-re-fetch): `title-overrides`, `letterboxd-overrides`, `hidden-films`, `language-overrides`,
-`director-overrides`. Exact key formats are in the `fetch-films` skill's fix table — don't guess
-one from memory.
-
-**Gitignored**, regenerated by the weekly scripts: `cache.json`, `letterboxd-cache.json`,
-`staging-batch.json`.
+Everything else is the pipeline's: the five override files applied at *fetch* time, and the
+gitignored caches. **Which is which, the exact key formats and what needs a re-fetch are in the
+`fetch-films` skill** (`reference/pipeline.md`, "Data files", and `SKILL.md`'s fix table) — don't
+guess a key from memory.
