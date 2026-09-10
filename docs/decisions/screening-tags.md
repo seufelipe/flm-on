@@ -1,7 +1,7 @@
 # The `screeningTags` vocabulary and its three readers
 
-Decisions #12, #13, #15 and #17 in full — the redacted Mystery Matinee card, special-screening
-strands, film formats, and language/caption handling. CLAUDE.md keeps the rules; this is the
+Decisions #12, #13, #15, #17 and #25 in full — the redacted Mystery Matinee card, special-screening
+strands, film formats, language/caption handling, and the marathon card. CLAUDE.md keeps the rules; this is the
 reasoning, including which strands are deliberately *not* surfaced and why.
 
 Verbatim from CLAUDE.md, which now carries only the rules. **Read this before changing
@@ -20,6 +20,43 @@ a `--color-fg` block, transparent text under it for AT, click to reveal). The tr
 `DayPlan` still shows its runtime (gap math). `ScreeningBrowser` attaches a
 synthetic `"Mystery Matinee"` `screeningTag` render-time so it passes the Highlights filter;
 its `KNOWN` entry is `mark: false` (no glyph/sticker — the redacted card is treatment enough).
+
+---
+
+## Decision #25 — A marathon is one card with no year and no runtime
+
+**A marathon is one card with no year and no runtime.** Light House sells a whole-day sitting
+of several films on one ticket, and lists it as a single session — so it arrives as one "film"
+whose facts describe the sitting rather than any film in it. `The Lord of the Rings Extended
+Edition Marathon` came through as `2022` (meaningless: the three films are 2001–2003, the
+extended cuts 2002–2004) and `785min` (real, but it's three films' runtime, not one's).
+
+`lib/marathon.ts` `isMarathonFilm` (`/\bmarathon\b/i` on the cleaned title) is the sibling of
+`lib/mystery.ts`, and `FilmCard` folds the two into one `noFilmFacts` gate: **both drop the year
+and the runtime, because neither card describes a single film** — the Mystery Matinee's are
+unknown, a marathon's belong to three at once. Only the Mystery Matinee goes further and redacts
+the title and the director; a marathon's title is the whole point, and it has no director to
+show, because it has no Letterboxd page.
+
+That last part is pinned deliberately: `data/letterboxd-overrides.json` maps the marathon to
+`null`, the "no link at all" form, rather than leaving it to fail. An auto-resolve failure is
+indistinguishable in the weekly report from a film we simply haven't found yet, and this one
+will never be found — there is no page for three films at once.
+
+**It keeps the mark**, unlike the Mystery Matinee. `mark: false` was right there because the
+redacted title already announces the card as unusual; a marathon card looks like an ordinary
+card with two facts missing, so without the ☻ nothing in a pill row says the session is out of
+the ordinary. The `KNOWN` entry names the strand `marathon` on the sticker — not `extended
+edition marathon`, which would repeat words the title already carries: the title names the
+film, the sticker names the strand.
+
+**The runtime survives in the data**, exactly as the Mystery Matinee's does (#12) — `DayPlan`
+needs it, and a 785-minute sitting is precisely the case where the plan's gap maths earns its
+keep. Suppressing it on the card is a display decision, not a data one.
+
+The detector is deliberately generic (`\bmarathon\b`, not the LOTR title): all three cinemas
+run these, and a strand that recurs under a different name each time is exactly the kind of
+thing that should not need a code change per instance.
 
 ---
 

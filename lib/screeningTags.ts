@@ -90,6 +90,14 @@ const KNOWN: Record<string, KnownTag> = {
     description: "The film isn't announced until it starts.",
     mark: false,
   },
+  // A whole-day booking of several films. Like the Mystery Matinee this isn't scraped —
+  // lib/marathon.ts detects it from the title and ScreeningBrowser attaches the tag — but it
+  // keeps the mark: the card has no other treatment saying the session is out of the ordinary.
+  marathon: {
+    label: "marathon",
+    title: "Marathon",
+    description: "Several films back to back, in one sitting.",
+  },
 };
 
 export type ScreeningTagDisplay = KnownTag;

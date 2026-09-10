@@ -2,6 +2,7 @@ import { Fragment, type ReactNode } from "react";
 import { Hourglass, User, Users } from "lucide-react";
 import FilmNotes from "@/components/FilmNotes";
 import MysteryTitle from "@/components/MysteryTitle";
+import { isMarathonFilm } from "@/lib/marathon";
 import { isMysteryFilm } from "@/lib/mystery";
 import type { TimedScreening } from "@/lib/clash";
 import { groupScreeningsByDay, type FilmGroup } from "@/lib/groupings";
@@ -204,6 +205,11 @@ export default function FilmCard({
   // The Mystery Matinee strand keeps the film secret until you're in the room — showing its year
   // or runtime would narrow the guess, so both are suppressed and the title is redacted.
   const isMystery = isMysteryFilm(group.filmTitle);
+  // Neither card describes a single film: a Mystery Matinee's are unknown, a marathon's belong to
+  // three films at once. Both drop the year and the runtime — but only the Mystery Matinee also
+  // redacts the title and the director. The runtime survives in the data either way, so the plan
+  // can still block out the sitting (CLAUDE.md #12, #25).
+  const noFilmFacts = isMystery || isMarathonFilm(group.filmTitle);
 
   // Descriptors across all of this film's visible sessions. The special-screening name(s) and
   // the curated editorial label are named together in one `<FilmNotes>` sticker beside the year
@@ -220,7 +226,7 @@ export default function FilmCard({
 
   const hasMetaLine =
     group.cert !== undefined ||
-    (group.durationMins !== undefined && !isMystery) ||
+    (group.durationMins !== undefined && !noFilmFacts) ||
     (group.director !== undefined && !isMystery) ||
     sessionFormats.length > 0 ||
     sessionLanguage !== undefined;
@@ -247,7 +253,7 @@ export default function FilmCard({
               <span className="font-black uppercase cursor-text">{group.filmTitle}</span>
             </>
           )}
-          {!isMystery && group.year !== undefined && (
+          {!noFilmFacts && group.year !== undefined && (
             <TitleMeta className="ml-3">{group.year}</TitleMeta>
           )}
           {/* Special-screening name(s) + the curated editorial label, one marquee sticker,
@@ -259,7 +265,7 @@ export default function FilmCard({
         {hasMetaLine && (
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-3">
             {group.cert && <Cert cert={group.cert} />}
-            {group.durationMins !== undefined && !isMystery && (
+            {group.durationMins !== undefined && !noFilmFacts && (
               <span className="text-base text-dim flex items-center gap-1.5">
                 <Hourglass aria-hidden="true" className="size-[1em] shrink-0" />
                 {group.durationMins}min{group.durationEstimated ? " (est.)" : ""}

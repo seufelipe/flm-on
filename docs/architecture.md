@@ -56,11 +56,11 @@ The two pipeline outputs the **UI** actually depends on:
 Raw descriptors on a showtime, read by three sibling modules. Sources: Light House `em.additional`,
 IFI format `svg[data-icon]`s, Cineworld's normalised API tags (decision #16), plus `aggregate`
 appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attaching a synthetic
-`Mystery Matinee` render-time (#12).
+`Mystery Matinee` (#12) or `Marathon` (#25) render-time, both detected off the title.
 
 - `lib/screeningTags.ts` — `displayScreeningTags` → surfaced special-audience / event strands
   (`Parent and Baby`, `Relaxed`/`Autism Friendly` → one `relaxed`, `Cinema Book Club`,
-  `Silver Screen`, `Movies for Juniors`, `Mystery Matinee`). Each →
+  `Silver Screen`, `Movies for Juniors`, `Mystery Matinee`, `Marathon`). Each →
   `{ label, title, description, mark? }`. `mark: false` (Mystery Matinee) = still a
   surfaced special (Highlights, tooltip) but no mark / `FilmNotes` segment.
   `<SpecialsMark>` (`components/ScreeningTags.tsx`) is the mark itself — lucide's `FaceGrinning`, shared by
@@ -102,6 +102,10 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   **Line 2** (`hasMetaLine`): cert, duration + director (both `text-base text-dim`, each led by a
   1em lucide icon that hugs its own text — `Hourglass`, and `User`/`Users` split on the
   comma-joined director string, #23), `<LanguageTag>`, format box(es).
+  Two gates suppress parts of both lines: `noFilmFacts` (`isMysteryFilm || isMarathonFilm`) drops
+  the year and the duration, because neither card describes a single film (#12, #25); `isMystery`
+  alone additionally redacts the title via `<MysteryTitle>` and drops the director. A marathon
+  usually ends up with the cert as the only thing left on line 2.
   **Footer row** (`hasFooter`, `mt-16` — same gap as below the header, no divider): the cinema
   film-page links (`cinemaLinks` prop — one per cinema the film plays at across its *whole*
   preferred set, fixed regardless of the filter bar) as `text-dim` chips on the left, the

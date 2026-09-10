@@ -61,6 +61,8 @@ What the **UI** derives from its output:
   no max cap) and the one suggestion engine `planAdditions`, read two ways: `fittingAdditions`
   (`bookingUrl → tightness`, for the card pills) and `bestAdditionPerSlot` (one tightest fit per
   open slot, for the plan's ghost rows).
+- `lib/mystery.ts` / `lib/marathon.ts` — the two title-detected strands (#12, #25). Neither is
+  scraped; `ScreeningBrowser` attaches their tag at render time.
 - `lib/highlights.ts` — `isHighlight`: the single definition of "interesting". Gates the
   "Specials, etc" lens (#14) *and* ranks the empty-plan seeds.
 - `lib/startingPoints.ts` — what an **empty** plan offers: one screening per timeframe, specials
@@ -96,7 +98,8 @@ synthetic `Mystery Matinee` at render time (#12).
   off one `effective*` + `setActive*` prop bag (#7). Also `DayMark`, and the "Next week"
   affordance (#18).
 - `FilmCard.tsx` — one film's card: title line (`[original title] TITLE [year]` + the `FilmNotes`
-  sticker), meta line (cert, duration, director, `<LanguageTag>`, format boxes), pills grouped by
+  sticker), meta line (cert, duration, director, `<LanguageTag>`, format boxes) — both trimmed by
+  the `noFilmFacts` gate on a Mystery Matinee or a marathon (#12, #25) — pills grouped by
   day then timeframe, and a `no-print` footer of cinema film-page links + the Letterboxd mark.
   ⚠️ Each day's pill strip is one non-wrapping `overflow-x-auto` row and **needs `relative`** —
   the pills' `position:absolute` `.sr-only` spans otherwise escape the clip and give the whole
@@ -246,7 +249,8 @@ it covers, and update it in the same commit.**
     puts each word of the title behind a block, click to reveal. `ScreeningBrowser` attaches a
     synthetic `Mystery Matinee` tag at render time so it passes the Highlights lens, and its
     `KNOWN` entry is `mark: false` — the redacted card is treatment enough. `DayPlan` still shows
-    its runtime, for the gap maths. Details: `docs/decisions/screening-tags.md`.
+    its runtime, for the gap maths. Its sibling is the marathon card (#25), which shares the
+    year/runtime suppression but not the redaction. Details: `docs/decisions/screening-tags.md`.
 
 13. **Special screenings get a per-session marker** (`lib/screeningTags.ts`). `KNOWN` is the gate
     on what surfaces — widening it is one entry — and `UNSURFACED` is its deliberate opposite,
@@ -456,6 +460,26 @@ it covers, and update it in the same commit.**
       modal, where there's nothing to drag.
     - vaul may animate where the Dialog may not (#22): it has no `animationend` handlers and
       unmounts on a `setTimeout`, so it can't hang on a page that isn't being rendered.
+
+25. **A marathon is one card with no year and no runtime** (`lib/marathon.ts`, the `noFilmFacts`
+    gate in `FilmCard.tsx`). A whole-day sitting of several films on one ticket arrives as a
+    single listing whose year and runtime describe the sitting, not any film in it — Light House's
+    LOTR marathon came through as `2022` / `785min`. Reasoning:
+    `docs/decisions/screening-tags.md`.
+    - **`FilmCard` folds this in with the Mystery Matinee as one `noFilmFacts` gate** — both drop
+      the year and the duration, because neither card describes a single film. **Only `isMystery`
+      also redacts the title and the director**; don't widen `noFilmFacts` to cover those.
+    - **It keeps the mark**, where the Mystery Matinee is `mark: false` (#12): a marathon card is
+      an ordinary card with two facts missing, so without the ☻ nothing says the session is
+      unusual. The strand is named `marathon` on the sticker, not `extended edition marathon` —
+      the title names the film, the sticker names the strand (#13).
+    - **The runtime stays in the data** so `DayPlan`'s gap maths still blocks out the sitting,
+      exactly as for a Mystery Matinee. Suppressing it is a display decision, not a data one.
+    - **Pinned to `null` in `data/letterboxd-overrides.json`**, the "no link at all" form — there
+      is no page for three films at once, and an auto-resolve failure would show up in the weekly
+      report every week as if it were a film we just hadn't found yet.
+    - The detector is generic (`/\bmarathon\b/i`, not the LOTR title) — all three cinemas run
+      these, under a different name each time.
 
 ## Known gaps
 

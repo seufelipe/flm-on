@@ -25,6 +25,7 @@ import { isShortFilm } from "@/lib/duration";
 import { planToICS, ICS_FILENAME, ICS_MIME } from "@/lib/calendar";
 import { isKidFriendly } from "@/lib/certs";
 import { matchesLanguagePref } from "@/lib/languages";
+import { isMarathonFilm } from "@/lib/marathon";
 import { isMysteryFilm } from "@/lib/mystery";
 import { isHighlight } from "@/lib/highlights";
 import { startingPoints } from "@/lib/startingPoints";
@@ -168,14 +169,19 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
     () =>
       screenings
         .filter((s) => s.date > cutoff.date || (s.date === cutoff.date && s.time >= cutoff.time))
-        // The Mystery Matinee strand isn't tagged by the scraper (it's title-detected — see
-        // lib/mystery.ts); attach the tag here so it rides the same mark / sticker / Highlights
-        // path as the scraped special screenings.
-        .map((s) =>
-          isMysteryFilm(s.filmTitle)
-            ? { ...s, screeningTags: [...(s.screeningTags ?? []), "Mystery Matinee"] }
-            : s,
-        ),
+        // Neither the Mystery Matinee strand nor a marathon is tagged by the scraper (both are
+        // title-detected — see lib/mystery.ts, lib/marathon.ts); attach the tag here so each
+        // rides the same mark / sticker / Highlights path as the scraped special screenings.
+        .map((s) => {
+          const synthetic = isMysteryFilm(s.filmTitle)
+            ? "Mystery Matinee"
+            : isMarathonFilm(s.filmTitle)
+              ? "Marathon"
+              : undefined;
+          return synthetic
+            ? { ...s, screeningTags: [...(s.screeningTags ?? []), synthetic] }
+            : s;
+        }),
     [screenings, cutoff],
   );
 
