@@ -1,39 +1,36 @@
 {
-  "generatedAt": "2026-09-03T10:47:46.349Z",
+  "generatedAt": "2026-09-10T13:51:44.255Z",
   "week": {
-    "from": "2026-09-10",
-    "to": "2026-09-16"
+    "from": "2026-09-17",
+    "to": "2026-09-23"
   },
   "films": [
     {
-      "title": "Mandaadi",
-      "year": 2026,
-      "director": "Mathimaran Pugazhendhi",
-      "originalTitle": "மண்டாடி",
-      "letterboxdUrl": "https://letterboxd.com/film/mandaadi/",
+      "title": "Transformers 40th Anniversary Event",
+      "year": 2024,
+      "cert": "G",
+      "director": "John Gibbs",
+      "letterboxdUrl": "https://letterboxd.com/film/transformers-40th-anniversary-event/",
       "cinemas": [
-        "cineworld"
+        "lighthouse"
       ],
       "cinemaLinks": [
         {
-          "cinema": "cineworld",
-          "label": "Cineworld",
-          "url": "https://www.cineworld.ie/movies/1000023324-mandaadi/"
+          "cinema": "lighthouse",
+          "label": "Light House",
+          "url": "https://www.lighthousecinema.ie/film/transformers-40th-anniversary-event"
         }
       ],
-      "screeningTags": [
-        "Tamil",
-        "Subtitled"
-      ],
-      "firstDate": "2026-09-10",
-      "reason": "special"
+      "screeningTags": [],
+      "firstDate": "2026-09-17",
+      "reason": "new"
     },
     {
-      "title": "Raiders of the Lost Ark",
-      "year": 1981,
-      "cert": "PG",
-      "director": "Steven Spielberg",
-      "letterboxdUrl": "https://letterboxd.com/film/raiders-of-the-lost-ark/",
+      "title": "The Rocky Horror Picture Show",
+      "year": 1975,
+      "cert": "15A",
+      "director": "Jim Sharman",
+      "letterboxdUrl": "https://letterboxd.com/film/the-rocky-horror-picture-show/",
       "cinemas": [
         "cineworld"
       ],
@@ -41,90 +38,86 @@
         {
           "cinema": "cineworld",
           "label": "Cineworld",
-          "url": "https://www.cineworld.ie/movies/1000047648-raiders-of-the-lost-ark-45th-anniversary/"
+          "url": "https://www.cineworld.ie/movies/313-the-rocky-horror-picture-show/"
         }
       ],
       "screeningTags": [
         "Big Screen Classics"
       ],
-      "label": "45th anniversary",
-      "firstDate": "2026-09-11",
-      "reason": "special"
-    },
-    {
-      "title": "Mikey and Nicky",
-      "year": 1976,
-      "cert": "TBC",
-      "director": "Elaine May",
-      "letterboxdUrl": "https://letterboxd.com/film/mikey-and-nicky/",
-      "cinemas": [
-        "lighthouse"
-      ],
-      "cinemaLinks": [
-        {
-          "cinema": "lighthouse",
-          "label": "Light House",
-          "url": "https://www.lighthousecinema.ie/film/mikey-and-nicky"
-        }
-      ],
-      "screeningTags": [],
-      "label": "classic!",
-      "firstDate": "2026-09-12",
-      "reason": "special"
-    },
-    {
-      "title": "Everybody Digs Bill Evans",
-      "year": 2026,
-      "cert": "15A",
-      "director": "Grant Gee",
-      "letterboxdUrl": "https://letterboxd.com/film/everybody-digs-bill-evans/",
-      "cinemas": [
-        "lighthouse",
-        "ifi"
-      ],
-      "cinemaLinks": [
-        {
-          "cinema": "lighthouse",
-          "label": "Light House",
-          "url": "https://www.lighthousecinema.ie/film/everybody-digs-bill-evans"
-        },
-        {
-          "cinema": "ifi",
-          "label": "IFI",
-          "url": "https://ifi.ie/films/everybody-digs-bill-evans-2"
-        }
-      ],
-      "screeningTags": [],
-      "firstDate": "2026-09-11",
+      "firstDate": "2026-09-17",
       "reason": "new"
     },
     {
-      "title": "Practical Magic 2",
+      "title": "Queen at Sea",
       "year": 2026,
-      "cert": "12A",
-      "director": "Susanne Bier",
-      "letterboxdUrl": "https://letterboxd.com/film/practical-magic-2/",
+      "cert": "15A",
+      "director": "Lance Hammer",
+      "letterboxdUrl": "https://letterboxd.com/film/queen-at-sea/",
       "cinemas": [
+        "ifi",
         "lighthouse"
       ],
       "cinemaLinks": [
         {
+          "cinema": "ifi",
+          "label": "IFI",
+          "url": "https://ifi.ie/films/queen-at-sea-2"
+        },
+        {
           "cinema": "lighthouse",
           "label": "Light House",
-          "url": "https://www.lighthousecinema.ie/film/practical-magic-2"
+          "url": "https://www.lighthousecinema.ie/film/queen-at-sea"
         }
       ],
       "screeningTags": [
         "Open Captioned"
       ],
-      "firstDate": "2026-09-11",
+      "firstDate": "2026-09-18",
       "reason": "new"
     },
     {
-      "title": "WarGames",
-      "year": 1983,
-      "director": "John Badham",
-      "letterboxdUrl": "https://letterboxd.com/film/wargames/",
+      "title": "Resident Evil",
+      "year": 2026,
+      "cert": "16",
+      "director": "Zach Cregger",
+      "letterboxdUrl": "https://letterboxd.com/film/resident-evil-2026/",
+      "cinemas": [
+        "lighthouse"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "lighthouse",
+          "label": "Light House",
+          "url": "https://www.lighthousecinema.ie/film/resident-evil"
+        }
+      ],
+      "screeningTags": [],
+      "firstDate": "2026-09-18",
+      "reason": "new"
+    },
+    {
+      "title": "April X",
+      "year": 2025,
+      "cert": "15A",
+      "director": "K-Michel Parandi",
+      "letterboxdUrl": "https://letterboxd.com/film/april-x/",
+      "cinemas": [
+        "lighthouse"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "lighthouse",
+          "label": "Light House",
+          "url": "https://www.lighthousecinema.ie/film/april-x"
+        }
+      ],
+      "screeningTags": [],
+      "firstDate": "2026-09-19",
+      "reason": "new"
+    },
+    {
+      "title": "Mystery Matinee",
+      "year": 2026,
       "cinemas": [
         "ifi"
       ],
@@ -132,11 +125,53 @@
         {
           "cinema": "ifi",
           "label": "IFI",
-          "url": "https://ifi.ie/films/the-bigger-picture-wargames"
+          "url": "https://ifi.ie/films/mystery-matinee-september-2026"
         }
       ],
       "screeningTags": [],
-      "firstDate": "2026-09-15",
+      "firstDate": "2026-09-20",
+      "reason": "new"
+    },
+    {
+      "title": "The Lost Children of Tuam",
+      "year": 2026,
+      "cert": "12A",
+      "director": "Frank Berry",
+      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
+      "cinemas": [
+        "ifi"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "ifi",
+          "label": "IFI",
+          "url": "https://ifi.ie/films/the-lost-children-of-tuam-2"
+        }
+      ],
+      "screeningTags": [],
+      "firstDate": "2026-09-21",
+      "reason": "new"
+    },
+    {
+      "title": "Bad Apples",
+      "year": 2026,
+      "cert": "15A",
+      "director": "Talon Mundo",
+      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2026/",
+      "cinemas": [
+        "ifi"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "ifi",
+          "label": "IFI",
+          "url": "https://ifi.ie/films/bad-apples-2"
+        }
+      ],
+      "screeningTags": [
+        "Open Captioned"
+      ],
+      "firstDate": "2026-09-21",
       "reason": "new"
     }
   ]

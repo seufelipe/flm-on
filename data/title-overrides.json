@@ -1,5 +1,10 @@
 {
-  "stripPrefixes": ["Irish Focus:", "The Bigger Picture:", "CINEMA BOOK CLUB:"],
+  "stripPrefixes": [
+    "Irish Focus:",
+    "The Bigger Picture:",
+    "CINEMA BOOK CLUB:",
+    "EOS:"
+  ],
   "stripAnnotations": [
     "\\d{1,3}(?:st|nd|rd|th)\\s+anniversary",
     "\\d+k(?:\\s+digital)?\\s+restoration",
@@ -7,8 +12,11 @@
     "(?:january|february|march|april|may|june|july|august|september|october|november|december)\\s+\\d{4}"
   ],
   "corrections": {
+    "9 to 5": "Nine to Five",
     "Coyote vs Acme": "Coyote vs. Acme",
     "De Gaulle: Résistance": "De Gaulle Part One: Résistance",
-    "I (Ai)": "I"
+    "I (Ai)": "I",
+    "Terminator 2: Judgement Day": "Terminator 2: Judgment Day",
+    "Whisper Of The Heart 4K": "Whisper of the Heart"
   }
 }
