@@ -74,17 +74,36 @@ used as the hover tooltip. **House style for those descriptions, and the format 
 **and none inside a description**, kept under ~90 characters. A pill can show a strand and a
 format at once (joined by ` · `), so a description that spends its own em-dashes leaves four
 or five of them in a row each meaning something different; and past ~90 characters at
-`max-w-[16rem]` the tooltip stops being a glance. Rendered as a bare `<SpecialsMark>` on each matching pill + the name once per card
+`max-w-[16rem]` the tooltip stops being a glance. Rendered as a bare `<StrandMark>` on each matching pill + the name once per card
 in `FilmNotes` — rationale (user): once the card names it you recognise the mark, so don't
 repeat words on every pill.
+
+**Marks used to be one glyph for every strand; now a strand can carry its own.** The original
+rule was that a single `<SpecialsMark>` served all three surfaces — pill, sticker, lens — so the
+mark you scanned a row for could not drift from the control that revealed it. That held while
+the mark's only job was *this session is unusual*. It stopped being enough once a week could
+show two marked pills side by side, an 11am Parent & Baby and an over-65s Silver Screen matinee,
+that a reader had to open a tooltip to tell apart. `STRAND_MARKS` in
+`components/ScreeningTags.tsx` now maps a `label` to its own icon — `parent & baby` → `Baby`,
+`silver screen` → `Coffee` — and `<StrandMark>` falls back to `<SpecialsMark>` for everything
+else, so adding one is a single line and never a requirement.
+
+The map lives in the renderer rather than in `KNOWN`, which is the *older* argument kept intact:
+which glyph a strand wears is a rendering decision, and `lib/screeningTags.ts` stays data-only
+and free of React (it is imported by `lib/highlights.ts` and by the unit tests). Keying on
+`label` rather than the raw tag also means `relaxed` and `autism friendly`, which already share a
+label, share a mark for free.
+
+**The lens keeps the generic smiley**, because it filters on every strand at once and so cannot
+wear any single strand's icon. That is the cost of the change, stated plainly: a Parent & Baby
+pill shows `Baby` while the "Specials, etc" control that shows it wears `FaceGrinning`. The trade
+is deliberate — the marks now carry information instead of merely flagging that there is some.
 - **The mark is lucide's `FaceGrinning`** (`<SpecialsMark>` in `components/ScreeningTags.tsx`),
   which replaced the `☻` text glyph — see decision #23 for why that one moved to an icon after
   the original rule had kept it as text. **It is still the same smiley**: the glyph became an
   icon, the mark itself didn't change. (A `Gem` was tried in passing and rejected — the user
-  likes seeing the face, and the whole point of `☻` was that it reads as one.) **One component serves all three surfaces** — the pill /
-  plan row, the `FilmNotes` sticker that names the strand, and the "Specials, etc" lens that
-  filters on it — so the mark you scan a row of showtimes for can't drift from the one on the
-  control that shows them. Same shape as `<CinemaWeekendMark>` (#19), and for the same reason.
+  likes seeing the face, and the whole point of `☻` was that it reads as one.)
+  Same shape as `<CinemaWeekendMark>` (#19), and for the same reason.
   Lucide's outline, **not** the star's `fill-current`: the eyes and mouth are strokes drawn
   *inside* the circle, so filling it paints over the face. That does invert the old glyph's
   rationale — `☻` was picked over `☺` because a filled smiley held up better at small sizes —

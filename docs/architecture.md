@@ -63,9 +63,10 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   `Silver Screen`, `Movies for Juniors`, `Mystery Matinee`, `Marathon`). Each →
   `{ label, title, description, mark? }`. `mark: false` (Mystery Matinee) = still a
   surfaced special (Highlights, tooltip) but no mark / `FilmNotes` segment.
-  `<SpecialsMark>` (`components/ScreeningTags.tsx`) is the mark itself — lucide's `FaceGrinning`, shared by
-  all three surfaces that carry it; `<ScreeningTagMarks>` is the bare one on a pill / `DayPlan`
-  row. `UNSURFACED` / `isUnsurfacedTag`
+  `<StrandMark>` (`components/ScreeningTags.tsx`) is the mark itself — a strand's own icon from
+  `STRAND_MARKS` (`parent & baby` → `Baby`, `silver screen` → `Coffee`) or `<SpecialsMark>`,
+  lucide's `FaceGrinning`, as the fallback and as the "Specials, etc" lens's own mark;
+  `<ScreeningTagMarks>` is the bare one on a pill / `DayPlan` row. `UNSURFACED` / `isUnsurfacedTag`
   is the opposite list — tags we recognise and deliberately don't show (`Big Screen Classics`),
   read only by the batch report. Decision #13.
 - `lib/formats.ts` — `displayFilmFormats` → `35mm` / `70mm` / `IMAX` (`{ id, label, ratio, print,
@@ -116,7 +117,7 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   phantom horizontal scrollbar; `-mx-8 px-8` full-bleeds it past the card padding).
 - `components/FilmNotes.tsx` + `components/MarqueeSticker.tsx` — the **one** dark scrolling
   sticker per card (`FilmNotes`, beside the year on the title line), carrying the special-screening name(s)
-  *and* the curated editorial label (decision #11) joined by ` · ` (`<SpecialsMark>` + "parent &
+  *and* the curated editorial label (decision #11) joined by ` · ` (`<StrandMark>` + "parent &
   baby · 4k restoration"). The sticker *names* the strand; its tooltip is where the strand is
   *explained* — the sticker is the app's one dark surface, so a light tooltip beside it reads as
   an answer rather than a second sticker. **The tooltip is the strands only, and a label-only card

@@ -255,11 +255,21 @@ it covers, and update it in the same commit.**
 13. **Special screenings get a per-session marker** (`lib/screeningTags.ts`). `KNOWN` is the gate
     on what surfaces — widening it is one entry — and `UNSURFACED` is its deliberate opposite,
     tags we recognise and choose not to show. Reasoning: `docs/decisions/screening-tags.md`.
-    - **One `<SpecialsMark>` serves all three surfaces** — the pill, the `FilmNotes` sticker that
-      names the strand, and the lens that filters on it — so the mark you scan a row for can't
-      drift from the control that shows them. Lucide's `FaceGrinning`, **outline, not
-      `fill-current`** (the eyes and mouth are strokes drawn inside the circle). The caller sizes
-      it in `em`.
+    - **A strand's mark is `<StrandMark>`, its own icon or the generic smiley.** `STRAND_MARKS`
+      in `components/ScreeningTags.tsx` maps a `label` to an icon — `parent & baby` → `Baby`,
+      `silver screen` → `Coffee`; everything else falls back to `<SpecialsMark>`, lucide's
+      `FaceGrinning`. **The map lives in the renderer, not in `lib/screeningTags.ts`** — which
+      glyph a strand wears is a rendering decision, and that module stays data-only and
+      React-free. Adding a mark is one line and is never required.
+    - **The pill and the sticker use `<StrandMark>`; the "Specials, etc" lens keeps
+      `<SpecialsMark>`** — the lens filters on *every* strand, so it can't wear any one strand's
+      icon. This is the accepted cost of per-strand marks: a Parent & Baby pill shows `Baby`
+      while the control that reveals it shows the smiley, where before they were the same glyph.
+      Worth it because the marks now carry information — `Baby` vs `Coffee` tells you which of
+      two marked pills is the buggy screening and which the over-65s matinee.
+    - **All of them are outline, never `fill-current`** — `FaceGrinning`'s eyes and mouth are
+      strokes drawn inside the circle, so filling it paints over the face. The caller sizes it
+      in `em`.
     - **The card names the strand once; the pills carry the bare mark.** Once the card names it
       you recognise the mark, so don't repeat the words on every pill.
     - **House style for tag descriptions** (here and in `lib/formats.ts`): exactly one ` — ` per

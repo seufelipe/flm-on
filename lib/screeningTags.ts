@@ -4,9 +4,10 @@
 // vs dubbed, captions, print gauge) are captured in the data but deliberately not shown — to
 // add one, give it an entry below.
 //
-// No `symbol` here: every surfaced strand wears the same mark, so it belongs to the renderer,
-// not the data. It's <SpecialsMark> (lucide's FaceGrinning) in components/ScreeningTags.tsx — one
-// component for the pill, the card sticker and the "Specials, etc" lens. See decision #13.
+// No `symbol` here: which glyph a strand wears is a rendering decision, so it lives in
+// components/ScreeningTags.tsx — `STRAND_MARKS` maps a `label` to its own icon (Parent & Baby →
+// Baby, Silver Screen → Coffee) and everything else falls back to <SpecialsMark>, lucide's
+// FaceGrinning, which is also what the "Specials, etc" lens wears. See decision #13.
 
 // `label` is the lowercase form shown in the sticker; `title` + `description` fill the tooltip
 // (and the sticker's accessible name). Descriptions started as Light House's own `data-tooltip`
@@ -20,7 +21,7 @@ interface KnownTag {
   label: string;
   title: string;
   description: string;
-  // Whether this tag renders a visible <SpecialsMark> / marquee sticker. Default true. A
+  // Whether this tag renders a visible mark / marquee sticker. Default true. A
   // `false` tag still counts as a surfaced special (Highlights filter, tooltip) but shows no mark
   // — for Mystery Matinee, whose card already has its own redacted treatment, so it's noise.
   mark?: boolean;

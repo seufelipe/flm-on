@@ -1,13 +1,11 @@
-import { FaceGrinning } from "lucide-react";
+import { Baby, Coffee, FaceGrinning, type LucideIcon } from "lucide-react";
 
 import { displayScreeningTags } from "@/lib/screeningTags";
 import { cn } from "@/lib/utils";
 
-// The specials mark, shared by all three surfaces that carry it — the bare mark on a pill / plan
-// row below, the card sticker that names the strand (components/FilmNotes.tsx) and the
-// "Specials, etc" lens that filters on it (components/FilterControls.tsx) — so the mark you scan
-// a row of showtimes for is the same one on the lens that shows them. Same shape as
-// <CinemaWeekendMark>, and for the same reason.
+// The generic specials mark: the "Specials, etc" lens that filters on *all* the strands
+// (components/FilterControls.tsx), and the fallback for any strand with no mark of its own.
+// Same shape as <CinemaWeekendMark>, and for the same reason.
 //
 // It replaced a `☻` text glyph (CLAUDE.md decisions #13, #23) and stays the same smiley — the
 // glyph moved to an icon, the mark didn't change. Lucide's outline, not the star's
@@ -19,6 +17,26 @@ import { cn } from "@/lib/utils";
 // decorative: every caller names the strand in text beside it or in an `sr-only` span.
 export function SpecialsMark({ className }: { className?: string }) {
   return <FaceGrinning aria-hidden="true" className={cn("inline-block", className)} />;
+}
+
+// Per-strand marks, keyed by a KNOWN entry's `label`. Keyed here rather than in
+// lib/screeningTags.ts so that module stays data-only and free of React — which is also the
+// older argument for a single mark: *which* glyph a strand wears is a rendering decision.
+// `relaxed` and `autism friendly` share a label, so they share a mark for free.
+//
+// A strand earns its own icon when the icon says something the smiley can't: a Baby and a Coffee
+// tell you at a glance which of two marked pills is the 11am buggy screening and which is the
+// over-65s matinee. Anything without one falls back to <SpecialsMark>, so adding a mark is one
+// line and never a requirement.
+const STRAND_MARKS: Record<string, LucideIcon> = {
+  "parent & baby": Baby,
+  "silver screen": Coffee,
+};
+
+// One strand's mark — its own icon if it has one, the generic smiley otherwise.
+export function StrandMark({ label, className }: { label: string; className?: string }) {
+  const Icon = STRAND_MARKS[label] ?? FaceGrinning;
+  return <Icon aria-hidden="true" className={cn("inline-block", className)} />;
 }
 
 // <ScreeningTagMarks> — a bare mark after the time on a pill / plan row for each surfaced
@@ -36,7 +54,7 @@ export function ScreeningTagMarks({ tags }: { tags?: string[] }) {
     <>
       {display.map((t) => (
         <span key={t.label} className="leading-none">
-          <SpecialsMark className="size-[1.1em] align-[-0.16em]" />
+          <StrandMark label={t.label} className="size-[1.1em] align-[-0.16em]" />
           <span className="sr-only">{t.title} screening</span>
         </span>
       ))}

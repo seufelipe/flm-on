@@ -1,11 +1,11 @@
 import { Fragment, type ReactNode } from "react";
 import MarqueeSticker from "@/components/MarqueeSticker";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { SpecialsMark } from "@/components/ScreeningTags";
+import { StrandMark } from "@/components/ScreeningTags";
 import { displayScreeningTags } from "@/lib/screeningTags";
 
 // The one marquee sticker after a film's title + year: its special-screening name(s)
-// (<SpecialsMark> + "parent & baby") and its curated editorial label ("4k restoration"), all in
+// (<StrandMark> + "parent & baby") and its curated editorial label ("4k restoration"), all in
 // a SINGLE sticker, joined by " · ". Relaxes the old "one note per card" rule (CLAUDE.md
 // decision #13) — a Parent & Baby screening of a 4K restoration now shows both. `mark: false`
 // screening tags (Mystery Matinee) contribute nothing, same as before. Decorative →
@@ -22,7 +22,7 @@ export default function FilmNotes({
 
   const parts: ReactNode[] = specials.map((t) => (
     <Fragment key={`s:${t.label}`}>
-      <SpecialsMark className="size-[1.15em] align-[-0.2em]" /> {t.label}
+      <StrandMark label={t.label} className="size-[1.15em] align-[-0.2em]" /> {t.label}
     </Fragment>
   ));
   if (label) parts.push(<Fragment key="label">{label}</Fragment>);
