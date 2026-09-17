@@ -172,11 +172,22 @@ stays there.
 - **vaul is structurally safer than Radix Presence for decision #22's animation trap**, which
   is why a drawer may animate where the dialog may not: it has **zero** `transitionend` /
   `animationend` handlers and unmounts on a `setTimeout`, so it does not hang forever on a page
-  that is not being rendered. It has its own scroll lock (`usePreventScroll`, `position: fixed`
-  on `<body>` with a saved offset) rather than Radix's `overflow: hidden`. **Teardown
+  that is not being rendered. **Teardown
   confirmed by hand**: open the drawer, close it, the page still scrolls. Worth knowing that
   this is not observable in an automated pane — a page that isn't rendered throttles vaul's
   unmount timer indefinitely, so the sheet appears to hang open there and does not.
+- **vaul's own scroll locks are switched off; Radix's does the job** (`disablePreventScroll={false}`
+  — the prop reads backwards, false turns it off — and `noBodyStyles`, both defaulted in
+  `components/ui/drawer.tsx`). vaul ships two, both iOS-only, which is why the bug never showed
+  on desktop: a copy of react-aria's `usePreventScroll` that calls `window.scrollTo(0, 0)` on open
+  and trusts a negative `margin-top` on `<body>` to hide it — a margin vaul's copy no longer
+  sets — and a `position: fixed` pin on `<body>` with a saved `top` offset, restored a frame
+  late on close. On a real phone the page behind the sheet jumped to the top on open and snapped
+  back on close. vaul's Content is a Radix `DialogContent`, so it already mounts `RemoveScroll`
+  (`overflow: hidden` + a non-passive `touchmove` guard), the same lock the modal uses, which
+  never moves the page. What's given up is vaul's input-into-view handling for the on-screen
+  keyboard — neither sheet has a text input. If one ever gets one, check the keyboard on a real
+  phone before turning `disablePreventScroll` back on.
 - **Costs, accepted:** ~68KB of shipped JS (856K → 924K of chunks), and vaul has not published
   since December 2024. It declares React 19 in peers and works on 19.2.
 - The sheet is flush to the screen edges, so it carries `pb-[env(safe-area-inset-bottom)]`

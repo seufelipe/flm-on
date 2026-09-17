@@ -23,15 +23,26 @@ import { cn } from "@/lib/utils";
 //     the overlay opacity from the drag itself via inline styles; layering keyframes on top fights
 //     it. This also keeps us clear of the stall documented in decision #22 — though note vaul is
 //     structurally safer there anyway: it never gates unmount on `animationend`.
+//  4. vaul's own scroll locks are OFF (`disablePreventScroll={false}` — the prop reads backwards:
+//     false disables it — plus `noBodyStyles`). Both are iOS-only, so neither shows on desktop.
+//     The first is a copy of react-aria's usePreventScroll that `scrollTo(0, 0)`s on open and
+//     relies on a negative body margin vaul's copy no longer sets; the second pins <body>
+//     `position: fixed` and restores it a frame late. Either way, on a phone the page behind the
+//     sheet jumps to the top and snaps back on close. Radix's RemoveScroll (which vaul's Content
+//     already mounts, the same one the modal uses) locks the page without ever moving it.
 
 function Drawer({
   shouldScaleBackground = false,
+  disablePreventScroll = false,
+  noBodyStyles = true,
   ...props
 }: React.ComponentProps<typeof DrawerPrimitive.Root>) {
   return (
     <DrawerPrimitive.Root
       data-slot="drawer"
       shouldScaleBackground={shouldScaleBackground}
+      disablePreventScroll={disablePreventScroll}
+      noBodyStyles={noBodyStyles}
       {...props}
     />
   );

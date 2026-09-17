@@ -462,6 +462,11 @@ it covers, and update it in the same commit.**
       copy would break this as a context error, not a style bug.
     - **`shouldScaleBackground` is forced `false`** — the registry default writes a black
       `document.body.style.background`.
+    - **vaul's scroll locks are off** (`disablePreventScroll={false}` — reads backwards — and
+      `noBodyStyles`, defaulted in `ui/drawer.tsx`). Both are iOS-only: one `scrollTo(0, 0)`s on
+      open, the other pins `<body>` `position: fixed`, and on a real phone the page behind the sheet
+      jumped to the top and snapped back on close. Radix's `RemoveScroll`, already mounted by
+      vaul's Content, does the locking without moving the page. Desktop can't reproduce it.
     - **The drawer's horizontal padding goes on the scrolling element, not `DrawerContent`** — the
       option strips full-bleed with `-mx-6 px-6`, which only cancels out on the box that clips them.
     - **`Group`'s `<fieldset>` needs `min-w-0`** — a fieldset won't shrink below `min-content`
