@@ -1,5 +1,11 @@
 import { describe, it, expect } from "vitest";
-import { cleanFilmTitle, titleAnnotation, titlesEquivalent, type TitleOverrides } from "@/lib/titles";
+import {
+  cleanFilmTitle,
+  isLabelledTitle,
+  titleAnnotation,
+  titlesEquivalent,
+  type TitleOverrides,
+} from "@/lib/titles";
 
 const overrides: TitleOverrides = {
   stripPrefixes: ["ARCHIVE AT LUNCHTIME:", "CINEMA BOOK CLUB:"],
@@ -113,5 +119,21 @@ describe("titlesEquivalent", () => {
     expect(titlesEquivalent("기생충", "Parasite")).toBe(false);
     expect(titlesEquivalent("ஐ", "I (Ai)")).toBe(false);
     expect(titlesEquivalent("기생충", " 기생충 ")).toBe(true);
+  });
+});
+
+describe("isLabelledTitle", () => {
+  it("spots the display title behind a strand label", () => {
+    expect(isLabelledTitle("Members' Preview: Heart of the Beast", "Heart of the Beast")).toBe(true);
+    expect(
+      isLabelledTitle("Preview: Oasis: Don't Look Back In Anger", "Oasis: Don’t Look Back In Anger"),
+    ).toBe(true);
+  });
+
+  it("is false for a genuine original title, or no label at all", () => {
+    expect(
+      isLabelledTitle("La Bataille de Gaulle - partie 1 : L'Âge de Fer", "De Gaulle: Résistance"),
+    ).toBe(false);
+    expect(isLabelledTitle("Heart of the Beast", "Heart of the Beast")).toBe(false);
   });
 });

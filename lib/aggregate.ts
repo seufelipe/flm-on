@@ -2,7 +2,13 @@ import { adapters } from "./scrapers";
 import type { Screening } from "./scrapers/types";
 import * as cache from "./cache";
 import { resolveLetterboxd, type LetterboxdMatch } from "./letterboxd";
-import { cleanFilmTitle, titleAnnotation, titlesEquivalent, loadTitleOverrides } from "./titles";
+import {
+  cleanFilmTitle,
+  titleAnnotation,
+  titlesEquivalent,
+  isLabelledTitle,
+  loadTitleOverrides,
+} from "./titles";
 import { loadHiddenFilms, isHiddenFilm } from "./hidden";
 import { loadLanguageOverrides, languageOverrideFor } from "./languageOverrides";
 import { loadDirectorOverrides, directorOverrideFor } from "./directorOverrides";
@@ -148,10 +154,13 @@ async function withLetterboxdLinks(screenings: Screening[]): Promise<Screening[]
 
     // Original-language title: Letterboxd's `originalname` (native script, canonical) wins, with
     // the cinema's own (Cineworld) as the fallback. Shown only when it's genuinely different
-    // from the display title.
+    // from the display title — not the same title again, nor the same title behind a strand
+    // label ("Members' Preview: …").
     const originalCandidate = match?.originalTitle ?? s.originalTitle;
     const originalTitle =
-      originalCandidate && !titlesEquivalent(originalCandidate, s.filmTitle)
+      originalCandidate &&
+      !titlesEquivalent(originalCandidate, s.filmTitle) &&
+      !isLabelledTitle(originalCandidate, s.filmTitle)
         ? originalCandidate
         : undefined;
 

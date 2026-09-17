@@ -108,6 +108,16 @@ export function titleAnnotation(raw: string, overrides: TitleOverrides): string 
   return cleanTitleParts(raw, overrides).annotation;
 }
 
+// Whether `candidate` is just `title` behind a strand label — "Members' Preview: Heart of the
+// Beast" for "Heart of the Beast". Cineworld files a preview as its own movie record and puts the
+// label in `originalTitle`, which is no original-language title at all; without this check it
+// reads as one on the card. Only the text after the first colon is compared, so a title that
+// has colons of its own ("Oasis: Don't Look Back In Anger") still matches.
+export function isLabelledTitle(candidate: string, title: string): boolean {
+  const colon = candidate.indexOf(":");
+  return colon > 0 && titlesEquivalent(candidate.slice(colon + 1), title);
+}
+
 // Whether two titles are effectively the same — case, whitespace, ASCII punctuation and
 // parentheticals ignored. Accented Latin and non-Latin scripts (U+00C0+) are kept, so a
 // native-script original title ("기생충") doesn't collapse to "" and read as equal to an English
