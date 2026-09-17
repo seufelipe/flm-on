@@ -51,8 +51,8 @@ pinned-day "Suggested double bills" list (`findCombos` / `ComboSuggestions` / `s
 is **gone** — it was a second, differently-shaped suggestion surface that only existed before
 your first pick, and a cross-day "pair" was never a plan anyway. Consequence, accepted: an
 **empty** plan now gets no suggestions at all, just "Tap a showtime to start a plan."
-The plan surface: a sticky `<PlanPanel>` in the desktop right rail, a floating
-`<PlanButton>` + bottom sheet on mobile. `lib/clash.ts` uses an **absolute-ordinal minute**
+The plan surface: a sticky `<PlanPanel>` in the desktop right rail, a
+`<PlanButton>` tab on the filter dock + bottom sheet on mobile. `lib/clash.ts` uses an **absolute-ordinal minute**
 model (`toOrdinalMinutes` = `daysBetweenISO(EPOCH, date)*1440 + toMinutes(time)`), so every
 gap calc is multi-day-correct and past-midnight end times no longer wrap. `itineraryTransitions`
 marks a day boundary as `crossDay` (rendered as a header, not "Overlaps 840min").

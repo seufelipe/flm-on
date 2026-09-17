@@ -8,7 +8,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 
 // The one persistent plan surface. Flat treatment (no dark header bar): a light label row with a
 // rule under it, then the body. Used inside the desktop right-rail card (pinned below the
-// masthead) and inside the mobile plan sheet (behind the floating button). Empty, it offers a few
+// masthead) and inside the mobile plan sheet (behind the tab on the filter dock). Empty, it offers a few
 // starting points (one per timeframe, specials first — lib/startingPoints.ts) as bare ghost rows
 // with no heading over them — dashed rows on an otherwise empty panel already read as an offer —
 // falling back to a plain prompt when there's nothing to seed from. Once the plan has something

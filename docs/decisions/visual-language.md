@@ -57,6 +57,17 @@ Font: Elms Sans. All tokens in the `@theme` block of `app/globals.css`.
     whether the control renders at all), not from `cinemasPresent`, so it doesn't flicker as
     you page through days. Same label in both shapes: the dock's "any" segment, and the bar's
     trigger + first menu row.
+- **The mobile plan trigger is an ink tab standing on the dock's top edge** (`PlanButton`,
+  rendered *inside* the dock div). It replaced a gold pill floating bottom-right over the film
+  list. The user's objections were placement and volume: the pill sat over the cards, and as the
+  one gold object that never leaves the screen it outshouted the selections the accent is for. A
+  centred tab reads as the lip of the sheet it pulls up, and it's part of the dock, not something
+  hovering over the list. Ink, not gold: it's actionable, so gold would be allowed, but not on
+  every screen. The count is an inverted `bg-bg` badge (decision #8's sanctioned count). It's
+  `absolute bottom-full` against the dock's padding box, so it covers the dock's 2px top border
+  and tab and bar join into one shape. **Moved out of the dock, it loses its anchor.** Rejected
+  alternatives: a smaller round icon FAB (still floats), a fixed Plan segment at the end of the
+  dock row (costs day-chip width) and a full-width basket strip (a permanent extra row).
 
 ---
 

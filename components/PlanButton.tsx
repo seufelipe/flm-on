@@ -1,15 +1,19 @@
 "use client";
 
 import { useState } from "react";
+import { ChevronUp } from "lucide-react";
 import type { ItineraryTransition, PlanAddition, TimedScreening } from "@/lib/clash";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
 import { useIsCompact } from "@/lib/useIsCompact";
 import PlanPanel from "./PlanPanel";
 
-// The mobile plan surface: a floating button carrying the plan-item count (the sanctioned
-// exception to the "no counters" rule — decision #8 — same as DayPlan's "{n} films"), opening
-// the plan in a bottom sheet. Sits above the fixed filter dock. With an empty plan it shows
+// The mobile plan surface: an ink tab rising out of the top edge of the filter dock, like the lip
+// of the sheet it opens, carrying the plan-item count (the sanctioned exception to the "no
+// counters" rule — decision #8 — same as DayPlan's "{n} films"). It must be rendered INSIDE the
+// dock: it's `absolute bottom-full`, so the dock's padding box is what it stands on, and it covers
+// the dock's top border so tab and bar read as one piece. Ink, not gold — it sits on every screen,
+// and gold there was the loudest thing on the page. With an empty plan it shows
 // unbadged whenever there are starting points to offer (the sheet is mobile's only route to
 // them), and hides entirely when there's nothing to plan with either. The sheet is the shared
 // <DialogContent> — the same one SettingsPanel uses — so Escape, scroll-lock, the backdrop press,
@@ -42,18 +46,15 @@ export default function PlanButton({ count, items, transitions, suggestions, sta
     <button
       type="button"
       aria-label={count > 0 ? `Your plan — ${count} ${count === 1 ? "film" : "films"}` : "Start a plan"}
-      className={`no-print fixed right-4 bottom-[calc(5rem+env(safe-area-inset-bottom))] z-30 flex items-center gap-2 border-4 border-border rounded-full bg-accent text-fg pl-3 pr-5 py-2.5 font-black uppercase text-sm tracking-wide transition-[translate,box-shadow] duration-100 cursor-pointer ${
-        open
-          ? "translate-x-[6px] translate-y-[6px]"
-          : "shadow-card-lg hover:translate-x-[3px] hover:translate-y-[3px] active:translate-x-[6px] active:translate-y-[6px] active:shadow-none"
-      }`}
+      className="no-print absolute bottom-full left-1/2 -translate-x-1/2 flex items-center gap-2 rounded-t-card bg-fg text-bg pl-4 pr-5 pt-2 pb-1.5 font-black uppercase text-sm tracking-wide cursor-pointer"
     >
+      <ChevronUp aria-hidden="true" className="size-4" strokeWidth={3} />
+      Plan
       {count > 0 && (
-        <span className="grid h-6 min-w-6 place-items-center rounded-full bg-fg px-1 text-xs text-bg tabular-nums">
+        <span className="grid h-5 min-w-5 place-items-center rounded-full bg-bg px-1 text-xs text-fg tabular-nums">
           {count}
         </span>
       )}
-      Plan
     </button>
   );
 

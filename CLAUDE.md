@@ -121,7 +121,8 @@ synthetic `Mystery Matinee` at render time (#12).
   a list you've already chosen from, and the mobile sheet can't open one anyway). Don't add one
   back without asking.
 - `PlanPanel.tsx` / `PlanButton.tsx` / `DayPlan.tsx` — the one persistent plan surface (desktop
-  rail, mobile floating button + sheet), the per-day grouping with its transition labels, and the
+  rail, mobile sheet opened by an ink tab on the filter dock's top edge — rendered inside the dock,
+  which it's absolutely positioned against), the per-day grouping with its transition labels, and the
   slot ghost rows. A ghost **replaces the real transition label of its slot**: you see the two
   gaps you'd have, not the one you have.
 - `Masthead.tsx`, `ActivePreferenceNote.tsx`, `PreferencesButton.tsx` + `SettingsPanel.tsx`,

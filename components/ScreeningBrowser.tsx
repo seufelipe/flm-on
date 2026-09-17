@@ -577,7 +577,7 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
         <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-8">
           {/* Right rail. Source order first: on mobile this collapses to just the masthead,
             stacked above the film list; the plan panel is desktop-only (the mobile plan lives
-            behind the floating button). */}
+            behind the tab on the filter dock). */}
           <div className="lg:col-start-2 lg:row-start-1 min-w-0">
             {/* Mobile: the page header (title / tagline / Preferences button). */}
             <div className="lg:hidden">
@@ -634,30 +634,27 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
           </div>
         </div>
 
-        {/* Mobile filter dock — fixed to the bottom of the viewport, scrolls sideways on overflow. */}
+        {/* Mobile filter dock — fixed to the bottom of the viewport, scrolls sideways on overflow.
+          The plan tab lives inside it: it stands on the dock's top edge (see PlanButton). */}
         {prefsLoaded && (
           <div className="lg:hidden no-print fixed bottom-0 left-0 right-0 z-20 border-t-2 border-border bg-bg px-4 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
             <FilterControls layout="dock" {...filterProps} />
-          </div>
-        )}
-
-        {/* Mobile plan — floating button + bottom sheet, above the filter dock. */}
-        {planLoaded && (
-          <div className="lg:hidden">
-            <PlanButton
-              count={dayPlanItems.length}
-              items={dayPlanItems}
-              transitions={dayPlanTransitions}
-              suggestions={planSuggestions}
-              startingPoints={seeds}
-              startingPointsShowDay={effectiveDay === null}
-              onAdd={toggleSelected}
-              onRemove={toggleSelected}
-              onClear={clearPlan}
-              onExport={exportPlan}
-              onPickDay={pickDay}
-              keyOf={keyOf}
-            />
+            {planLoaded && (
+              <PlanButton
+                count={dayPlanItems.length}
+                items={dayPlanItems}
+                transitions={dayPlanTransitions}
+                suggestions={planSuggestions}
+                startingPoints={seeds}
+                startingPointsShowDay={effectiveDay === null}
+                onAdd={toggleSelected}
+                onRemove={toggleSelected}
+                onClear={clearPlan}
+                onExport={exportPlan}
+                onPickDay={pickDay}
+                keyOf={keyOf}
+              />
+            )}
           </div>
         )}
       </div>

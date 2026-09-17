@@ -156,8 +156,9 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   read as an offer), falling back to a plain prompt when there's nothing to seed from; non-empty → `<DayPlan>`, a
   Clear button in the header and, at the foot of the list, the **Add to calendar** primary button
   (decision #21) — neutral `bg-surface` fill, not the accent. Lives in the desktop right rail (sticky, own
-  `overflow-y-auto`) and inside `components/PlanButton.tsx` — the mobile floating button + bottom
-  sheet cloned from `SettingsPanel`. The button carries the plan-item count (decision #8) once
+  `overflow-y-auto`) and inside `components/PlanButton.tsx` — the mobile plan tab + bottom
+  sheet. The tab (an ink lip on the dock's top edge, rendered inside the dock div in
+  `ScreeningBrowser`, see `visual-language.md`) carries the plan-item count (decision #8) once
   there's a plan, shows **unbadged** while the plan is empty but seeds exist (the sheet is
   mobile's only route to them), and hides entirely when there's neither.
 - `components/DayPlan.tsx` — the plan grouped into a section per day (`formatDayFriendly` +
