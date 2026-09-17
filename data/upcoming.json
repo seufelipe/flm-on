@@ -1,36 +1,44 @@
 {
-  "generatedAt": "2026-09-10T13:51:44.255Z",
+  "generatedAt": "2026-09-17T09:11:13.602Z",
   "week": {
-    "from": "2026-09-17",
-    "to": "2026-09-23"
+    "from": "2026-09-24",
+    "to": "2026-09-30"
   },
   "films": [
     {
-      "title": "Transformers 40th Anniversary Event",
-      "year": 2024,
-      "cert": "G",
-      "director": "John Gibbs",
-      "letterboxdUrl": "https://letterboxd.com/film/transformers-40th-anniversary-event/",
+      "title": "Sense and Sensibility",
+      "year": 2026,
+      "cert": "TBC",
+      "director": "Georgia Oakley",
+      "letterboxdUrl": "https://letterboxd.com/film/sense-and-sensibility-2026/",
       "cinemas": [
-        "lighthouse"
+        "lighthouse",
+        "ifi"
       ],
       "cinemaLinks": [
         {
           "cinema": "lighthouse",
           "label": "Light House",
-          "url": "https://www.lighthousecinema.ie/film/transformers-40th-anniversary-event"
+          "url": "https://www.lighthousecinema.ie/film/sense-and-sensibility"
+        },
+        {
+          "cinema": "ifi",
+          "label": "IFI",
+          "url": "https://ifi.ie/films/sense-and-sensibility-2"
         }
       ],
-      "screeningTags": [],
-      "firstDate": "2026-09-17",
-      "reason": "new"
+      "screeningTags": [
+        "Parent and Baby"
+      ],
+      "firstDate": "2026-09-25",
+      "reason": "special"
     },
     {
-      "title": "The Rocky Horror Picture Show",
-      "year": 1975,
-      "cert": "15A",
-      "director": "Jim Sharman",
-      "letterboxdUrl": "https://letterboxd.com/film/the-rocky-horror-picture-show/",
+      "title": "Avengers Endgame: Encore",
+      "year": 2019,
+      "cert": "12A",
+      "director": "Anthony Russo, Joe Russo",
+      "letterboxdUrl": "https://letterboxd.com/film/avengers-endgame/",
       "cinemas": [
         "cineworld"
       ],
@@ -38,49 +46,22 @@
         {
           "cinema": "cineworld",
           "label": "Cineworld",
-          "url": "https://www.cineworld.ie/movies/313-the-rocky-horror-picture-show/"
+          "url": "https://www.cineworld.ie/movies/1000036867-avengers-endgame-re-release/"
         }
       ],
       "screeningTags": [
-        "Big Screen Classics"
+        "IMAX"
       ],
-      "firstDate": "2026-09-17",
-      "reason": "new"
+      "firstDate": "2026-09-25",
+      "reason": "special"
     },
     {
-      "title": "Queen at Sea",
-      "year": 2026,
-      "cert": "15A",
-      "director": "Lance Hammer",
-      "letterboxdUrl": "https://letterboxd.com/film/queen-at-sea/",
-      "cinemas": [
-        "ifi",
-        "lighthouse"
-      ],
-      "cinemaLinks": [
-        {
-          "cinema": "ifi",
-          "label": "IFI",
-          "url": "https://ifi.ie/films/queen-at-sea-2"
-        },
-        {
-          "cinema": "lighthouse",
-          "label": "Light House",
-          "url": "https://www.lighthousecinema.ie/film/queen-at-sea"
-        }
-      ],
-      "screeningTags": [
-        "Open Captioned"
-      ],
-      "firstDate": "2026-09-18",
-      "reason": "new"
-    },
-    {
-      "title": "Resident Evil",
+      "title": "Hope",
       "year": 2026,
       "cert": "16",
-      "director": "Zach Cregger",
-      "letterboxdUrl": "https://letterboxd.com/film/resident-evil-2026/",
+      "director": "Na Hong-jin",
+      "originalTitle": "호프",
+      "letterboxdUrl": "https://letterboxd.com/film/hope-2026/",
       "cinemas": [
         "lighthouse"
       ],
@@ -88,56 +69,49 @@
         {
           "cinema": "lighthouse",
           "label": "Light House",
-          "url": "https://www.lighthousecinema.ie/film/resident-evil"
+          "url": "https://www.lighthousecinema.ie/film/hope"
+        }
+      ],
+      "screeningTags": [
+        "Korean",
+        "Subtitled"
+      ],
+      "firstDate": "2026-09-25",
+      "reason": "special"
+    },
+    {
+      "title": "Manhunter",
+      "year": 1986,
+      "cert": "18",
+      "director": "Michael Mann",
+      "letterboxdUrl": "https://letterboxd.com/film/manhunter/",
+      "cinemas": [
+        "lighthouse",
+        "ifi"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "lighthouse",
+          "label": "Light House",
+          "url": "https://www.lighthousecinema.ie/film/manhunter"
+        },
+        {
+          "cinema": "ifi",
+          "label": "IFI",
+          "url": "https://ifi.ie/films/manhunter-40th-anniversary-2"
         }
       ],
       "screeningTags": [],
-      "firstDate": "2026-09-18",
-      "reason": "new"
+      "label": "4k final cut",
+      "firstDate": "2026-09-25",
+      "reason": "special"
     },
     {
-      "title": "April X",
+      "title": "Rental Family",
       "year": 2025,
-      "cert": "15A",
-      "director": "K-Michel Parandi",
-      "letterboxdUrl": "https://letterboxd.com/film/april-x/",
-      "cinemas": [
-        "lighthouse"
-      ],
-      "cinemaLinks": [
-        {
-          "cinema": "lighthouse",
-          "label": "Light House",
-          "url": "https://www.lighthousecinema.ie/film/april-x"
-        }
-      ],
-      "screeningTags": [],
-      "firstDate": "2026-09-19",
-      "reason": "new"
-    },
-    {
-      "title": "Mystery Matinee",
-      "year": 2026,
-      "cinemas": [
-        "ifi"
-      ],
-      "cinemaLinks": [
-        {
-          "cinema": "ifi",
-          "label": "IFI",
-          "url": "https://ifi.ie/films/mystery-matinee-september-2026"
-        }
-      ],
-      "screeningTags": [],
-      "firstDate": "2026-09-20",
-      "reason": "new"
-    },
-    {
-      "title": "The Lost Children of Tuam",
-      "year": 2026,
       "cert": "12A",
-      "director": "Frank Berry",
-      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
+      "director": "Hikari",
+      "letterboxdUrl": "https://letterboxd.com/film/rental-family-2025/",
       "cinemas": [
         "ifi"
       ],
@@ -145,33 +119,92 @@
         {
           "cinema": "ifi",
           "label": "IFI",
-          "url": "https://ifi.ie/films/the-lost-children-of-tuam-2"
-        }
-      ],
-      "screeningTags": [],
-      "firstDate": "2026-09-21",
-      "reason": "new"
-    },
-    {
-      "title": "Bad Apples",
-      "year": 2026,
-      "cert": "15A",
-      "director": "Talon Mundo",
-      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2026/",
-      "cinemas": [
-        "ifi"
-      ],
-      "cinemaLinks": [
-        {
-          "cinema": "ifi",
-          "label": "IFI",
-          "url": "https://ifi.ie/films/bad-apples-2"
+          "url": "https://ifi.ie/films/wild-strawberries-rental-family-2"
         }
       ],
       "screeningTags": [
         "Open Captioned"
       ],
-      "firstDate": "2026-09-21",
+      "firstDate": "2026-09-25",
+      "reason": "new"
+    },
+    {
+      "title": "Knife: The Attempted Murder of Salman Rushdie",
+      "year": 2026,
+      "cert": "15A",
+      "director": "Alex Gibney",
+      "letterboxdUrl": "https://letterboxd.com/film/knife-the-attempted-murder-of-salman-rushdie/",
+      "cinemas": [
+        "ifi"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "ifi",
+          "label": "IFI",
+          "url": "https://ifi.ie/films/doc-fest-26-knife-the-attempted-murder-of-salman-rushdie-2"
+        }
+      ],
+      "screeningTags": [],
+      "firstDate": "2026-09-25",
+      "reason": "new"
+    },
+    {
+      "title": "Once Upon a Time in Harlem",
+      "year": 2026,
+      "director": "William Greaves, David Greaves",
+      "letterboxdUrl": "https://letterboxd.com/film/once-upon-a-time-in-harlem/",
+      "cinemas": [
+        "ifi"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "ifi",
+          "label": "IFI",
+          "url": "https://ifi.ie/films/doc-fest-26-once-upon-a-time-in-harlem-2"
+        }
+      ],
+      "screeningTags": [],
+      "firstDate": "2026-09-25",
+      "reason": "new"
+    },
+    {
+      "title": "Mother Ireland",
+      "year": 1988,
+      "director": "Anne Crilly",
+      "letterboxdUrl": "https://letterboxd.com/film/mother-ireland/",
+      "cinemas": [
+        "ifi"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "ifi",
+          "label": "IFI",
+          "url": "https://ifi.ie/films/doc-fest-26-mother-ireland-panel-2"
+        }
+      ],
+      "screeningTags": [],
+      "firstDate": "2026-09-27",
+      "reason": "new"
+    },
+    {
+      "title": "Linkin Park: Unshatter",
+      "year": 2026,
+      "director": "Joe Hahn",
+      "letterboxdUrl": "https://letterboxd.com/film/linkin-park-unshatter/",
+      "cinemas": [
+        "cineworld"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "cineworld",
+          "label": "Cineworld",
+          "url": "https://www.cineworld.ie/movies/1000049814-linkin-park-unshatter/"
+        }
+      ],
+      "screeningTags": [
+        "Alt Content"
+      ],
+      "firstDate": "2026-09-30",
       "reason": "new"
     }
   ]
