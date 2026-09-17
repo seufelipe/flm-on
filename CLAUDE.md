@@ -257,7 +257,7 @@ it covers, and update it in the same commit.**
     tags we recognise and choose not to show. Reasoning: `docs/decisions/screening-tags.md`.
     - **A strand's mark is `<StrandMark>`, its own icon or the generic smiley.** `STRAND_MARKS`
       in `components/ScreeningTags.tsx` maps a `label` to an icon — `parent & baby` → `Baby`,
-      `silver screen` → `Coffee`; everything else falls back to `<SpecialsMark>`, lucide's
+      `silver screen` → `Coffee`, `q&a` → `MicVocal`; everything else falls back to `<SpecialsMark>`, lucide's
       `FaceGrinning`. **The map lives in the renderer, not in `lib/screeningTags.ts`** — which
       glyph a strand wears is a rendering decision, and that module stays data-only and
       React-free. Adding a mark is one line and is never required.

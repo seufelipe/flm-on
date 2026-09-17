@@ -6,7 +6,7 @@
 //
 // No `symbol` here: which glyph a strand wears is a rendering decision, so it lives in
 // components/ScreeningTags.tsx — `STRAND_MARKS` maps a `label` to its own icon (Parent & Baby →
-// Baby, Silver Screen → Coffee) and everything else falls back to <SpecialsMark>, lucide's
+// Baby, Silver Screen → Coffee, Q&A → MicVocal) and everything else falls back to <SpecialsMark>, lucide's
 // FaceGrinning, which is also what the "Specials, etc" lens wears. See decision #13.
 
 // `label` is the lowercase form shown in the sticker; `title` + `description` fill the tooltip
@@ -70,6 +70,13 @@ const KNOWN: Record<string, KnownTag> = {
     title: "Cinema Book Club",
     description: "A monthly book-club pick, with a group chat after the screening.",
   },
+  // Light House prints this as "In-Person QandA" — a talk with the filmmakers or guests after
+  // the film, which is the whole reason to pick that session over another.
+  "in-person qanda": {
+    label: "q&a",
+    title: "Q&A",
+    description: "Followed by an in-person conversation with the filmmakers or guests.",
+  },
   "silver screen": {
     label: "silver screen",
     title: "Silver Screen",
@@ -77,6 +84,13 @@ const KNOWN: Record<string, KnownTag> = {
   },
   // Cineworld strands (Showtime.Event.* — see lib/scrapers/cineworld.ts). "Big Screen Classics"
   // is deliberately absent; see UNSURFACED above.
+  // Cineworld tags an early preview for its Unlimited card holders "Members Only". Named
+  // for the scheme rather than "members only": that's what you'd need to get in.
+  "members only": {
+    label: "unlimited",
+    title: "Unlimited preview",
+    description: "An early showing for Cineworld Unlimited members only.",
+  },
   "movies for juniors": {
     label: "movies for juniors",
     title: "Movies for Juniors",

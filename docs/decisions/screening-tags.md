@@ -85,7 +85,7 @@ the mark's only job was *this session is unusual*. It stopped being enough once 
 show two marked pills side by side, an 11am Parent & Baby and an over-65s Silver Screen matinee,
 that a reader had to open a tooltip to tell apart. `STRAND_MARKS` in
 `components/ScreeningTags.tsx` now maps a `label` to its own icon — `parent & baby` → `Baby`,
-`silver screen` → `Coffee` — and `<StrandMark>` falls back to `<SpecialsMark>` for everything
+`silver screen` → `Coffee`, `q&a` → `MicVocal` — and `<StrandMark>` falls back to `<SpecialsMark>` for everything
 else, so adding one is a single line and never a requirement.
 
 The map lives in the renderer rather than in `KNOWN`, which is the *older* argument kept intact:
@@ -130,6 +130,11 @@ a "Special screenings" + "unrecognised screening tags" section for review.
   `showtimes.json`** — the prefill reads it — and `isUnsurfacedTag` keeps it out of the
   report's unrecognised list. Its films no longer pass the Highlights lens on the strand
   alone, only on their label.
+- **`In-Person QandA` (Light House) surfaces as `q&a`** — a post-screening talk is a reason to
+  pick one session over another, which is exactly what a mark is for.
+- **`Members Only` (Cineworld) surfaces as `unlimited`** — it marks an early preview for
+  Cineworld Unlimited card holders, so the sticker names the scheme you'd need to get in, not
+  the generic "members only".
 - Not tagged: IFI's special-audience strands (only Cineworld + Light House are wired); IFI's
   "Archive at Lunchtime" strand (sole signal is the `filmPageUrl` slug — slug-derivation
   deliberately not done).

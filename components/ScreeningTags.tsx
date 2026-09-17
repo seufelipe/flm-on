@@ -1,4 +1,4 @@
-import { Baby, Coffee, FaceGrinning, type LucideIcon } from "lucide-react";
+import { Baby, Coffee, FaceGrinning, MicVocal, type LucideIcon } from "lucide-react";
 
 import { displayScreeningTags } from "@/lib/screeningTags";
 import { cn } from "@/lib/utils";
@@ -31,6 +31,7 @@ export function SpecialsMark({ className }: { className?: string }) {
 const STRAND_MARKS: Record<string, LucideIcon> = {
   "parent & baby": Baby,
   "silver screen": Coffee,
+  "q&a": MicVocal,
 };
 
 // One strand's mark — its own icon if it has one, the generic smiley otherwise.

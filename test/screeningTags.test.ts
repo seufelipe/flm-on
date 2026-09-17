@@ -43,9 +43,14 @@ describe("displayScreeningTags", () => {
     expect(displayScreeningTags(["Silver Screen"])[0].label).toBe("silver screen");
   });
 
+  it("surfaces Light House's in-person Q&A", () => {
+    expect(displayScreeningTags(["In-Person QandA"])[0].label).toBe("q&a");
+  });
+
   it("surfaces the Cineworld event strands", () => {
     expect(displayScreeningTags(["Movies For Juniors"])[0].label).toBe("movies for juniors");
     expect(displayScreeningTags(["Movies For Juniors"])[0].mark).not.toBe(false);
+    expect(displayScreeningTags(["Members Only"])[0].label).toBe("unlimited");
   });
 
   it("does not surface Big Screen Classics — it changes nothing about the screening", () => {
