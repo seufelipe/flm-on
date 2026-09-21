@@ -166,6 +166,15 @@ It also runs a **second** scrape of `nextWeekDays()` and rewrites `data/upcoming
 if next week's run is a special format), new shorts dropped but short *specials* kept,
 specials/labelled films sorted first. Hand-trimmed afterwards; not staged or promoted.
 
+**`newFilms` is staged, not just reported** (CLAUDE.md decision #26). The diff now runs *before*
+the staging write, and `diff.added`'s keys (`title.trim().toLowerCase()`, same as `groupByFilm`)
+go into `staging-batch.json` as a top-level `newFilms: string[]` — the app's "New this week"
+heading. On a **mid-week re-run** the baseline is the week we already published, so `added` comes
+back near-empty; when `days[0]` hasn't moved the committed `newFilms` is unioned in, so films that
+were new on Thursday stay new. A real new week moves the window and the list starts clean.
+Nothing to trim at review — but if the NEW list in the report looks wrong, the app's heading is
+wrong in exactly the same way.
+
 `scripts/confirm-batch.ts` copies staging → `data/showtimes.json`. Git stays manual.
 
 ## `lib/filmDiff.ts`
@@ -183,7 +192,7 @@ CLAUDE.md carries only the three the app reads at build time; this is the full i
 
 | File | What it is |
 | --- | --- |
-| `showtimes.json` | the published week (`confirm-batch` writes it; `app/page.tsx` reads it) |
+| `showtimes.json` | the published week (`confirm-batch` writes it; `app/page.tsx` reads it) — `{ generatedAt, days, newFilms, screenings }` |
 | `upcoming.json` | the hand-trimmed Next-week tease — **rewritten whole by `fetch:batch`** |
 | `film-labels.json` | curated editorial labels — **the only override file a rebuild picks up** |
 

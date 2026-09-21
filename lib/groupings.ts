@@ -80,3 +80,30 @@ export function groupScreeningsByDay(screenings: TimedScreening[]): DayGroup[] {
   }
   return groups;
 }
+
+export interface FilmSections {
+  newThisWeek: FilmGroup[];
+  alsoOn: FilmGroup[];
+}
+
+// Splits the film list into "new this week" and "also on" for the This-week view's two headings
+// (CLAUDE.md decision #26). `newKeys` is data/showtimes.json's `newFilms` — the titles that
+// weren't in the previously published week, keyed like FilmGroup.key. Order within each half is
+// whatever came in, so the chronological sort above survives the split.
+//
+// **Both halves or neither**: if nothing is new, or *everything* is (the first run against an
+// empty baseline, or a week where the whole programme turned over), the split says nothing, so
+// it collapses to a single unlabelled list. The caller's rule is then just "headings when
+// newThisWeek is non-empty" — keeping that here rather than in the component is what makes it
+// testable.
+export function partitionNewFilms(groups: FilmGroup[], newKeys?: Set<string>): FilmSections {
+  if (!newKeys || newKeys.size === 0) return { newThisWeek: [], alsoOn: groups };
+
+  const newThisWeek: FilmGroup[] = [];
+  const alsoOn: FilmGroup[] = [];
+  for (const g of groups) {
+    (newKeys.has(g.key) ? newThisWeek : alsoOn).push(g);
+  }
+  if (alsoOn.length === 0) return { newThisWeek: [], alsoOn: groups };
+  return { newThisWeek, alsoOn };
+}

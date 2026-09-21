@@ -95,9 +95,36 @@ async function main() {
     console.log(`Hidden films (data/hidden-films.json): ${hidden.titleSubstrings.join(", ")}\n`);
   }
 
+  // What changed since the last published week. Reported in full further down — it orients the
+  // whole review — but computed here because `newFilms` goes into the staged data. Baselines are
+  // the committed files, not the working copy (see `committed` above). On a Thursday the whole
+  // programme turns over, so a long NEW/GONE list is normal; on a mid-week adjustment run the
+  // windows overlap, so anything there is a real change worth a second look.
+  const prevWeek = committed<{ days: string[]; screenings: Screening[]; newFilms?: string[] }>(
+    "data/showtimes.json",
+  );
+  const prevUpcoming = committed<{ films: UpcomingFilm[] }>("data/upcoming.json");
+  const diff = diffFilms(prevWeek?.screenings ?? [], screenings, prevUpcoming?.films ?? []);
+
+  // The "New this week" heading in the app (CLAUDE.md decision #26), keyed like FilmGroup.key.
+  // A mid-week re-run diffs against the week we just published, so `added` comes back nearly
+  // empty and every film that was new on Thursday would silently stop being new — so when the
+  // window hasn't moved, carry the published list forward and union this run's additions in.
+  const sameWeek = prevWeek?.days?.[0] === days[0];
+  const newFilms = Array.from(
+    new Set([
+      ...(sameWeek ? (prevWeek?.newFilms ?? []) : []),
+      ...diff.added.map((f) => f.title.trim().toLowerCase()),
+    ]),
+  ).sort();
+
   const generatedAt = new Date().toISOString();
   await fs.mkdir(path.dirname(STAGING_FILE), { recursive: true });
-  await fs.writeFile(STAGING_FILE, JSON.stringify({ generatedAt, days, screenings }, null, 2), "utf-8");
+  await fs.writeFile(
+    STAGING_FILE,
+    JSON.stringify({ generatedAt, days, newFilms, screenings }, null, 2),
+    "utf-8",
+  );
 
   if (errors.length > 0) {
     console.log("Errors:");
@@ -122,13 +149,7 @@ async function main() {
     }
   }
 
-  // What changed since the last published week — read first, it orients everything below.
-  // Baselines are the committed files, not the working copy (see `committed` above). On a
-  // Thursday the whole programme turns over, so a long NEW/GONE list is normal; on a mid-week
-  // adjustment run the windows overlap, so anything here is a real change worth a second look.
-  const prevWeek = committed<{ days: string[]; screenings: Screening[] }>("data/showtimes.json");
-  const prevUpcoming = committed<{ films: UpcomingFilm[] }>("data/upcoming.json");
-  const diff = diffFilms(prevWeek?.screenings ?? [], screenings, prevUpcoming?.films ?? []);
+  // The NEW/GONE report, off the diff computed before the staging write above.
   const prevDays = prevWeek?.days ?? [];
   const prevWindow = prevDays.length ? `${prevDays[0]} .. ${prevDays[prevDays.length - 1]}` : "nothing committed yet";
   console.log(`\nSince the last published week (${prevWindow}):\n`);

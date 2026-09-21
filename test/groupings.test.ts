@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { groupByFilm, groupScreeningsByDay } from "@/lib/groupings";
+import { groupByFilm, groupScreeningsByDay, partitionNewFilms, type FilmGroup } from "@/lib/groupings";
 import type { TimedScreening } from "@/lib/clash";
 
 function screening(
@@ -63,5 +63,33 @@ describe("groupByFilm", () => {
     ]);
     expect(group.originalTitle).toBe("La Bataille de Gaulle");
     expect(group.screenings).toHaveLength(2);
+  });
+});
+
+describe("partitionNewFilms", () => {
+  const group = (key: string): FilmGroup => ({ key, filmTitle: key, screenings: [] });
+  const groups = [group("a"), group("b"), group("c")];
+
+  it("floats the new films to the top, keeping the incoming order inside each half", () => {
+    const { newThisWeek, alsoOn } = partitionNewFilms(groups, new Set(["c", "a"]));
+    expect(newThisWeek.map((g) => g.key)).toEqual(["a", "c"]);
+    expect(alsoOn.map((g) => g.key)).toEqual(["b"]);
+  });
+
+  it("collapses to one list when nothing is new", () => {
+    const { newThisWeek, alsoOn } = partitionNewFilms(groups, new Set(["nothing-on-this-week"]));
+    expect(newThisWeek).toEqual([]);
+    expect(alsoOn).toEqual(groups);
+  });
+
+  it("collapses to one list when *everything* is new — a heading over the whole list says nothing", () => {
+    const { newThisWeek, alsoOn } = partitionNewFilms(groups, new Set(["a", "b", "c"]));
+    expect(newThisWeek).toEqual([]);
+    expect(alsoOn).toEqual(groups);
+  });
+
+  it("collapses with no key set at all — a pinned day reads in time order, not new-first", () => {
+    expect(partitionNewFilms(groups, undefined).alsoOn).toEqual(groups);
+    expect(partitionNewFilms(groups, new Set()).alsoOn).toEqual(groups);
   });
 });

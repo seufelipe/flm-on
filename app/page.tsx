@@ -11,6 +11,9 @@ const UPCOMING_FILE = path.join(process.cwd(), "data", "upcoming.json");
 interface ShowtimesData {
   generatedAt: string;
   days: string[];
+  // Films that weren't in the previously published week, keyed like FilmGroup.key — written by
+  // fetch:batch off lib/filmDiff.ts. Drives the "New this week" heading (CLAUDE.md decision #26).
+  newFilms?: string[];
   screenings: Screening[];
 }
 
@@ -24,7 +27,7 @@ async function loadShowtimes(): Promise<ShowtimesData> {
     const raw = await fs.readFile(DATA_FILE, "utf-8");
     return JSON.parse(raw) as ShowtimesData;
   } catch {
-    return { generatedAt: "", days: [], screenings: [] };
+    return { generatedAt: "", days: [], newFilms: [], screenings: [] };
   }
 }
 
@@ -52,7 +55,7 @@ async function loadUpcoming(): Promise<UpcomingData> {
 }
 
 export default async function Home() {
-  const { generatedAt, days, screenings } = await loadShowtimes();
+  const { generatedAt, days, newFilms, screenings } = await loadShowtimes();
   const labels = await loadFilmLabels();
   const upcoming = await loadUpcoming();
 
@@ -69,6 +72,7 @@ export default async function Home() {
       <ScreeningBrowser
         screenings={screenings}
         days={days}
+        newFilms={newFilms}
         labels={labels}
         upcoming={upcoming.films}
         upcomingWeek={upcoming.week}

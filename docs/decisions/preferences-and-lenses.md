@@ -1,7 +1,8 @@
-# Preferences, the Highlights lens and the Next-week preview
+# Preferences, the Highlights lens, the Next-week preview and the New-this-week split
 
-Decisions #14 and #18 in full — the persisted viewing preferences and how they pre-filter
-everything, the ephemeral "Specials, etc" lens, and the unconfirmed next-week tease.
+Decisions #14, #18 and #26 in full — the persisted viewing preferences and how they pre-filter
+everything, the ephemeral "Specials, etc" lens, the unconfirmed next-week tease, and the two
+headings that put new films at the top of "This week".
 CLAUDE.md keeps the rules; this is the reasoning behind them.
 
 Verbatim from CLAUDE.md, which now carries only the rules. **Read this before changing
@@ -107,3 +108,83 @@ non-empty).
   (`labels?.[key] ?? f.label`), so a label edit + rebuild updates it like any card.
 - **Coverage caveat:** Light House only exposes 9 days out, so next-week coverage leans on
   Cineworld + IFI.
+
+---
+
+## Decision #26 — "This week" leads with what's new
+
+### The problem it answers
+
+"This week" was sorted chronologically, same as a pinned day — a film's position in the list
+came from its earliest screening. On a pinned day that's exactly right: the list reads as your
+day. Across a whole week it's close to meaningless. It says "this one plays on Monday", which is
+nobody's reason for choosing a film, and it buries a one-off première under a wide release that
+happens to have an early-week matinee.
+
+The thing the user actually scans a week for is what they haven't had a chance to see yet. So
+that's what the week now opens on.
+
+### Why the signal has to come from the pipeline
+
+The app has exactly one week of data. It has no way to know whether a film is new — a film in
+its third week and a film opening Thursday look identical in `showtimes.json`.
+
+But the pipeline already knows. `lib/filmDiff.ts` has diffed each incoming week against the last
+published one since the weekly-pipeline decision (#9), to print the NEW/GONE section that orients
+the whole Thursday review. Nothing was persisting it. So `fetch:batch` now writes `diff.added`'s
+keys into the staged data as a top-level `newFilms: string[]`, keyed like `FilmGroup.key`
+(`title.trim().toLowerCase()`) — the same key `film-labels.json` and the override files use — and
+`app/page.tsx` threads it to `ScreeningBrowser` exactly as it threads `labels`.
+
+**The mid-week wrinkle.** A re-run on, say, a Saturday diffs against the week we published on
+Thursday, so `added` comes back nearly empty — and a naive overwrite would quietly un-new every
+film that was new two days earlier. Hence the carry-forward: when `days[0]` matches the committed
+week's, `fetch:batch` unions the published `newFilms` into this run's additions. A genuinely new
+week moves the window, so the list starts clean by itself with nothing to remember to reset.
+
+**Known consequence:** a film that drops out for a week and comes back reads as new again.
+That's arguably correct — it *is* newly available — and no cheap fix exists that doesn't mean
+keeping a running history of every film ever published.
+
+### Both headings or neither
+
+Three cases collapse back to a single unlabelled list, all handled in `partitionNewFilms`:
+
+- nothing is new;
+- **everything** is new — the first run against an empty baseline, or a week where the whole
+  programme turned over;
+- no `newFilms` at all, which is also how a pinned day and the Next-week preview opt out (they
+  pass `undefined`).
+
+The second is the interesting one: a "New this week" heading over a list with nothing under
+"Also on" is a heading that distinguishes nothing. The rule lives in `lib/` rather than as a
+condition in the component precisely so it can be tested — the component's whole rule is then
+"headings when `newThisWeek` is non-empty".
+
+Order **within** each half is untouched, so `groupByFilm`'s chronological sort survives the
+split; a stable partition, not a re-sort.
+
+### The treatment
+
+Two centred plain-text headings, `<h2>` (cards are `<h3>`, so the document outline is right and a
+screen reader gets real landmarks), in the masthead tagline's voice: `font-bold text-dim uppercase
+text-sm tracking-widest`. No container, no rule, no count (#8), no accent (#7) — the cards keep
+the page and the heading just labels the region.
+
+Each is led by a lucide icon (#23), `size-[1em]` and `aria-hidden`: `Popcorn` over the new films,
+`CupSoda` over the rest. They're a pair from one scene rather than two unrelated glyphs, and the
+concession stand is the only iconography in the app that belongs to *going* to the cinema rather
+than to a film — which is the right register for a heading that isn't describing any film in
+particular. Neither carries meaning a screen reader loses by skipping it; the heading text is the
+label.
+
+Two spacing details that both look like tidy-up bait and aren't. The row needs `-mr-[0.2em]`,
+because `tracking-widest` adds letter-space *after* the last letter too, and centring a box that
+includes that phantom space sits the visible icon+text pair noticeably right of centre. And the
+second heading carries an extra `mt-8`: without it the seam between the two groups measures
+exactly the same as the gap between two cards, and the split stops doing any work.
+
+Rejected on the way: a per-card "new" marker on the `FilmNotes` sticker. It would have avoided a
+new region in the list, but that sticker names *strands* and curated labels (#13), and "new"
+is neither — and a marker repeated down eighteen cards is noisier than naming the group once.
+

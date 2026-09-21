@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useSyncExternalStore } from "react";
+import { useMemo, useState, useSyncExternalStore, type ReactNode } from "react";
 import type { CinemaId, Screening } from "@/lib/scrapers/types";
 import {
   withEndTimes,
@@ -10,7 +10,7 @@ import {
   type TimedScreening,
 } from "@/lib/clash";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { groupByFilm, type FilmGroup } from "@/lib/groupings";
+import { groupByFilm, partitionNewFilms, type FilmGroup } from "@/lib/groupings";
 import type { UpcomingFilm } from "@/lib/upcoming";
 import { TIMEFRAMES, timeframeForTime, type Timeframe } from "@/lib/timeframe";
 import { CINEMA_LABEL, CINEMA_ORDER } from "@/lib/cinemas";
@@ -41,7 +41,7 @@ import {
 import { planSnapshot, PLAN_SERVER_SNAPSHOT, subscribePlan, writePlan } from "@/lib/plan";
 import FilmCard from "./FilmCard";
 import CinemaWeekendBanner from "./CinemaWeekendBanner";
-import { CalendarClock, CalendarOff, SearchX } from "lucide-react";
+import { CalendarClock, CalendarOff, CupSoda, Popcorn, SearchX } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import Masthead, { MastheadTitle } from "./Masthead";
 import FilterControls from "./FilterControls";
@@ -51,6 +51,10 @@ import PlanButton from "./PlanButton";
 interface Props {
   screenings: Screening[];
   days: string[];
+  // Films that weren't in the previously published week, keyed like FilmGroup.key — written into
+  // data/showtimes.json by fetch:batch. Sorted to the top of the "This week" view under its own
+  // heading; see CLAUDE.md decision #26.
+  newFilms?: string[];
   // Curated editorial tags keyed by FilmGroup.key (filmTitle.trim().toLowerCase()); see
   // data/film-labels.json and CLAUDE.md decision #11.
   labels?: Record<string, string>;
@@ -87,7 +91,38 @@ function filmKeyOf(s: Screening): string {
   return s.filmTitle.trim().toLowerCase();
 }
 
-export default function ScreeningBrowser({ screenings, days, labels, upcoming, upcomingWeek }: Props) {
+// The two plain-text headings that split the "This week" list (CLAUDE.md decision #26). No
+// container, no rule — the masthead tagline's voice, centred, so it labels the region without
+// competing with the cards. The icon is `size-[1em]` and `aria-hidden` like every other
+// labelling mark (#23); `-mr-[0.2em]` pulls back the trailing letter-space `tracking-widest`
+// leaves on the last letter, which otherwise sits the pair visibly right of centre.
+function ListHeading({
+  icon: Icon,
+  children,
+  className = "",
+}: {
+  icon: typeof Popcorn;
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <h2
+      className={`flex items-center justify-center gap-2 -mr-[0.2em] font-bold text-dim uppercase text-sm tracking-widest ${className}`}
+    >
+      <Icon aria-hidden className="size-[1em] shrink-0" />
+      {children}
+    </h2>
+  );
+}
+
+export default function ScreeningBrowser({
+  screenings,
+  days,
+  newFilms,
+  labels,
+  upcoming,
+  upcomingWeek,
+}: Props) {
   const [activeTimeframe, setActiveTimeframe] = useState<Timeframe | null>(null);
   const [activeCinema, setActiveCinema] = useState<CinemaId | null>(null);
   // Defaults to **today** — the day you're most likely to be planning for — which also means the
@@ -341,6 +376,17 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
 
   const filmGroups = useMemo(() => groupByFilm(visible), [visible]);
 
+  // "New this week" first, then "Also on" — but only on "This week", where the chronological sort
+  // is just "whoever plays Monday" anyway. A pinned day reads in time order, which is the point of
+  // pinning it, so it's left alone. `partitionNewFilms` collapses the split when it would say
+  // nothing (nothing new, or everything new), and the headings follow `newThisWeek` being
+  // non-empty. Decision #26.
+  const newFilmKeys = useMemo(() => (newFilms ? new Set(newFilms) : undefined), [newFilms]);
+  const sections = useMemo(
+    () => partitionNewFilms(filmGroups, effectiveDay === null ? newFilmKeys : undefined),
+    [filmGroups, effectiveDay, newFilmKeys],
+  );
+
   // Cinema film-page links for each card — one per cinema the film plays at across its *whole*
   // set of preferred screenings, not just what the Day/Cinema/Time filter bar currently shows.
   // Keyed like FilmGroup.key; order = first appearance (preferred is date/time sorted).
@@ -378,6 +424,25 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
     }
     return new Map(Array.from(byFilm, ([key, tags]) => [key, Array.from(tags)]));
   }, [preferred]);
+
+  // One card, rendered identically in both sections — the split is an ordering decision, not a
+  // different kind of card.
+  const filmCard = (group: FilmGroup) => (
+    <FilmCard
+      key={group.key}
+      group={group}
+      selectedKeys={effectiveSelectedKeys}
+      partnersOf={partnersOf}
+      planDates={planDates}
+      keyOf={keyOf}
+      onSelect={toggleSelected}
+      showCinema={effectiveCinema === null}
+      daySpecified={effectiveDay !== null}
+      label={labels?.[group.key]}
+      cinemaLinks={filmCinemaLinks.get(group.key)}
+      specialTags={filmSpecialTags.get(group.key)}
+    />
+  );
 
   const dayPlanTransitions = useMemo(() => itineraryTransitions(dayPlanItems), [dayPlanItems]);
 
@@ -548,22 +613,17 @@ export default function ScreeningBrowser({ screenings, days, labels, upcoming, u
               </AlertDescription>
             </Alert>
           )}
-          {filmGroups.map((group) => (
-            <FilmCard
-              key={group.key}
-              group={group}
-              selectedKeys={effectiveSelectedKeys}
-              partnersOf={partnersOf}
-              planDates={planDates}
-              keyOf={keyOf}
-              onSelect={toggleSelected}
-              showCinema={effectiveCinema === null}
-              daySpecified={effectiveDay !== null}
-              label={labels?.[group.key]}
-              cinemaLinks={filmCinemaLinks.get(group.key)}
-              specialTags={filmSpecialTags.get(group.key)}
-            />
-          ))}
+          {sections.newThisWeek.length > 0 && <ListHeading icon={Popcorn}>New this week</ListHeading>}
+          {sections.newThisWeek.map(filmCard)}
+          {/* mt-8 on top of the list's own gap-8: without the extra space the seam between the
+              two groups reads exactly like the gap between two cards, and the split stops
+              doing any work. */}
+          {sections.newThisWeek.length > 0 && (
+            <ListHeading icon={CupSoda} className="mt-8">
+              Also on
+            </ListHeading>
+          )}
+          {sections.alsoOn.map(filmCard)}
         </div>
       </>
     )

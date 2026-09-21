@@ -56,6 +56,7 @@ What the **UI** derives from its output:
 
 - `lib/groupings.ts` — `groupByFilm`, case/whitespace-insensitive across cinemas *and* dates, so
   one film = one card with many pills.
+  `partitionNewFilms` splits that list into the This-week view's two headings (#26).
 - `lib/clash.ts` — **absolute-ordinal minutes** (`toOrdinalMinutes`), so gap maths is a plain
   subtraction across days (#5). `itineraryTransitions` (gap / overlap / too-tight / `crossDay`,
   no max cap) and the one suggestion engine `planAdditions`, read two ways: `fittingAdditions`
@@ -497,6 +498,36 @@ it covers, and update it in the same commit.**
     - The detector is generic (`/\bmarathon\b/i`, not the LOTR title) — all three cinemas run
       these, under a different name each time.
 
+26. **"This week" leads with what's new** (`lib/groupings.ts` `partitionNewFilms`, the `newFilms`
+    array in `data/showtimes.json`). The list splits under two centred plain-text headings —
+    **"New this week"** then **"Also on"** — so the week opens on what you haven't had the chance
+    to see yet. Reasoning: `docs/decisions/preferences-and-lenses.md`.
+    - **"New" is computed at fetch time, not derived in the browser.** `fetch:batch` already
+      diffs the incoming week against the last published one (`lib/filmDiff.ts`); it now writes
+      `diff.added`'s keys into the staged data as `newFilms: string[]`, keyed like
+      `FilmGroup.key`. The app has only one week of data, so it could never work this out itself.
+    - **A mid-week re-run carries the list forward.** Its baseline is the week we *just*
+      published, so `added` comes back near-empty and every film that was new on Thursday would
+      silently stop being new. When `days[0]` hasn't moved, `fetch:batch` unions the committed
+      `newFilms` into the new one.
+    - **Both headings or neither.** Nothing new, or *everything* new (a first run against an
+      empty baseline), collapses to one unlabelled list — a heading over the whole list says
+      nothing. `partitionNewFilms` owns that rule, which is why it's in `lib/` with tests rather
+      than inline in the component.
+    - **"This week" only.** A pinned day keeps its chronological order — reading in time order is
+      the point of pinning a day — and the Next-week preview is untouched. Chronological ordering
+      across a whole week is only ever "whoever plays Monday", which is what makes this the view
+      with room for a better answer.
+    - The headings are `<h2>` (cards are `<h3>`), centred, in the masthead tagline's voice
+      (`font-bold text-dim uppercase text-sm tracking-widest`), each led by a lucide icon —
+      `Popcorn` for new, `CupSoda` for the rest — `size-[1em]` and `aria-hidden` like every other
+      labelling mark (#23). No container, no rule, no count (#8). Two spacing details that look
+      like tidy-up bait: the second heading carries an extra `mt-8` on top of the list's own
+      `gap-8` (without it the seam reads exactly like the gap between two cards and the split
+      stops doing any work), and the row carries `-mr-[0.2em]` to pull back the trailing
+      letter-space `tracking-widest` leaves after the last letter, which otherwise sits the
+      icon+text pair visibly right of centre.
+
 ## Known gaps
 
 - No tests for the interactive UI layer — only `lib/` unit tests (`test/*.test.ts`).
@@ -554,7 +585,8 @@ it covers, and update it in the same commit.**
 
 Three are **read at build time**, and they're the only ones a UI change ever touches:
 `showtimes.json` (the published week — screenings may carry `screeningTags: string[]`, shared vocab
-per decisions #13/#15/#17, plus `originalTitle` (#16) and `director` (#4)), `upcoming.json` (the
+per decisions #13/#15/#17, plus `originalTitle` (#16) and `director` (#4); alongside them a
+top-level `newFilms: string[]`, #26), `upcoming.json` (the
 hand-trimmed "Next week" tease, #18) and `film-labels.json` (the curated editorial labels, #11 —
 **the only override file a rebuild picks up**; edit it and reload).
 
