@@ -259,6 +259,22 @@ async function main() {
     }
   }
 
+  // Shorts programmes (decision #28): the film list is scraped live from the IFI film page, off
+  // free-text synopsis lines, so this is the only place a parse that came back empty shows up.
+  const programmes = new Map<string, NonNullable<(typeof screenings)[number]["programme"]>>();
+  for (const s of screenings) {
+    if (s.programme && !programmes.get(s.filmTitle)?.length) programmes.set(s.filmTitle, s.programme);
+  }
+  console.log(`\nProgrammes (${programmes.size} — film lists scraped from the cinema's page):\n`);
+  if (programmes.size === 0) {
+    console.log("  none");
+  } else {
+    for (const [title, films] of Array.from(programmes).sort(([a], [b]) => a.localeCompare(b))) {
+      console.log(`  ${title}  →  ${films.length ? `${films.length} films` : "NO LIST PARSED"}`);
+      for (const f of films) console.log(`      ${f.title}${f.director ? ` — ${f.director}` : ""}`);
+    }
+  }
+
   // Per-session descriptors the cinema attaches to a specific showtime (Light House's
   // em.additional — "Parent and Baby", "Dubbed", "Subtitled"). Only a subset surfaces in the UI
   // (see lib/screeningTags.ts); this lists every tagged session so a new/unexpected value shows up.

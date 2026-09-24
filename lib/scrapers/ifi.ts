@@ -1,6 +1,6 @@
 import * as cheerio from "cheerio";
 import { mapWithConcurrency } from "@/lib/concurrency";
-import type { CinemaAdapter, Screening } from "./types";
+import type { CinemaAdapter, ProgrammeFilm, Screening } from "./types";
 
 const WHATSON_URL = "https://ifi.ie/whats-on";
 const USER_AGENT = "flm-personal-cinema-app/1.0 (+personal showtime planner)";
@@ -26,7 +26,7 @@ function parseCert(alt: string | undefined): string | undefined {
 
 const SITE_BASE = "https://ifi.ie";
 
-type DayScreening = Pick<
+type DayScreening = { isProgramme?: boolean } & Pick<
   Screening,
   | "filmTitle"
   | "cert"
@@ -72,6 +72,13 @@ export function parseWhatsonDay(html: string, date: string): DayScreening[] {
       if (m && year === undefined) year = Number(m[0]);
     });
 
+    // A shorts programme names "Various" where a film names its director — the one signal on the
+    // listing that the card is several films. Their titles are only on the film page.
+    const isProgramme = $card
+      .find(".tags .tag")
+      .toArray()
+      .some((t) => /^various$/i.test($(t).text().trim()));
+
     // The "Learn more" CTA points at the cinema's own film page, e.g. `/films/tony?date=…`.
     const ctaHref = $card.find('.screening-card__ctas a[href*="/films/"]').attr("href") ?? "";
     const slugMatch = ctaHref.match(/\/films\/([^/?#]+)/);
@@ -103,11 +110,44 @@ export function parseWhatsonDay(html: string, date: string): DayScreening[] {
         bookingUrl,
         filmPageUrl,
         screeningTags: iconTags.length ? iconTags : undefined,
+        ...(isProgramme && { isProgramme }),
       });
     });
   });
 
   return screenings;
+}
+
+// The films in a shorts programme, from its film page's synopsis: IFI lists them as
+// `<br>`-separated "Title – Director" lines, sometimes under "Programme includes:", sometimes
+// straight after the blurb. A line counts when it has exactly one spaced dash and is short —
+// a prose sentence can use dashes too ("the rituals – sacred and everyday – that…"). The
+// longest run of consecutive such lines is the list; a lone match isn't one. Returns [] when
+// nothing parses, which the batch report flags rather than hiding (CLAUDE.md decision #28).
+export function parseProgrammeFilms(html: string): ProgrammeFilm[] {
+  const $ = cheerio.load(html);
+  const lines = ($(".film-info__synopsis").html() ?? "")
+    .split(/<br\s*\/?>|<\/p>/i)
+    .map((chunk) => cheerio.load(chunk).text().replace(/\s+/g, " ").trim());
+
+  const parse = (line: string): ProgrammeFilm | undefined => {
+    if (line.length > 100) return undefined;
+    const parts = line.split(/\s[–—-]\s/);
+    if (parts.length !== 2) return undefined;
+    const title = parts[0].trim();
+    const director = parts[1].replace(/\.$/, "").trim();
+    return title && director ? { title, director } : undefined;
+  };
+
+  let best: ProgrammeFilm[] = [];
+  let run: ProgrammeFilm[] = [];
+  for (const line of lines) {
+    const film = line ? parse(line) : undefined;
+    if (film) run.push(film);
+    else if (line) run = [];
+    if (run.length > best.length) best = [...run];
+  }
+  return best.length >= 2 ? best : [];
 }
 
 export const ifiAdapter: CinemaAdapter = {
@@ -120,10 +160,26 @@ export const ifiAdapter: CinemaAdapter = {
         return parseWhatsonDay(html, date);
       });
 
-      const screenings: Screening[] = perDay.flat().map((s) => ({
+      // One extra request per distinct programme page. A failed page leaves that programme with
+      // an empty list rather than failing the whole cinema.
+      const programmePages = Array.from(
+        new Set(perDay.flat().flatMap((s) => (s.isProgramme && s.filmPageUrl ? [s.filmPageUrl] : []))),
+      );
+      const programmes = new Map(
+        await mapWithConcurrency(programmePages, 4, async (url): Promise<[string, ProgrammeFilm[]]> => {
+          try {
+            return [url, parseProgrammeFilms(await fetchHtml(url))];
+          } catch {
+            return [url, []];
+          }
+        }),
+      );
+
+      const screenings: Screening[] = perDay.flat().map(({ isProgramme, ...s }) => ({
         cinema: "ifi" as const,
         cinemaName: "IFI",
         ...s,
+        ...(isProgramme && { programme: [...(programmes.get(s.filmPageUrl ?? "") ?? [])] }),
       }));
 
       return { screenings };

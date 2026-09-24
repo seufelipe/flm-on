@@ -1,5 +1,5 @@
 import { Fragment, type ReactNode } from "react";
-import { Hourglass, User, Users } from "lucide-react";
+import { Hourglass, PlayingCardsFan, User, Users } from "lucide-react";
 import FilmNotes from "@/components/FilmNotes";
 import MysteryTitle from "@/components/MysteryTitle";
 import { isMarathonFilm } from "@/lib/marathon";
@@ -48,6 +48,10 @@ interface Props {
 
 // Dim, normal-weight text sitting inline with the (black, uppercase) film name at the same
 // size — the year after the name, the original-language title before it.
+// The programme icon's tooltip + aria-label. House style (#13): one ` — `, the title/description
+// separator, and none inside the description.
+const PROGRAMME_TIP = "Shorts programme — Several short films on one ticket.";
+
 function TitleMeta({ children, className = "" }: { children: ReactNode; className?: string }) {
   return <span className={`font-normal text-dim ${className}`}>{children}</span>;
 }
@@ -210,6 +214,8 @@ export default function FilmCard({
   // redacts the title and the director. The runtime survives in the data either way, so the plan
   // can still block out the sitting (CLAUDE.md #12, #25).
   const noFilmFacts = isMystery || isMarathonFilm(group.filmTitle);
+  // A shorts programme (#28) — flagged even when its film list didn't parse.
+  const isProgramme = group.programme !== undefined;
 
   // Descriptors across all of this film's visible sessions. The special-screening name(s) and
   // the curated editorial label are named together in one `<FilmNotes>` sticker beside the year
@@ -247,13 +253,29 @@ export default function FilmCard({
               {/* Original-language title (Cineworld only), dimmed and title-sized like the
                   year — sits before the name. */}
               {group.originalTitle && <TitleMeta className="mr-3">{group.originalTitle}</TitleMeta>}
+              {/* A shorts programme (#28) is marked before its name, title-sized and dim like the
+                  year. Its tooltip is the one explanation of the card's film-list line below —
+                  Radix, with the same text on the aria-label (#22). */}
+              {isProgramme && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span role="img" aria-label={PROGRAMME_TIP} className="mr-3 text-dim cursor-default">
+                      <PlayingCardsFan aria-hidden="true" className="inline-block size-[0.85em] align-[-0.1em]" />
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent>{PROGRAMME_TIP}</TooltipContent>
+                </Tooltip>
+              )}
               {/* The only plain text that keeps the I-beam cursor — the film name is the thing
                   you actually want to select and copy. The metadata around it stays on the
                   arrow cursor (globals.css default) so a drag-select grabs just the name. */}
               <span className="font-black uppercase cursor-text">{group.filmTitle}</span>
             </>
           )}
-          {!noFilmFacts && group.year !== undefined && (
+          {/* The year is Letterboxd's or nothing (#4, #28): a cinema's own year is a guess at
+              best — a re-release stamped with this year, a programme's placeholder — so a card
+              with no Letterboxd link, pinned or unmatched, shows none. */}
+          {!noFilmFacts && group.year !== undefined && group.letterboxdUrl !== undefined && (
             <TitleMeta className="ml-3">{group.year}</TitleMeta>
           )}
           {/* Special-screening name(s) + the curated editorial label, one marquee sticker,
@@ -268,6 +290,9 @@ export default function FilmCard({
             {group.durationMins !== undefined && !noFilmFacts && (
               <span className="text-base text-dim flex items-center gap-1.5">
                 <Hourglass aria-hidden="true" className="size-[1em] shrink-0" />
+                {/* A programme's runtime is the whole sitting, and the cinema's own figure is
+                    approximate ("98 mins approx.") — hence the ~. */}
+                {isProgramme && "~"}
                 {group.durationMins}min{group.durationEstimated ? " (est.)" : ""}
               </span>
             )}
@@ -288,6 +313,19 @@ export default function FilmCard({
             <LanguageTag tags={sessionTags} />
             <FilmFormatTag tags={sessionTags} />
           </div>
+        )}
+        {/* A shorts programme's films, in running order, as one flowing line under the meta line
+            — the "director" of a programme is these. Scraped live each week (#28). */}
+        {isProgramme && group.programme!.length > 0 && (
+          <p className="mt-3 text-base">
+            {group.programme!.map((f, i) => (
+              <Fragment key={i}>
+                {i > 0 && <span className="text-dim"> · </span>}
+                {f.title}
+                {f.director && <span className="text-dim"> ({f.director})</span>}
+              </Fragment>
+            ))}
+          </p>
         )}
       </div>
       {!preview &&

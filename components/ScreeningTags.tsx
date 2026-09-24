@@ -1,4 +1,4 @@
-import { Baby, Coffee, FaceGrinning, MicVocal, type LucideIcon } from "lucide-react";
+import { Baby, Clapperboard, Coffee, FaceGrinning, MicVocal, type LucideIcon } from "lucide-react";
 
 import { displayScreeningTags } from "@/lib/screeningTags";
 import { cn } from "@/lib/utils";
@@ -32,11 +32,17 @@ const STRAND_MARKS: Record<string, LucideIcon> = {
   "parent & baby": Baby,
   "silver screen": Coffee,
   "q&a": MicVocal,
+  "IFI Documentary Festival": Clapperboard,
 };
+
+// A strand's icon on its own — also what a `section` strand's heading wears (decision #27).
+export function strandIcon(label: string): LucideIcon {
+  return STRAND_MARKS[label] ?? FaceGrinning;
+}
 
 // One strand's mark — its own icon if it has one, the generic smiley otherwise.
 export function StrandMark({ label, className }: { label: string; className?: string }) {
-  const Icon = STRAND_MARKS[label] ?? FaceGrinning;
+  const Icon = strandIcon(label);
   return <Icon aria-hidden="true" className={cn("inline-block", className)} />;
 }
 

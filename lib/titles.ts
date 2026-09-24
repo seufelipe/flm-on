@@ -5,6 +5,12 @@ const OVERRIDES_FILE = path.join(process.cwd(), "data", "title-overrides.json");
 
 export interface TitleOverrides {
   stripPrefixes: string[];
+  // Prefixes that name a strand the session belongs to, not just packaging: stripped like
+  // `stripPrefixes`, and the value becomes a screening tag on that session (lib/aggregate.ts) —
+  // "IFI Documentary Festival 2026: Acting" → title "Acting", tag "IFI Documentary Festival".
+  // Per session, because the prefix is: the same film at another cinema isn't in the strand.
+  // CLAUDE.md decision #27.
+  strandPrefixes?: Record<string, string>;
   // Regex sources (case-insensitive) for trailing annotations a cinema appends to a title but
   // that aren't part of the film's name — "4K Restoration", "75th Anniversary", etc. Matched at
   // the end of the title, optionally wrapped in `(...)` or preceded by a dash.
@@ -12,7 +18,7 @@ export interface TitleOverrides {
   corrections: Record<string, string>;
 }
 
-const EMPTY_OVERRIDES: TitleOverrides = { stripPrefixes: [], stripAnnotations: [], corrections: {} };
+const EMPTY_OVERRIDES: TitleOverrides = { stripPrefixes: [], strandPrefixes: {}, stripAnnotations: [], corrections: {} };
 
 let cached: TitleOverrides | undefined;
 
@@ -23,6 +29,7 @@ export async function loadTitleOverrides(): Promise<TitleOverrides> {
     const parsed = JSON.parse(raw) as Partial<TitleOverrides>;
     cached = {
       stripPrefixes: parsed.stripPrefixes ?? [],
+      strandPrefixes: parsed.strandPrefixes ?? {},
       stripAnnotations: parsed.stripAnnotations ?? [],
       corrections: parsed.corrections ?? {},
     };
@@ -74,19 +81,46 @@ function stripTrailingAnnotations(
   return { title: out, annotation: annotation || undefined };
 }
 
-function cleanTitleParts(raw: string, overrides: TitleOverrides): { title: string; annotation?: string } {
+// Removes a leading `strandPrefixes` entry, reporting the strand it names. Runs before everything
+// else in `cleanTitleParts`, so the remainder still gets corrections / stripPrefixes / annotations
+// exactly as an unprefixed title would.
+function splitStrandPrefix(raw: string, overrides: TitleOverrides): { rest: string; strand?: string } {
   const trimmed = raw.trim();
+  for (const [prefix, strand] of Object.entries(overrides.strandPrefixes ?? {})) {
+    if (!trimmed.toLowerCase().startsWith(prefix.toLowerCase())) continue;
+    const rest = trimmed.slice(prefix.length).replace(/^[\s:]+/, "").trim();
+    if (rest) return { rest, strand };
+  }
+  return { rest: trimmed };
+}
+
+function cleanTitleParts(
+  raw: string,
+  overrides: TitleOverrides,
+): { title: string; annotation?: string; strand?: string } {
+  const { rest: trimmed, strand } = splitStrandPrefix(raw, overrides);
+  return { ...cleanUnprefixed(trimmed, overrides), strand };
+}
+
+function cleanUnprefixed(trimmed: string, overrides: TitleOverrides): { title: string; annotation?: string } {
   if (trimmed in overrides.corrections) {
     return { title: overrides.corrections[trimmed] };
   }
 
   let title = trimmed;
-  for (const prefix of overrides.stripPrefixes) {
-    if (title.toLowerCase().startsWith(prefix.toLowerCase())) {
-      const stripped = title.slice(prefix.length).replace(/^[\s:]+/, "").trim();
-      if (stripped) {
-        title = stripped;
-        break;
+  // Repeated until none matches: prefixes stack ("From the Vaults: IFI & ESB & DFOH: More Power
+  // to Ye!"), and one pass would leave the inner one on the title.
+  let matched = true;
+  while (matched) {
+    matched = false;
+    for (const prefix of overrides.stripPrefixes) {
+      if (title.toLowerCase().startsWith(prefix.toLowerCase())) {
+        const stripped = title.slice(prefix.length).replace(/^[\s:]+/, "").trim();
+        if (stripped) {
+          title = stripped;
+          matched = true;
+          break;
+        }
       }
     }
   }
@@ -106,6 +140,12 @@ export function cleanFilmTitle(raw: string, overrides: TitleOverrides): string {
 // cased — scripts/fetch-batch.ts pre-fills it as the film's editorial label for review.
 export function titleAnnotation(raw: string, overrides: TitleOverrides): string | undefined {
   return cleanTitleParts(raw, overrides).annotation;
+}
+
+// The strand a `strandPrefixes` entry named on this raw title, if any — attached to the session
+// as a screening tag by lib/aggregate.ts.
+export function titleStrand(raw: string, overrides: TitleOverrides): string | undefined {
+  return cleanTitleParts(raw, overrides).strand;
 }
 
 // Whether `candidate` is just `title` behind a strand label — "Members' Preview: Heart of the

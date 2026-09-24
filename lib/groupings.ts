@@ -1,4 +1,6 @@
 import type { TimedScreening } from "./clash";
+import type { ProgrammeFilm } from "./scrapers/types";
+import { sectionStrand, type ScreeningTagDisplay } from "./screeningTags";
 
 export interface FilmGroup {
   key: string;
@@ -10,6 +12,7 @@ export interface FilmGroup {
   durationEstimated?: boolean;
   director?: string;
   letterboxdUrl?: string;
+  programme?: ProgrammeFilm[];
   screenings: TimedScreening[];
 }
 
@@ -33,6 +36,7 @@ export function groupByFilm(screenings: TimedScreening[]): FilmGroup[] {
         durationEstimated: s.durationEstimated,
         director: s.director,
         letterboxdUrl: s.letterboxdUrl,
+        programme: s.programme,
         screenings: [],
       };
       groups.set(key, group);
@@ -43,6 +47,7 @@ export function groupByFilm(screenings: TimedScreening[]): FilmGroup[] {
     group.durationMins = group.durationMins ?? s.durationMins;
     group.director = group.director ?? s.director;
     group.letterboxdUrl = group.letterboxdUrl ?? s.letterboxdUrl;
+    if (!group.programme?.length) group.programme = s.programme ?? group.programme;
     group.screenings.push(s);
   }
 
@@ -81,29 +86,52 @@ export function groupScreeningsByDay(screenings: TimedScreening[]): DayGroup[] {
   return groups;
 }
 
-export interface FilmSections {
-  newThisWeek: FilmGroup[];
-  alsoOn: FilmGroup[];
-}
+// One heading's worth of the This-week list. `strand` is a `section` strand (decision #27), whose
+// name and icon head the section; "new" and "also" are decision #26's two.
+export type FilmSection =
+  | { kind: "strand"; strand: ScreeningTagDisplay; films: FilmGroup[] }
+  | { kind: "new"; films: FilmGroup[] }
+  | { kind: "also"; films: FilmGroup[] };
 
-// Splits the film list into "new this week" and "also on" for the This-week view's two headings
-// (CLAUDE.md decision #26). `newKeys` is data/showtimes.json's `newFilms` — the titles that
-// weren't in the previously published week, keyed like FilmGroup.key. Order within each half is
-// whatever came in, so the chronological sort above survives the split.
+// Splits the film list into the This-week view's headed sections, in order: each `section`
+// strand (a festival, #27), then "New this week", then "Also on" (#26). Each film lands in exactly
+// one — a festival film that's also new goes under the festival. `newKeys` is data/showtimes.json's
+// `newFilms`, keyed like FilmGroup.key. A film files under a strand when any of its (visible)
+// screenings carries one: the strand is per session, so a film at two cinemas where only one
+// is running the festival still counts. Order within each section is whatever came in, so the
+// chronological sort above survives the split.
 //
-// **Both halves or neither**: if nothing is new, or *everything* is (the first run against an
-// empty baseline, or a week where the whole programme turned over), the split says nothing, so
-// it collapses to a single unlabelled list. The caller's rule is then just "headings when
-// newThisWeek is non-empty" — keeping that here rather than in the component is what makes it
-// testable.
-export function partitionNewFilms(groups: FilmGroup[], newKeys?: Set<string>): FilmSections {
-  if (!newKeys || newKeys.size === 0) return { newThisWeek: [], alsoOn: groups };
+// **Headings only when there are at least two sections.** Nothing new and no festival, or
+// *everything* in one bucket (the first run against an empty baseline), says nothing, so it
+// collapses to a single "also" section and the caller draws no heading at all. Call with no
+// options — a pinned day — for the same single list. Keeping that rule here rather than in the
+// component is what makes it testable.
+export function partitionFilmSections(
+  groups: FilmGroup[],
+  opts?: { newKeys?: Set<string> },
+): FilmSection[] {
+  const single: FilmSection[] = [{ kind: "also", films: groups }];
+  if (!opts) return single;
 
-  const newThisWeek: FilmGroup[] = [];
-  const alsoOn: FilmGroup[] = [];
+  const strands = new Map<string, { strand: ScreeningTagDisplay; films: FilmGroup[] }>();
+  const fresh: FilmGroup[] = [];
+  const also: FilmGroup[] = [];
   for (const g of groups) {
-    (newKeys.has(g.key) ? newThisWeek : alsoOn).push(g);
+    const strand = g.screenings.map((s) => sectionStrand(s.screeningTags)).find(Boolean);
+    if (strand) {
+      const bucket = strands.get(strand.label) ?? { strand, films: [] };
+      bucket.films.push(g);
+      strands.set(strand.label, bucket);
+    } else {
+      (opts.newKeys?.has(g.key) ? fresh : also).push(g);
+    }
   }
-  if (alsoOn.length === 0) return { newThisWeek: [], alsoOn: groups };
-  return { newThisWeek, alsoOn };
+
+  const all: FilmSection[] = [
+    ...Array.from(strands.values(), (b): FilmSection => ({ kind: "strand", ...b })),
+    { kind: "new", films: fresh },
+    { kind: "also", films: also },
+  ];
+  const sections = all.filter((sec) => sec.films.length > 0);
+  return sections.length > 1 ? sections : single;
 }

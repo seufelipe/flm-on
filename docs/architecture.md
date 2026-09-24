@@ -27,10 +27,10 @@ debugging a wrong title / year / language / director — don't work from what's 
 The two pipeline outputs the **UI** actually depends on:
 
 - `lib/groupings.ts` — `groupByFilm`: groups by cleaned title across cinemas *and* dates
-  (case/whitespace-insensitive), so one film = one card with many pills. `partitionNewFilms` then
-  splits that list in two for the This-week view's "New this week" / "Also on" headings, off
-  `showtimes.json`'s `newFilms` keys — collapsing back to one list when nothing is new or
-  everything is (decision #26).
+  (case/whitespace-insensitive), so one film = one card with many pills. `partitionFilmSections`
+  then splits that list under the This-week view's headings: one per `section` strand (a
+  festival, decision #27), then "New this week" / "Also on" off `showtimes.json`'s `newFilms`
+  keys — collapsing back to one list when fewer than two sections have films (decision #26).
 - `lib/clash.ts` — `startMins`/`endMins` are **absolute-ordinal minutes** (`toOrdinalMinutes` =
   minutes since a fixed epoch), so a plan can span days and every gap calc stays a plain
   subtraction (decision #5). `itineraryTransitions` (gap/overlap/too-tight/`crossDay` between
@@ -98,10 +98,15 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   rather than in preferences — `highlightsOnly`, `nextWeek` (#18) and the two suggestion mutes,
   `dismissed` + `planCleared` (#5). The two-column shell is a bare `lg:grid` — right
   rail (`<Masthead>` + sticky `<PlanPanel>`), left column (sticky `FilterControls` + film list).
-  The film list is `partitionNewFilms(filmGroups, effectiveDay === null ? newFilmKeys : undefined)`
-  rendered through one shared `filmCard` closure under the two `<ListHeading>`s (centred, dim,
-  `Popcorn` / `CupSoda`) — the split is an ordering decision, not a different kind of card (#26).
+  The film list is `partitionFilmSections(filmGroups, effectiveDay === null ? { newKeys } : undefined)`
+  rendered through one shared `filmCard` closure, each section under a `<SectionHeading>` →
+  `<ListHeading>` (centred, dim; the strand's own `strandIcon` for a festival, `Popcorn` /
+  `CupSoda` for new / also on) — the split is an ordering decision, not a different kind of card
+  (#26, #27).
 - `components/FilmCard.tsx` — one film's card. **Line 1** (`<h3>`): `[original title] TITLE [year]`
+  (the year only when the card has a Letterboxd link, #28; a shorts programme gets a
+  `PlayingCardsFan` mark with a tooltip before the name, and its film list is a line of its own
+  under the meta line, `Title (Director) · …`)
   — the black uppercase name flanked by `<TitleMeta>` (`font-normal text-dim`, title-sized,
   natural case); the original-language title shows before the name when `FilmGroup.originalTitle`
   is set. The `<FilmNotes>` marquee sticker sits right after the year (`ml-3`, its own `text-xs`,

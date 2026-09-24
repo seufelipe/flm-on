@@ -4,7 +4,8 @@
 
 Personal single-user app (no auth, no accounts). Combines showtimes from **Light House Cinema**,
 **IFI** and **Cineworld Dublin** — all scraped in full — into one place, with tools to plan a day
-at the cinema, from a double bill up to back-to-back screenings. Cineworld is off by default and,
+at the cinema, from a double bill up to back-to-back screenings. (Cineworld is **paused** — not
+fetched, not in the UI — until its API is reachable again; #16.) Cineworld is off by default and,
 when on, its ordinary multiplex programme is hidden by the "Specials, etc" lens unless you ask
 for it (decisions #14, #16). Built entirely through conversation with the user; this file exists
 so a future session can pick up without re-deriving the reasoning.
@@ -56,7 +57,8 @@ What the **UI** derives from its output:
 
 - `lib/groupings.ts` — `groupByFilm`, case/whitespace-insensitive across cinemas *and* dates, so
   one film = one card with many pills.
-  `partitionNewFilms` splits that list into the This-week view's two headings (#26).
+  `partitionFilmSections` splits that list under the This-week view's headings — a festival
+  strand first (#27), then "New this week" / "Also on" (#26).
 - `lib/clash.ts` — **absolute-ordinal minutes** (`toOrdinalMinutes`), so gap maths is a plain
   subtraction across days (#5). `itineraryTransitions` (gap / overlap / too-tight / `crossDay`,
   no max cap) and the one suggestion engine `planAdditions`, read two ways: `fittingAdditions`
@@ -100,7 +102,8 @@ synthetic `Mystery Matinee` at render time (#12).
   affordance (#18).
 - `FilmCard.tsx` — one film's card: title line (`[original title] TITLE [year]` + the `FilmNotes`
   sticker), meta line (cert, duration, director, `<LanguageTag>`, format boxes) — both trimmed by
-  the `noFilmFacts` gate on a Mystery Matinee or a marathon (#12, #25) — pills grouped by
+  the `noFilmFacts` gate on a Mystery Matinee or a marathon (#12, #25), the year also by having no
+  Letterboxd link (#28) — then a shorts programme's film list (#28), pills grouped by
   day then timeframe, and a `no-print` footer of cinema film-page links + the Letterboxd mark.
   ⚠️ Each day's pill strip is one non-wrapping `overflow-x-auto` row and **needs `relative`** —
   the pills' `position:absolute` `.sr-only` spans otherwise escape the clip and give the whole
@@ -165,6 +168,8 @@ it covers, and update it in the same commit.**
    **year the UI shows** (not the cinema's — so `Kiki's Delivery Service` reads 1989, not 2026),
    the primary language (#17), the original title, and the director(s) on the card's meta line.
    How a link is resolved, how that fails, and how to pin a bad match: `fetch-films` skill.
+   **No link, no year** (#28): a card with no Letterboxd page — pinned `null` or NOT FOUND —
+   shows no year at all rather than falling back to the cinema's.
 
 5. **A plan can span the week; it persists** (`lib/plan.ts`, `flm-on:plan` localStorage;
    `lib/clash.ts`; `lib/startingPoints.ts`). Any number of screenings across any number of days,
@@ -323,6 +328,15 @@ it covers, and update it in the same commit.**
 
     Endpoints, the tag-normalisation vocabulary, the separate `"…: The IMAX Experience"` movie
     record and the rest: the `fetch-films` skill's `reference/cinemas.md`.
+
+    ⚠️ **Currently paused** (`PAUSED_CINEMAS` in `lib/cinemas.ts`, since 24 Sep 2026): the API
+    started answering automated requests with a Cloudflare bot challenge (403), and the cache
+    fallback served a week-old, near-empty slate. A paused cinema is **dropped whole, not shown
+    stale** — `lib/scrapers/index.ts` filters it out of `adapters` (no fetch, so no cache
+    fallback either), and the UI iterates `LIVE_CINEMAS` (Settings toggles, the Place filter's
+    count). It stays in `CINEMA_ORDER` on purpose, so `normalize` keeps a saved Cineworld
+    preference for when it returns. Unpause = delete the entry, re-fetch. Don't try to get past
+    the challenge — the fix is a different source.
 
 17. **International / foreign-language support** (`lib/languages.ts`) — the third `screeningTags`
     reader. Reasoning: `docs/decisions/screening-tags.md`.
@@ -498,7 +512,7 @@ it covers, and update it in the same commit.**
     - The detector is generic (`/\bmarathon\b/i`, not the LOTR title) — all three cinemas run
       these, under a different name each time.
 
-26. **"This week" leads with what's new** (`lib/groupings.ts` `partitionNewFilms`, the `newFilms`
+26. **"This week" leads with what's new** (`lib/groupings.ts` `partitionFilmSections`, the `newFilms`
     array in `data/showtimes.json`). The list splits under two centred plain-text headings —
     **"New this week"** then **"Also on"** — so the week opens on what you haven't had the chance
     to see yet. Reasoning: `docs/decisions/preferences-and-lenses.md`.
@@ -510,10 +524,10 @@ it covers, and update it in the same commit.**
       published, so `added` comes back near-empty and every film that was new on Thursday would
       silently stop being new. When `days[0]` hasn't moved, `fetch:batch` unions the committed
       `newFilms` into the new one.
-    - **Both headings or neither.** Nothing new, or *everything* new (a first run against an
-      empty baseline), collapses to one unlabelled list — a heading over the whole list says
-      nothing. `partitionNewFilms` owns that rule, which is why it's in `lib/` with tests rather
-      than inline in the component.
+    - **Headings only when there are at least two sections.** Nothing new, or *everything* new
+      (a first run against an empty baseline), collapses to one unlabelled list — a heading over
+      the whole list says nothing. `partitionFilmSections` owns that rule, which is why it's in
+      `lib/` with tests rather than inline in the component.
     - **"This week" only.** A pinned day keeps its chronological order — reading in time order is
       the point of pinning a day — and the Next-week preview is untouched. Chronological ordering
       across a whole week is only ever "whoever plays Monday", which is what makes this the view
@@ -527,6 +541,55 @@ it covers, and update it in the same commit.**
       stops doing any work), and the row carries `-mr-[0.2em]` to pull back the trailing
       letter-space `tracking-widest` leaves after the last letter, which otherwise sits the
       icon+text pair visibly right of centre.
+
+27. **A festival is a strand with its own section** (`strandPrefixes` in
+    `data/title-overrides.json`, `section: true` in `lib/screeningTags.ts` `KNOWN`, the strand
+    sections in `partitionFilmSections`). First use: the **IFI Documentary Festival**, Sept 2026.
+    Reasoning: `docs/decisions/screening-tags.md`.
+    - **The signal is the cinema's own title prefix, turned into a per-session tag at fetch
+      time.** `strandPrefixes` maps a prefix to a tag: stripped like `stripPrefixes`, and the
+      value appended to that session's `screeningTags` in `lib/aggregate.ts`. Per session because
+      the prefix is — Knife plays the festival at the IFI and an ordinary run at Light House, and
+      only the IFI pills carry the mark. **Not a `film-labels.json` label**: a label is per-film,
+      and grouping cards on a label's text is a string match waiting to break.
+    - From there it's an ordinary `KNOWN` strand: sticker, pill mark (`Clapperboard` in
+      `STRAND_MARKS`), tooltip, and it passes the "Specials, etc" lens. Its `label` is the
+      official name in its own capitals, **not** the lowercase every other strand uses.
+    - **`section: true` gives a strand its own heading on "This week", ahead of "New this
+      week".** A film files there if any visible session carries it, and each film appears in
+      exactly one section — a new festival film goes under the festival. Same rules as #26
+      otherwise: "This week" only, headings only when ≥2 sections are non-empty. The heading is
+      the strand's `title` wearing its `STRAND_MARKS` icon (`strandIcon`).
+    - **Next year is a one-line edit**: the prefix carries the year (`IFI Documentary Festival
+      2026:`). When the festival ends there's nothing to remove — no session carries the tag,
+      and the section doesn't render.
+
+28. **A shorts programme lists its films under the title, and has no year** (`programme` on
+    `Screening`, `parseProgrammeFilms` in `lib/scrapers/ifi.ts`, the list in `FilmCard.tsx`).
+    Reasoning: `docs/decisions/screening-tags.md`.
+    - **Scraped live each week, not curated** (user's call). IFI's listing card gives "Various"
+      in the director slot for a programme; only those get one extra request, to their film page,
+      whose synopsis lists the films as `<br>`-separated `Title – Director` lines.
+    - **The parser is deliberately strict**: exactly one spaced dash, under 100 characters, and
+      the longest run of ≥2 consecutive such lines — a prose sentence can use dashes too. When
+      nothing parses, `programme` is `[]`, not absent, and the report's **`Programmes`** section
+      prints `NO LIST PARSED`. That's the only place a broken parse shows; the card just falls
+      back to title + runtime. Don't loosen the parser to make that line go away.
+    - **One flowing line** under the meta line — `Title (Director) · Title (Director) · …`,
+      directors dim — chosen over one row per film for height. It takes the director's place;
+      the runtime stays, because the length of the sitting is still worth knowing — **prefixed
+      `~`**, since it's the cinema's approximate figure for the whole sitting ("98 mins approx.").
+    - **The card is marked by lucide `PlayingCardsFan` before the title** (title-sized, dim like
+      the year; tried first as a meta-line mark leading the list, and moved). It carries a
+      tooltip — "Shorts programme — Several short films on one ticket.", also its `aria-label`
+      (#22) — because a list of titles in brackets doesn't explain itself. A long programme
+      title plus the icon pushes the `FilmNotes` sticker onto its own line; that's its normal
+      wrap, not a bug. `isProgramme` is `programme !== undefined`, so the
+      `~` and nothing else still applies to a programme whose list didn't parse.
+    - **No Letterboxd link, no year — for every card, not just programmes.** The year is
+      Letterboxd's (#4), and a cinema's own is a guess (#2): a programme's is a placeholder, a
+      NOT FOUND film's may be this year's re-release stamp. The rule lives in `FilmCard` alone —
+      the data still has the year, so the plan and the report are untouched.
 
 ## Known gaps
 

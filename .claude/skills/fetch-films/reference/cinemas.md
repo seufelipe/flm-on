@@ -66,11 +66,21 @@ session — decision #6). Formats come from `svg[data-icon]` inside the booking 
 are), and its "Archive at Lunchtime" strand's sole signal is the `filmPageUrl` slug —
 slug-derivation is deliberately not done.
 
+**Shorts programmes** (decision #28): a listing card whose director tag reads `Various` is a
+programme; the adapter fetches its film page and `parseProgrammeFilms` reads the synopsis's
+`Title – Director` lines into `Screening.programme`. Empty list → `NO LIST PARSED` in the report.
+
 **Silently breaks if:** a new format `svg[data-icon]` appears — it's dropped without a word.
 
 ---
 
 ## Cineworld Dublin — `lib/scrapers/cineworld.ts`
+
+> **Paused since 24 Sep 2026** (`PAUSED_CINEMAS`, `lib/cinemas.ts`; CLAUDE.md #16). The
+> `schedule` endpoint now returns a Cloudflare "Attention Required!" 403 to automated requests,
+> browser User-Agent and Referer or not, while the homepage still loads. Not fetched, not in
+> the UI; the report's Cineworld sections read `none`. Everything below describes the adapter
+> as it worked — unpausing needs a source that isn't behind the challenge.
 
 Not a scrape: a public, unauthenticated JSON API on a Gatsby site (`robots.txt` empty). Theatre
 id **`X07A4`**, base `https://www.cineworld.ie/api/gatsby-source-boxofficeapi`. Two calls per

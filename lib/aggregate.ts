@@ -6,6 +6,7 @@ import {
   cleanFilmTitle,
   titleAnnotation,
   titlesEquivalent,
+  titleStrand,
   isLabelledTitle,
   loadTitleOverrides,
 } from "./titles";
@@ -182,7 +183,16 @@ export async function getShowtimesForRange(dates: string[]): Promise<DayResult> 
   const hiddenFilms = await loadHiddenFilms();
   const screenings = results
     .flatMap((r) => r.screenings)
-    .map((s) => ({ ...s, filmTitle: cleanFilmTitle(s.filmTitle, titleOverrides) }))
+    .map((s) => {
+      // A strand-naming prefix becomes a tag on this session (title-overrides `strandPrefixes`,
+      // decision #27) before the title loses it.
+      const strand = titleStrand(s.filmTitle, titleOverrides);
+      return {
+        ...s,
+        filmTitle: cleanFilmTitle(s.filmTitle, titleOverrides),
+        ...(strand && { screeningTags: [...(s.screeningTags ?? []), strand] }),
+      };
+    })
     .filter((s) => !isHiddenFilm(s.filmTitle, hiddenFilms));
 
   // Trailing annotations (`(4K Restoration)`, `25th Anniversary`) stripped from raw titles,

@@ -1,5 +1,5 @@
 import { X } from "lucide-react";
-import { CINEMA_LABEL, CINEMA_LOCATION, CINEMA_ORDER } from "@/lib/cinemas";
+import { CINEMA_LABEL, CINEMA_LOCATION, LIVE_CINEMAS } from "@/lib/cinemas";
 import { TIMEFRAMES, formatTimeframeRange } from "@/lib/timeframe";
 import { SHORT_FILM_MAX_MINS } from "@/lib/duration";
 import { DEFAULT_PREFERENCES, isDefault, type LanguagePref, type Preferences } from "@/lib/preferences";
@@ -129,7 +129,7 @@ function Group({
 }
 
 export default function SettingsPanel({ prefs, onChange, compact }: Props) {
-  const cinemasOn = CINEMA_ORDER.filter((id) => prefs.cinemas[id]).length;
+  const cinemasOn = LIVE_CINEMAS.filter((id) => prefs.cinemas[id]).length;
   const timeframesOn = TIMEFRAMES.filter((tf) => prefs.timeframes[tf.id]).length;
 
   const body = (
@@ -176,7 +176,7 @@ export default function SettingsPanel({ prefs, onChange, compact }: Props) {
         {/* Cinemas and Times each require at least one on — the last remaining one locks
             rather than letting you empty the whole view. */}
         <Group legend="Available cinemas" description="Only see your favourite places">
-          {CINEMA_ORDER.map((id) => (
+          {LIVE_CINEMAS.map((id) => (
             <Toggle
               key={id}
               label={CINEMA_LABEL[id]}

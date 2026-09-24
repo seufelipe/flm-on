@@ -148,18 +148,20 @@ keeping a running history of every film ever published.
 
 ### Both headings or neither
 
-Three cases collapse back to a single unlabelled list, all handled in `partitionNewFilms`:
+(Since decision #27 a festival strand can add a section of its own ahead of these two; the rule
+below generalised to "headings only when at least two sections have films".)
+
+Three cases collapse back to a single unlabelled list, all handled in `partitionFilmSections`:
 
 - nothing is new;
 - **everything** is new — the first run against an empty baseline, or a week where the whole
   programme turned over;
-- no `newFilms` at all, which is also how a pinned day and the Next-week preview opt out (they
-  pass `undefined`).
+- no `newFilms` at all; a pinned day and the Next-week preview opt out by passing no options.
 
 The second is the interesting one: a "New this week" heading over a list with nothing under
 "Also on" is a heading that distinguishes nothing. The rule lives in `lib/` rather than as a
 condition in the component precisely so it can be tested — the component's whole rule is then
-"headings when `newThisWeek` is non-empty".
+"a heading per section when there's more than one".
 
 Order **within** each half is untouched, so `groupByFilm`'s chronological sort survives the
 split; a stable partition, not a re-sort.

@@ -1,6 +1,6 @@
 # The `screeningTags` vocabulary and its three readers
 
-Decisions #12, #13, #15, #17 and #25 in full — the redacted Mystery Matinee card, special-screening
+Decisions #12, #13, #15, #17, #25, #27 and #28 in full — the redacted Mystery Matinee card, special-screening
 strands, film formats, language/caption handling, and the marathon card. CLAUDE.md keeps the rules; this is the
 reasoning, including which strands are deliberately *not* surfaced and why.
 
@@ -57,6 +57,79 @@ keep. Suppressing it on the card is a display decision, not a data one.
 The detector is deliberately generic (`\bmarathon\b`, not the LOTR title): all three cinemas
 run these, and a strand that recurs under a different name each time is exactly the kind of
 thing that should not need a code change per instance.
+
+---
+
+## Decision #27 — A festival is a strand with its own section
+
+The IFI Documentary Festival (Sept 2026) was the first festival the app met: fifteen IFI
+sessions over a week, each titled `IFI Documentary Festival 2026: <film>`. Until then that prefix
+sat in `stripPrefixes` and was simply thrown away, and the user's first instinct was a curated
+label on each film. What they actually wanted was three things: the name on the card, the
+sessions in "Specials, etc", and the festival grouped together at the top of "This week".
+
+**Why a tag, not a label.** A `film-labels.json` label is per *film* and hand-typed per title;
+grouping cards by matching its text would be a string compare against editorial copy. The
+festival is per *session* — Knife: The Attempted Murder of Salman Rushdie played the festival
+at the IFI and an ordinary run at Light House the same week — and the cinema already tells us
+which sessions, in the title. So `strandPrefixes` (`data/title-overrides.json`) strips the
+prefix like `stripPrefixes` does and appends its value to that session's `screeningTags`
+(`lib/titles.ts` `titleStrand`, applied in `lib/aggregate.ts`). The strand-prefix split runs
+*first*, so the remainder still gets corrections / plain prefixes / annotations as usual.
+
+**Why that's enough for two of the three asks.** Once it's a `KNOWN` tag it's an ordinary strand:
+the `FilmNotes` sticker names it, the pill carries its mark, the tooltip explains it, and
+`isHighlight` already counts any surfaced strand. No new path.
+
+**The section.** `section: true` on a `KNOWN` entry is the opt-in; `partitionFilmSections` gives
+every such strand its own heading ahead of "New this week", headed by the strand's `title` and
+its `STRAND_MARKS` icon. The user chose festival *first* — it's a bounded programme you'd want
+to read as a whole, and nearly all of it is new anyway. A film files under the strand if any of
+its visible sessions carries it, and appears only once, so "New this week" loses its festival
+films rather than repeating them. Recurring audience strands (Parent & Baby, Silver Screen)
+deliberately don't get `section` — they're a property of a session you pick, not a programme.
+
+**Label casing.** Every other strand's `label` is lowercase; this one is the festival's official
+name, `IFI Documentary Festival`, at the user's request. `STRAND_MARKS` is keyed on it exactly.
+
+**Mark:** lucide `Clapperboard`.
+
+---
+
+## Decision #28 — A shorts programme lists its films, and has no year
+
+The IFI Documentary Festival brought two shorts programmes (Masters of Documentary, Small
+Corners, Whole Worlds): one ticket, seven films each, and a card that said nothing about any of
+them — just the programme's name, IFI's placeholder year and a runtime.
+
+**Where the list comes from.** The films are only on the IFI film page, in the synopsis, as
+`<br>`-separated `Title – Director` lines — under a "Programme includes:" lead-in on one page,
+straight after the blurb on the other. A curated, pre-filled file (the `film-labels.json`
+pattern) was offered as the robust option; the user chose a **live scrape each week**, so the
+list follows whatever IFI publishes with no weekly edit. The cost is fragility, paid for with a
+strict parser and a loud report line rather than a lenient parser and silence:
+
+- only listing cards whose director slot reads **"Various"** are treated as programmes — one
+  extra request each, not one per film;
+- a line counts only with **exactly one** spaced dash and under 100 characters (the Galway blurb
+  itself says "rituals – sacred and everyday – that…");
+- the list is the **longest run of ≥2 consecutive** matching lines, so a stray dashed sentence
+  isn't a one-film programme;
+- a failed page or an unparseable synopsis gives `programme: []` — present, so the batch
+  report's `Programmes` section can say `NO LIST PARSED` (More Power to Ye!, an archive
+  compilation whose page names no films, is the standing example).
+
+**How it shows.** Option B of two sketches: one flowing line under the meta line, titles in ink
+and `(director)` dim, joined by ` · `. The row-per-film version scanned better but cost seven
+lines of height on a card whose sessions are the point. The list replaces the director; the
+runtime stays, prefixed `~` (the cinema's own figure is approximate). The card is marked by a
+`PlayingCardsFan` icon before its title, with a tooltip explaining what a programme is — first
+tried at the head of the list line, then moved up to the title at the user's call.
+
+**The year.** Asked to drop the programme's year, we generalised: **no Letterboxd link, no
+year**, on every card. Decision #4 already makes Letterboxd the year's source, and #2 is the
+catalogue of cinema years that lie; a card without a link was the one place the cinema's guess
+still leaked through. It's a display rule in `FilmCard` only — the year stays in the data.
 
 ---
 

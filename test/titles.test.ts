@@ -4,11 +4,13 @@ import {
   isLabelledTitle,
   titleAnnotation,
   titlesEquivalent,
+  titleStrand,
   type TitleOverrides,
 } from "@/lib/titles";
 
 const overrides: TitleOverrides = {
-  stripPrefixes: ["ARCHIVE AT LUNCHTIME:", "CINEMA BOOK CLUB:"],
+  stripPrefixes: ["ARCHIVE AT LUNCHTIME:", "CINEMA BOOK CLUB:", "From the Vaults:"],
+  strandPrefixes: { "IFI Documentary Festival 2026:": "IFI Documentary Festival" },
   stripAnnotations: [
     "\\d{1,3}(?:st|nd|rd|th)\\s+anniversary",
     "\\d+k(?:\\s+digital)?\\s+restoration",
@@ -90,6 +92,37 @@ describe("titleAnnotation", () => {
 
   it("also reports a non-labelworthy annotation (fetch-batch filters to anniversary/restoration)", () => {
     expect(titleAnnotation("Mystery Matinee August 2026", overrides)).toBe("august 2026");
+  });
+});
+
+describe("stacked prefixes", () => {
+  it("strips every prefix in a stack, not just the outer one", () => {
+    expect(cleanFilmTitle("From the Vaults: ARCHIVE AT LUNCHTIME: More Power to Ye!", overrides)).toBe(
+      "More Power to Ye!",
+    );
+  });
+});
+
+describe("titleStrand", () => {
+  it("strips a strand prefix and names the strand", () => {
+    const raw = "IFI Documentary Festival 2026: Adam's Apple";
+    expect(cleanFilmTitle(raw, overrides)).toBe("Adam's Apple");
+    expect(titleStrand(raw, overrides)).toBe("IFI Documentary Festival");
+  });
+
+  it("still cleans what's left — a second prefix, a trailing annotation", () => {
+    expect(cleanFilmTitle("IFI Documentary Festival 2026: From the Vaults: Mother Ireland (4K Restoration)", overrides)).toBe(
+      "Mother Ireland",
+    );
+  });
+
+  it("names no strand for an ordinary prefix or none at all", () => {
+    expect(titleStrand("ARCHIVE AT LUNCHTIME: Some Film", overrides)).toBeUndefined();
+    expect(titleStrand("Adam's Apple", overrides)).toBeUndefined();
+  });
+
+  it("leaves a title that is nothing but the prefix alone", () => {
+    expect(titleStrand("IFI Documentary Festival 2026:", overrides)).toBeUndefined();
   });
 });
 

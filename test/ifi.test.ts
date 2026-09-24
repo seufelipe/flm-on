@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "fs";
 import path from "path";
-import { parseWhatsonDay } from "@/lib/scrapers/ifi";
+import { parseProgrammeFilms, parseWhatsonDay } from "@/lib/scrapers/ifi";
 
 const fixture = (name: string) => readFileSync(path.join(__dirname, "fixtures", name), "utf-8");
 
@@ -51,5 +51,37 @@ describe("ifi parseWhatsonDay", () => {
 
   it("returns nothing for a day with no screenings", () => {
     expect(parseWhatsonDay(fixture("ifi-whatson-empty.html"), "2026-12-25")).toEqual([]);
+  });
+});
+
+describe("parseProgrammeFilms", () => {
+  it("reads the list under a 'Programme includes:' lead-in, dropping the last line's full stop", () => {
+    const films = parseProgrammeFilms(fixture("ifi-programme-dcu.html"));
+    expect(films).toHaveLength(7);
+    expect(films[0]).toEqual({ title: "The Long Game", director: "Arthur Lopes" });
+    expect(films[6]).toEqual({ title: "The Blasket Diaries", director: "Sinéad O’Flaherty" });
+  });
+
+  it("reads a list straight after the blurb, skipping a prose line that uses dashes", () => {
+    const films = parseProgrammeFilms(fixture("ifi-programme-galway.html"));
+    expect(films.map((f) => f.title)).toEqual([
+      "Relic",
+      "The Biddy",
+      "Bowling Roads",
+      "Blackrock",
+      "I Didn’t Want To Be Here",
+      "My Friend, Kev",
+      "Pigeon Catcher",
+    ]);
+    expect(films[2].director).toBe("Laura Mahler");
+    expect(films[3].director).toBe("Normagh Heaney & Jessie Green");
+  });
+
+  it("returns nothing for a synopsis without a list, or a lone dashed line", () => {
+    expect(parseProgrammeFilms('<div class="film-info__synopsis"><p>A collection of films.</p></div>')).toEqual([]);
+    expect(
+      parseProgrammeFilms('<div class="film-info__synopsis"><p>Intro<br>Only One – Someone<br>Outro.</p></div>'),
+    ).toEqual([]);
+    expect(parseProgrammeFilms("<main></main>")).toEqual([]);
   });
 });

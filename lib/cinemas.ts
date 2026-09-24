@@ -33,3 +33,12 @@ export const CINEMA_ADDRESS: Record<CinemaId, string> = {
 };
 
 export const CINEMA_ORDER: CinemaId[] = ["lighthouse", "ifi", "cineworld"];
+
+// Cinemas taken out of the app entirely until their source works again (CLAUDE.md decision #16).
+// A paused cinema isn't fetched (`lib/scrapers/index.ts`) and isn't offered anywhere in the UI —
+// but it stays in CINEMA_ORDER, so `normalize` keeps its saved preference for when it comes back.
+// Unpausing is deleting its entry here, then a re-fetch.
+export const PAUSED_CINEMAS: ReadonlySet<CinemaId> = new Set<CinemaId>(["cineworld"]);
+
+// What the UI iterates: CINEMA_ORDER minus anything paused.
+export const LIVE_CINEMAS: CinemaId[] = CINEMA_ORDER.filter((id) => !PAUSED_CINEMAS.has(id));

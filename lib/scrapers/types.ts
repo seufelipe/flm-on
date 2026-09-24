@@ -25,6 +25,16 @@ export interface Screening {
   // lib/screeningTags.ts / lib/formats.ts / lib/languages.ts each decide which ones surface in
   // the UI and how they're labelled. Undefined for an ordinary screening.
   screeningTags?: string[];
+  // A session of several short films on one ticket — the films in it, in running order. Scraped
+  // live from the cinema's film page each week (IFI only, lib/scrapers/ifi.ts). Present, even
+  // empty, means the cinema called it a programme; empty means no list could be parsed, which
+  // the batch report flags. CLAUDE.md decision #28.
+  programme?: ProgrammeFilm[];
+}
+
+export interface ProgrammeFilm {
+  title: string;
+  director?: string;
 }
 
 export interface AdapterResult {

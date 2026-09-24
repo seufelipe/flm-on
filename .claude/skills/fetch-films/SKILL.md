@@ -68,6 +68,7 @@ later re-confirm **a browser reload is enough** — never restart the server.
 | unique-films list | `NOT FOUND`; `[CASING DIFFERS]`; a repertory title carrying **this** year; a re-release whose link resolved to a same-name *new* film |
 | Pre-filled `film-labels.json` | A pre-fill that reads wrong — `classic!` on an ordinary wide release |
 | `Labels` | A film that deserves an editorial label and shows `—` |
+| `Programmes` | `NO LIST PARSED` on a programme whose IFI page *does* list its films (the parser missed a new layout — fix `parseProgrammeFilms`, don't curate around it), or a list with a stray line in it |
 | `Languages` | `UNMARKED` sessions (Letterboxd filed it as Animation, so no subtitle was assumed — is it really dubbed?), or a wrong primary language; Letterboxd is often wrong for Indian regional films and dubs |
 | `Special screenings` | A strand that should surface but isn't in `lib/screeningTags.ts` `KNOWN` |
 | `Unrecognised screening tags` | A new Cineworld `Showtime.Event.*` or a new Light House `em.additional` value |
@@ -96,6 +97,7 @@ FOUNDs.
 | Symptom | File | Key | After editing |
 | --- | --- | --- | --- |
 | Mangled or strand-titled name | `data/title-overrides.json` | `corrections` (exact), `stripPrefixes`, `stripAnnotations` (regex) | **re-fetch** |
+| A festival prefix (its own section, #27) | `data/title-overrides.json` | `strandPrefixes` (prefix → tag) + a `KNOWN` entry with `section: true` | **re-fetch** |
 | Wrong or missing Letterboxd link | `data/letterboxd-overrides.json` | `"title\|year"` — the year the **cinema** reported, often the wrong one, sometimes empty | **re-fetch** |
 | Wrong or unwanted language | `data/language-overrides.json` | normalized title; `null` forces unmarked | **re-fetch** |
 | Missing co-director | `data/director-overrides.json` | normalized title | **re-fetch** |
@@ -127,6 +129,7 @@ Screenshot anything you're proposing to change.
 
 Tell the user that the default view is **Cineworld off** and the **"Specials, etc" lens on**
 (decisions #14, #16) — the "full list" needs Cineworld enabled in preferences and the lens off.
+While Cineworld is paused (`PAUSED_CINEMAS`) it has no toggle at all; only the lens applies.
 Those live in localStorage, so their browser keeps the setting between runs.
 
 **Write nothing until they say yes.**

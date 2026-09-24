@@ -25,6 +25,10 @@ interface KnownTag {
   // `false` tag still counts as a surfaced special (Highlights filter, tooltip) but shows no mark
   // — for Mystery Matinee, whose card already has its own redacted treatment, so it's noise.
   mark?: boolean;
+  // Whether this strand gets its own heading on the "This week" list, above "New this week"
+  // (lib/groupings.ts `partitionFilmSections`). For a festival: a bounded programme you'd want
+  // to see as a whole, not a recurring audience strand scattered through the week. #27.
+  section?: boolean;
 }
 
 // Raw tags we recognise and deliberately do NOT surface. They're excluded from `KNOWN` on
@@ -105,6 +109,16 @@ const KNOWN: Record<string, KnownTag> = {
     description: "The film isn't announced until it starts.",
     mark: false,
   },
+  // Not a cinema descriptor: title-overrides.json `strandPrefixes` turns IFI's
+  // "IFI Documentary Festival 2026: …" title prefix into this tag at fetch time. The label is the
+  // festival's official name, capitals and all, rather than the lowercase the other strands use.
+  // `section` gives it its own heading on "This week" (decision #27).
+  "ifi documentary festival": {
+    label: "IFI Documentary Festival",
+    title: "IFI Documentary Festival",
+    description: "Part of the IFI's annual festival of documentary film.",
+    section: true,
+  },
   // A whole-day booking of several films. Like the Mystery Matinee this isn't scraped —
   // lib/marathon.ts detects it from the title and ScreeningBrowser attaches the tag — but it
   // keeps the mark: the card has no other treatment saying the session is out of the ordinary.
@@ -130,6 +144,12 @@ export function displayScreeningTags(tags?: string[]): ScreeningTagDisplay[] {
     out.push(known);
   }
   return out;
+}
+
+// The first `section` strand among these tags — the heading a film card files under on
+// "This week" (decision #27).
+export function sectionStrand(tags?: string[]): ScreeningTagDisplay | undefined {
+  return displayScreeningTags(tags).find((t) => t.section);
 }
 
 // "<name> — <description>" for the surfaced tags, joined if there's more than one. Used as the

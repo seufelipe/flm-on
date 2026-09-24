@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useSyncExternalStore, type ReactNode } from "react";
+import { Fragment, useMemo, useState, useSyncExternalStore, type ReactNode } from "react";
 import type { CinemaId, Screening } from "@/lib/scrapers/types";
 import {
   withEndTimes,
@@ -10,10 +10,10 @@ import {
   type TimedScreening,
 } from "@/lib/clash";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { groupByFilm, partitionNewFilms, type FilmGroup } from "@/lib/groupings";
+import { groupByFilm, partitionFilmSections, type FilmGroup, type FilmSection } from "@/lib/groupings";
 import type { UpcomingFilm } from "@/lib/upcoming";
 import { TIMEFRAMES, timeframeForTime, type Timeframe } from "@/lib/timeframe";
-import { CINEMA_LABEL, CINEMA_ORDER } from "@/lib/cinemas";
+import { CINEMA_LABEL, LIVE_CINEMAS } from "@/lib/cinemas";
 import {
   formatDayDate,
   todayISO,
@@ -41,7 +41,8 @@ import {
 import { planSnapshot, PLAN_SERVER_SNAPSHOT, subscribePlan, writePlan } from "@/lib/plan";
 import FilmCard from "./FilmCard";
 import CinemaWeekendBanner from "./CinemaWeekendBanner";
-import { CalendarClock, CalendarOff, CupSoda, Popcorn, SearchX } from "lucide-react";
+import { CalendarClock, CalendarOff, CupSoda, Popcorn, SearchX, type LucideIcon } from "lucide-react";
+import { strandIcon } from "@/components/ScreeningTags";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import Masthead, { MastheadTitle } from "./Masthead";
 import FilterControls from "./FilterControls";
@@ -101,7 +102,7 @@ function ListHeading({
   children,
   className = "",
 }: {
-  icon: typeof Popcorn;
+  icon: LucideIcon;
   children: ReactNode;
   className?: string;
 }) {
@@ -112,6 +113,25 @@ function ListHeading({
       <Icon aria-hidden className="size-[1em] shrink-0" />
       {children}
     </h2>
+  );
+}
+
+function SectionHeading({ section, className }: { section: FilmSection; className?: string }) {
+  if (section.kind === "strand") {
+    return (
+      <ListHeading icon={strandIcon(section.strand.label)} className={className}>
+        {section.strand.title}
+      </ListHeading>
+    );
+  }
+  return section.kind === "new" ? (
+    <ListHeading icon={Popcorn} className={className}>
+      New this week
+    </ListHeading>
+  ) : (
+    <ListHeading icon={CupSoda} className={className}>
+      Also on
+    </ListHeading>
   );
 }
 
@@ -239,7 +259,7 @@ export default function ScreeningBrowser({
   );
 
   const cinemasPresent = useMemo(
-    () => CINEMA_ORDER.filter((id) => preferred.some((s) => s.cinema === id)),
+    () => LIVE_CINEMAS.filter((id) => preferred.some((s) => s.cinema === id)),
     [preferred],
   );
 
@@ -250,7 +270,7 @@ export default function ScreeningBrowser({
   // The cinemas the preferences allow are passed through rather than reduced to a boolean: the
   // Place filter's "any" option names them ("3 cinemas") instead of saying "Anywhere", and
   // FilterControls derives "is this filter useful" from the same list.
-  const cinemasEnabled = useMemo(() => CINEMA_ORDER.filter((id) => prefs.cinemas[id]), [prefs]);
+  const cinemasEnabled = useMemo(() => LIVE_CINEMAS.filter((id) => prefs.cinemas[id]), [prefs]);
   const timeFilterUseful = TIMEFRAMES.filter((tf) => prefs.timeframes[tf.id]).length > 1;
 
   // `days` comes from the committed showtimes.json, which can still list days before today if
@@ -376,14 +396,13 @@ export default function ScreeningBrowser({
 
   const filmGroups = useMemo(() => groupByFilm(visible), [visible]);
 
-  // "New this week" first, then "Also on" — but only on "This week", where the chronological sort
-  // is just "whoever plays Monday" anyway. A pinned day reads in time order, which is the point of
-  // pinning it, so it's left alone. `partitionNewFilms` collapses the split when it would say
-  // nothing (nothing new, or everything new), and the headings follow `newThisWeek` being
-  // non-empty. Decision #26.
+  // On "This week" the list splits under headings: a festival strand first (#27), then "New
+  // this week", then "Also on" (#26). A pinned day reads in time order, which is the point of
+  // pinning it, so it's left alone. `partitionFilmSections` collapses to one unheaded section
+  // whenever a split would say nothing.
   const newFilmKeys = useMemo(() => (newFilms ? new Set(newFilms) : undefined), [newFilms]);
   const sections = useMemo(
-    () => partitionNewFilms(filmGroups, effectiveDay === null ? newFilmKeys : undefined),
+    () => partitionFilmSections(filmGroups, effectiveDay === null ? { newKeys: newFilmKeys } : undefined),
     [filmGroups, effectiveDay, newFilmKeys],
   );
 
@@ -613,17 +632,15 @@ export default function ScreeningBrowser({
               </AlertDescription>
             </Alert>
           )}
-          {sections.newThisWeek.length > 0 && <ListHeading icon={Popcorn}>New this week</ListHeading>}
-          {sections.newThisWeek.map(filmCard)}
-          {/* mt-8 on top of the list's own gap-8: without the extra space the seam between the
-              two groups reads exactly like the gap between two cards, and the split stops
-              doing any work. */}
-          {sections.newThisWeek.length > 0 && (
-            <ListHeading icon={CupSoda} className="mt-8">
-              Also on
-            </ListHeading>
-          )}
-          {sections.alsoOn.map(filmCard)}
+          {sections.map((section, i) => (
+            <Fragment key={section.kind === "strand" ? `strand:${section.strand.label}` : section.kind}>
+              {/* A lone section is the unheaded list. After the first, mt-8 on top of the list's
+                  own gap-8: without the extra space the seam between two groups reads exactly
+                  like the gap between two cards, and the split stops doing any work. */}
+              {sections.length > 1 && <SectionHeading section={section} className={i > 0 ? "mt-8" : ""} />}
+              {section.films.map(filmCard)}
+            </Fragment>
+          ))}
         </div>
       </>
     )
