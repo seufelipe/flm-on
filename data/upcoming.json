@@ -1,67 +1,15 @@
 {
-  "generatedAt": "2026-09-17T09:11:13.602Z",
+  "generatedAt": "2026-09-24T10:02:50.721Z",
   "week": {
-    "from": "2026-09-24",
-    "to": "2026-09-30"
+    "from": "2026-10-01",
+    "to": "2026-10-07"
   },
   "films": [
     {
-      "title": "Sense and Sensibility",
-      "year": 2026,
-      "cert": "TBC",
-      "director": "Georgia Oakley",
-      "letterboxdUrl": "https://letterboxd.com/film/sense-and-sensibility-2026/",
-      "cinemas": [
-        "lighthouse",
-        "ifi"
-      ],
-      "cinemaLinks": [
-        {
-          "cinema": "lighthouse",
-          "label": "Light House",
-          "url": "https://www.lighthousecinema.ie/film/sense-and-sensibility"
-        },
-        {
-          "cinema": "ifi",
-          "label": "IFI",
-          "url": "https://ifi.ie/films/sense-and-sensibility-2"
-        }
-      ],
-      "screeningTags": [
-        "Parent and Baby"
-      ],
-      "firstDate": "2026-09-25",
-      "reason": "special"
-    },
-    {
-      "title": "Avengers Endgame: Encore",
-      "year": 2019,
-      "cert": "12A",
-      "director": "Anthony Russo, Joe Russo",
-      "letterboxdUrl": "https://letterboxd.com/film/avengers-endgame/",
-      "cinemas": [
-        "cineworld"
-      ],
-      "cinemaLinks": [
-        {
-          "cinema": "cineworld",
-          "label": "Cineworld",
-          "url": "https://www.cineworld.ie/movies/1000036867-avengers-endgame-re-release/"
-        }
-      ],
-      "screeningTags": [
-        "IMAX"
-      ],
-      "firstDate": "2026-09-25",
-      "reason": "special"
-    },
-    {
-      "title": "Hope",
-      "year": 2026,
-      "cert": "16",
-      "director": "Na Hong-jin",
-      "originalTitle": "호프",
-      "letterboxdUrl": "https://letterboxd.com/film/hope-2026/",
+      "title": "April X",
+      "year": 2025,
+      "director": "K-Michel Parandi",
+      "letterboxdUrl": "https://letterboxd.com/film/april-x/",
       "cinemas": [
         "lighthouse"
       ],
@@ -69,22 +17,39 @@
         {
           "cinema": "lighthouse",
           "label": "Light House",
-          "url": "https://www.lighthousecinema.ie/film/hope"
+          "url": "https://www.lighthousecinema.ie/film/april-x"
         }
       ],
-      "screeningTags": [
-        "Korean",
-        "Subtitled"
-      ],
-      "firstDate": "2026-09-25",
-      "reason": "special"
+      "screeningTags": [],
+      "firstDate": "2026-10-01",
+      "reason": "new"
     },
     {
-      "title": "Manhunter",
-      "year": 1986,
+      "title": "Possession",
+      "year": 2026,
       "cert": "18",
-      "director": "Michael Mann",
-      "letterboxdUrl": "https://letterboxd.com/film/manhunter/",
+      "director": "me",
+      "letterboxdUrl": "https://letterboxd.com/film/possession-2026/",
+      "cinemas": [
+        "lighthouse"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "lighthouse",
+          "label": "Light House",
+          "url": "https://www.lighthousecinema.ie/film/possession"
+        }
+      ],
+      "screeningTags": [],
+      "firstDate": "2026-10-01",
+      "reason": "new"
+    },
+    {
+      "title": "Digger",
+      "year": 2026,
+      "cert": "15A",
+      "director": "Alejandro G. Iñárritu",
+      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/",
       "cinemas": [
         "lighthouse",
         "ifi"
@@ -93,66 +58,79 @@
         {
           "cinema": "lighthouse",
           "label": "Light House",
-          "url": "https://www.lighthousecinema.ie/film/manhunter"
+          "url": "https://www.lighthousecinema.ie/film/digger"
         },
         {
           "cinema": "ifi",
           "label": "IFI",
-          "url": "https://ifi.ie/films/manhunter-40th-anniversary-2"
-        }
-      ],
-      "screeningTags": [],
-      "label": "4k final cut",
-      "firstDate": "2026-09-25",
-      "reason": "special"
-    },
-    {
-      "title": "Rental Family",
-      "year": 2025,
-      "cert": "12A",
-      "director": "Hikari",
-      "letterboxdUrl": "https://letterboxd.com/film/rental-family-2025/",
-      "cinemas": [
-        "ifi"
-      ],
-      "cinemaLinks": [
-        {
-          "cinema": "ifi",
-          "label": "IFI",
-          "url": "https://ifi.ie/films/wild-strawberries-rental-family-2"
+          "url": "https://ifi.ie/films/digger-2"
         }
       ],
       "screeningTags": [
         "Open Captioned"
       ],
-      "firstDate": "2026-09-25",
+      "firstDate": "2026-10-02",
       "reason": "new"
     },
     {
-      "title": "Knife: The Attempted Murder of Salman Rushdie",
+      "title": "Take It Or Leave It",
+      "year": 2026,
+      "cert": "TBC",
+      "cinemas": [
+        "lighthouse"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "lighthouse",
+          "label": "Light House",
+          "url": "https://www.lighthousecinema.ie/film/take-it-or-leave-it"
+        }
+      ],
+      "screeningTags": [],
+      "firstDate": "2026-10-02",
+      "reason": "new"
+    },
+    {
+      "title": "IFI + aemi: Bourdieu + Q+A",
+      "year": 2026,
+      "cinemas": [
+        "ifi"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "ifi",
+          "label": "IFI",
+          "url": "https://ifi.ie/films/ifi-aemi-bourdieu-q-a-2"
+        }
+      ],
+      "screeningTags": [],
+      "firstDate": "2026-10-03",
+      "reason": "new"
+    },
+    {
+      "title": "Extra Geography",
       "year": 2026,
       "cert": "15A",
-      "director": "Alex Gibney",
-      "letterboxdUrl": "https://letterboxd.com/film/knife-the-attempted-murder-of-salman-rushdie/",
+      "director": "Molly Manners",
+      "letterboxdUrl": "https://letterboxd.com/film/extra-geography/",
       "cinemas": [
-        "ifi"
+        "lighthouse"
       ],
       "cinemaLinks": [
         {
-          "cinema": "ifi",
-          "label": "IFI",
-          "url": "https://ifi.ie/films/doc-fest-26-knife-the-attempted-murder-of-salman-rushdie-2"
+          "cinema": "lighthouse",
+          "label": "Light House",
+          "url": "https://www.lighthousecinema.ie/film/extra-geography"
         }
       ],
       "screeningTags": [],
-      "firstDate": "2026-09-25",
+      "firstDate": "2026-10-03",
       "reason": "new"
     },
     {
-      "title": "Once Upon a Time in Harlem",
+      "title": "IFI & Musictown: Phil Lynott: Songs for While I'm Away",
       "year": 2026,
-      "director": "William Greaves, David Greaves",
-      "letterboxdUrl": "https://letterboxd.com/film/once-upon-a-time-in-harlem/",
+      "cert": "12A",
       "cinemas": [
         "ifi"
       ],
@@ -160,51 +138,11 @@
         {
           "cinema": "ifi",
           "label": "IFI",
-          "url": "https://ifi.ie/films/doc-fest-26-once-upon-a-time-in-harlem-2"
+          "url": "https://ifi.ie/films/phil-lynott-songs-for-while-im-away"
         }
       ],
       "screeningTags": [],
-      "firstDate": "2026-09-25",
-      "reason": "new"
-    },
-    {
-      "title": "Mother Ireland",
-      "year": 1988,
-      "director": "Anne Crilly",
-      "letterboxdUrl": "https://letterboxd.com/film/mother-ireland/",
-      "cinemas": [
-        "ifi"
-      ],
-      "cinemaLinks": [
-        {
-          "cinema": "ifi",
-          "label": "IFI",
-          "url": "https://ifi.ie/films/doc-fest-26-mother-ireland-panel-2"
-        }
-      ],
-      "screeningTags": [],
-      "firstDate": "2026-09-27",
-      "reason": "new"
-    },
-    {
-      "title": "Linkin Park: Unshatter",
-      "year": 2026,
-      "director": "Joe Hahn",
-      "letterboxdUrl": "https://letterboxd.com/film/linkin-park-unshatter/",
-      "cinemas": [
-        "cineworld"
-      ],
-      "cinemaLinks": [
-        {
-          "cinema": "cineworld",
-          "label": "Cineworld",
-          "url": "https://www.cineworld.ie/movies/1000049814-linkin-park-unshatter/"
-        }
-      ],
-      "screeningTags": [
-        "Alt Content"
-      ],
-      "firstDate": "2026-09-30",
+      "firstDate": "2026-10-04",
       "reason": "new"
     }
   ]
