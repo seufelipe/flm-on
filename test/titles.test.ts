@@ -163,6 +163,12 @@ describe("isLabelledTitle", () => {
     ).toBe(true);
   });
 
+  it("spots a title that is the other one with its lead-in dropped, read either way round", () => {
+    const display = "Phil Lynott: Songs for While I'm Away";
+    expect(isLabelledTitle(display, "Songs for While I'm Away")).toBe(true);
+    expect(isLabelledTitle("Songs for While I'm Away", display)).toBe(false);
+  });
+
   it("is false for a genuine original title, or no label at all", () => {
     expect(
       isLabelledTitle("La Bataille de Gaulle - partie 1 : L'Âge de Fer", "De Gaulle: Résistance"),

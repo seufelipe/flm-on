@@ -156,12 +156,15 @@ async function withLetterboxdLinks(screenings: Screening[]): Promise<Screening[]
     // Original-language title: Letterboxd's `originalname` (native script, canonical) wins, with
     // the cinema's own (Cineworld) as the fallback. Shown only when it's genuinely different
     // from the display title — not the same title again, nor the same title behind a strand
-    // label ("Members' Preview: …").
+    // label ("Members' Preview: …"), nor the display title with its own lead-in dropped
+    // (Letterboxd's original for "Phil Lynott: Songs for While I'm Away" is just "Songs for While
+    // I'm Away").
     const originalCandidate = match?.originalTitle ?? s.originalTitle;
     const originalTitle =
       originalCandidate &&
       !titlesEquivalent(originalCandidate, s.filmTitle) &&
-      !isLabelledTitle(originalCandidate, s.filmTitle)
+      !isLabelledTitle(originalCandidate, s.filmTitle) &&
+      !isLabelledTitle(s.filmTitle, originalCandidate)
         ? originalCandidate
         : undefined;
 

@@ -1,10 +1,32 @@
 {
-  "generatedAt": "2026-10-01T10:59:41.087Z",
+  "generatedAt": "2026-10-01T15:07:24.489Z",
   "week": {
     "from": "2026-10-08",
     "to": "2026-10-14"
   },
   "films": [
+    {
+      "title": "The Social Reckoning",
+      "year": 2026,
+      "cert": "15A",
+      "director": "Aaron Sorkin",
+      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/",
+      "cinemas": [
+        "lighthouse"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "lighthouse",
+          "label": "Light House",
+          "url": "https://www.lighthousecinema.ie/film/the-social-reckoning"
+        }
+      ],
+      "screeningTags": [
+        "Silver Screen"
+      ],
+      "firstDate": "2026-10-09",
+      "reason": "special"
+    },
     {
       "title": "Pulse",
       "year": 2001,
@@ -94,26 +116,6 @@
         "Open Captioned"
       ],
       "firstDate": "2026-10-08",
-      "reason": "new"
-    },
-    {
-      "title": "The Social Reckoning",
-      "year": 2026,
-      "cert": "15A",
-      "director": "Aaron Sorkin",
-      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/",
-      "cinemas": [
-        "lighthouse"
-      ],
-      "cinemaLinks": [
-        {
-          "cinema": "lighthouse",
-          "label": "Light House",
-          "url": "https://www.lighthousecinema.ie/film/the-social-reckoning"
-        }
-      ],
-      "screeningTags": [],
-      "firstDate": "2026-10-09",
       "reason": "new"
     },
     {
