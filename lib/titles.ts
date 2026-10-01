@@ -11,6 +11,12 @@ export interface TitleOverrides {
   // Per session, because the prefix is: the same film at another cinema isn't in the strand.
   // CLAUDE.md decision #27.
   strandPrefixes?: Record<string, string>;
+  // Prefixes that carry context worth showing — an occasion ("Black History Month:"), who's
+  // presenting ("Emmy Shigeta & Jack Reynor Present:"). Stripped from the title like
+  // `stripPrefixes`, but the cinema's own words (colon dropped, never reworded) are kept on that
+  // session as `context`, and the card shows them as a kicker above the title. Per session, for
+  // the same reason as `strandPrefixes`. CLAUDE.md decision #29.
+  contextPrefixes?: string[];
   // Regex sources (case-insensitive) for trailing annotations a cinema appends to a title but
   // that aren't part of the film's name — "4K Restoration", "75th Anniversary", etc. Matched at
   // the end of the title, optionally wrapped in `(...)` or preceded by a dash.
@@ -18,7 +24,13 @@ export interface TitleOverrides {
   corrections: Record<string, string>;
 }
 
-const EMPTY_OVERRIDES: TitleOverrides = { stripPrefixes: [], strandPrefixes: {}, stripAnnotations: [], corrections: {} };
+const EMPTY_OVERRIDES: TitleOverrides = {
+  stripPrefixes: [],
+  strandPrefixes: {},
+  contextPrefixes: [],
+  stripAnnotations: [],
+  corrections: {},
+};
 
 let cached: TitleOverrides | undefined;
 
@@ -30,6 +42,7 @@ export async function loadTitleOverrides(): Promise<TitleOverrides> {
     cached = {
       stripPrefixes: parsed.stripPrefixes ?? [],
       strandPrefixes: parsed.strandPrefixes ?? {},
+      contextPrefixes: parsed.contextPrefixes ?? [],
       stripAnnotations: parsed.stripAnnotations ?? [],
       corrections: parsed.corrections ?? {},
     };
@@ -97,26 +110,35 @@ function splitStrandPrefix(raw: string, overrides: TitleOverrides): { rest: stri
 function cleanTitleParts(
   raw: string,
   overrides: TitleOverrides,
-): { title: string; annotation?: string; strand?: string } {
+): { title: string; annotation?: string; strand?: string; context?: string } {
   const { rest: trimmed, strand } = splitStrandPrefix(raw, overrides);
   return { ...cleanUnprefixed(trimmed, overrides), strand };
 }
 
-function cleanUnprefixed(trimmed: string, overrides: TitleOverrides): { title: string; annotation?: string } {
+function cleanUnprefixed(
+  trimmed: string,
+  overrides: TitleOverrides,
+): { title: string; annotation?: string; context?: string } {
   if (trimmed in overrides.corrections) {
     return { title: overrides.corrections[trimmed] };
   }
 
   let title = trimmed;
+  let context: string | undefined;
+  const contextPrefixes = new Set((overrides.contextPrefixes ?? []).map((p) => p.toLowerCase()));
   // Repeated until none matches: prefixes stack ("From the Vaults: IFI & ESB & DFOH: More Power
   // to Ye!"), and one pass would leave the inner one on the title.
   let matched = true;
   while (matched) {
     matched = false;
-    for (const prefix of overrides.stripPrefixes) {
+    for (const prefix of [...overrides.stripPrefixes, ...(overrides.contextPrefixes ?? [])]) {
       if (title.toLowerCase().startsWith(prefix.toLowerCase())) {
         const stripped = title.slice(prefix.length).replace(/^[\s:]+/, "").trim();
         if (stripped) {
+          // The cinema's own words for it, as they appear in this title — not the override's.
+          if (contextPrefixes.has(prefix.toLowerCase())) {
+            context ??= title.slice(0, prefix.length).replace(/[\s:]+$/, "").trim();
+          }
           title = stripped;
           matched = true;
           break;
@@ -126,7 +148,7 @@ function cleanUnprefixed(trimmed: string, overrides: TitleOverrides): { title: s
   }
 
   const { title: stripped, annotation } = stripTrailingAnnotations(title, overrides.stripAnnotations ?? []);
-  return { title: stripped || trimmed, annotation };
+  return { title: stripped || trimmed, annotation, context };
 }
 
 // Cinema listings sometimes prefix a title with a programme strand, e.g.
@@ -134,6 +156,12 @@ function cleanUnprefixed(trimmed: string, overrides: TitleOverrides): { title: s
 // re-release annotation like "(4K Restoration)".
 export function cleanFilmTitle(raw: string, overrides: TitleOverrides): string {
   return cleanTitleParts(raw, overrides).title;
+}
+
+// The `contextPrefixes` entry this raw title carried, in the cinema's own words — kept on the
+// session by lib/aggregate.ts and shown above the title (decision #29).
+export function titleContext(raw: string, overrides: TitleOverrides): string | undefined {
+  return cleanTitleParts(raw, overrides).context;
 }
 
 // The trailing annotation `cleanFilmTitle` removes ("25th anniversary", "4k restoration"), lower-

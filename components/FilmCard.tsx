@@ -17,6 +17,7 @@ import { displayLanguage } from "@/lib/languages";
 import { CINEMA_LABEL } from "@/lib/cinemas";
 import { certColor } from "@/lib/certs";
 import { formatDayFriendly, formatDayDate } from "@/lib/date";
+import type { FilmContext } from "@/lib/filmContext";
 
 interface Props {
   group: FilmGroup;
@@ -46,6 +47,8 @@ interface Props {
   specialTags?: string[];
   // When each of those strands plays (label → sessions), for the sticker's tooltip.
   strandSessions?: Map<string, { date: string; time: string }[]>;
+  // The kicker line(s) above the title: a cinema's context prefix (decision #29).
+  contexts?: FilmContext[];
 }
 
 // Dim, normal-weight text sitting inline with the (black, uppercase) film name at the same
@@ -102,6 +105,7 @@ export default function FilmCard({
   cinemaLinks,
   specialTags,
   strandSessions,
+  contexts,
   preview = false,
 }: Props) {
   // Day sub-headers are redundant only when a specific Day chip is active — then every visible
@@ -248,6 +252,17 @@ export default function FilmCard({
     <div className="bg-surface border-4 border-border rounded-card p-4 sm:p-8">
       {/* In the preview there's no showtime section below, so the big gap collapses to a normal one. */}
       <div className={preview ? "mb-6" : "mb-16"}>
+        {/* The kicker (decision #29): the context a cinema put in front of the title, in its own
+            words, small and dim in the section headings' voice. Where-and-when follows only when
+            some of the film's sessions don't carry it. Not on a Mystery Matinee, whose card
+            shouldn't say anything the redaction is hiding. */}
+        {!isMystery &&
+          contexts?.map((c) => (
+            <p key={c.text} className="mb-2 text-xs font-bold uppercase tracking-widest text-dim">
+              {c.text}
+              {c.where && <span className="font-normal"> · {c.where}</span>}
+            </p>
+          ))}
         <h3 className="text-2xl md:text-3xl tracking-tight">
           {isMystery ? (
             <MysteryTitle text={group.filmTitle} />

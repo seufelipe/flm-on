@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-01T15:07:24.489Z",
+  "generatedAt": "2026-10-01T15:30:31.342Z",
   "week": {
     "from": "2026-10-08",
     "to": "2026-10-14"
@@ -46,6 +46,11 @@
       "screeningTags": [
         "Japanese",
         "Subtitled"
+      ],
+      "contexts": [
+        {
+          "text": "Emmy Shigeta & Jack Reynor Present"
+        }
       ],
       "firstDate": "2026-10-10",
       "reason": "special"
@@ -114,6 +119,12 @@
       ],
       "screeningTags": [
         "Open Captioned"
+      ],
+      "contexts": [
+        {
+          "text": "International Lesbian Day",
+          "where": "IFI, Thu 8 Oct"
+        }
       ],
       "firstDate": "2026-10-08",
       "reason": "new"

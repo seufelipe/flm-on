@@ -132,7 +132,8 @@ you've opened its code, read the file first.**
   `preferred`); #20 a screening lingers ten minutes past its start; #21 the `.ics` export.
 - `strands.md` — #12 Mystery Matinee; #13 strand marks and tag-description house style; #15 film
   formats; #17 languages and captions; #25 marathons; #27 festival sections; #28 shorts programmes
-  and "no Letterboxd link, no year". Plus the `FilmCard` pill-strip and `MarqueeSticker` gotchas.
+  and "no Letterboxd link, no year"; #29 a cinema's context prefix as a kicker above the title.
+  Plus the `FilmCard` pill-strip and `MarqueeSticker` gotchas.
 - `browsing.md` — #14 persisted preferences; #18 the Next-week preview; #26 "New this week".
 - `ui-primitives.md` — #22 the vendored Radix primitives and their landmines; #23 lucide icons;
   #24 vaul drawers below `sm:`.

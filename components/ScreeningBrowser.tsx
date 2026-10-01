@@ -47,6 +47,7 @@ import FilterControls from "./FilterControls";
 import PlanPanel from "./PlanPanel";
 import PlanButton from "./PlanButton";
 import { strandSessions } from "@/lib/screeningTags";
+import { filmContexts } from "@/lib/filmContext";
 
 interface Props {
   screenings: Screening[];
@@ -451,6 +452,23 @@ export default function ScreeningBrowser({
     return new Map(Array.from(byFilm, ([key, sessions]) => [key, strandSessions(sessions)]));
   }, [preferred]);
 
+  // The kicker above each card's title (decision #29), over the same full preferred set: every
+  // session of the film goes in, since whether a context needs its "where and when" depends on
+  // whether all of them carry it.
+  const filmContextLines = useMemo(() => {
+    const byFilm = new Map<string, (typeof preferred)[number][]>();
+    for (const s of preferred) {
+      const key = s.filmTitle.trim().toLowerCase();
+      byFilm.set(key, [...(byFilm.get(key) ?? []), s]);
+    }
+    const out = new Map<string, ReturnType<typeof filmContexts>>();
+    for (const [key, sessions] of byFilm) {
+      const contexts = filmContexts(sessions);
+      if (contexts.length > 0) out.set(key, contexts);
+    }
+    return out;
+  }, [preferred]);
+
   // One card, rendered identically in both sections — the split is an ordering decision, not a
   // different kind of card.
   const filmCard = (group: FilmGroup) => (
@@ -468,6 +486,7 @@ export default function ScreeningBrowser({
       cinemaLinks={filmCinemaLinks.get(group.key)}
       specialTags={filmSpecialTags.get(group.key)}
       strandSessions={filmStrandSessions.get(group.key)}
+      contexts={filmContextLines.get(group.key)}
     />
   );
 
@@ -603,6 +622,7 @@ export default function ScreeningBrowser({
                   .filter((l) => prefs.cinemas[l.cinema])
                   .map((l) => ({ label: l.label, url: l.url }))}
                 specialTags={f.screeningTags}
+                contexts={f.contexts}
               />
             );
           })

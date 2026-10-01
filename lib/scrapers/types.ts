@@ -7,6 +7,10 @@ export interface Screening {
   // The film's original-language title, when a cinema reports one that differs from `filmTitle`
   // (only Cineworld's `movies` API does). Shown dimmed before the title on the card.
   originalTitle?: string;
+  // The cinema's own context prefix on this session's title ("Black History Month",
+  // "Emmy Shigeta & Jack Reynor Present"), lifted off it by a `contextPrefixes` entry in
+  // lib/aggregate.ts. Shown above the card's title (decision #29).
+  context?: string;
   cert?: string;
   durationMins?: number;
   durationEstimated?: boolean;

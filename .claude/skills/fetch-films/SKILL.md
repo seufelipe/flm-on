@@ -97,6 +97,7 @@ FOUNDs.
 | Symptom | File | Key | After editing |
 | --- | --- | --- | --- |
 | Mangled or strand-titled name | `data/title-overrides.json` | `corrections` (exact), `stripPrefixes`, `stripAnnotations` (regex) | **re-fetch** |
+| A prefix worth showing — an occasion or who's presenting (#29) | `data/title-overrides.json` | `contextPrefixes` (shown verbatim above the title; a partner list or a duplicate of a tag goes in `stripPrefixes` instead) | **re-fetch** |
 | A festival prefix (its own section, #27) | `data/title-overrides.json` | `strandPrefixes` (prefix → tag) + a `KNOWN` entry with `section: true` | **re-fetch** |
 | Wrong or missing Letterboxd link | `data/letterboxd-overrides.json` | `"title\|year"` — the year the **cinema** reported, often the wrong one, sometimes empty | **re-fetch** |
 | Wrong or unwanted language | `data/language-overrides.json` | normalized title; `null` forces unmarked | **re-fetch** |

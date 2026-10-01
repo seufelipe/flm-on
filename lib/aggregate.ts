@@ -7,6 +7,7 @@ import {
   titleAnnotation,
   titlesEquivalent,
   titleStrand,
+  titleContext,
   isLabelledTitle,
   loadTitleOverrides,
 } from "./titles";
@@ -190,10 +191,13 @@ export async function getShowtimesForRange(dates: string[]): Promise<DayResult> 
       // A strand-naming prefix becomes a tag on this session (title-overrides `strandPrefixes`,
       // decision #27) before the title loses it.
       const strand = titleStrand(s.filmTitle, titleOverrides);
+      // So does a context-carrying one (`contextPrefixes`, decision #29), as plain text.
+      const context = titleContext(s.filmTitle, titleOverrides);
       return {
         ...s,
         filmTitle: cleanFilmTitle(s.filmTitle, titleOverrides),
         ...(strand && { screeningTags: [...(s.screeningTags ?? []), strand] }),
+        ...(context && { context }),
       };
     })
     .filter((s) => !isHiddenFilm(s.filmTitle, hiddenFilms));

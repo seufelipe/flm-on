@@ -10,6 +10,7 @@ import type { CinemaId, Screening } from "./scrapers/types";
 import { withEndTimes } from "./clash";
 import { groupByFilm } from "./groupings";
 import { CINEMA_LABEL } from "./cinemas";
+import { filmContexts, type FilmContext } from "./filmContext";
 import { displayScreeningTags } from "./screeningTags";
 import { displayFilmFormats } from "./formats";
 import { hasNonEnglishLanguage } from "./languages";
@@ -29,6 +30,9 @@ export interface UpcomingFilm {
   // Every screeningTag across the film's next-week sessions — feeds the card's FilmNotes sticker
   // and the language / format chips on the meta line (there are no pills to carry per-session marks).
   screeningTags: string[];
+  // The kicker line(s) above the title — a cinema's context prefix, with where and when if only
+  // some sessions carry it (lib/filmContext.ts, decision #29). Absent when there's none.
+  contexts?: FilmContext[];
   label?: string;
   firstDate: string;
   // Why the film made the cut — for the fetch:batch report only, not shown in the UI.
@@ -78,6 +82,7 @@ export function selectUpcomingFilms(
       );
     }
 
+    const contexts = filmContexts(g.screenings);
     films.push({
       title: g.filmTitle,
       year: g.year,
@@ -88,6 +93,7 @@ export function selectUpcomingFilms(
       cinemas: Array.from(cinemas.keys()),
       cinemaLinks: Array.from(cinemas.values()).filter((v): v is Link => v !== null),
       screeningTags: Array.from(new Set(g.screenings.flatMap((s) => s.screeningTags ?? []))),
+      ...(contexts.length > 0 && { contexts }),
       label: labels[g.key],
       firstDate: g.screenings[0].date,
       reason: special ? "special" : "new",

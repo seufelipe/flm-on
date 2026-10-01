@@ -4,6 +4,7 @@ import {
   isLabelledTitle,
   titleAnnotation,
   titlesEquivalent,
+  titleContext,
   titleStrand,
   type TitleOverrides,
 } from "@/lib/titles";
@@ -11,6 +12,7 @@ import {
 const overrides: TitleOverrides = {
   stripPrefixes: ["ARCHIVE AT LUNCHTIME:", "CINEMA BOOK CLUB:", "From the Vaults:"],
   strandPrefixes: { "IFI Documentary Festival 2026:": "IFI Documentary Festival" },
+  contextPrefixes: ["Black History Month:", "Emmy Shigeta & Jack Reynor Present:"],
   stripAnnotations: [
     "\\d{1,3}(?:st|nd|rd|th)\\s+anniversary",
     "\\d+k(?:\\s+digital)?\\s+restoration",
@@ -174,5 +176,23 @@ describe("isLabelledTitle", () => {
       isLabelledTitle("La Bataille de Gaulle - partie 1 : L'Âge de Fer", "De Gaulle: Résistance"),
     ).toBe(false);
     expect(isLabelledTitle("Heart of the Beast", "Heart of the Beast")).toBe(false);
+  });
+});
+
+describe("titleContext", () => {
+  it("lifts a context prefix off the title, keeping the cinema's own words", () => {
+    const raw = "BLACK HISTORY MONTH: Mothers of Chibok";
+    expect(cleanFilmTitle(raw, overrides)).toBe("Mothers of Chibok");
+    expect(titleContext(raw, overrides)).toBe("BLACK HISTORY MONTH");
+    expect(titleContext("Emmy Shigeta & Jack Reynor Present: Pulse", overrides)).toBe(
+      "Emmy Shigeta & Jack Reynor Present",
+    );
+  });
+
+  it("finds one stacked behind a stripped prefix, and is absent otherwise", () => {
+    expect(titleContext("From the Vaults: Black History Month: Mother Ireland", overrides)).toBe(
+      "Black History Month",
+    );
+    expect(titleContext("From the Vaults: Mother Ireland", overrides)).toBeUndefined();
   });
 });

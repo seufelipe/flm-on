@@ -41,6 +41,9 @@ Before the passes, `strandPrefixes` (`{ prefix: tag }`) — a prefix that names 
 and `titleStrand()` reports the tag, which `aggregate` appends to that session's
 `screeningTags` (decision #27). The year is in the prefix — **update it each year**, or the
 festival silently goes back to showing its prefix in every title. Then three passes, in order:
+(`contextPrefixes` — a list, decision #29 — are matched in the `stripPrefixes` pass alongside
+them; the one that matched is reported by `titleContext()` in the cinema's own words, and
+`aggregate` keeps it on the session as `context`, shown as a kicker above the card's title.)
 
 1. exact `corrections` — the escape hatch for a mistitled strand session
 2. `stripPrefixes` — programme strands (`CINEMA BOOK CLUB:` …), repeated until none matches, since they stack (`From the Vaults: IFI & ESB & DFOH: …`)
@@ -205,7 +208,7 @@ to any of these needs a **re-fetch**, not a reload:
 
 | File | Key | Applied by |
 | --- | --- | --- |
-| `title-overrides.json` | `corrections` (exact), `strandPrefixes` (prefix → tag), `stripPrefixes`, `stripAnnotations` (regex) | `lib/titles.ts` |
+| `title-overrides.json` | `corrections` (exact), `strandPrefixes` (prefix → tag), `contextPrefixes` (shown as a kicker, #29), `stripPrefixes`, `stripAnnotations` (regex) | `lib/titles.ts` |
 | `letterboxd-overrides.json` | `"title\|year"` — cleaned title, exact case, scraped year | `lib/letterboxd.ts` |
 | `hidden-films.json` | `titleSubstrings` (case-insensitive substring) | `lib/hidden.ts` |
 | `language-overrides.json` | normalized title (`trim().toLowerCase()`); `null` = unmarked | `lib/languageOverrides.ts` |

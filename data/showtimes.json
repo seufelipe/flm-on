@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-01T15:07:24.489Z",
+  "generatedAt": "2026-10-01T15:30:31.342Z",
   "days": [
     "2026-10-01",
     "2026-10-02",
@@ -29,34 +29,6 @@
     "the weight"
   ],
   "screenings": [
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Resident Evil",
-      "cert": "16",
-      "durationMins": 93,
-      "year": 2026,
-      "date": "2026-10-01",
-      "time": "15:35",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41650&showtimeId=1001-41650&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/resident-evil",
-      "director": "Zach Cregger",
-      "letterboxdUrl": "https://letterboxd.com/film/resident-evil-2026/"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Bad Apples",
-      "cert": "15A",
-      "durationMins": 100,
-      "year": 2026,
-      "date": "2026-10-01",
-      "time": "15:40",
-      "bookingUrl": "https://shop.ifi.ie/performance/114054/",
-      "filmPageUrl": "https://ifi.ie/films/bad-apples-2",
-      "director": "Talon Mundo",
-      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2026/"
-    },
     {
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
@@ -168,20 +140,6 @@
       "filmPageUrl": "https://ifi.ie/films/sense-and-sensibility-2",
       "director": "Georgia Oakley",
       "letterboxdUrl": "https://letterboxd.com/film/sense-and-sensibility-2026/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Possession",
-      "cert": "18",
-      "durationMins": 124,
-      "year": 1981,
-      "date": "2026-10-01",
-      "time": "20:30",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40004&showtimeId=1001-40004&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/possession",
-      "director": "Andrzej Żuławski",
-      "letterboxdUrl": "https://letterboxd.com/film/possession/"
     },
     {
       "cinema": "ifi",
@@ -1172,6 +1130,18 @@
     {
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
+      "filmTitle": "Boorman and the Devil",
+      "year": 2025,
+      "date": "2026-10-04",
+      "time": "12:45",
+      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40932&showtimeId=1001-40932&visLang=1",
+      "filmPageUrl": "https://www.lighthousecinema.ie/film/boorman-and-the-devil",
+      "director": "David Kittredge",
+      "letterboxdUrl": "https://letterboxd.com/film/boorman-and-the-devil/"
+    },
+    {
+      "cinema": "lighthouse",
+      "cinemaName": "Light House Cinema",
       "filmTitle": "The Lost Children of Tuam",
       "cert": "12A",
       "durationMins": 84,
@@ -1182,18 +1152,6 @@
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-lost-children-of-tuam",
       "director": "Frank Berry",
       "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Boorman and the Devil",
-      "year": 2025,
-      "date": "2026-10-04",
-      "time": "12:45",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40932&showtimeId=1001-40932&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/boorman-and-the-devil",
-      "director": "David Kittredge",
-      "letterboxdUrl": "https://letterboxd.com/film/boorman-and-the-devil/"
     },
     {
       "cinema": "lighthouse",
@@ -1806,6 +1764,7 @@
       "time": "18:30",
       "bookingUrl": "https://shop.ifi.ie/performance/113563/",
       "filmPageUrl": "https://ifi.ie/films/black-history-month-mothers-of-chibok-2",
+      "context": "Black History Month",
       "director": "Joel Kachi Benson",
       "letterboxdUrl": "https://letterboxd.com/film/mothers-of-chibok/"
     },
@@ -2229,20 +2188,6 @@
     {
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
-      "filmTitle": "Possession",
-      "cert": "18",
-      "durationMins": 124,
-      "year": 1981,
-      "date": "2026-10-06",
-      "time": "20:30",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41172&showtimeId=1001-41172&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/possession",
-      "director": "Andrzej Żuławski",
-      "letterboxdUrl": "https://letterboxd.com/film/possession/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
       "filmTitle": "Hope",
       "cert": "16",
       "durationMins": 156,
@@ -2258,6 +2203,20 @@
       "originalTitle": "Umut",
       "director": "Yılmaz Güney",
       "letterboxdUrl": "https://letterboxd.com/film/hope/"
+    },
+    {
+      "cinema": "lighthouse",
+      "cinemaName": "Light House Cinema",
+      "filmTitle": "Possession",
+      "cert": "18",
+      "durationMins": 124,
+      "year": 1981,
+      "date": "2026-10-06",
+      "time": "20:30",
+      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41172&showtimeId=1001-41172&visLang=1",
+      "filmPageUrl": "https://www.lighthousecinema.ie/film/possession",
+      "director": "Andrzej Żuławski",
+      "letterboxdUrl": "https://letterboxd.com/film/possession/"
     },
     {
       "cinema": "ifi",

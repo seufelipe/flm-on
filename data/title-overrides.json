@@ -4,9 +4,7 @@
     "The Bigger Picture:",
     "CINEMA BOOK CLUB:",
     "EOS:",
-    "IFI & Culture Night 2026:",
     "IFI Family:",
-    "HLG Presents:",
     "Unlimited Preview:",
     "Wild Strawberries:",
     "From the Vaults:",
@@ -14,12 +12,16 @@
     "IFI Spotlight:",
     "IFI and DCU:",
     "IFI and Galway Film Fleadh Shorts:",
-    "Black History Month:",
     "EAFFI Discoveries:",
     "IFI & Musictown:",
-    "IFI, TBG+S & aemi:",
+    "IFI, TBG+S & aemi:"
+  ],
+  "contextPrefixes": [
+    "Black History Month:",
     "International Lesbian Day:",
-    "Emmy Shigeta & Jack Reynor Present:"
+    "IFI & Culture Night 2026:",
+    "Emmy Shigeta & Jack Reynor Present:",
+    "HLG Presents:"
   ],
   "strandPrefixes": {
     "IFI Documentary Festival 2026:": "IFI Documentary Festival"

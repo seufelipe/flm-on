@@ -10,6 +10,8 @@ paths:
   - "lib/groupings.ts"
   - "lib/aggregate.ts"
   - "lib/scrapers/ifi.ts"
+  - "lib/titles.ts"
+  - "lib/filmContext.ts"
   - "components/FilmCard.tsx"
   - "components/FilmNotes.tsx"
   - "components/MarqueeSticker.tsx"
@@ -202,3 +204,25 @@ synthetic `Mystery Matinee` at render time (#12).
       Letterboxd's (#4), and a cinema's own is a guess (#2): a programme's is a placeholder, a
       NOT FOUND film's may be this year's re-release stamp. The rule lives in `FilmCard` alone —
       the data still has the year, so the plan and the report are untouched.
+
+29. **A cinema's context prefix is shown above the title, in its own words** (`contextPrefixes`
+    in `data/title-overrides.json`, `titleContext` in `lib/titles.ts`, `context` on `Screening`,
+    `lib/filmContext.ts`, the kicker in `FilmCard.tsx`). Reasoning:
+    `docs/decisions/screening-tags.md`.
+    - **Only prefixes that add context get shown**: an occasion (`Black History Month:`,
+      `International Lesbian Day:`) or who's presenting (`Emmy Shigeta & Jack Reynor Present:`).
+      Partner lists (`IFI and DCU:`) and prefixes already shown another way (`CINEMA BOOK CLUB:`)
+      stay in `stripPrefixes`; a recurring programme (`Wild Strawberries:`, `IFI Family:`) is a
+      strand and belongs with #13/#27, not here. An unlisted prefix is never shown, so a new
+      sponsor credit stays hidden until someone opts it in.
+    - **Never reworded** (user's call): the kicker is the prefix as it appears in that session's
+      title, colon dropped. The override lists prefixes; it has no display text to drift.
+    - **Per session, like `strandPrefixes`**, because a prefix belongs to one cinema's listing:
+      Lesbian Lines is "International Lesbian Day:" at the IFI and plain at Light House. So when
+      only some of a card's sessions carry it, the kicker adds where and when ("· IFI, Thu 8 Oct",
+      `formatWeekdayDate`, up to three places, then dropped); when every session does, the text
+      alone. Computed over the full preferred set, like the stickers.
+    - **The kicker** is a `<p>` above the `<h3>`: `text-xs font-bold uppercase tracking-widest
+      text-dim`, the section headings' voice, the where-and-when in normal weight. Not on a
+      Mystery Matinee (#12). The Next-week preview gets it too, precomputed into
+      `data/upcoming.json` as `contexts`.

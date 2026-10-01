@@ -133,6 +133,36 @@ still leaked through. It's a display rule in `FilmCard` only — the year stays 
 
 ---
 
+## Decision #29 — A cinema's context prefix is shown above the title, in its own words
+
+Until Oct 2026 every title prefix that wasn't a festival was simply stripped. Reviewing all twenty
+of them, they fall into four kinds: an **occasion or season** (Black History Month, International
+Lesbian Day, IFI & Culture Night 2026), **who's presenting** (Emmy Shigeta & Jack Reynor Present,
+HLG Presents), a **recurring programme strand** (Wild Strawberries — the IFI's over-55s matinee —
+IFI Family, From the Vaults, Irish Focus, EOS, The Bigger Picture, EAFFI Discoveries, IFI
+Spotlight, the Galway Fleadh shorts), and **partner lists or duplicates** (IFI & ESB & DFOH, IFI
+and DCU, IFI, TBG+S & aemi, IFI & Musictown; CINEMA BOOK CLUB and Unlimited Preview, both already
+tags). The first two tell you something about *this* screening that the film's facts don't; the
+user's examples were the Emmy & Jack presentation and Black History Month. They became
+`contextPrefixes`. The strands are a separate pass — they're the same kind of thing as Silver
+Screen and deserve a sticker and the Specials lens, not a line of small text. The last kind stays
+stripped.
+
+**Verbatim, never reworded** (user's call): an earlier proposal mapped each prefix to display text
+("Presented by Emmy Shigeta & Jack Reynor"); the user asked to keep the cinema's words. So the
+override is a plain list and the kicker is lifted from the session's own title.
+
+**Per session, with where-and-when when it's split.** The same problem the two-strand card had
+(#13, "Two strands on one card"): a prefix is one cinema's listing, not the film's. Two shapes
+were weighed — (a) the kicker names where and when if only some sessions carry it; (b) show the
+kicker only when every session carries it and otherwise fall back to pill tooltips. (a) chosen:
+most of these are one-off events with a single session, so the qualifier rarely appears, and when
+it does it's the information you need.
+
+**Where it sits**: a kicker line above the title, small and dim in the section headings' voice —
+the user's suggestion. Not a sticker: a sticker names a strand and carries a mark into the pills;
+this is a sentence about the screening.
+
 ## Decision #13 — Special screenings get a per-session marker
 
 **Special screenings get a per-session marker.** Light House tags them per showtime in
