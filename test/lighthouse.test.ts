@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "fs";
 import path from "path";
-import { parseFilmsPage, parseReleaseYear } from "@/lib/scrapers/lighthouse";
+import { parseCertDuration, parseFilmsPage, parseReleaseYear } from "@/lib/scrapers/lighthouse";
 
 const fixture = (name: string) => readFileSync(path.join(__dirname, "fixtures", name), "utf-8");
 
@@ -48,5 +48,19 @@ describe("lighthouse parseReleaseYear", () => {
   it("extracts the year from the 'Released: DD-Mon-YYYY' field", () => {
     const year = parseReleaseYear(fixture("lighthouse-film-detail.html"));
     expect(year).toBe(2026);
+  });
+});
+
+describe("lighthouse parseCertDuration", () => {
+  it("reads a cert and runtime", () => {
+    expect(parseCertDuration(" 15A / 104 Mins ")).toEqual({ cert: "15A", durationMins: 104 });
+  });
+
+  it("reads a cert with a space in it, keeping the runtime", () => {
+    expect(parseCertDuration("CLUB 18+ / 118 Mins")).toEqual({ cert: "CLUB 18+", durationMins: 118 });
+  });
+
+  it("reads whatever is in the cert slot, for normaliseCert to judge", () => {
+    expect(parseCertDuration("LIVE / 237 Mins")).toEqual({ cert: "LIVE", durationMins: 237 });
   });
 });

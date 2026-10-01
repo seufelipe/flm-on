@@ -16,8 +16,10 @@ async function fetchHtml(url: string): Promise<string> {
   return res.text();
 }
 
-function parseCertDuration(text: string): { cert?: string; durationMins?: number } {
-  const match = text.trim().match(/^(\S+)\s*\/\s*(\d+)\s*Mins?$/i);
+// "15A / 104 Mins". The cert may hold a space ("CLUB 18+ / 118 Mins"); what counts as a cert
+// is lib/certs.ts `normaliseCert`'s call, applied in lib/aggregate.ts.
+export function parseCertDuration(text: string): { cert?: string; durationMins?: number } {
+  const match = text.trim().match(/^(.+?)\s*\/\s*(\d+)\s*Mins?$/i);
   if (!match) return {};
   return { cert: match[1], durationMins: Number(match[2]) };
 }

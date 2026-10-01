@@ -88,7 +88,7 @@ async function main() {
   const days = upcomingDays();
 
   console.log(`Fetching ${days[0]} .. ${days[days.length - 1]} (${days.length} days)...\n`);
-  const { screenings, errors, titleAnnotations } = await refreshShowtimesForRange(days);
+  const { screenings, errors, titleAnnotations, unrecognisedCerts } = await refreshShowtimesForRange(days);
 
   const hidden = await loadHiddenFilms();
   if (hidden.titleSubstrings.length > 0) {
@@ -315,6 +315,15 @@ async function main() {
     for (const [tag, cinemas] of unrecognised) {
       console.log(`  ${tag}  (${Array.from(cinemas).join(", ")})`);
     }
+  }
+
+  // A cert slot holding something that isn't a certificate is dropped from the data
+  // (lib/certs.ts `normaliseCert`); listed here so a new value is seen, not silently lost.
+  console.log(`\nUnrecognised certs — dropped (${unrecognisedCerts.length}):\n`);
+  if (unrecognisedCerts.length === 0) {
+    console.log("  none");
+  } else {
+    for (const u of unrecognisedCerts) console.log(`  ${u.cert}  ${u.film}  (${u.cinema})`);
   }
 
   // Cineworld is scraped in full (CLAUDE.md #16); its ordinary wide-release showings carry no

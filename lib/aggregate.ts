@@ -15,6 +15,7 @@ import { loadHiddenFilms, isHiddenFilm } from "./hidden";
 import { loadLanguageOverrides, languageOverrideFor } from "./languageOverrides";
 import { loadDirectorOverrides, directorOverrideFor } from "./directorOverrides";
 import { displayLanguage } from "./languages";
+import { normaliseCert } from "./certs";
 
 export interface AdapterError {
   cinema: string;
@@ -29,6 +30,9 @@ export interface DayResult {
   // Trailing annotations `cleanFilmTitle` stripped, keyed by the cleaned title lower-cased —
   // scripts/fetch-batch.ts pre-fills these as editorial labels (decision #11). Not persisted.
   titleAnnotations: Record<string, string>;
+  // Cert-slot values `normaliseCert` didn't recognise and dropped (`LIVE` on a Met Opera
+  // broadcast) — printed by the batch report so a new one is seen. Not persisted.
+  unrecognisedCerts: { cert: string; cinema: string; film: string }[];
 }
 
 async function getCinemaRange(
@@ -188,6 +192,7 @@ export async function getShowtimesForRange(dates: string[]): Promise<DayResult> 
 
   const titleOverrides = await loadTitleOverrides();
   const hiddenFilms = await loadHiddenFilms();
+  const unrecognisedCerts: DayResult["unrecognisedCerts"] = [];
   const screenings = results
     .flatMap((r) => r.screenings)
     .map((s) => {
@@ -196,9 +201,16 @@ export async function getShowtimesForRange(dates: string[]): Promise<DayResult> 
       const strands = titleStrands(s.filmTitle, titleOverrides);
       // So does a context-carrying one (`contextPrefixes`, decision #29), as plain text.
       const context = titleContext(s.filmTitle, titleOverrides);
+      // Only a real certificate stays in `cert` (lib/certs.ts).
+      const { cert, unrecognised } = normaliseCert(s.cert);
+      const filmTitle = cleanFilmTitle(s.filmTitle, titleOverrides);
+      if (unrecognised && !unrecognisedCerts.some((u) => u.cert === unrecognised && u.film === filmTitle)) {
+        unrecognisedCerts.push({ cert: unrecognised, cinema: s.cinemaName, film: filmTitle });
+      }
       return {
         ...s,
-        filmTitle: cleanFilmTitle(s.filmTitle, titleOverrides),
+        cert,
+        filmTitle,
         ...(strands.length > 0 && { screeningTags: [...(s.screeningTags ?? []), ...strands] }),
         ...(context && { context }),
       };
@@ -232,7 +244,7 @@ export async function getShowtimesForRange(dates: string[]): Promise<DayResult> 
     await cache.persistToFile();
   }
 
-  return { screenings: withLinks, errors, stale, fetchedAt, titleAnnotations };
+  return { screenings: withLinks, errors, stale, fetchedAt, titleAnnotations, unrecognisedCerts };
 }
 
 export async function refreshShowtimesForRange(dates: string[]): Promise<DayResult> {

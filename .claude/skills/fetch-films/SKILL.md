@@ -72,6 +72,7 @@ later re-confirm **a browser reload is enough** — never restart the server.
 | `Languages` | `UNMARKED` sessions (Letterboxd filed it as Animation, so no subtitle was assumed — is it really dubbed?), or a wrong primary language; Letterboxd is often wrong for Indian regional films and dubs |
 | `Special screenings` | A strand that should surface but isn't in `lib/screeningTags.ts` `KNOWN` |
 | `Unrecognised screening tags` | A new Cineworld `Showtime.Event.*` or a new Light House `em.additional` value |
+| `Unrecognised certs — dropped` | Expected: `LIVE` / `ENCORE` on a Met Opera. Anything else is a value the cert slot now carries that isn't a certificate — or a real cert `normaliseCert` (`lib/certs.ts`) should learn (add it, or an alias like `CLUB 18+` → `18`) |
 | `Cineworld — ordinary screenings` | A mistitled blockbuster, or one worth promoting with a label — this is the only view of what the "Specials, etc" lens hides |
 | `Next week` candidates | The teaser list, before you trim it |
 

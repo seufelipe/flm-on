@@ -12,7 +12,13 @@ HTML scrape of `https://www.lighthousecinema.ie`.
 
 - `/films` renders **today only** in static HTML. The other day-tabs are empty placeholders
   filled client-side from `/ajax/films-by-day/{n}` (`n` = 1..9), same `div.film` markup.
-- Per-film detail (runtime, cert) comes from `/film/{slug}`.
+- Cert and runtime come from the listing itself: each film's `.shortened-aside`, `"15A / 104
+  Mins"` (`parseCertDuration`). **The cert slot isn't always a cert**: a Met Opera broadcast says
+  `LIVE` / `ENCORE`, and a club-licence screening says `CLUB 18+` (with a space — which once lost
+  Boorman and the Devil both its cert and its runtime). `normaliseCert` (`lib/certs.ts`, applied
+  in `aggregate` for every cinema) keeps IFCO certs and `TBC`, shows `CLUB 18+` as `18`, and
+  drops anything else into the report's **Unrecognised certs** section. `/film/{slug}` is read
+  only for the release year (`parseReleaseYear`).
 - Per-session descriptors live in `.time > em.additional` — `Parent and Baby`,
   `Cinema Book Club`, `Silver Screen`, `Knit-Along`, `35mm`, and the caption notes `Subtitled` / `Dubbed` /
   `Open Captioned`. Read into `Screening.screeningTags` verbatim.

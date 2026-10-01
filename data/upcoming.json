@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-01T16:02:46.019Z",
+  "generatedAt": "2026-10-01T16:07:41.142Z",
   "week": {
     "from": "2026-10-08",
     "to": "2026-10-14"
@@ -30,6 +30,7 @@
     {
       "title": "Pulse",
       "year": 2001,
+      "cert": "18",
       "director": "Kiyoshi Kurosawa",
       "originalTitle": "回路",
       "letterboxdUrl": "https://letterboxd.com/film/pulse-2001/",

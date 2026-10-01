@@ -17,6 +17,22 @@ export const CERT_COLORS: Record<string, string> = {
   "18": "#e62828",
 };
 
+// What the cert slot of a listing may hold. Light House reuses it for things that aren't
+// certificates — `LIVE` / `ENCORE` on a Met Opera broadcast — and once for `CLUB 18+` (a film
+// shown under a club licence, over-18s only), which the badge shows as 18: it's a circle, and
+// the age is what someone choosing a film needs. Anything else is dropped as a cert and handed
+// back as `unrecognised`, which the batch report prints, so a new value surfaces at review
+// instead of rendering as a badge.
+const CERT_ALIASES: Record<string, string> = { "CLUB 18+": "18" };
+
+export function normaliseCert(raw: string | undefined): { cert?: string; unrecognised?: string } {
+  if (!raw?.trim()) return {};
+  const upper = raw.trim().toUpperCase();
+  const cert = CERT_ALIASES[upper] ?? upper;
+  if (cert in CERT_COLORS || cert === "TBC") return { cert };
+  return { unrecognised: raw.trim() };
+}
+
 export function certColor(cert: string): string | undefined {
   return CERT_COLORS[cert.toUpperCase()];
 }
