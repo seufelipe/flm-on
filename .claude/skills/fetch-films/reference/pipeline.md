@@ -38,9 +38,11 @@ In-memory `Map` plus a `data/cache.json` fallback, 6h TTL. Only `fetch-batch` an
 
 Before the passes, `strandPrefixes` (`{ prefix: tag }`) — a prefix that names a strand the
 *session* belongs to (`IFI Documentary Festival 2026:` → `IFI Documentary Festival`). Stripped,
-and `titleStrand()` reports the tag, which `aggregate` appends to that session's
+and `titleStrands()` reports the tag, which `aggregate` appends to that session's
 `screeningTags` (decision #27). The year is in the prefix — **update it each year**, or the
 festival silently goes back to showing its prefix in every title. Then three passes, in order:
+`strandSuffixes` (`{ regexSource: tag }`) does the same at the end of a title — IFI's
+`+ Q&A` → `In-Person QandA` — and is stripped first. `titleStrands()` reports both.
 (`contextPrefixes` — a list, decision #29 — are matched in the `stripPrefixes` pass alongside
 them; the one that matched is reported by `titleContext()` in the cinema's own words, and
 `aggregate` keeps it on the session as `context`, shown as a kicker above the card's title.)
@@ -218,7 +220,7 @@ to any of these needs a **re-fetch**, not a reload:
 
 | File | Key | Applied by |
 | --- | --- | --- |
-| `title-overrides.json` | `corrections` (exact), `strandPrefixes` (prefix → tag), `contextPrefixes` (shown as a kicker, #29), `stripPrefixes`, `stripAnnotations` (regex) | `lib/titles.ts` |
+| `title-overrides.json` | `corrections` (exact), `strandPrefixes` (prefix → tag), `strandSuffixes` (regex → tag), `contextPrefixes` (shown as a kicker, #29), `stripPrefixes`, `stripAnnotations` (regex) | `lib/titles.ts` |
 | `letterboxd-overrides.json` | `"title\|year"` — cleaned title, exact case, scraped year | `lib/letterboxd.ts` |
 | `hidden-films.json` | `titleSubstrings` (case-insensitive substring) | `lib/hidden.ts` |
 | `language-overrides.json` | normalized title (`trim().toLowerCase()`); `null` = unmarked | `lib/languageOverrides.ts` |

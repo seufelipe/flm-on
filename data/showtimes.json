@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-01T15:43:49.052Z",
+  "generatedAt": "2026-10-01T16:02:46.019Z",
   "days": [
     "2026-10-01",
     "2026-10-02",
@@ -12,6 +12,7 @@
   "newFilms": [
     "april x",
     "boorman and the devil",
+    "bourdieu",
     "bourdieu + q+a",
     "digger",
     "everybody to kenmure st.",
@@ -759,13 +760,16 @@
     {
       "cinema": "ifi",
       "cinemaName": "IFI",
-      "filmTitle": "Bourdieu + Q+A",
+      "filmTitle": "Bourdieu",
       "durationMins": 120,
       "year": 2026,
       "date": "2026-10-03",
       "time": "13:30",
       "bookingUrl": "https://shop.ifi.ie/performance/113565/",
-      "filmPageUrl": "https://ifi.ie/films/ifi-aemi-bourdieu-q-a-2"
+      "filmPageUrl": "https://ifi.ie/films/ifi-aemi-bourdieu-q-a-2",
+      "screeningTags": [
+        "In-Person QandA"
+      ]
     },
     {
       "cinema": "lighthouse",
@@ -1130,18 +1134,6 @@
     {
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
-      "filmTitle": "Boorman and the Devil",
-      "year": 2025,
-      "date": "2026-10-04",
-      "time": "12:45",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40932&showtimeId=1001-40932&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/boorman-and-the-devil",
-      "director": "David Kittredge",
-      "letterboxdUrl": "https://letterboxd.com/film/boorman-and-the-devil/"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
       "filmTitle": "The Lost Children of Tuam",
       "cert": "12A",
       "durationMins": 84,
@@ -1152,6 +1144,18 @@
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-lost-children-of-tuam",
       "director": "Frank Berry",
       "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/"
+    },
+    {
+      "cinema": "lighthouse",
+      "cinemaName": "Light House Cinema",
+      "filmTitle": "Boorman and the Devil",
+      "year": 2025,
+      "date": "2026-10-04",
+      "time": "12:45",
+      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40932&showtimeId=1001-40932&visLang=1",
+      "filmPageUrl": "https://www.lighthousecinema.ie/film/boorman-and-the-devil",
+      "director": "David Kittredge",
+      "letterboxdUrl": "https://letterboxd.com/film/boorman-and-the-devil/"
     },
     {
       "cinema": "lighthouse",

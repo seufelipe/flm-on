@@ -11,6 +11,11 @@ export interface TitleOverrides {
   // Per session, because the prefix is: the same film at another cinema isn't in the strand.
   // CLAUDE.md decision #27.
   strandPrefixes?: Record<string, string>;
+  // The same at the other end: a regex source (case-insensitive) for a trailing piece of the title
+  // that names something about the session, mapped to the tag it becomes — IFI's "+ Q&A" →
+  // "In-Person QandA", the tag Light House sends for the same thing. Stripped, and the tag goes on
+  // that session only (lib/aggregate.ts).
+  strandSuffixes?: Record<string, string>;
   // Prefixes that carry context worth showing — an occasion ("Black History Month:"), who's
   // presenting ("Emmy Shigeta & Jack Reynor Present:"). Stripped from the title like
   // `stripPrefixes`, but the cinema's own words (colon dropped, never reworded) are kept on that
@@ -27,6 +32,7 @@ export interface TitleOverrides {
 const EMPTY_OVERRIDES: TitleOverrides = {
   stripPrefixes: [],
   strandPrefixes: {},
+  strandSuffixes: {},
   contextPrefixes: [],
   stripAnnotations: [],
   corrections: {},
@@ -42,6 +48,7 @@ export async function loadTitleOverrides(): Promise<TitleOverrides> {
     cached = {
       stripPrefixes: parsed.stripPrefixes ?? [],
       strandPrefixes: parsed.strandPrefixes ?? {},
+      strandSuffixes: parsed.strandSuffixes ?? {},
       contextPrefixes: parsed.contextPrefixes ?? [],
       stripAnnotations: parsed.stripAnnotations ?? [],
       corrections: parsed.corrections ?? {},
@@ -110,9 +117,23 @@ function splitStrandPrefix(raw: string, overrides: TitleOverrides): { rest: stri
 function cleanTitleParts(
   raw: string,
   overrides: TitleOverrides,
-): { title: string; annotation?: string; strand?: string; context?: string } {
+): { title: string; annotation?: string; strands: string[]; context?: string } {
   const { rest: trimmed, strand } = splitStrandPrefix(raw, overrides);
-  return { ...cleanUnprefixed(trimmed, overrides), strand };
+  const { rest, strand: suffixStrand } = splitStrandSuffix(trimmed, overrides);
+  return {
+    ...cleanUnprefixed(rest, overrides),
+    strands: [strand, suffixStrand].filter((s): s is string => Boolean(s)),
+  };
+}
+
+// Removes a trailing `strandSuffixes` match ("Bourdieu + Q+A" → "Bourdieu"), reporting the tag it
+// maps to. Runs before the prefixes and annotations, so what's left cleans like any other title.
+function splitStrandSuffix(title: string, overrides: TitleOverrides): { rest: string; strand?: string } {
+  for (const [source, strand] of Object.entries(overrides.strandSuffixes ?? {})) {
+    const rest = title.replace(new RegExp(`\\s*(?:${source})\\s*$`, "i"), "").trim();
+    if (rest && rest !== title) return { rest, strand };
+  }
+  return { rest: title };
 }
 
 function cleanUnprefixed(
@@ -170,10 +191,10 @@ export function titleAnnotation(raw: string, overrides: TitleOverrides): string 
   return cleanTitleParts(raw, overrides).annotation;
 }
 
-// The strand a `strandPrefixes` entry named on this raw title, if any — attached to the session
-// as a screening tag by lib/aggregate.ts.
-export function titleStrand(raw: string, overrides: TitleOverrides): string | undefined {
-  return cleanTitleParts(raw, overrides).strand;
+// The strands a `strandPrefixes` / `strandSuffixes` entry named on this raw title — attached to
+// the session as screening tags by lib/aggregate.ts.
+export function titleStrands(raw: string, overrides: TitleOverrides): string[] {
+  return cleanTitleParts(raw, overrides).strands;
 }
 
 // Whether `candidate` is just `title` behind a strand label — "Members' Preview: Heart of the

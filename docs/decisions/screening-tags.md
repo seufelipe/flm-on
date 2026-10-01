@@ -74,7 +74,7 @@ festival is per *session* — Knife: The Attempted Murder of Salman Rushdie play
 at the IFI and an ordinary run at Light House the same week — and the cinema already tells us
 which sessions, in the title. So `strandPrefixes` (`data/title-overrides.json`) strips the
 prefix like `stripPrefixes` does and appends its value to that session's `screeningTags`
-(`lib/titles.ts` `titleStrand`, applied in `lib/aggregate.ts`). The strand-prefix split runs
+(`lib/titles.ts` `titleStrands`, applied in `lib/aggregate.ts`). The strand-prefix split runs
 *first*, so the remainder still gets corrections / plain prefixes / annotations as usual.
 
 **Why that's enough for two of the three asks.** Once it's a `KNOWN` tag it's an ordinary strand:

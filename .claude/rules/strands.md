@@ -174,6 +174,11 @@ synthetic `Mystery Matinee` at render time (#12).
       exactly one section — a new festival film goes under the festival. Same rules as #26
       otherwise: "This week" only, headings only when ≥2 sections are non-empty. The heading is
       the strand's `title` wearing its `STRAND_MARKS` icon (`strandIcon`).
+    - **`strandSuffixes` is the same at the end of a title**: a regex source → tag, stripped and
+      tagged per session. First use: IFI's "+ Q&A" / "+ Q+A" → `In-Person QandA`, the tag Light
+      House sends for the same thing — so an IFI Q&A gets the same `q&a` sticker and mic mark
+      instead of keeping "+ Q+A" in its title (Bourdieu, Oct 2026). Applied before the prefixes,
+      so it works under a festival prefix too.
     - **Next year is a one-line edit**: the prefix carries the year (`IFI Documentary Festival
       2026:`). When the festival ends there's nothing to remove — no session carries the tag,
       and the section doesn't render.

@@ -5,7 +5,7 @@ import {
   titleAnnotation,
   titlesEquivalent,
   titleContext,
-  titleStrand,
+  titleStrands,
   type TitleOverrides,
 } from "@/lib/titles";
 
@@ -13,6 +13,7 @@ const overrides: TitleOverrides = {
   stripPrefixes: ["ARCHIVE AT LUNCHTIME:", "CINEMA BOOK CLUB:", "From the Vaults:"],
   strandPrefixes: { "IFI Documentary Festival 2026:": "IFI Documentary Festival" },
   contextPrefixes: ["Black History Month:", "Emmy Shigeta & Jack Reynor Present:"],
+  strandSuffixes: { "\\+\\s*Q\\s*[&+]\\s*A": "In-Person QandA" },
   stripAnnotations: [
     "\\d{1,3}(?:st|nd|rd|th)\\s+anniversary",
     "\\d+k(?:\\s+digital)?\\s+restoration",
@@ -105,11 +106,11 @@ describe("stacked prefixes", () => {
   });
 });
 
-describe("titleStrand", () => {
+describe("titleStrands", () => {
   it("strips a strand prefix and names the strand", () => {
     const raw = "IFI Documentary Festival 2026: Adam's Apple";
     expect(cleanFilmTitle(raw, overrides)).toBe("Adam's Apple");
-    expect(titleStrand(raw, overrides)).toBe("IFI Documentary Festival");
+    expect(titleStrands(raw, overrides)).toEqual(["IFI Documentary Festival"]);
   });
 
   it("still cleans what's left — a second prefix, a trailing annotation", () => {
@@ -119,12 +120,12 @@ describe("titleStrand", () => {
   });
 
   it("names no strand for an ordinary prefix or none at all", () => {
-    expect(titleStrand("ARCHIVE AT LUNCHTIME: Some Film", overrides)).toBeUndefined();
-    expect(titleStrand("Adam's Apple", overrides)).toBeUndefined();
+    expect(titleStrands("ARCHIVE AT LUNCHTIME: Some Film", overrides)).toEqual([]);
+    expect(titleStrands("Adam's Apple", overrides)).toEqual([]);
   });
 
   it("leaves a title that is nothing but the prefix alone", () => {
-    expect(titleStrand("IFI Documentary Festival 2026:", overrides)).toBeUndefined();
+    expect(titleStrands("IFI Documentary Festival 2026:", overrides)).toEqual([]);
   });
 });
 
@@ -194,5 +195,21 @@ describe("titleContext", () => {
       "Black History Month",
     );
     expect(titleContext("From the Vaults: Mother Ireland", overrides)).toBeUndefined();
+  });
+});
+
+describe("strandSuffixes", () => {
+  it("turns IFI's trailing \"+ Q&A\" into the session's Q&A tag", () => {
+    for (const raw of ["Bourdieu + Q+A", "Bourdieu + Q&A", "Bourdieu +Q&A"]) {
+      expect(cleanFilmTitle(raw, overrides)).toBe("Bourdieu");
+      expect(titleStrands(raw, overrides)).toEqual(["In-Person QandA"]);
+    }
+  });
+
+  it("works under a prefix, and leaves a Q&A in the middle of a title alone", () => {
+    const raw = "IFI Documentary Festival 2026: Acting + Q&A";
+    expect(cleanFilmTitle(raw, overrides)).toBe("Acting");
+    expect(titleStrands(raw, overrides)).toEqual(["IFI Documentary Festival", "In-Person QandA"]);
+    expect(titleStrands("Q&A", overrides)).toEqual([]);
   });
 });
