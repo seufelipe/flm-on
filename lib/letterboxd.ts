@@ -89,6 +89,38 @@ export function parseDirector(html: string): string | undefined {
   return name || undefined;
 }
 
+// The runtime in the page footer — `<p class="text-link text-footer">157&nbsp;mins …`. Read only
+// to tell same-named films apart when a cinema gives no year (`pickByRuntime`).
+export function parseRuntime(html: string): number | undefined {
+  const match = html.match(/(\d{1,3})(?:&nbsp;|\s)mins/);
+  return match ? Number(match[1]) : undefined;
+}
+
+// Of the candidate pages that exist, the one whose runtime is closest to the cinema's — how a
+// yearless listing ("Hope", 156 min at Light House) finds Na Hong-jin's 2026 film (157 min)
+// rather than the 1970 one that owns the bare slug (100 min). A candidate with no runtime can't
+// be compared and never wins, nor does one more than MAX_RUNTIME_GAP off — a cinema's figure is
+// within a couple of minutes of Letterboxd's, so a wider gap means it's neither film. On a tie the
+// earlier candidate wins, and `resolveLetterboxd` puts the bare slug — the old behaviour — first.
+const MAX_RUNTIME_GAP = 10;
+
+export function pickByRuntime<T extends { runtime?: number }>(
+  candidates: T[],
+  cinemaRuntime: number,
+): T | undefined {
+  let best: T | undefined;
+  let bestDiff = Infinity;
+  for (const c of candidates) {
+    if (c.runtime === undefined) continue;
+    const diff = Math.abs(c.runtime - cinemaRuntime);
+    if (diff <= MAX_RUNTIME_GAP && diff < bestDiff) {
+      best = c;
+      bestDiff = diff;
+    }
+  }
+  return best;
+}
+
 // Letterboxd shows the film's original title (often in its native script) as
 // `<h2 class="originalname" lang="…">…</h2>` in the masthead — only when it differs from the
 // primary display name (English films / films whose display title *is* the original get none).
@@ -101,7 +133,15 @@ export function parseOriginalTitle(html: string): string | undefined {
 
 async function fetchFilmPage(
   slug: string,
-): Promise<{ ok: boolean; year?: number; language?: string; originalTitle?: string; director?: string; animated?: boolean }> {
+): Promise<{
+  ok: boolean;
+  year?: number;
+  language?: string;
+  originalTitle?: string;
+  director?: string;
+  animated?: boolean;
+  runtime?: number;
+}> {
   try {
     const res = await fetch(`https://letterboxd.com/film/${slug}/`, {
       headers: { "User-Agent": USER_AGENT },
@@ -116,6 +156,7 @@ async function fetchFilmPage(
       originalTitle: parseOriginalTitle(html),
       director: parseDirector(html),
       animated: parseIsAnimated(html),
+      runtime: parseRuntime(html),
     };
   } catch {
     return { ok: false };
@@ -228,12 +269,22 @@ async function loadOverrides(): Promise<LetterboxdOverrides> {
   return memoryOverrides;
 }
 
-export async function resolveLetterboxd(title: string, year?: number): Promise<LetterboxdMatch> {
+// `runtime` is the cinema's, in minutes. It only matters when `year` is missing — see the
+// yearless branch below.
+export async function resolveLetterboxd(
+  title: string,
+  year?: number,
+  runtime?: number,
+): Promise<LetterboxdMatch> {
   const key = cacheKey(title, year);
   const overrides = await loadOverrides();
   const cache = await loadCache();
 
-  const cached = normaliseEntry(cache[key] ?? null);
+  // A yearless lookup that has a runtime is matched differently from one that doesn't, so it
+  // caches under its own key — which also retires every entry made before runtime matching.
+  // Overrides stay keyed on `title|year`, the form the batch report prints.
+  const storeKey = !year && runtime ? `${key}~${runtime}` : key;
+  const cached = normaliseEntry(cache[storeKey] ?? null);
 
   if (key in overrides) {
     const url = overrides[key] ?? undefined;
@@ -252,22 +303,47 @@ export async function resolveLetterboxd(title: string, year?: number): Promise<L
       director: page?.director ?? null,
       animated: page?.animated ?? null,
     };
-    cache[key] = entry;
+    cache[storeKey] = entry;
     await saveCache(cache);
     return entryToMatch(entry);
   }
 
-  if (key in cache && cached !== null && isResolved(cached)) {
+  if (storeKey in cache && cached !== null && isResolved(cached)) {
     return entryToMatch(cached);
   }
-  if (key in cache && cached === null) {
+  if (storeKey in cache && cached === null) {
     return {};
   }
 
   const baseSlug = slugify(cleanTitleForMatching(title));
-  const candidates = year ? [`${baseSlug}-${year}`, baseSlug] : [baseSlug];
-
   let match: LetterboxdMatch = {};
+
+  // No year from the cinema, but a runtime: the bare slug belongs to whichever same-named film
+  // Letterboxd listed first — usually the oldest — while a cinema's yearless listing is as often
+  // this year's release (Light House: Hope, Digger, Try!, Resident Evil, Sense and Sensibility in
+  // one week, Oct 2026). So also try this year's and last year's slugs, and keep the page whose
+  // runtime is closest to the cinema's. Bare slug first, so a tie keeps the old answer.
+  if (!year && runtime) {
+    const thisYear = new Date().getFullYear();
+    const slugs = [baseSlug, `${baseSlug}-${thisYear}`, `${baseSlug}-${thisYear - 1}`];
+    const pages = await Promise.all(
+      slugs.map(async (slug) => ({ slug, ...(await fetchFilmPage(slug)) })),
+    );
+    const found = pages.filter((p) => p.ok);
+    const page = pickByRuntime(found, runtime) ?? found[0];
+    if (page) {
+      match = {
+        url: `https://letterboxd.com/film/${page.slug}/`,
+        year: page.year,
+        language: page.language,
+        originalTitle: page.originalTitle,
+        director: page.director,
+        animated: page.animated,
+      };
+    }
+  }
+
+  const candidates = year ? [`${baseSlug}-${year}`, baseSlug] : match.url ? [] : [baseSlug];
   for (const slug of candidates) {
     const page = await fetchFilmPage(slug);
     if (!page.ok) continue;
@@ -283,7 +359,7 @@ export async function resolveLetterboxd(title: string, year?: number): Promise<L
     break;
   }
 
-  cache[key] = match.url
+  cache[storeKey] = match.url
     ? {
         url: match.url,
         year: match.year ?? null,

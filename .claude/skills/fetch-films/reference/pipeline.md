@@ -74,6 +74,16 @@ challenge — verified 403, `cf-mitigated: challenge`, even with full browser he
 title, try `-{year}` first when the year is known, and **verify the resolved page's own `og:title`
 year is within ±1** before accepting it.
 
+**A yearless listing with a runtime is matched on runtime** (`pickByRuntime`). The bare slug
+belongs to whichever same-named film Letterboxd listed first — usually the oldest — but Light
+House gives no year for new releases as often as for repertory: in the week of 1 Oct 2026 Hope,
+Digger, Try!, Resident Evil and Sense and Sensibility all bare-slugged to an older namesake and
+had to be pinned by hand. Now the resolver also fetches `-{this year}` and `-{last year}`, and keeps
+the page whose runtime is closest to the cinema's (cinema figures land within ~2 min of
+Letterboxd's; nothing more than 10 min off wins; a tie keeps the bare slug). With no runtime, or no
+page close enough, it's the old bare-slug answer. These entries cache under `title|~{runtime}`, so
+the override key (`title|`) is unchanged.
+
 That one page then yields:
 
 - the **year** — adopted as the film's real year, and what the UI shows. The cinema-reported year

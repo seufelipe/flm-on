@@ -1,5 +1,12 @@
 import { describe, it, expect } from "vitest";
-import { parsePrimaryLanguage, parseOriginalTitle, parseDirector, parseIsAnimated } from "@/lib/letterboxd";
+import {
+  parsePrimaryLanguage,
+  parseOriginalTitle,
+  parseDirector,
+  parseIsAnimated,
+  parseRuntime,
+  pickByRuntime,
+} from "@/lib/letterboxd";
 
 // Snippets mirror Letterboxd's real details-panel markup (server HTML, `hidden="until-found"`).
 const multiLang = `
@@ -117,5 +124,38 @@ describe("parseIsAnimated", () => {
     const html = `<div id="tab-genres"> <a href="/films/genre/drama/" class="text-slug">Drama</a>
       <a href="/films/genre/comedy/" class="text-slug">Comedy</a> </div>`;
     expect(parseIsAnimated(html)).toBe(false);
+  });
+});
+
+describe("parseRuntime", () => {
+  it("reads the footer runtime", () => {
+    expect(parseRuntime(`<p class="text-link text-footer"> 157&nbsp;mins &nbsp; More at`)).toBe(157);
+  });
+
+  it("is undefined when the page lists none", () => {
+    expect(parseRuntime(`<p class="text-link text-footer"> More at`)).toBeUndefined();
+  });
+});
+
+describe("pickByRuntime", () => {
+  // Light House's yearless "Hope", 156 min, against what Letterboxd has under that name.
+  const hope = [
+    { slug: "hope", runtime: 100 },
+    { slug: "hope-2026", runtime: 157 },
+    { slug: "hope-2025", runtime: undefined },
+  ];
+
+  it("picks the page whose runtime is closest to the cinema's", () => {
+    expect(pickByRuntime(hope, 156)?.slug).toBe("hope-2026");
+    expect(pickByRuntime(hope, 101)?.slug).toBe("hope");
+  });
+
+  it("keeps the earlier candidate on a tie", () => {
+    expect(pickByRuntime([{ slug: "a", runtime: 90 }, { slug: "b", runtime: 94 }], 92)?.slug).toBe("a");
+  });
+
+  it("picks nothing when no page is within ten minutes, or none has a runtime", () => {
+    expect(pickByRuntime(hope, 130)).toBeUndefined();
+    expect(pickByRuntime([{ slug: "x", runtime: undefined }], 90)).toBeUndefined();
   });
 });

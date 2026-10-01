@@ -106,15 +106,18 @@ async function withLetterboxdLinks(screenings: Screening[]): Promise<Screening[]
   const languageOverrides = await loadLanguageOverrides();
   const directorOverrides = await loadDirectorOverrides();
 
-  const unique = new Map<string, { title: string; year?: number }>();
+  // The cinema's runtime rides along: a yearless listing is matched on it (lib/letterboxd.ts).
+  const unique = new Map<string, { title: string; year?: number; runtime?: number }>();
   for (const s of screenings) {
-    unique.set(`${s.filmTitle}|${s.year ?? ""}`, { title: s.filmTitle, year: s.year });
+    const key = `${s.filmTitle}|${s.year ?? ""}`;
+    const runtime = unique.get(key)?.runtime ?? s.durationMins;
+    unique.set(key, { title: s.filmTitle, year: s.year, runtime });
   }
 
   const resolved = new Map<string, LetterboxdMatch>();
   await Promise.all(
-    Array.from(unique.entries()).map(async ([key, { title, year }]) => {
-      resolved.set(key, await resolveLetterboxd(title, year));
+    Array.from(unique.entries()).map(async ([key, { title, year, runtime }]) => {
+      resolved.set(key, await resolveLetterboxd(title, year, runtime));
     }),
   );
 

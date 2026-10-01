@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-01T15:33:11.353Z",
+  "generatedAt": "2026-10-01T15:43:49.052Z",
   "days": [
     "2026-10-01",
     "2026-10-02",
@@ -418,13 +418,13 @@
       "filmTitle": "Bad Apples",
       "cert": "15A",
       "durationMins": 100,
-      "year": 2018,
+      "year": 2025,
       "date": "2026-10-02",
       "time": "17:00",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41776&showtimeId=1001-41776&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/bad-apples",
-      "director": "Bryan Coyne",
-      "letterboxdUrl": "https://letterboxd.com/film/bad-apples/"
+      "director": "Jonatan Etzler",
+      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2025/"
     },
     {
       "cinema": "lighthouse",
@@ -1349,13 +1349,13 @@
       "filmTitle": "Bad Apples",
       "cert": "15A",
       "durationMins": 100,
-      "year": 2018,
+      "year": 2025,
       "date": "2026-10-04",
       "time": "18:00",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41781&showtimeId=1001-41781&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/bad-apples",
-      "director": "Bryan Coyne",
-      "letterboxdUrl": "https://letterboxd.com/film/bad-apples/"
+      "director": "Jonatan Etzler",
+      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2025/"
     },
     {
       "cinema": "ifi",
@@ -1746,13 +1746,13 @@
       "filmTitle": "Bad Apples",
       "cert": "15A",
       "durationMins": 100,
-      "year": 2018,
+      "year": 2025,
       "date": "2026-10-05",
       "time": "18:20",
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41780&showtimeId=1001-41780&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/bad-apples",
-      "director": "Bryan Coyne",
-      "letterboxdUrl": "https://letterboxd.com/film/bad-apples/"
+      "director": "Jonatan Etzler",
+      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2025/"
     },
     {
       "cinema": "ifi",

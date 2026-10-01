@@ -83,6 +83,11 @@ page that happens to match — a re-release stamped with the current year resolv
 film of that name from this year (`The Sacrifice` → `the-sacrifice-2026`). The second is the
 dangerous one, because it looks fine in the report.
 
+A **yearless** listing is matched on runtime instead, between the bare slug and this and last
+year's (`reference/pipeline.md`), which catches a new release that shares its title with an older
+film. What it can't catch: a repertory screening of a film with a same-named, same-length newer
+namesake, or a listing with no runtime — so still eyeball every yearless match's year.
+
 The report prints, under every `NOT FOUND`, the Letterboxd search link and the exact override
 line to paste. **Give the user the search link — do not fetch it yourself** (`/search` is behind
 Cloudflare and 403s anything automated; it's fine in their browser). Once they name a candidate,
