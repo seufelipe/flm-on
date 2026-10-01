@@ -13,17 +13,17 @@ import { cn } from "@/lib/utils";
 //    (decision #7). Their `destructive` (`bg-black text-white`) is dropped rather than restyled:
 //    the app has no error state to put in one, and a black-on-white slab is exactly the look
 //    decision #7 rules out.
-//  - The shell is the card the four notes over the film list already wore:
+//  - The shell is the card the notes over the film list already wore:
 //    `border-4 / rounded-card / shadow-card / p-4 sm:p-8`, not their
 //    `border-2 / rounded-base / px-4 py-3`.
 //  - Icons are `size-5`, not `size-4` — 16px reads thin beside a `text-xl font-black` title —
 //    so the gutter column and the icon's own optical nudge grow to match.
-//  - `AlertTitle` drops their `line-clamp-1`: our titles are sentences ("It's National Cinema
-//    Weekend!") and truncate on a phone otherwise.
+//  - `AlertTitle` drops their `line-clamp-1`: our titles can run to a sentence and truncate on a
+//    phone otherwise.
 //
 // `role="alert"` is an assertive live region, so it's right only for a note that appears in
 // answer to something you just did (the empty states, after a filter change). The standing
-// banners pass `role="note"` — props spread after it, so that needs no edit here.
+// banner passes `role="note"` — props spread after it, so that needs no edit here.
 const alertVariants = cva(
   "relative w-full rounded-card border-4 border-border p-4 sm:p-8 grid has-[>svg]:grid-cols-[calc(var(--spacing)*5)_1fr] grid-cols-[0_1fr] has-[>svg]:gap-x-3 gap-y-2 items-start [&>svg]:size-5 [&>svg]:translate-y-1 [&>svg]:text-current shadow-card",
   {

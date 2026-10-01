@@ -132,12 +132,12 @@ taking them costs nothing in control.
   sometimes wipe the menu that had just opened, so moving between filters took two clicks.
 - **Three things about `alert` worth knowing before editing it.** Its `role="alert"` is an
   assertive live region, so it is right only for a note that appears in answer to something
-  you just did; the standing banners pass `role="note"`, which works with no edit to the
+  you just did; the standing banner passes `role="note"`, which works with no edit to the
   vendored file because it spreads props *after* `role` (the opposite of what `asChild` does
   two bullets up). `AlertDescription` is a **grid**, so a bare text node and an inline
   `<button>` beside it become two rows — the empty state's "…your current view. Reset" has to
   sit inside a `<p>`. And the registry's `line-clamp-1` on `AlertTitle` is dropped: these
-  titles are sentences ("It's National Cinema Weekend!") and truncate on a phone otherwise.
+  titles can run to a sentence and truncate on a phone otherwise.
 
 ---
 

@@ -190,25 +190,18 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   `app/page.tsx`) so the `lg:` grid can move it into the right rail. Holds `PreferencesButton`
   only on mobile (`lg:hidden`) — on desktop that button lives in the filter bar (`FilterControls`
   `layout="bar"`, room to spare now the filters are menus).
-- `components/CinemaWeekendBanner.tsx` + `lib/cinemaWeekend.ts` — the National Cinema Weekend
-  note over the film list (an `<Alert>`), and the star beside those two days in both day pickers
-  (`DayMark` in `FilterControls`, drawing the shared `<CinemaWeekendMark>` this file also exports —
-  it lives here, not in the `.ts` lib module, so that module stays pure TS). Decision #19;
-  self-expiring, the pair deletable whole.
 - `components/{PreferencesButton,SettingsPanel,ActivePreferenceNote}.tsx` + `lib/preferences.ts`
   + `lib/duration.ts` — the preferences button, the overlay it opens, and the title-side marquee
   naming an active kids-only / language pref; all three share the store with `ScreeningBrowser`
   via `useSyncExternalStore`. Decision #14.
 - `components/controlSegment.ts` — `SEGMENT_BASE` + `controlSegmentClass(active)`, the accent-fill
   / hard-press "selected" segment styling shared by the filter bar and the settings panel.
-- **The four notes over the film list are all one `<Alert>`** (`components/ui/alert.tsx`, #22):
-  the National Cinema Weekend banner (#19), the "Next week (maybe)" banner (#18) and the two
-  empty states — "Nothing lined up for next week…" and "Nothing on this week…/No screenings match
-  this filter." (the latter carrying the preferences Reset). They had four copies of the same
-  `bg-surface border-4 border-border rounded-card shadow-card p-4 sm:p-8` shell between
-  `CinemaWeekendBanner` and `ScreeningBrowser`. Each leads with a lucide icon in the alert's
-  gutter — `Star` / `CalendarClock` / `CalendarOff` / `SearchX`, ink, never accent. **The two
-  banners pass `role="note"`; only the two empty states keep the Alert's default `role="alert"`**,
+- **The three notes over the film list are all one `<Alert>`** (`components/ui/alert.tsx`, #22):
+  the "Next week (maybe)" banner (#18) and the two empty states — "Nothing lined up for next week…" and "Nothing on this week…/No screenings match
+  this filter." (the latter carrying the preferences Reset). They had separate copies of the same
+  `bg-surface border-4 border-border rounded-card shadow-card p-4 sm:p-8` shell in
+  `ScreeningBrowser`. Each leads with a lucide icon in the alert's gutter — `CalendarClock` /
+  `CalendarOff` / `SearchX`, ink, never accent. **The banner passes `role="note"`; only the two empty states keep the Alert's default `role="alert"`**,
   which is an assertive live region and so belongs to a note that appears *in answer to* something
   you just did (a filter change), not to standing page furniture.
 - `components/ui/` — vendored shadcn/Radix primitives, restyled to our tokens (decision #22).
@@ -223,7 +216,7 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   `dropdown-menu.tsx`: trimmed to Root / Trigger / Content / Item / Separator, `modal={false}`,
   `bg-surface` rather than the registry's gold `bg-main`, and positioned by Radix's Popper —
   which also makes the panel collision-aware, where the old `absolute left-0 top-full` could run
-  off a narrow viewport. `alert.tsx`: the shell behind the four notes over the film list —
+  off a narrow viewport. `alert.tsx`: the shell behind the three notes over the film list —
   registry structure with our card values, one `default` variant (their gold `bg-main` and their
   `bg-black text-white` `destructive` both dropped), `size-5` icons and no `line-clamp-1` on the
   title. `lib/utils.ts` holds the `cn` helper every such component wants.
