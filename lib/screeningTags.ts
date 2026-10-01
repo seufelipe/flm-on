@@ -86,6 +86,11 @@ const KNOWN: Record<string, KnownTag> = {
     title: "Silver Screen",
     description: "A matinee for over-65s, with free tea or coffee and a short introduction.",
   },
+  "knit-along": {
+    label: "knit-along",
+    title: "Knit-Along",
+    description: "Bring your own knitting: the lights stay partly up so you can see your stitches.",
+  },
   // Cineworld strands (Showtime.Event.* — see lib/scrapers/cineworld.ts). "Big Screen Classics"
   // is deliberately absent; see UNSURFACED above.
   // Cineworld tags an early preview for its Unlimited card holders "Members Only". Named

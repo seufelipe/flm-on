@@ -14,7 +14,7 @@ HTML scrape of `https://www.lighthousecinema.ie`.
   filled client-side from `/ajax/films-by-day/{n}` (`n` = 1..9), same `div.film` markup.
 - Per-film detail (runtime, cert) comes from `/film/{slug}`.
 - Per-session descriptors live in `.time > em.additional` — `Parent and Baby`,
-  `Cinema Book Club`, `Silver Screen`, `35mm`, and the caption notes `Subtitled` / `Dubbed` /
+  `Cinema Book Club`, `Silver Screen`, `Knit-Along`, `35mm`, and the caption notes `Subtitled` / `Dubbed` /
   `Open Captioned`. Read into `Screening.screeningTags` verbatim.
 
 **`robots.txt` disallows `/ajax/*`, and we use it anyway.** Justified *only* because this is one

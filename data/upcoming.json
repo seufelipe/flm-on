@@ -1,15 +1,16 @@
 {
-  "generatedAt": "2026-09-24T10:02:50.721Z",
+  "generatedAt": "2026-10-01T10:59:41.087Z",
   "week": {
-    "from": "2026-10-01",
-    "to": "2026-10-07"
+    "from": "2026-10-08",
+    "to": "2026-10-14"
   },
   "films": [
     {
-      "title": "April X",
-      "year": 2025,
-      "director": "K-Michel Parandi",
-      "letterboxdUrl": "https://letterboxd.com/film/april-x/",
+      "title": "Pulse",
+      "year": 2001,
+      "director": "Kiyoshi Kurosawa",
+      "originalTitle": "回路",
+      "letterboxdUrl": "https://letterboxd.com/film/pulse-2001/",
       "cinemas": [
         "lighthouse"
       ],
@@ -17,19 +18,22 @@
         {
           "cinema": "lighthouse",
           "label": "Light House",
-          "url": "https://www.lighthousecinema.ie/film/april-x"
+          "url": "https://www.lighthousecinema.ie/film/emmy-shigeta-jack-reynor-present-pulse"
         }
       ],
-      "screeningTags": [],
-      "firstDate": "2026-10-01",
-      "reason": "new"
+      "screeningTags": [
+        "Japanese",
+        "Subtitled"
+      ],
+      "firstDate": "2026-10-10",
+      "reason": "special"
     },
     {
-      "title": "Possession",
+      "title": "Practical Magic 2",
       "year": 2026,
-      "cert": "18",
-      "director": "me",
-      "letterboxdUrl": "https://letterboxd.com/film/possession-2026/",
+      "cert": "12A",
+      "director": "Susanne Bier",
+      "letterboxdUrl": "https://letterboxd.com/film/practical-magic-2/",
       "cinemas": [
         "lighthouse"
       ],
@@ -37,82 +41,67 @@
         {
           "cinema": "lighthouse",
           "label": "Light House",
-          "url": "https://www.lighthousecinema.ie/film/possession"
+          "url": "https://www.lighthousecinema.ie/film/practical-magic-2"
         }
       ],
       "screeningTags": [],
-      "firstDate": "2026-10-01",
+      "firstDate": "2026-10-08",
       "reason": "new"
     },
     {
-      "title": "Digger",
+      "title": "Coyote vs. Acme",
       "year": 2026,
-      "cert": "15A",
-      "director": "Alejandro G. Iñárritu",
-      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/",
+      "cert": "PG",
+      "director": "Dave Green",
+      "letterboxdUrl": "https://letterboxd.com/film/coyote-vs-acme/",
       "cinemas": [
-        "lighthouse",
-        "ifi"
+        "lighthouse"
       ],
       "cinemaLinks": [
         {
           "cinema": "lighthouse",
           "label": "Light House",
-          "url": "https://www.lighthousecinema.ie/film/digger"
-        },
+          "url": "https://www.lighthousecinema.ie/film/coyote-vs-acme"
+        }
+      ],
+      "screeningTags": [],
+      "firstDate": "2026-10-08",
+      "reason": "new"
+    },
+    {
+      "title": "Lesbian Lines",
+      "year": 2026,
+      "cert": "12A",
+      "director": "Cara Holmes",
+      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/",
+      "cinemas": [
+        "ifi",
+        "lighthouse"
+      ],
+      "cinemaLinks": [
         {
           "cinema": "ifi",
           "label": "IFI",
-          "url": "https://ifi.ie/films/digger-2"
+          "url": "https://ifi.ie/films/international-lesbian-day-lesbian-lines"
+        },
+        {
+          "cinema": "lighthouse",
+          "label": "Light House",
+          "url": "https://www.lighthousecinema.ie/film/lesbian-lines"
         }
       ],
       "screeningTags": [
         "Open Captioned"
       ],
-      "firstDate": "2026-10-02",
+      "firstDate": "2026-10-08",
       "reason": "new"
     },
     {
-      "title": "Take It Or Leave It",
-      "year": 2026,
-      "cert": "TBC",
-      "cinemas": [
-        "lighthouse"
-      ],
-      "cinemaLinks": [
-        {
-          "cinema": "lighthouse",
-          "label": "Light House",
-          "url": "https://www.lighthousecinema.ie/film/take-it-or-leave-it"
-        }
-      ],
-      "screeningTags": [],
-      "firstDate": "2026-10-02",
-      "reason": "new"
-    },
-    {
-      "title": "IFI + aemi: Bourdieu + Q+A",
-      "year": 2026,
-      "cinemas": [
-        "ifi"
-      ],
-      "cinemaLinks": [
-        {
-          "cinema": "ifi",
-          "label": "IFI",
-          "url": "https://ifi.ie/films/ifi-aemi-bourdieu-q-a-2"
-        }
-      ],
-      "screeningTags": [],
-      "firstDate": "2026-10-03",
-      "reason": "new"
-    },
-    {
-      "title": "Extra Geography",
+      "title": "The Social Reckoning",
       "year": 2026,
       "cert": "15A",
-      "director": "Molly Manners",
-      "letterboxdUrl": "https://letterboxd.com/film/extra-geography/",
+      "director": "Aaron Sorkin",
+      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/",
       "cinemas": [
         "lighthouse"
       ],
@@ -120,17 +109,39 @@
         {
           "cinema": "lighthouse",
           "label": "Light House",
-          "url": "https://www.lighthousecinema.ie/film/extra-geography"
+          "url": "https://www.lighthousecinema.ie/film/the-social-reckoning"
         }
       ],
       "screeningTags": [],
-      "firstDate": "2026-10-03",
+      "firstDate": "2026-10-09",
       "reason": "new"
     },
     {
-      "title": "IFI & Musictown: Phil Lynott: Songs for While I'm Away",
+      "title": "The Craft",
+      "year": 1996,
+      "cert": "15A",
+      "director": "Andrew Fleming",
+      "letterboxdUrl": "https://letterboxd.com/film/the-craft/",
+      "cinemas": [
+        "lighthouse"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "lighthouse",
+          "label": "Light House",
+          "url": "https://www.lighthousecinema.ie/film/the-craft"
+        }
+      ],
+      "screeningTags": [],
+      "firstDate": "2026-10-10",
+      "reason": "new"
+    },
+    {
+      "title": "The Uprising",
       "year": 2026,
-      "cert": "12A",
+      "cert": "15A",
+      "director": "Paul Greengrass",
+      "letterboxdUrl": "https://letterboxd.com/film/the-uprising-2026/",
       "cinemas": [
         "ifi"
       ],
@@ -138,11 +149,32 @@
         {
           "cinema": "ifi",
           "label": "IFI",
-          "url": "https://ifi.ie/films/phil-lynott-songs-for-while-im-away"
+          "url": "https://ifi.ie/films/the-uprising-2"
+        }
+      ],
+      "screeningTags": [
+        "Open Captioned"
+      ],
+      "firstDate": "2026-10-12",
+      "reason": "new"
+    },
+    {
+      "title": "The Stuff",
+      "year": 1985,
+      "director": "Larry Cohen",
+      "letterboxdUrl": "https://letterboxd.com/film/the-stuff/",
+      "cinemas": [
+        "ifi"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "ifi",
+          "label": "IFI",
+          "url": "https://ifi.ie/films/the-bigger-picture-the-stuff-2"
         }
       ],
       "screeningTags": [],
-      "firstDate": "2026-10-04",
+      "firstDate": "2026-10-13",
       "reason": "new"
     }
   ]

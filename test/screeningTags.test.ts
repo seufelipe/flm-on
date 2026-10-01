@@ -43,6 +43,12 @@ describe("displayScreeningTags", () => {
     expect(displayScreeningTags(["Silver Screen"])[0].label).toBe("silver screen");
   });
 
+  it("surfaces Light House's knit-along", () => {
+    const [knit] = displayScreeningTags(["Knit-Along"]);
+    expect(knit.label).toBe("knit-along");
+    expect(knit.description).not.toContain("—");
+  });
+
   it("surfaces Light House's in-person Q&A", () => {
     expect(displayScreeningTags(["In-Person QandA"])[0].label).toBe("q&a");
   });

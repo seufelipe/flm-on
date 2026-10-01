@@ -63,7 +63,7 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
 
 - `lib/screeningTags.ts` — `displayScreeningTags` → surfaced special-audience / event strands
   (`Parent and Baby`, `Relaxed`/`Autism Friendly` → one `relaxed`, `Cinema Book Club`,
-  `Silver Screen`, `Movies for Juniors`, `Mystery Matinee`, `Marathon`). Each →
+  `Silver Screen`, `Knit-Along`, `Movies for Juniors`, `Mystery Matinee`, `Marathon`). Each →
   `{ label, title, description, mark? }`. `mark: false` (Mystery Matinee) = still a
   surfaced special (Highlights, tooltip) but no mark / `FilmNotes` segment.
   `<StrandMark>` (`components/ScreeningTags.tsx`) is the mark itself — a strand's own icon from
