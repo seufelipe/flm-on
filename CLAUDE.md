@@ -98,7 +98,7 @@ synthetic `Mystery Matinee` at render time (#12).
   `dismissed` / `planCleared` state. Two-column shell is a bare `lg:grid` — right rail
   (`<Masthead>` + sticky `<PlanPanel>`), left column (sticky `FilterControls` + film list).
 - `FilterControls.tsx` — both filter-bar shapes, `layout="dock"` (mobile) and `"bar"` (desktop),
-  off one `effective*` + `setActive*` prop bag (#7). Also `DayMark`, and the "Next week"
+  off one `effective*` + `setActive*` prop bag (#7). Also the "Next week"
   affordance (#18).
 - `FilmCard.tsx` — one film's card: title line (`[original title] TITLE [year]` + the `FilmNotes`
   sticker), meta line (cert, duration, director, `<LanguageTag>`, format boxes) — both trimmed by
@@ -129,16 +129,14 @@ synthetic `Mystery Matinee` at render time (#12).
   which it's absolutely positioned against), the per-day grouping with its transition labels, and the
   slot ghost rows. A ghost **replaces the real transition label of its slot**: you see the two
   gaps you'd have, not the one you have.
-- `Masthead.tsx`, `ActivePreferenceNote.tsx`, `PreferencesButton.tsx` + `SettingsPanel.tsx`,
-  `CinemaWeekendBanner.tsx` — the title and the things layered on it (#14, #19), and the
-  preferences overlay. `PreferencesButton` sits in the desktop filter bar and, on mobile, the
+- `Masthead.tsx`, `ActivePreferenceNote.tsx`, `PreferencesButton.tsx` + `SettingsPanel.tsx` —
+  the title and the things layered on it (#14), and the preferences overlay. `PreferencesButton` sits in the desktop filter bar and, on mobile, the
   masthead.
 - `controlSegment.ts` — `SEGMENT_BASE` + `controlSegmentClass(active)`, the selected-segment
   styling shared by the filter bar and the settings panel.
-- **The four notes over the film list are all one `<Alert>`** — the Cinema Weekend banner (#19),
-  "Next week (maybe)" (#18) and the two empty states, each led by a lucide icon in the gutter.
-  **The two banners pass `role="note"`; only the two empty states keep the default
-  `role="alert"`** — an assertive live region belongs to a note that appears *in answer to*
+- **The three notes over the film list are all one `<Alert>`** — "Next week (maybe)" (#18) and
+  the two empty states, each led by a lucide icon in the gutter. **The banner passes
+  `role="note"`; only the two empty states keep the default `role="alert"`** — an assertive live region belongs to a note that appears *in answer to*
   something you just did, not to standing page furniture.
 - `components/ui/` — vendored shadcn/Radix primitives, restyled to our tokens (#22): `tooltip`,
   `dialog` (the modal half of both overlays), `dropdown-menu`, `alert`, and vaul's `drawer` (#24).
@@ -365,16 +363,6 @@ it covers, and update it in the same commit.**
     - The segment renders only when `data/upcoming.json` has films, and stays a plain toggle only
       when there are no visible days at all — so the preview can never dead-end.
 
-19. **National Cinema Weekend — a date-boxed campaign note** (`lib/cinemaWeekend.ts`,
-    `components/CinemaWeekendBanner.tsx`). Sat 5 / Sun 6 September 2026, tickets from €4 at all
-    three cinemas: a star before the day name in both day pickers, plus an `<Alert>` over the film
-    list. Shown on a pinned Sat/Sun **and** on "This week", never in the Next-week preview. **One
-    `<CinemaWeekendMark>` serves both surfaces**, ink and never accent (a selected day chip is
-    already gold). **It expires by itself** — two hard-coded ISO dates, and `visibleDays` already
-    drops days that have passed, so after the weekend nothing renders and the module and its
-    component can be deleted whole with no edit to any caller.
-    Copy and the rest: `docs/decisions/visual-language.md`.
-
 20. **A screening lingers ten minutes past its start time** (`GRACE_MINUTES` + `screeningCutoff`,
     `lib/date.ts`). Every "is this still on?" test compares against that cutoff rather than the
     wall clock, so it governs the plan too (#5). You can still walk into a film ten minutes late,
@@ -440,7 +428,7 @@ it covers, and update it in the same commit.**
     - **`menuOpenChange` clears only the slot it owns** — pressing a second trigger fires a close
       and an open in either order; clearing unconditionally makes moving between filters take two
       clicks.
-    - **`alert`** — `role="alert"` is an assertive live region, so the standing banners pass
+    - **`alert`** — `role="alert"` is an assertive live region, so the standing banner passes
       `role="note"`; `AlertDescription` is a grid, so text with an inline button needs a wrapping
       `<p>`; the registry's `line-clamp-1` on the title stays dropped.
     - Vendored files must keep diffing cleanly against a future `shadcn add` — that's why `cva` is
@@ -449,8 +437,7 @@ it covers, and update it in the same commit.**
 23. **Icons are `lucide-react`.** Lucide's defaults *are* this app's drawing spec — 24 viewBox,
     `fill: none`, `currentColor`, 2px stroke, round caps — and it's in Next 16's
     `optimizePackageImports`, so a named import tree-shakes with no config. **No text glyph is
-    load-bearing any more**: `★` and `☻` both became icons (`<CinemaWeekendMark>`,
-    `<SpecialsMark>`), and the bar for a third is whether an `em`-sized icon can carry it, not the
+    load-bearing any more**: `☻` became an icon (`<SpecialsMark>`), and the bar for another is whether an `em`-sized icon can carry it, not the
     old blanket rule. Deliberately still bespoke SVG: the Letterboxd mark, `<LanguageTag>`'s
     speech bubble, the film-format strips. **The `×` close controls are `X` too** (`SettingsPanel`,
     `PlanPanel`), sized `size-5` — no text glyph is left in the UI at all.

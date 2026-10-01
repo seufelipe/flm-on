@@ -176,7 +176,6 @@ is deliberate — the marks now carry information instead of merely flagging tha
   the original rule had kept it as text. **It is still the same smiley**: the glyph became an
   icon, the mark itself didn't change. (A `Gem` was tried in passing and rejected — the user
   likes seeing the face, and the whole point of `☻` was that it reads as one.)
-  Same shape as `<CinemaWeekendMark>` (#19), and for the same reason.
   Lucide's outline, **not** the star's `fill-current`: the eyes and mouth are strokes drawn
   *inside* the circle, so filling it paints over the face. That does invert the old glyph's
   rationale — `☻` was picked over `☺` because a filled smiley held up better at small sizes —

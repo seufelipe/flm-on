@@ -5,13 +5,12 @@ import { cn } from "@/lib/utils";
 
 // The generic specials mark: the "Specials, etc" lens that filters on *all* the strands
 // (components/FilterControls.tsx), and the fallback for any strand with no mark of its own.
-// Same shape as <CinemaWeekendMark>, and for the same reason.
 //
 // It replaced a `☻` text glyph (CLAUDE.md decisions #13, #23) and stays the same smiley — the
-// glyph moved to an icon, the mark didn't change. Lucide's outline, not the star's
-// `fill-current`: the eyes and mouth are strokes drawn *inside* the circle, so filling it paints
-// over the face. The caller sizes it — `size-[1.1em]` rather than the star's `1em`, since an icon
-// fills its box where the glyph's ink sat well inside its em.
+// glyph moved to an icon, the mark didn't change. Lucide's outline, never `fill-current`: the
+// eyes and mouth are strokes drawn *inside* the circle, so filling it paints over the face. The
+// caller sizes it — `size-[1.1em]` rather than a plain `1em`, since an icon fills its box where
+// the glyph's ink sat well inside its em.
 //
 // Informational, never the accent (a selected pill is already accent — decision #7), and always
 // decorative: every caller names the strand in text beside it or in an `sr-only` span.

@@ -1,7 +1,7 @@
 # The visual language
 
-Decisions #7, #8, #19 and #23 in full — what "chunky, not brutalist" means in values, why the
-app has no counters, the National Cinema Weekend note, and the move to lucide. CLAUDE.md keeps
+Decisions #7, #8 and #23 in full — what "chunky, not brutalist" means in values, why the
+app has no counters, and the move to lucide. CLAUDE.md keeps
 the rules; this is the reasoning behind them.
 
 Verbatim from CLAUDE.md, which now carries only the rules. **Read this before changing
@@ -86,46 +86,6 @@ transition labels: facts about *your* plan, not a tally of the catalogue.
 
 ---
 
-## Decision #19 — National Cinema Weekend — a date-boxed campaign note
-
-**National Cinema Weekend — a date-boxed campaign note** (`lib/cinemaWeekend.ts`,
-`components/CinemaWeekendBanner.tsx`). Sat 5 / Sun 6 September 2026: admission from €4 at
-participating cinemas across the Republic (Screen Ireland-backed). Two surfaces, both fed by
-`cinemaWeekendDaysInView(effectiveDay, visibleDays)`: a **star before the day name** in both
-day pickers (the dock segment, the desktop menu row *and* its collapsed trigger — `DayMark`),
-and a **banner above the film list** — an `<Alert>` (#22) with the same star in its icon
-gutter, the same shell as the "Next week (maybe)" one.
-- **Shown on a pinned Sat/Sun *and* on "This week"** (user's call): "This week" lists those
-  days' screenings, so hiding the note there would keep the offer from the view most likely
-  to be open. Not shown on an ordinary day, and never in the Next-week preview.
-- **A star, not the specials smiley** — that mark means a strand *within* a day; this means the
-  whole day is cheap. It **leads** the day name / the banner heading — the mark is what you're
-  scanning the row for, so it shouldn't sit behind the label. Ink in both places, never
-  accent: a selected day segment is already filled gold and the mark has to stay readable on
-  it (decision #7), and the accent's one status use is spoken for (#14).
-- **It's lucide's `Star`, not the `★` character** (#23) — the one typographic mark that
-  moved. Drawn `fill-current` rather than lucide's default outline, so at day-chip size it
-  still reads as the solid star it replaces. **One `<CinemaWeekendMark>` serves both
-  surfaces**, so the star on a day chip can't drift from the one heading the note that sent
-  you there; the caller sizes it (`size-[1em] align-[-0.14em]` inline in a day name, the
-  alert's own `[&>svg]:size-5` in the gutter). Always `aria-hidden` — the day picker already
-  carried the campaign name in an `sr-only` span beside it, and the banner has it in the
-  heading.
-- **The copy says "all three cinemas have tickets from €4"** — Light House Cinema, IFI
-  Cinemas and Cineworld are all on the campaign's published participant list, so the app can
-  say so flatly. **"From €4" stays hedged** because the campaign's own wording is a floor,
-  not a flat rate. The days are named **without the month** ("On Saturday 5 and Sunday 6…"):
-  the banner only ever shows on days that are hours away, and the sentence still reads right
-  once a passed Saturday leaves it "On Sunday 6". The one other line is that screenings will
-  go faster than usual — the actionable part for a planner.
-- **It expires by itself.** The days are two hard-coded ISO dates with their written-out
-  labels (no general "campaign" facility for a thing that happens once), and `visibleDays`
-  already drops days that have passed — so on the Sunday the banner narrows to Sunday, and
-  after the weekend nothing renders. The module and its component can then be deleted whole,
-  with no edit to any caller.
-
----
-
 ## Decision #23 — Icons are `lucide-react`
 
 **Icons are `lucide-react`.** Chosen because it needs nothing bent to fit: Lucide's defaults
@@ -134,12 +94,11 @@ caps — which is exactly what the hand-rolled preferences glyph had already bee
 It's also in Next 16's built-in `optimizePackageImports` list, so a named import is
 tree-shaken with no config; verified on a real build — the one icon's path data ships in a
 single chunk and no other icon's does.
-- **Both typographic marks have now moved to icons, and neither reason for keeping them
-  survived contact.** `★` went first (National Cinema Weekend, #19): the "it's read out" half
-  was never true of the glyph — `DayMark` has always rendered it `aria-hidden` with an
-  `sr-only` name beside it, so the label was doing that work, not the character — and it sits
-  in plain flow text with nothing measuring it. Drawn `fill-current` so it stays the solid
-  star it was.
+- **Both typographic marks moved to icons, and neither reason for keeping them survived
+  contact.** `★` went first — the day-picker mark of a one-off, date-boxed campaign note
+  (National Cinema Weekend, Sept 2026), deleted whole once the weekend passed: the "it's read
+  out" half was never true of the glyph, which had always rendered `aria-hidden` with an
+  `sr-only` name beside it, so the label was doing that work, not the character.
 - **Then `☻` went too** (a surfaced special, #13 — now `<SpecialsMark>`, lucide's
   `FaceGrinning`, i.e. the same smiley redrawn as an icon). The
   objection had been mechanical: the mark rides inside `MarqueeSticker`'s scrolling track,
@@ -150,8 +109,8 @@ single chunk and no other icon's does.
   the track measures exactly `2×` the item and the two copies agree to a fraction of a pixel.
   (The `document.fonts.ready` re-measure still earns its keep for the text beside it.) The
   other half — that at pill size it sits among `OC` / `ST` / the ratio boxes and has to
-  inherit the type's size and weight — is handled the way `CinemaWeekendMark` handles it: the
-  caller sizes it in `em` and `currentColor` does the rest.
+  inherit the type's size and weight — is handled by having the
+  caller size it in `em` and `currentColor` does the rest.
 - **No text glyph is load-bearing any more** — and since the `×` swap below, none is left at
   all. If one ever comes up again, the bar is whether an `em`-sized icon can carry it — not the
   old blanket rule.
@@ -161,8 +120,8 @@ single chunk and no other icon's does.
 - Adopted so far: **`Settings2`** on `PreferencesButton` — despite the name it draws sliders,
   so #14's "sliders, not a gear" still holds; it cost one of the previous three tracks and
   kept the round knobs, which was the trade the user picked over `SlidersHorizontal`'s
-  three-tracks-with-tick-marks. Then the four notes over the film list (#22): **`Star`**
-  (shared with the day pickers), **`CalendarClock`** on "Next week (maybe)", **`CalendarOff`**
+  three-tracks-with-tick-marks. Then the notes over the film list (#22): **`Star`**
+  (shared with the day pickers; gone with the campaign it marked), **`CalendarClock`** on "Next week (maybe)", **`CalendarOff`**
   and **`SearchX`** on the two empty states. Then **`FaceGrinning`** as the specials mark
   (#13), replacing the last of the two text glyphs. Then **`ChevronsUpDown`** on the
   `FilterMenu` triggers (#7), replacing the `▲`/`▼` pair. Then **`Hourglass`** and
