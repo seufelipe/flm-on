@@ -26,17 +26,6 @@ user iterates on layout a lot and wants to see the shape before code. This cover
 moves, resizes, reflows, merges or splits regions (columns, cards, bars, headers, panels), not
 one-off spacing tweaks.
 
-## Stack
-
-Next.js 16 (App Router) + TypeScript, Tailwind v4, cheerio (Light House / IFI HTML; Cineworld is
-a JSON API), vitest. Component primitives are Radix, vendored in via neobrutalism.dev's shadcn
-registry and restyled to our own tokens (decision #22) — with `class-variance-authority`, which
-those files' `cva` variant maps need — plus vaul for the mobile drawers (#24);
-icons are lucide-react (#23). No database. Committed in `data/`: `showtimes.json` (the published week) and
-the curated override / editorial files (`title-overrides`, `letterboxd-overrides`, `film-labels`,
-`hidden-films`, `language-overrides`, `director-overrides`); everything else in `data/` is
-gitignored cache/staging.
-
 ## Architecture
 
 A map, not the full notes. **`docs/architecture.md` has the component-by-component detail** —
@@ -91,58 +80,25 @@ synthetic `Mystery Matinee` at render time (#12).
   string. **The single copy**, used by the card pills and by both plan rows' `aria-label`; the meta-line format box
   keeps `filmFormatsTooltip` alone, since it explains only itself.
 
-### UI (all client, under `ScreeningBrowser`)
+### UI (all client, under `ScreeningBrowser`) — the gotchas
 
-- `ScreeningBrowser.tsx` — the interactive core: the Day/Cinema/Time filters, the `preferred`
-  pre-filter (#14), the persisted plan (#5), and the ephemeral `highlightsOnly` / `nextWeek` /
-  `dismissed` / `planCleared` state. Two-column shell is a bare `lg:grid` — right rail
-  (`<Masthead>` + sticky `<PlanPanel>`), left column (sticky `FilterControls` + film list).
-- `FilterControls.tsx` — both filter-bar shapes, `layout="dock"` (mobile) and `"bar"` (desktop),
-  off one `effective*` + `setActive*` prop bag (#7). Also `DayMark`, and the "Next week"
-  affordance (#18).
-- `FilmCard.tsx` — one film's card: title line (`[original title] TITLE [year]` + the `FilmNotes`
-  sticker), meta line (cert, duration, director, `<LanguageTag>`, format boxes) — both trimmed by
-  the `noFilmFacts` gate on a Mystery Matinee or a marathon (#12, #25), the year also by having no
-  Letterboxd link (#28) — then a shorts programme's film list (#28), pills grouped by
-  day then timeframe, and a `no-print` footer of cinema film-page links + the Letterboxd mark.
-  ⚠️ Each day's pill strip is one non-wrapping `overflow-x-auto` row and **needs `relative`** —
-  the pills' `position:absolute` `.sr-only` spans otherwise escape the clip and give the whole
-  page a phantom horizontal scrollbar.
-- `FilmNotes.tsx` + `MarqueeSticker.tsx` — the **one** dark scrolling sticker per card, carrying
-  the strand name(s) and the curated label joined by ` · `. The sticker *names* a strand; its
-  tooltip *explains* it, and a label-only card gets no tooltip at all. ⚠️ `MarqueeSticker`
-  measures one copy and pins the track to `2×` that width **in px**, so the keyframe's plain
-  `translate3d(-50%…)` lands exactly on one copy — a var-free keyframe runs on the compositor,
-  where a `%`-of-`max-content` translate stutters. `--color-fg`/`--color-bg`, never accent;
-  reduced-motion → static.
-- `ScreeningTags.tsx` / `FilmFormats.tsx` / `ScreeningLanguage.tsx` — the pill/card renderers for
-  the three readers above, plus `<SpecialsMark>`. `<LanguageTag>` measures its own text box and
-  draws the bubble as one continuous SVG `<path>` (the box model can't miter a horizontal border
-  into a 45° tail arm).
-- `PlanRow.tsx` — `<PlanRow>` (solid, a pick, click removes) and `<GhostRow>` (dashed, a
-  suggestion, click adds). Neither carries an affordance glyph (#7), and **neither shows a
-  tooltip** — `screeningTooltip` goes on the `aria-label` only (a tooltip per row flickered down
-  a list you've already chosen from, and the mobile sheet can't open one anyway). Don't add one
-  back without asking.
-- `PlanPanel.tsx` / `PlanButton.tsx` / `DayPlan.tsx` — the one persistent plan surface (desktop
-  rail, mobile sheet opened by an ink tab on the filter dock's top edge — rendered inside the dock,
-  which it's absolutely positioned against), the per-day grouping with its transition labels, and the
-  slot ghost rows. A ghost **replaces the real transition label of its slot**: you see the two
-  gaps you'd have, not the one you have.
-- `Masthead.tsx`, `ActivePreferenceNote.tsx`, `PreferencesButton.tsx` + `SettingsPanel.tsx`,
-  `CinemaWeekendBanner.tsx` — the title and the things layered on it (#14, #19), and the
-  preferences overlay. `PreferencesButton` sits in the desktop filter bar and, on mobile, the
-  masthead.
-- `controlSegment.ts` — `SEGMENT_BASE` + `controlSegmentClass(active)`, the selected-segment
-  styling shared by the filter bar and the settings panel.
-- **The four notes over the film list are all one `<Alert>`** — the Cinema Weekend banner (#19),
-  "Next week (maybe)" (#18) and the two empty states, each led by a lucide icon in the gutter.
-  **The two banners pass `role="note"`; only the two empty states keep the default
-  `role="alert"`** — an assertive live region belongs to a note that appears *in answer to*
-  something you just did, not to standing page furniture.
-- `components/ui/` — vendored shadcn/Radix primitives, restyled to our tokens (#22): `tooltip`,
-  `dialog` (the modal half of both overlays), `dropdown-menu`, `alert`, and vaul's `drawer` (#24).
-  `lib/utils.ts` holds `cn`.
+The component tour is in `docs/architecture.md`; these are the lines whose loss ships a bug.
+
+- ⚠️ `FilmCard`: each day's pill strip is one non-wrapping `overflow-x-auto` row and **needs
+  `relative`** — the pills' `position:absolute` `.sr-only` spans otherwise escape the clip and give
+  the whole page a phantom horizontal scrollbar.
+- ⚠️ `MarqueeSticker` measures one copy and pins the track to `2×` that width **in px**, so the
+  keyframe's plain `translate3d(-50%…)` lands exactly on one copy — a var-free keyframe runs on the
+  compositor, where a `%`-of-`max-content` translate stutters. `--color-fg`/`--color-bg`, never
+  accent; reduced-motion → static. A label-only card's sticker gets no tooltip at all.
+- `PlanRow` / `GhostRow` carry no affordance glyph (#7) and **no tooltip** — `screeningTooltip`
+  goes on the `aria-label` only (a tooltip per row flickered, and the mobile sheet can't open one).
+  Don't add one back without asking.
+- A ghost row **replaces the real transition label of its slot**: you see the two gaps you'd have,
+  not the one you have.
+- The four notes over the film list are all one `<Alert>`; **the two banners pass `role="note"`,
+  only the two empty states keep the default `role="alert"`** — an assertive live region is for a
+  note that appears in answer to something you just did.
 
 ## Decisions worth knowing before changing anything
 
