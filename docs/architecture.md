@@ -67,7 +67,7 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   `{ label, title, description, mark? }`. `mark: false` (Mystery Matinee) = still a
   surfaced special (Highlights, tooltip) but no mark / `FilmNotes` segment.
   `<StrandMark>` (`components/ScreeningTags.tsx`) is the mark itself — a strand's own icon from
-  `STRAND_MARKS` (`parent & baby` → `Baby`, `silver screen` → `Coffee`, `q&a` → `MicVocal`) or `<SpecialsMark>`,
+  `STRAND_MARKS` (`parent & baby` → `Baby`, `silver screen` → `Coffee`, `q&a` → `MicVocal`, `knit-along` → `Spool`) or `<SpecialsMark>`,
   lucide's `FaceGrinning`, as the fallback and as the "Specials, etc" lens's own mark;
   `<ScreeningTagMarks>` is the bare one on a pill / `DayPlan` row. `UNSURFACED` / `isUnsurfacedTag`
   is the opposite list — tags we recognise and deliberately don't show (`Big Screen Classics`),
@@ -126,15 +126,17 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   timeframe; each day's row is one non-wrapping `overflow-x-auto` strip (needs `relative` — the
   pills' `position:absolute` `.sr-only` spans would otherwise escape the clip and give the page a
   phantom horizontal scrollbar; `-mx-8 px-8` full-bleeds it past the card padding).
-- `components/FilmNotes.tsx` + `components/MarqueeSticker.tsx` — the **one** dark scrolling
-  sticker per card (`FilmNotes`, beside the year on the title line), carrying the special-screening name(s)
-  *and* the curated editorial label (decision #11) joined by ` · ` (`<StrandMark>` + "parent &
-  baby · 4k restoration"). The sticker *names* the strand; its tooltip is where the strand is
-  *explained* — the sticker is the app's one dark surface, so a light tooltip beside it reads as
-  an answer rather than a second sticker. **The tooltip is the strands only, and a label-only card
-  gets none**: a curated label is already fully readable on the sticker, so repeating it on hover
-  gave a tooltip identical to the thing being hovered. The `aria-label` still carries the label,
-  since the visible marquee track is `aria-hidden` and that's its only copy. `MarqueeSticker` is `"use client"`: measures one copy and pins the track to
+- `components/FilmNotes.tsx` + `components/MarqueeSticker.tsx` — the dark scrolling stickers
+  beside the year on the title line, **one per thing**: a sticker per strand (`<StrandMark>` +
+  "parent & baby"), then one for the curated editorial label (decision #11), grouped in one
+  `inline-flex` span so they wrap below the title together. A strand sticker *names* the strand;
+  its own tooltip *explains* it — the sticker is the app's one dark surface, so a light tooltip
+  beside it reads as an answer. **A label sticker gets no tooltip**: the label is already fully
+  readable on it, so hovering would show the thing being hovered. With two or more strands on a
+  card each tooltip also names when its strand plays (`sessions`, from `ScreeningBrowser`'s
+  `filmStrandSessions` → `strandSessions`; up to three sessions, then the times are dropped).
+  Each sticker's `aria-label` is its own text, since the visible marquee track is `aria-hidden`
+  and that's its only copy. `MarqueeSticker` is `"use client"`: measures one copy and pins the track to
   `2×` that width in px so the keyframe's plain `translate3d(-50%…)` lands exactly on one copy
   (var-free keyframe → runs on the compositor; a `%`-of-`max-content` translate stutters at
   speed), plus an inline `animation-duration` (~40px/s, 4s floor). `--color-fg`/`--color-bg`,

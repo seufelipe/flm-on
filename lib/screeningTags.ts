@@ -151,6 +151,27 @@ export function displayScreeningTags(tags?: string[]): ScreeningTagDisplay[] {
   return out;
 }
 
+// When each surfaced strand plays across a set of sessions — label → its sessions in time order.
+// Feeds the FilmNotes sticker's tooltip on a card carrying two or more strands, where the sticker
+// alone can't say which session is which (Sense and Sensibility: a Friday Silver Screen and a
+// Wednesday Knit-Along on one card).
+export function strandSessions(
+  sessions: { date: string; time: string; screeningTags?: string[] }[],
+): Map<string, { date: string; time: string }[]> {
+  const out = new Map<string, { date: string; time: string }[]>();
+  const sorted = [...sessions].sort((a, b) =>
+    a.date === b.date ? a.time.localeCompare(b.time) : a.date.localeCompare(b.date),
+  );
+  for (const s of sorted) {
+    for (const t of displayScreeningTags(s.screeningTags)) {
+      const list = out.get(t.label) ?? [];
+      list.push({ date: s.date, time: s.time });
+      out.set(t.label, list);
+    }
+  }
+  return out;
+}
+
 // The first `section` strand among these tags — the heading a film card files under on
 // "This week" (decision #27).
 export function sectionStrand(tags?: string[]): ScreeningTagDisplay | undefined {

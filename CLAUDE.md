@@ -118,8 +118,8 @@ it covers, and update it in the same commit.**
 11. **Curated editorial labels — `data/film-labels.json`.** `Record<"<title.trim().toLowerCase()>",
     string>` (e.g. `"classic!"`). **Render/build-time only** — `app/page.tsx` reads it and threads
     a `labels` map to `FilmCard`; not in `showtimes.json`, so editing a label needs only a
-    rebuild. Rendered by `FilmNotes` in the same sticker as the special-screening name(s), joined
-    by ` · ` — decorative (`--color-fg`/`--color-bg`, never accent/count). `fetch:batch` also
+    rebuild. Rendered by `FilmNotes` as its own sticker after the strand stickers (one sticker per
+    thing, #13), with no tooltip — decorative (`--color-fg`/`--color-bg`, never accent/count). `fetch:batch` also
     **writes** pre-fills into this file during the weekly review (rules: `fetch-films` skill).
 
 ### Loaded only with the code they cover — `.claude/rules/`

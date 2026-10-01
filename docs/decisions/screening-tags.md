@@ -158,8 +158,27 @@ the mark's only job was *this session is unusual*. It stopped being enough once 
 show two marked pills side by side, an 11am Parent & Baby and an over-65s Silver Screen matinee,
 that a reader had to open a tooltip to tell apart. `STRAND_MARKS` in
 `components/ScreeningTags.tsx` now maps a `label` to its own icon — `parent & baby` → `Baby`,
-`silver screen` → `Coffee`, `q&a` → `MicVocal` — and `<StrandMark>` falls back to `<SpecialsMark>` for everything
+`silver screen` → `Coffee`, `q&a` → `MicVocal`, `knit-along` → `Spool` — and `<StrandMark>` falls back to `<SpecialsMark>` for everything
 else, so adding one is a single line and never a requirement.
+
+**Two strands on one card (Oct 2026).** Sense and Sensibility ran a Friday Silver Screen and a
+Wednesday Knit-Along in the same week, 2 of its 25 sessions: the sticker read `silver screen ·
+knit-along`, as if the film were both, the Knit-Along pill wore the same generic smiley as any
+other strand, and the tooltip was one run-on string of both descriptions. Three shapes were
+weighed: (A) give the strand its own icon, so the sticker becomes a key to the pills; (B) name
+the strand on the pill itself when a card carries two or more; (C) one sticker per strand, each
+with its own tooltip. Chosen: A (`knit-along` → `Spool`) plus C — **one sticker per thing**,
+each strand's tooltip naming when it plays. (A first pass kept one shared sticker with a
+one-line-per-strand tooltip; the user asked for the second sticker straight after seeing it, and
+it's the honest shape: each sticker is one thing, so it can explain exactly that thing.) The
+curated label became its own sticker too rather than riding along on the first strand's, so no
+sticker ever means two things — a card with a strand and a label (a Parent & Baby 4K
+restoration) now shows two stickers where it showed one. B bends "the card names the
+strand once" and widens pills in a row that doesn't wrap, and it only earns that once a strand
+with no icon shares a card with another; until then A carries it. The times stop at three
+sessions — past that a weekly strand turns the tooltip into a listing, and the pills already
+say it. A "Special events" section listing sessions rather than films was raised and left for
+if events start to matter more than the films.
 
 The map lives in the renderer rather than in `KNOWN`, which is the *older* argument kept intact:
 which glyph a strand wears is a rendering decision, and `lib/screeningTags.ts` stays data-only
@@ -184,9 +203,10 @@ is deliberate — the marks now carry information instead of merely flagging tha
   `1.15em` in the sticker and on the lens) — an icon fills its box where the smiley's ink sat
   well inside its em, so 1em would have read smaller than the glyph it replaced.
   `KnownTag` no longer carries a `symbol`: every surfaced strand wears the same mark, so it
-  belongs to the renderer, not the data. The `FilmNotes` sticker holds **multiple** notes joined by ` · `
-(the old "one sticker max" rule is gone); `mark: false` tags contribute neither glyph nor
-name. Cineworld maps its `Showtime.Event.*` / `Showtime.Accessibility.AutismFriendly` onto
+  belongs to the renderer, not the data. `FilmNotes` renders **one sticker per strand, plus one for
+the curated label** (the old "one sticker max" rule, and the later "several notes joined by ` · `
+in one sticker", are both gone — see "Two strands on one card" above); `mark: false` tags get no
+sticker. Cineworld maps its `Showtime.Event.*` / `Showtime.Accessibility.AutismFriendly` onto
 this vocab (decision #16). `fetch:batch` prints
 a "Special screenings" + "unrecognised screening tags" section for review.
 - **`Big Screen Classics` is deliberately NOT surfaced** (user's call). Every other strand in

@@ -108,6 +108,17 @@ export function formatDayFriendly(dateISO: string): string {
 // while browsers still say "Sep", which hydration-mismatches this string on the day picker.
 const MONTHS_SHORT = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
+// "Fri 2 Oct" — absolute, never "Today"/"Tomorrow", so a string built from it can be rendered on
+// the static build and hydrate unchanged whatever day the page is opened. Weekdays hand-rolled
+// for the same CLDR reason as MONTHS_SHORT.
+const WEEKDAYS_SHORT = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+export function formatWeekdayDate(dateISO: string): string {
+  const [y, m, d] = dateISO.split("-").map(Number);
+  const weekday = WEEKDAYS_SHORT[new Date(Date.UTC(y, m - 1, d)).getUTCDay()];
+  return `${weekday} ${d} ${MONTHS_SHORT[m - 1]}`;
+}
+
 export function formatDayDate(dateISO: string): string {
   const [, m, d] = dateISO.split("-").map(Number);
   return `${d} ${MONTHS_SHORT[m - 1]}`;

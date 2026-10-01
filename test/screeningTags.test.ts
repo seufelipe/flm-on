@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { displayScreeningTags, isUnsurfacedTag } from "@/lib/screeningTags";
+import { displayScreeningTags, isUnsurfacedTag, strandSessions } from "@/lib/screeningTags";
 
 describe("displayScreeningTags", () => {
   it("maps a known descriptor to its session name + tooltip copy", () => {
@@ -92,5 +92,22 @@ describe("isUnsurfacedTag", () => {
   it("tolerates undefined / empty", () => {
     expect(displayScreeningTags()).toEqual([]);
     expect(displayScreeningTags([])).toEqual([]);
+  });
+});
+
+describe("strandSessions", () => {
+  it("files each surfaced strand under its own sessions, in time order", () => {
+    const out = strandSessions([
+      { date: "2026-10-07", time: "18:15", screeningTags: ["Knit-Along"] },
+      { date: "2026-10-02", time: "17:35" },
+      { date: "2026-10-02", time: "12:00", screeningTags: ["Silver Screen"] },
+      { date: "2026-10-09", time: "12:00", screeningTags: ["Silver Screen", "Subtitled"] },
+    ]);
+    expect([...out.keys()]).toEqual(["silver screen", "knit-along"]);
+    expect(out.get("silver screen")).toEqual([
+      { date: "2026-10-02", time: "12:00" },
+      { date: "2026-10-09", time: "12:00" },
+    ]);
+    expect(out.get("knit-along")).toEqual([{ date: "2026-10-07", time: "18:15" }]);
   });
 });

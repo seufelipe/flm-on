@@ -44,6 +44,8 @@ interface Props {
   // hides that session. The `FilmNotes` sticker uses this; the per-pill ☻ marks stay per-session.
   // Falls back to the visible screenings' tags.
   specialTags?: string[];
+  // When each of those strands plays (label → sessions), for the sticker's tooltip.
+  strandSessions?: Map<string, { date: string; time: string }[]>;
 }
 
 // Dim, normal-weight text sitting inline with the (black, uppercase) film name at the same
@@ -99,6 +101,7 @@ export default function FilmCard({
   label,
   cinemaLinks,
   specialTags,
+  strandSessions,
   preview = false,
 }: Props) {
   // Day sub-headers are redundant only when a specific Day chip is active — then every visible
@@ -282,7 +285,7 @@ export default function FilmCard({
               beside the year (its own `text-xs`, vertically centred against the title). It
               carries its own leading gap and wraps flush to the left when it drops below the
               title on a narrow card. */}
-          <FilmNotes tags={specialTags ?? sessionTags} label={label} />
+          <FilmNotes tags={specialTags ?? sessionTags} label={label} sessions={strandSessions} />
         </h3>
         {hasMetaLine && (
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-3">

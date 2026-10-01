@@ -5,6 +5,7 @@ import {
   nextWeekDays,
   nextBatchLabel,
   formatDayDate,
+  formatWeekdayDate,
   screeningCutoff,
   GRACE_MINUTES,
 } from "@/lib/date";
@@ -112,5 +113,13 @@ describe("screeningCutoff", () => {
   it("crosses midnight rather than clamping, so a late-night screening keeps its grace", () => {
     expect(screeningCutoff("2026-09-04", "00:05")).toEqual({ date: "2026-09-03", time: "23:55" });
     expect(screeningCutoff("2026-09-01", "00:00")).toEqual({ date: "2026-08-31", time: "23:50" });
+  });
+});
+
+describe("formatWeekdayDate", () => {
+  it("names the weekday from the date itself, never relative to today", () => {
+    expect(formatWeekdayDate("2026-10-02")).toBe("Fri 2 Oct");
+    expect(formatWeekdayDate("2026-10-07")).toBe("Wed 7 Oct");
+    expect(formatWeekdayDate("2027-01-03")).toBe("Sun 3 Jan");
   });
 });

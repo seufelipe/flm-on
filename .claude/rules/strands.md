@@ -72,7 +72,7 @@ synthetic `Mystery Matinee` at render time (#12).
     tags we recognise and choose not to show. Reasoning: `docs/decisions/screening-tags.md`.
     - **A strand's mark is `<StrandMark>`, its own icon or the generic smiley.** `STRAND_MARKS`
       in `components/ScreeningTags.tsx` maps a `label` to an icon — `parent & baby` → `Baby`,
-      `silver screen` → `Coffee`, `q&a` → `MicVocal`; everything else falls back to `<SpecialsMark>`, lucide's
+      `silver screen` → `Coffee`, `q&a` → `MicVocal`, `knit-along` → `Spool`; everything else falls back to `<SpecialsMark>`, lucide's
       `FaceGrinning`. **The map lives in the renderer, not in `lib/screeningTags.ts`** — which
       glyph a strand wears is a rendering decision, and that module stays data-only and
       React-free. Adding a mark is one line and is never required.
@@ -87,6 +87,19 @@ synthetic `Mystery Matinee` at render time (#12).
       in `em`.
     - **The card names the strand once; the pills carry the bare mark.** Once the card names it
       you recognise the mark, so don't repeat the words on every pill.
+    - **One sticker per thing** (`FilmNotes`): a sticker per strand, then one for the curated
+      label — never two things joined by ` · ` in one sticker, so each strand sticker's tooltip
+      explains exactly its strand, and the label sticker (already fully readable) has none. They
+      sit in one `inline-flex` group so they wrap below the title together.
+    - **A strand belongs to a session, not to the film — so with two or more on one card, each
+      strand sticker's tooltip says when it plays** ("Silver Screen (Fri 2 Oct, 12:00) — …"),
+      from `strandSessions` over the full preferred set. The stickers' marks are the key to the
+      pills; the tooltip says which pill is which. A lone strand keeps its plain line, and past
+      three sessions the times are dropped (a weekly strand would turn the
+      tooltip into a listing). The date is `formatWeekdayDate` — absolute, never "Tomorrow" —
+      because it also lands in the SSR'd `aria-label` of a static page. Naming the strand on the
+      pill itself (`[12:00 ☕ silver screen]`) was considered and held back until a strand with
+      no icon of its own shares a card with another one.
     - **House style for tag descriptions** (here and in `lib/formats.ts`): exactly one ` — ` per
       rendered string — the title/description separator — **and none inside a description**, under
       ~90 characters. A pill can show a strand and a format joined by ` · `, so a description that

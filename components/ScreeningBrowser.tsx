@@ -46,6 +46,7 @@ import Masthead, { MastheadTitle } from "./Masthead";
 import FilterControls from "./FilterControls";
 import PlanPanel from "./PlanPanel";
 import PlanButton from "./PlanButton";
+import { strandSessions } from "@/lib/screeningTags";
 
 interface Props {
   screenings: Screening[];
@@ -437,6 +438,19 @@ export default function ScreeningBrowser({
     return new Map(Array.from(byFilm, ([key, tags]) => [key, Array.from(tags)]));
   }, [preferred]);
 
+  // When each strand plays, per film, over the same full preferred set — so the sticker's
+  // tooltip can say which session is the Silver Screen and which the Knit-Along even while the
+  // Day filter hides one of them.
+  const filmStrandSessions = useMemo(() => {
+    const byFilm = new Map<string, (typeof preferred)[number][]>();
+    for (const s of preferred) {
+      if (!s.screeningTags?.length) continue;
+      const key = s.filmTitle.trim().toLowerCase();
+      byFilm.set(key, [...(byFilm.get(key) ?? []), s]);
+    }
+    return new Map(Array.from(byFilm, ([key, sessions]) => [key, strandSessions(sessions)]));
+  }, [preferred]);
+
   // One card, rendered identically in both sections — the split is an ordering decision, not a
   // different kind of card.
   const filmCard = (group: FilmGroup) => (
@@ -453,6 +467,7 @@ export default function ScreeningBrowser({
       label={labels?.[group.key]}
       cinemaLinks={filmCinemaLinks.get(group.key)}
       specialTags={filmSpecialTags.get(group.key)}
+      strandSessions={filmStrandSessions.get(group.key)}
     />
   );
 
