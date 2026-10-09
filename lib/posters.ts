@@ -16,8 +16,8 @@ const WIDTH = 160;
 const HEIGHT = 240;
 const USER_AGENT = "flm-personal-cinema-app/1.0 (+personal showtime planner)";
 
-// The site-relative path a screening carries in `poster` — no leading slash, so FilmCard can put
-// the deploy's basePath in front of it.
+// The site-relative path a screening carries in `poster` — no leading slash, so FilmCard can use
+// it as a relative src that resolves under the GitHub Pages basePath too (decision #30).
 export function posterPath(letterboxdUrl: string): string | undefined {
   const slug = letterboxdUrl.match(/letterboxd\.com\/film\/([^/]+)/)?.[1];
   return slug ? `posters/${slug}.webp` : undefined;

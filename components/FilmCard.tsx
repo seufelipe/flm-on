@@ -57,8 +57,6 @@ interface Props {
 // separator, and none inside the description.
 const PROGRAMME_TIP = "Shorts programme — Several short films on one ticket.";
 
-const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
-
 function TitleMeta({ children, className = "" }: { children: ReactNode; className?: string }) {
   return <span className={`font-normal text-dim ${className}`}>{children}</span>;
 }
@@ -269,9 +267,12 @@ export default function FilmCard({
         {showPoster && (
           // A plain <img>: the export has no image optimiser, and the file is already the size
           // it's shown at (lib/posters.ts). Decorative — the title beside it names the film.
+          // The src is deliberately *relative* ("posters/…"): basePath isn't applied to an <img>,
+          // and an env-inlined prefix came out empty on the Pages build. The app is one route, at
+          // the root locally and at /flm-on/ on Pages, so relative resolves right in both.
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={`${BASE_PATH}/${group.poster}`}
+            src={group.poster}
             alt=""
             width={160}
             height={240}

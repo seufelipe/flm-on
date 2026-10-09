@@ -253,6 +253,9 @@ synthetic `Mystery Matinee` at render time (#12).
       `rounded-sm`, **no shadow and no link** (user's call) — a hard shadow here means pressable.
       Day headers, pill strips and footer stay full width, so the full-bleed pill scroll is
       untouched.
-    - **basePath isn't applied to `<img src>`**: `next.config.ts` exposes it as
-      `NEXT_PUBLIC_BASE_PATH` and the card prefixes it. Drop that and posters 404 on GitHub Pages
-      only — localhost looks fine.
+    - **The `<img src>` is relative** (`posters/…`, no leading slash). basePath isn't applied to
+      an `<img>`, and an env-inlined prefix (`NEXT_PUBLIC_BASE_PATH` via `next.config.ts` `env`)
+      was tried and came out **empty on the Pages build** — the `configure-pages` step's own
+      Next config wins there, though a local `GITHUB_ACTIONS=true` build looks right. A leading
+      slash 404s every poster on Pages only. Relative works because the app is one route; a
+      second route would need this revisited.
