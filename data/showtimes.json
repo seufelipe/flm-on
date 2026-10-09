@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-09T12:07:14.642Z",
+  "generatedAt": "2026-10-09T12:30:22.884Z",
   "days": [
     "2026-10-09",
     "2026-10-10",
@@ -23,84 +23,19 @@
   ],
   "screenings": [
     {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "Sense and Sensibility",
-      "cert": "PG",
-      "durationMins": 131,
-      "year": 2026,
-      "date": "2026-10-09",
-      "time": "12:30",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41992&showtimeId=1001-41992&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/sense-and-sensibility",
-      "director": "Georgia Oakley",
-      "letterboxdUrl": "https://letterboxd.com/film/sense-and-sensibility-2026/",
-      "poster": "posters/sense-and-sensibility-2026.webp"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
-      "filmTitle": "The Lost Children of Tuam",
-      "cert": "12A",
-      "durationMins": 84,
-      "year": 2026,
-      "date": "2026-10-09",
-      "time": "12:35",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41819&showtimeId=1001-41819&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/the-lost-children-of-tuam",
-      "director": "Frank Berry",
-      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
-      "poster": "posters/the-lost-children-of-tuam.webp"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "Comédie Française",
-      "cert": "15A",
-      "durationMins": 75,
-      "year": 2026,
-      "date": "2026-10-09",
-      "time": "12:45",
-      "bookingUrl": "https://shop.ifi.ie/performance/114232/",
-      "filmPageUrl": "https://ifi.ie/films/comedie-francaise-2",
-      "screeningTags": [
-        "French",
-        "Subtitled"
-      ],
-      "originalTitle": "De la Comédie-Française",
-      "director": "Bertrand Usclat, Martin Darondeau",
-      "letterboxdUrl": "https://letterboxd.com/film/comedie-francaise/",
-      "poster": "posters/comedie-francaise.webp"
-    },
-    {
-      "cinema": "ifi",
-      "cinemaName": "IFI",
-      "filmTitle": "The Lost Children of Tuam",
-      "cert": "12A",
-      "durationMins": 84,
-      "year": 2026,
-      "date": "2026-10-09",
-      "time": "12:55",
-      "bookingUrl": "https://shop.ifi.ie/performance/114229/",
-      "filmPageUrl": "https://ifi.ie/films/the-lost-children-of-tuam-2",
-      "director": "Frank Berry",
-      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
-      "poster": "posters/the-lost-children-of-tuam.webp"
-    },
-    {
       "cinema": "ifi",
       "cinemaName": "IFI",
       "filmTitle": "Bad Apples",
       "cert": "15A",
       "durationMins": 100,
-      "year": 2026,
+      "year": 2025,
       "date": "2026-10-09",
       "time": "13:10",
       "bookingUrl": "https://shop.ifi.ie/performance/114335/",
       "filmPageUrl": "https://ifi.ie/films/bad-apples-2",
-      "director": "Talon Mundo",
-      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2026/",
-      "poster": "posters/bad-apples-2026.webp"
+      "director": "Jonatan Etzler",
+      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2025/",
+      "poster": "posters/bad-apples-2025.webp"
     },
     {
       "cinema": "ifi",
@@ -298,14 +233,14 @@
       "filmTitle": "Bad Apples",
       "cert": "15A",
       "durationMins": 100,
-      "year": 2026,
+      "year": 2025,
       "date": "2026-10-09",
       "time": "18:00",
       "bookingUrl": "https://shop.ifi.ie/performance/114230/",
       "filmPageUrl": "https://ifi.ie/films/bad-apples-2",
-      "director": "Talon Mundo",
-      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2026/",
-      "poster": "posters/bad-apples-2026.webp"
+      "director": "Jonatan Etzler",
+      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2025/",
+      "poster": "posters/bad-apples-2025.webp"
     },
     {
       "cinema": "ifi",
@@ -390,21 +325,6 @@
     {
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
-      "filmTitle": "The Lost Children of Tuam",
-      "cert": "12A",
-      "durationMins": 84,
-      "year": 2026,
-      "date": "2026-10-09",
-      "time": "20:30",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41816&showtimeId=1001-41816&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/the-lost-children-of-tuam",
-      "director": "Frank Berry",
-      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
-      "poster": "posters/the-lost-children-of-tuam.webp"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
       "filmTitle": "The Social Reckoning",
       "cert": "15A",
       "durationMins": 112,
@@ -416,6 +336,21 @@
       "director": "Aaron Sorkin",
       "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/",
       "poster": "posters/the-social-reckoning.webp"
+    },
+    {
+      "cinema": "lighthouse",
+      "cinemaName": "Light House Cinema",
+      "filmTitle": "The Lost Children of Tuam",
+      "cert": "12A",
+      "durationMins": 84,
+      "year": 2026,
+      "date": "2026-10-09",
+      "time": "20:30",
+      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41816&showtimeId=1001-41816&visLang=1",
+      "filmPageUrl": "https://www.lighthousecinema.ie/film/the-lost-children-of-tuam",
+      "director": "Frank Berry",
+      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
+      "poster": "posters/the-lost-children-of-tuam.webp"
     },
     {
       "cinema": "ifi",
@@ -465,21 +400,6 @@
     {
       "cinema": "lighthouse",
       "cinemaName": "Light House Cinema",
-      "filmTitle": "The Lost Children of Tuam",
-      "cert": "12A",
-      "durationMins": 84,
-      "year": 2026,
-      "date": "2026-10-10",
-      "time": "11:00",
-      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41928&showtimeId=1001-41928&visLang=1",
-      "filmPageUrl": "https://www.lighthousecinema.ie/film/the-lost-children-of-tuam",
-      "director": "Frank Berry",
-      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
-      "poster": "posters/the-lost-children-of-tuam.webp"
-    },
-    {
-      "cinema": "lighthouse",
-      "cinemaName": "Light House Cinema",
       "filmTitle": "The Social Reckoning",
       "cert": "15A",
       "durationMins": 112,
@@ -494,6 +414,21 @@
       "director": "Aaron Sorkin",
       "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/",
       "poster": "posters/the-social-reckoning.webp"
+    },
+    {
+      "cinema": "lighthouse",
+      "cinemaName": "Light House Cinema",
+      "filmTitle": "The Lost Children of Tuam",
+      "cert": "12A",
+      "durationMins": 84,
+      "year": 2026,
+      "date": "2026-10-10",
+      "time": "11:00",
+      "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41928&showtimeId=1001-41928&visLang=1",
+      "filmPageUrl": "https://www.lighthousecinema.ie/film/the-lost-children-of-tuam",
+      "director": "Frank Berry",
+      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
+      "poster": "posters/the-lost-children-of-tuam.webp"
     },
     {
       "cinema": "ifi",
@@ -581,14 +516,14 @@
       "filmTitle": "Bad Apples",
       "cert": "15A",
       "durationMins": 100,
-      "year": 2026,
+      "year": 2025,
       "date": "2026-10-10",
       "time": "13:15",
       "bookingUrl": "https://shop.ifi.ie/performance/114342/",
       "filmPageUrl": "https://ifi.ie/films/bad-apples-2",
-      "director": "Talon Mundo",
-      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2026/",
-      "poster": "posters/bad-apples-2026.webp"
+      "director": "Jonatan Etzler",
+      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2025/",
+      "poster": "posters/bad-apples-2025.webp"
     },
     {
       "cinema": "lighthouse",
@@ -995,14 +930,14 @@
       "filmTitle": "Bad Apples",
       "cert": "15A",
       "durationMins": 100,
-      "year": 2026,
+      "year": 2025,
       "date": "2026-10-11",
       "time": "11:30",
       "bookingUrl": "https://shop.ifi.ie/performance/114344/",
       "filmPageUrl": "https://ifi.ie/films/bad-apples-2",
-      "director": "Talon Mundo",
-      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2026/",
-      "poster": "posters/bad-apples-2026.webp"
+      "director": "Jonatan Etzler",
+      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2025/",
+      "poster": "posters/bad-apples-2025.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1310,14 +1245,14 @@
       "filmTitle": "Bad Apples",
       "cert": "15A",
       "durationMins": 100,
-      "year": 2026,
+      "year": 2025,
       "date": "2026-10-11",
       "time": "18:40",
       "bookingUrl": "https://shop.ifi.ie/performance/114345/",
       "filmPageUrl": "https://ifi.ie/films/bad-apples-2",
-      "director": "Talon Mundo",
-      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2026/",
-      "poster": "posters/bad-apples-2026.webp"
+      "director": "Jonatan Etzler",
+      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2025/",
+      "poster": "posters/bad-apples-2025.webp"
     },
     {
       "cinema": "ifi",
@@ -1727,14 +1662,14 @@
       "filmTitle": "Bad Apples",
       "cert": "15A",
       "durationMins": 100,
-      "year": 2026,
+      "year": 2025,
       "date": "2026-10-12",
       "time": "18:10",
       "bookingUrl": "https://shop.ifi.ie/performance/114359/",
       "filmPageUrl": "https://ifi.ie/films/bad-apples-2",
-      "director": "Talon Mundo",
-      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2026/",
-      "poster": "posters/bad-apples-2026.webp"
+      "director": "Jonatan Etzler",
+      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2025/",
+      "poster": "posters/bad-apples-2025.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1982,14 +1917,14 @@
       "filmTitle": "Bad Apples",
       "cert": "15A",
       "durationMins": 100,
-      "year": 2026,
+      "year": 2025,
       "date": "2026-10-13",
       "time": "13:40",
       "bookingUrl": "https://shop.ifi.ie/performance/114371/",
       "filmPageUrl": "https://ifi.ie/films/bad-apples-2",
-      "director": "Talon Mundo",
-      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2026/",
-      "poster": "posters/bad-apples-2026.webp"
+      "director": "Jonatan Etzler",
+      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2025/",
+      "poster": "posters/bad-apples-2025.webp"
     },
     {
       "cinema": "lighthouse",
@@ -2733,14 +2668,14 @@
       "filmTitle": "Bad Apples",
       "cert": "15A",
       "durationMins": 100,
-      "year": 2026,
+      "year": 2025,
       "date": "2026-10-14",
       "time": "20:50",
       "bookingUrl": "https://shop.ifi.ie/performance/114377/",
       "filmPageUrl": "https://ifi.ie/films/bad-apples-2",
-      "director": "Talon Mundo",
-      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2026/",
-      "poster": "posters/bad-apples-2026.webp"
+      "director": "Jonatan Etzler",
+      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2025/",
+      "poster": "posters/bad-apples-2025.webp"
     },
     {
       "cinema": "lighthouse",
