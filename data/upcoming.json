@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-10-01T16:07:41.142Z",
+  "generatedAt": "2026-10-09T12:07:14.642Z",
   "week": {
-    "from": "2026-10-08",
-    "to": "2026-10-14"
+    "from": "2026-10-15",
+    "to": "2026-10-21"
   },
   "films": [
     {
-      "title": "The Social Reckoning",
+      "title": "Whalefall",
       "year": 2026,
       "cert": "15A",
-      "director": "Aaron Sorkin",
-      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/",
+      "director": "Brian Duffield",
+      "letterboxdUrl": "https://letterboxd.com/film/whalefall/",
       "cinemas": [
         "lighthouse"
       ],
@@ -18,22 +18,22 @@
         {
           "cinema": "lighthouse",
           "label": "Light House",
-          "url": "https://www.lighthousecinema.ie/film/the-social-reckoning"
+          "url": "https://www.lighthousecinema.ie/film/whalefall"
         }
       ],
       "screeningTags": [
         "Silver Screen"
       ],
-      "firstDate": "2026-10-09",
+      "firstDate": "2026-10-16",
       "reason": "special"
     },
     {
-      "title": "Pulse",
-      "year": 2001,
-      "cert": "18",
-      "director": "Kiyoshi Kurosawa",
-      "originalTitle": "回路",
-      "letterboxdUrl": "https://letterboxd.com/film/pulse-2001/",
+      "title": "Arrietty",
+      "year": 2010,
+      "cert": "G",
+      "director": "Hiromasa Yonebayashi",
+      "originalTitle": "借りぐらしのアリエッティ",
+      "letterboxdUrl": "https://letterboxd.com/film/arrietty/",
       "cinemas": [
         "lighthouse"
       ],
@@ -41,101 +41,148 @@
         {
           "cinema": "lighthouse",
           "label": "Light House",
-          "url": "https://www.lighthousecinema.ie/film/emmy-shigeta-jack-reynor-present-pulse"
+          "url": "https://www.lighthousecinema.ie/film/arrietty"
         }
       ],
       "screeningTags": [
+        "Subtitled",
         "Japanese",
+        "Dubbed"
+      ],
+      "firstDate": "2026-10-16",
+      "reason": "special"
+    },
+    {
+      "title": "Cotton Queen",
+      "year": 2025,
+      "director": "Suzannah Mirghani",
+      "originalTitle": "ملكة القطن",
+      "letterboxdUrl": "https://letterboxd.com/film/cotton-queen-2025/",
+      "cinemas": [
+        "ifi"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "ifi",
+          "label": "IFI",
+          "url": "https://ifi.ie/films/black-history-month-cotton-queen-2"
+        }
+      ],
+      "screeningTags": [
+        "Arabic",
         "Subtitled"
       ],
       "contexts": [
         {
-          "text": "Emmy Shigeta & Jack Reynor Present"
+          "text": "Black History Month"
         }
       ],
-      "firstDate": "2026-10-10",
+      "firstDate": "2026-10-18",
       "reason": "special"
     },
     {
-      "title": "Practical Magic 2",
+      "title": "Fatherland",
       "year": 2026,
       "cert": "12A",
-      "director": "Susanne Bier",
-      "letterboxdUrl": "https://letterboxd.com/film/practical-magic-2/",
+      "director": "Paweł Pawlikowski",
+      "originalTitle": "Ojczyzna",
+      "letterboxdUrl": "https://letterboxd.com/film/fatherland-2026/",
       "cinemas": [
-        "lighthouse"
-      ],
-      "cinemaLinks": [
-        {
-          "cinema": "lighthouse",
-          "label": "Light House",
-          "url": "https://www.lighthousecinema.ie/film/practical-magic-2"
-        }
-      ],
-      "screeningTags": [],
-      "firstDate": "2026-10-08",
-      "reason": "new"
-    },
-    {
-      "title": "Coyote vs. Acme",
-      "year": 2026,
-      "cert": "PG",
-      "director": "Dave Green",
-      "letterboxdUrl": "https://letterboxd.com/film/coyote-vs-acme/",
-      "cinemas": [
-        "lighthouse"
-      ],
-      "cinemaLinks": [
-        {
-          "cinema": "lighthouse",
-          "label": "Light House",
-          "url": "https://www.lighthousecinema.ie/film/coyote-vs-acme"
-        }
-      ],
-      "screeningTags": [],
-      "firstDate": "2026-10-08",
-      "reason": "new"
-    },
-    {
-      "title": "Lesbian Lines",
-      "year": 2026,
-      "cert": "12A",
-      "director": "Cara Holmes",
-      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/",
-      "cinemas": [
-        "ifi",
-        "lighthouse"
+        "ifi"
       ],
       "cinemaLinks": [
         {
           "cinema": "ifi",
           "label": "IFI",
-          "url": "https://ifi.ie/films/international-lesbian-day-lesbian-lines"
+          "url": "https://ifi.ie/films/fatherland-2"
+        }
+      ],
+      "screeningTags": [
+        "Polish",
+        "Subtitled"
+      ],
+      "firstDate": "2026-10-20",
+      "reason": "special"
+    },
+    {
+      "title": "Naza",
+      "year": 2026,
+      "cert": "15A",
+      "director": "Yuval Abraham, Rachel Szor",
+      "letterboxdUrl": "https://letterboxd.com/film/naza/",
+      "cinemas": [
+        "lighthouse",
+        "ifi"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "lighthouse",
+          "label": "Light House",
+          "url": "https://www.lighthousecinema.ie/film/naza"
         },
         {
-          "cinema": "lighthouse",
-          "label": "Light House",
-          "url": "https://www.lighthousecinema.ie/film/lesbian-lines"
+          "cinema": "ifi",
+          "label": "IFI",
+          "url": "https://ifi.ie/films/naza"
         }
       ],
       "screeningTags": [
-        "Open Captioned"
+        "Satellite QandA"
       ],
-      "contexts": [
-        {
-          "text": "International Lesbian Day",
-          "where": "IFI, Thu 8 Oct"
-        }
-      ],
-      "firstDate": "2026-10-08",
+      "firstDate": "2026-10-15",
       "reason": "new"
     },
     {
-      "title": "The Craft",
-      "year": 1996,
+      "title": "Forever Is Now",
+      "year": 2025,
+      "cert": "12A",
+      "director": "Neasa Ní Chianáin",
+      "letterboxdUrl": "https://letterboxd.com/film/forever-is-now/",
+      "cinemas": [
+        "ifi"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "ifi",
+          "label": "IFI",
+          "url": "https://ifi.ie/films/forever-is-now-2"
+        }
+      ],
+      "screeningTags": [],
+      "firstDate": "2026-10-16",
+      "reason": "new"
+    },
+    {
+      "title": "A Man Of No Importance",
+      "year": 1994,
       "cert": "15A",
-      "director": "Andrew Fleming",
-      "letterboxdUrl": "https://letterboxd.com/film/the-craft/",
+      "director": "Suri Krishnamma",
+      "letterboxdUrl": "https://letterboxd.com/film/a-man-of-no-importance/",
+      "cinemas": [
+        "ifi"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "ifi",
+          "label": "IFI",
+          "url": "https://ifi.ie/films/from-the-vaults-ifi-oscariana-a-man-of-no-importance"
+        }
+      ],
+      "screeningTags": [],
+      "contexts": [
+        {
+          "text": "IFI + Oscariana"
+        }
+      ],
+      "firstDate": "2026-10-17",
+      "reason": "new"
+    },
+    {
+      "title": "Videodrome",
+      "year": 1983,
+      "cert": "18",
+      "director": "David Cronenberg",
+      "letterboxdUrl": "https://letterboxd.com/film/videodrome/",
       "cinemas": [
         "lighthouse"
       ],
@@ -143,19 +190,38 @@
         {
           "cinema": "lighthouse",
           "label": "Light House",
-          "url": "https://www.lighthousecinema.ie/film/the-craft"
+          "url": "https://www.lighthousecinema.ie/film/videodrome"
         }
       ],
       "screeningTags": [],
-      "firstDate": "2026-10-10",
+      "firstDate": "2026-10-17",
       "reason": "new"
     },
     {
-      "title": "The Uprising",
-      "year": 2026,
-      "cert": "15A",
-      "director": "Paul Greengrass",
-      "letterboxdUrl": "https://letterboxd.com/film/the-uprising-2026/",
+      "title": "Possession",
+      "year": 1981,
+      "cert": "18",
+      "director": "Andrzej Żuławski",
+      "letterboxdUrl": "https://letterboxd.com/film/possession/",
+      "cinemas": [
+        "lighthouse"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "lighthouse",
+          "label": "Light House",
+          "url": "https://www.lighthousecinema.ie/film/possession"
+        }
+      ],
+      "screeningTags": [],
+      "firstDate": "2026-10-18",
+      "reason": "new"
+    },
+    {
+      "title": "The Commitments",
+      "year": 1991,
+      "director": "Alan Parker",
+      "letterboxdUrl": "https://letterboxd.com/film/the-commitments/",
       "cinemas": [
         "ifi"
       ],
@@ -163,32 +229,11 @@
         {
           "cinema": "ifi",
           "label": "IFI",
-          "url": "https://ifi.ie/films/the-uprising-2"
-        }
-      ],
-      "screeningTags": [
-        "Open Captioned"
-      ],
-      "firstDate": "2026-10-12",
-      "reason": "new"
-    },
-    {
-      "title": "The Stuff",
-      "year": 1985,
-      "director": "Larry Cohen",
-      "letterboxdUrl": "https://letterboxd.com/film/the-stuff/",
-      "cinemas": [
-        "ifi"
-      ],
-      "cinemaLinks": [
-        {
-          "cinema": "ifi",
-          "label": "IFI",
-          "url": "https://ifi.ie/films/the-bigger-picture-the-stuff-2"
+          "url": "https://ifi.ie/films/the-commitments"
         }
       ],
       "screeningTags": [],
-      "firstDate": "2026-10-13",
+      "firstDate": "2026-10-19",
       "reason": "new"
     }
   ]
