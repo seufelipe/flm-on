@@ -103,7 +103,10 @@ appending the per-film Letterboxd language (#17) and `ScreeningBrowser` attachin
   `<ListHeading>` (centred, dim; the strand's own `strandIcon` for a festival, `Popcorn` /
   `CupSoda` for new / also on) — the split is an ordering decision, not a different kind of card
   (#26, #27).
-- `components/FilmCard.tsx` — one film's card. **Line 0**, when there is one: the kicker — a
+- `components/FilmCard.tsx` — one film's card. **The poster** (`showPoster`, #30), when there is
+  one: a grid wraps the header, the `<img>` in column 1 beside lines 0–1; line 2 sits beside it
+  from `sm:` and full-width below it on a phone. Not on Mystery / marathon / programme cards.
+  **Line 0**, when there is one: the kicker — a
   cinema's context prefix in its own words, plus where and when if only some sessions carry it
   (`contexts`, from `lib/filmContext.ts`; decision #29). **Line 1** (`<h3>`): `[original title] TITLE [year]`
   (the year only when the card has a Letterboxd link, #28; a shorts programme gets a

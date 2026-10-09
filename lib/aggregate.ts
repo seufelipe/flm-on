@@ -16,6 +16,7 @@ import { loadLanguageOverrides, languageOverrideFor } from "./languageOverrides"
 import { loadDirectorOverrides, directorOverrideFor } from "./directorOverrides";
 import { displayLanguage } from "./languages";
 import { normaliseCert } from "./certs";
+import { ensurePoster } from "./posters";
 
 export interface AdapterError {
   cinema: string;
@@ -125,6 +126,16 @@ async function withLetterboxdLinks(screenings: Screening[]): Promise<Screening[]
     }),
   );
 
+  // One local copy of each matched film's poster (lib/posters.ts), keyed like `resolved`.
+  const posters = new Map<string, string>();
+  await Promise.all(
+    Array.from(resolved.entries()).map(async ([key, match]) => {
+      if (!match.url || !match.poster) return;
+      const poster = await ensurePoster(match.url, match.poster);
+      if (poster) posters.set(key, poster);
+    }),
+  );
+
   return screenings.map((s) => {
     const match = resolved.get(`${s.filmTitle}|${s.year ?? ""}`);
 
@@ -182,6 +193,7 @@ async function withLetterboxdLinks(screenings: Screening[]): Promise<Screening[]
       originalTitle,
       director: directorOverrideFor(s.filmTitle, directorOverrides) ?? match?.director ?? s.director,
       letterboxdUrl: match?.url,
+      poster: posters.get(`${s.filmTitle}|${s.year ?? ""}`),
       year: match?.year ?? s.year,
     };
   });

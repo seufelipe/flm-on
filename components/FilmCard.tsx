@@ -57,6 +57,8 @@ interface Props {
 // separator, and none inside the description.
 const PROGRAMME_TIP = "Shorts programme — Several short films on one ticket.";
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 function TitleMeta({ children, className = "" }: { children: ReactNode; className?: string }) {
   return <span className={`font-normal text-dim ${className}`}>{children}</span>;
 }
@@ -223,6 +225,9 @@ export default function FilmCard({
   const noFilmFacts = isMystery || isMarathonFilm(group.filmTitle);
   // A shorts programme (#28) — flagged even when its film list didn't parse.
   const isProgramme = group.programme !== undefined;
+  // The poster thumbnail beside the header (decision #30). Only a card about one known film gets
+  // one: never a Mystery Matinee (it would give the film away), a marathon or a shorts programme.
+  const showPoster = group.poster !== undefined && !noFilmFacts && !isProgramme;
 
   // Descriptors across all of this film's visible sessions. The special-screening name(s) and
   // the curated editorial label are named together in one `<FilmNotes>` sticker beside the year
@@ -251,59 +256,83 @@ export default function FilmCard({
   return (
     <div className="bg-surface border-4 border-border rounded-card p-4 sm:p-8">
       {/* In the preview there's no showtime section below, so the big gap collapses to a normal one. */}
-      <div className={preview ? "mb-6" : "mb-16"}>
-        {/* The kicker (decision #29): the context a cinema put in front of the title, in its own
-            words, small and dim in the section headings' voice. Where-and-when follows only when
-            some of the film's sessions don't carry it. Not on a Mystery Matinee, whose card
-            shouldn't say anything the redaction is hiding. */}
-        {!isMystery &&
-          contexts?.map((c) => (
-            <p key={c.text} className="mb-2 text-xs font-bold uppercase tracking-widest text-dim">
-              {c.text}
-              {c.where && <span className="font-normal"> · {c.where}</span>}
-            </p>
-          ))}
-        <h3 className="text-2xl md:text-3xl tracking-tight">
-          {isMystery ? (
-            <MysteryTitle text={group.filmTitle} />
-          ) : (
-            <>
-              {/* Original-language title (Cineworld only), dimmed and title-sized like the
-                  year — sits before the name. */}
-              {group.originalTitle && <TitleMeta className="mr-3">{group.originalTitle}</TitleMeta>}
-              {/* A shorts programme (#28) is marked before its name, title-sized and dim like the
-                  year. Its tooltip is the one explanation of the card's film-list line below —
-                  Radix, with the same text on the aria-label (#22). */}
-              {isProgramme && (
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <span role="img" aria-label={PROGRAMME_TIP} className="mr-3 text-dim cursor-default">
-                      <PlayingCardsFan aria-hidden="true" className="inline-block size-[0.85em] align-[-0.1em]" />
-                    </span>
-                  </TooltipTrigger>
-                  <TooltipContent>{PROGRAMME_TIP}</TooltipContent>
-                </Tooltip>
-              )}
-              {/* The only plain text that keeps the I-beam cursor — the film name is the thing
-                  you actually want to select and copy. The metadata around it stays on the
-                  arrow cursor (globals.css default) so a drag-select grabs just the name. */}
-              <span className="font-black uppercase cursor-text">{group.filmTitle}</span>
-            </>
-          )}
-          {/* The year is Letterboxd's or nothing (#4, #28): a cinema's own year is a guess at
-              best — a re-release stamped with this year, a programme's placeholder — so a card
-              with no Letterboxd link, pinned or unmatched, shows none. */}
-          {!noFilmFacts && group.year !== undefined && group.letterboxdUrl !== undefined && (
-            <TitleMeta className="ml-3">{group.year}</TitleMeta>
-          )}
-          {/* Special-screening name(s) + the curated editorial label, one marquee sticker,
-              beside the year (its own `text-xs`, vertically centred against the title). It
-              carries its own leading gap and wraps flush to the left when it drops below the
-              title on a narrow card. */}
-          <FilmNotes tags={specialTags ?? sessionTags} label={label} sessions={strandSessions} />
-        </h3>
+      {/* With a poster the header is a grid: the poster in column 1, beside the kicker + title.
+          The meta line sits beside it too from `sm:` up, but spans the full width below it on a
+          phone, where ~230px beside a poster would wrap it onto three lines. The poster spans a
+          trailing `1fr` row on desktop, so a header shorter than the poster takes the slack there
+          rather than pushing the meta line away from the title. */}
+      <div
+        className={`${preview ? "mb-6" : "mb-16"} ${
+          showPoster ? "grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 sm:grid-rows-[auto_auto_1fr] sm:gap-x-6" : ""
+        }`}
+      >
+        {showPoster && (
+          // A plain <img>: the export has no image optimiser, and the file is already the size
+          // it's shown at (lib/posters.ts). Decorative — the title beside it names the film.
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={`${BASE_PATH}/${group.poster}`}
+            alt=""
+            width={160}
+            height={240}
+            loading="lazy"
+            className="h-21 w-14 rounded-sm border-2 border-border bg-bg object-cover sm:row-span-3 sm:h-30 sm:w-20"
+          />
+        )}
+        <div>
+          {/* The kicker (decision #29): the context a cinema put in front of the title, in its own
+              words, small and dim in the section headings' voice. Where-and-when follows only when
+              some of the film's sessions don't carry it. Not on a Mystery Matinee, whose card
+              shouldn't say anything the redaction is hiding. */}
+          {!isMystery &&
+            contexts?.map((c) => (
+              <p key={c.text} className="mb-2 text-xs font-bold uppercase tracking-widest text-dim">
+                {c.text}
+                {c.where && <span className="font-normal"> · {c.where}</span>}
+              </p>
+            ))}
+          <h3 className="text-2xl md:text-3xl tracking-tight">
+            {isMystery ? (
+              <MysteryTitle text={group.filmTitle} />
+            ) : (
+              <>
+                {/* Original-language title (Cineworld only), dimmed and title-sized like the
+                    year — sits before the name. */}
+                {group.originalTitle && <TitleMeta className="mr-3">{group.originalTitle}</TitleMeta>}
+                {/* A shorts programme (#28) is marked before its name, title-sized and dim like the
+                    year. Its tooltip is the one explanation of the card's film-list line below —
+                    Radix, with the same text on the aria-label (#22). */}
+                {isProgramme && (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <span role="img" aria-label={PROGRAMME_TIP} className="mr-3 text-dim cursor-default">
+                        <PlayingCardsFan aria-hidden="true" className="inline-block size-[0.85em] align-[-0.1em]" />
+                      </span>
+                    </TooltipTrigger>
+                    <TooltipContent>{PROGRAMME_TIP}</TooltipContent>
+                  </Tooltip>
+                )}
+                {/* The only plain text that keeps the I-beam cursor — the film name is the thing
+                    you actually want to select and copy. The metadata around it stays on the
+                    arrow cursor (globals.css default) so a drag-select grabs just the name. */}
+                <span className="font-black uppercase cursor-text">{group.filmTitle}</span>
+              </>
+            )}
+            {/* The year is Letterboxd's or nothing (#4, #28): a cinema's own year is a guess at
+                best — a re-release stamped with this year, a programme's placeholder — so a card
+                with no Letterboxd link, pinned or unmatched, shows none. */}
+            {!noFilmFacts && group.year !== undefined && group.letterboxdUrl !== undefined && (
+              <TitleMeta className="ml-3">{group.year}</TitleMeta>
+            )}
+            {/* Special-screening name(s) + the curated editorial label, one marquee sticker,
+                beside the year (its own `text-xs`, vertically centred against the title). It
+                carries its own leading gap and wraps flush to the left when it drops below the
+                title on a narrow card. */}
+            <FilmNotes tags={specialTags ?? sessionTags} label={label} sessions={strandSessions} />
+          </h3>
+        </div>
         {hasMetaLine && (
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-3">
+          <div className="col-span-2 mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 sm:col-span-1 sm:col-start-2">
             {group.cert && <Cert cert={group.cert} />}
             {group.durationMins !== undefined && !noFilmFacts && (
               <span className="text-base text-dim flex items-center gap-1.5">

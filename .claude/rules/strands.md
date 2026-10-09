@@ -13,6 +13,9 @@ paths:
   - "lib/titles.ts"
   - "lib/filmContext.ts"
   - "components/FilmCard.tsx"
+  - "lib/posters.ts"
+  - "scripts/confirm-batch.ts"
+  - "next.config.ts"
   - "components/FilmNotes.tsx"
   - "components/MarqueeSticker.tsx"
   - "components/ScreeningTags.tsx"
@@ -231,3 +234,25 @@ synthetic `Mystery Matinee` at render time (#12).
       text-dim`, the section headings' voice, the where-and-when in normal weight. Not on a
       Mystery Matinee (#12). The Next-week preview gets it too, precomputed into
       `data/upcoming.json` as `contexts`.
+
+30. **A card about one known film shows its Letterboxd poster beside the header** (`parsePoster`
+    in `lib/letterboxd.ts`, `lib/posters.ts`, `poster` on `Screening`/`FilmGroup`/`UpcomingFilm`,
+    the grid in `FilmCard.tsx`). Reasoning: `docs/decisions/visual-language.md`.
+    - **Never hotlinked.** The fetch downloads one 160×240 webp per film into `public/posters/`
+      (named by Letterboxd slug), committed with the week; `poster` is that site-relative path.
+      `fetch:confirm` prunes files neither `showtimes.json` nor `upcoming.json` references —
+      **so trim `upcoming.json` before the final confirm**, or a cut film's poster ships.
+    - **No link, no poster** (like #28's year) — and **never on a Mystery Matinee** (#12, it gives
+      the film away), a marathon (#25) or a shorts programme (#28): `showPoster` gates on
+      `noFilmFacts` and `isProgramme`, not just on the field being set. No placeholder box when
+      there isn't one; the card is exactly the old card.
+    - **Layout (user sign-off):** a grid — poster in column 1 beside the kicker + `<h3>`. From
+      `sm:` the meta line sits beside it too (the poster spans a trailing `1fr` row, so a short
+      header takes the slack there instead of pushing the meta line off the title); on a phone
+      the meta line spans full width *below* the poster. 56×84 mobile, 80×120 `sm:`; `border-2`,
+      `rounded-sm`, **no shadow and no link** (user's call) — a hard shadow here means pressable.
+      Day headers, pill strips and footer stay full width, so the full-bleed pill scroll is
+      untouched.
+    - **basePath isn't applied to `<img src>`**: `next.config.ts` exposes it as
+      `NEXT_PUBLIC_BASE_PATH` and the card prefixes it. Drop that and posters 404 on GitHub Pages
+      only — localhost looks fine.

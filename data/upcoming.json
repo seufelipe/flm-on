@@ -25,7 +25,8 @@
         "Silver Screen"
       ],
       "firstDate": "2026-10-16",
-      "reason": "special"
+      "reason": "special",
+      "poster": "posters/whalefall.webp"
     },
     {
       "title": "Arrietty",
@@ -50,7 +51,8 @@
         "Dubbed"
       ],
       "firstDate": "2026-10-16",
-      "reason": "special"
+      "reason": "special",
+      "poster": "posters/arrietty.webp"
     },
     {
       "title": "Cotton Queen",
@@ -78,7 +80,8 @@
         }
       ],
       "firstDate": "2026-10-18",
-      "reason": "special"
+      "reason": "special",
+      "poster": "posters/cotton-queen-2025.webp"
     },
     {
       "title": "Fatherland",
@@ -102,7 +105,8 @@
         "Subtitled"
       ],
       "firstDate": "2026-10-20",
-      "reason": "special"
+      "reason": "special",
+      "poster": "posters/fatherland-2026.webp"
     },
     {
       "title": "Naza",
@@ -130,7 +134,8 @@
         "Satellite QandA"
       ],
       "firstDate": "2026-10-15",
-      "reason": "new"
+      "reason": "new",
+      "poster": "posters/naza.webp"
     },
     {
       "title": "Forever Is Now",
@@ -150,7 +155,8 @@
       ],
       "screeningTags": [],
       "firstDate": "2026-10-16",
-      "reason": "new"
+      "reason": "new",
+      "poster": "posters/forever-is-now.webp"
     },
     {
       "title": "A Man Of No Importance",
@@ -175,7 +181,8 @@
         }
       ],
       "firstDate": "2026-10-17",
-      "reason": "new"
+      "reason": "new",
+      "poster": "posters/a-man-of-no-importance.webp"
     },
     {
       "title": "Videodrome",
@@ -195,7 +202,8 @@
       ],
       "screeningTags": [],
       "firstDate": "2026-10-17",
-      "reason": "new"
+      "reason": "new",
+      "poster": "posters/videodrome.webp"
     },
     {
       "title": "Possession",
@@ -215,7 +223,8 @@
       ],
       "screeningTags": [],
       "firstDate": "2026-10-18",
-      "reason": "new"
+      "reason": "new",
+      "poster": "posters/possession.webp"
     },
     {
       "title": "The Commitments",
@@ -234,7 +243,8 @@
       ],
       "screeningTags": [],
       "firstDate": "2026-10-19",
-      "reason": "new"
+      "reason": "new",
+      "poster": "posters/the-commitments.webp"
     }
   ]
 }

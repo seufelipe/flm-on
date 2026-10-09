@@ -32,6 +32,7 @@ interface FilmSummary {
   year?: number;
   director?: string;
   letterboxdUrl?: string;
+  poster?: string;
   titleVariants: Set<string>;
 }
 
@@ -51,6 +52,7 @@ function summarizeFilms(screenings: Screening[]): FilmSummary[] {
     entry.year = entry.year ?? s.year;
     entry.director = entry.director ?? s.director;
     entry.letterboxdUrl = entry.letterboxdUrl ?? s.letterboxdUrl;
+    entry.poster = entry.poster ?? s.poster;
   }
   return Array.from(seen.values()).sort((a, b) => a.filmTitle.localeCompare(b.filmTitle));
 }
@@ -138,8 +140,11 @@ async function main() {
     const letterboxd = f.letterboxdUrl ?? "NOT FOUND";
     const variants = Array.from(f.titleVariants);
     const titleLabel = variants.length > 1 ? `${variants.join(" / ")} [CASING DIFFERS]` : variants[0];
+    // A matched film with no poster: Letterboxd has none uploaded, or the download failed
+    // (lib/posters.ts). Its card just shows no thumbnail — worth a glance, not a blocker.
+    const noPoster = f.letterboxdUrl && !f.poster ? " [NO POSTER]" : "";
     console.log(
-      `- ${titleLabel}${f.year ? ` (${f.year})` : ""}${f.director ? ` — dir. ${f.director}` : ""} — Letterboxd: ${letterboxd}`,
+      `- ${titleLabel}${f.year ? ` (${f.year})` : ""}${f.director ? ` — dir. ${f.director}` : ""} — Letterboxd: ${letterboxd}${noPoster}`,
     );
     // Hand a NOT FOUND straight to the manual fix: the search to run, and the override line to
     // paste once you've found the film.

@@ -23,6 +23,10 @@ export interface Screening {
   bookingUrl: string;
   filmPageUrl?: string; // the cinema's own film detail page (not the booking flow)
   letterboxdUrl?: string;
+  // The film's poster, site-relative ("posters/{letterboxd-slug}.webp") — a local copy of the
+  // matched Letterboxd page's, downloaded at fetch time by lib/posters.ts. Never set without a
+  // `letterboxdUrl`.
+  poster?: string;
   // Raw per-session descriptors the cinema attaches to a specific showtime — "Parent and Baby",
   // "Dubbed", "Subtitled", "Open Captioned", "35mm", "IMAX", "Tamil", "Big Screen Classics"…
   // Stored verbatim (adapters normalise their cinema-specific tokens onto these shared labels);

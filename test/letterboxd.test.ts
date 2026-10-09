@@ -5,8 +5,10 @@ import {
   parseDirector,
   parseIsAnimated,
   parseRuntime,
+  parsePoster,
   pickByRuntime,
 } from "@/lib/letterboxd";
+import { posterPath } from "@/lib/posters";
 
 // Snippets mirror Letterboxd's real details-panel markup (server HTML, `hidden="until-found"`).
 const multiLang = `
@@ -134,6 +136,41 @@ describe("parseRuntime", () => {
 
   it("is undefined when the page lists none", () => {
     expect(parseRuntime(`<p class="text-link text-footer"> More at`)).toBeUndefined();
+  });
+});
+
+describe("parsePoster", () => {
+  const poster =
+    "https://a.ltrbxd.com/resized/sm/upload/5e/rk/0e/99/C70E830B-0-600-0-900-crop.jpg?v=359a791d0d";
+
+  it("reads the JSON-LD image, not the og:image backdrop", () => {
+    const html = `
+      <meta property="og:image" content="https://a.ltrbxd.com/resized/sm/upload/kikis-1200-1200-675-675-crop-000000.jpg" />
+      <script type="application/ld+json">
+      /* <![CDATA[ */
+      {"image":"${poster}","@type":"Movie","director":[{"@type":"Person","name":"Hayao Miyazaki"}]}
+      /* ]]> */
+      </script>`;
+    expect(parsePoster(html)).toBe(poster);
+  });
+
+  it("unescapes JSON-escaped slashes", () => {
+    const html = `<script type="application/ld+json">{"image":"https:\\/\\/a.ltrbxd.com\\/p.jpg"}</script>`;
+    expect(parsePoster(html)).toBe("https://a.ltrbxd.com/p.jpg");
+  });
+
+  it("is undefined for a film with no poster uploaded", () => {
+    expect(parsePoster(`<script type="application/ld+json">{"@type":"Movie"}</script>`)).toBeUndefined();
+    expect(parsePoster("<html></html>")).toBeUndefined();
+  });
+});
+
+describe("posterPath", () => {
+  it("names the file after the Letterboxd slug", () => {
+    expect(posterPath("https://letterboxd.com/film/kikis-delivery-service/")).toBe(
+      "posters/kikis-delivery-service.webp",
+    );
+    expect(posterPath("https://example.com/")).toBeUndefined();
   });
 });
 

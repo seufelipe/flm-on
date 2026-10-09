@@ -76,6 +76,7 @@ function upcomingGroup(f: UpcomingFilm): FilmGroup {
     cert: f.cert,
     director: f.director,
     letterboxdUrl: f.letterboxdUrl,
+    poster: f.poster,
     screenings: [],
   };
 }

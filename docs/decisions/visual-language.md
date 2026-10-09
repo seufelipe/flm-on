@@ -1,6 +1,6 @@
 # The visual language
 
-Decisions #7, #8 and #23 in full — what "chunky, not brutalist" means in values, why the
+Decisions #7, #8, #23 and #30 in full — what "chunky, not brutalist" means in values, why the
 app has no counters, and the move to lucide. CLAUDE.md keeps
 the rules; this is the reasoning behind them.
 
@@ -152,3 +152,37 @@ single chunk and no other icon's does.
   the glyph — the old one set a 24px font to get maybe half that in ink, so the sizes don't
   correspond. The icon is `aria-hidden` and the button keeps its `aria-label`. Nothing
   text-based is load-bearing anywhere now.
+
+---
+
+## Decision #30 — Poster thumbnails
+
+**Source.** Letterboxd, because the weekly fetch already loads every matched film's page (#4) and
+the poster is in it — the JSON-LD `image`, a 600×900 crop. `og:image` is the landscape backdrop,
+not the poster. TMDB was considered (clean sizes, hotlinking allowed) but would have been a second
+title-matching problem with its own attribution requirement, when Letterboxd's match is already
+curated weekly. The cinemas' own images are mostly landscape stills and festival art — too
+inconsistent.
+
+**Downloaded, not hotlinked.** The site is a static export on GitHub Pages; hotlinking
+Letterboxd's CDN from a public site is shaky, and a CDN URL change would break every card
+silently (nothing alerts on silent failures here). One 160×240 webp per film (2× the largest
+rendering) is ~8 KB; a week is ~300 KB. `fetch:confirm` prunes what's no longer shown so the
+folder doesn't grow forever (git history still does, slowly).
+
+**Layout — option A of three.** Sketched against the real card and signed off: (A) a thumbnail
+beside the title, (B) a full poster column on desktop only, (C) posters only in an expanded view.
+A was picked as the least disruptive to the text-dense card. On a phone the meta line moves below
+the poster because squeezed into the ~230px beside a 56px poster it wraps to three lines and the
+card grows taller than the poster saves.
+
+**No shadow, no link** (user's call). In the chunky language a hard offset shadow means
+"pressable" (pills, segments); a shadowed poster that isn't a control would lie. The Letterboxd
+mark in the footer is already the link.
+
+**What doesn't get one.** A Mystery Matinee (the poster *is* the answer), a marathon (three
+films), a shorts programme (several). No placeholder frame for a film with no poster — an empty
+box is pure decoration, and the old card is a perfectly good card.
+
+**A side benefit for review.** A wrong Letterboxd match that slips by as a plausible year is
+obvious as the wrong poster.

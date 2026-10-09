@@ -34,7 +34,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41992&showtimeId=1001-41992&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/sense-and-sensibility",
       "director": "Georgia Oakley",
-      "letterboxdUrl": "https://letterboxd.com/film/sense-and-sensibility-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/sense-and-sensibility-2026/",
+      "poster": "posters/sense-and-sensibility-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -48,7 +49,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41819&showtimeId=1001-41819&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-lost-children-of-tuam",
       "director": "Frank Berry",
-      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
+      "poster": "posters/the-lost-children-of-tuam.webp"
     },
     {
       "cinema": "ifi",
@@ -67,7 +69,8 @@
       ],
       "originalTitle": "De la Comédie-Française",
       "director": "Bertrand Usclat, Martin Darondeau",
-      "letterboxdUrl": "https://letterboxd.com/film/comedie-francaise/"
+      "letterboxdUrl": "https://letterboxd.com/film/comedie-francaise/",
+      "poster": "posters/comedie-francaise.webp"
     },
     {
       "cinema": "ifi",
@@ -81,7 +84,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114229/",
       "filmPageUrl": "https://ifi.ie/films/the-lost-children-of-tuam-2",
       "director": "Frank Berry",
-      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
+      "poster": "posters/the-lost-children-of-tuam.webp"
     },
     {
       "cinema": "ifi",
@@ -95,7 +99,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114335/",
       "filmPageUrl": "https://ifi.ie/films/bad-apples-2",
       "director": "Talon Mundo",
-      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2026/",
+      "poster": "posters/bad-apples-2026.webp"
     },
     {
       "cinema": "ifi",
@@ -109,7 +114,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/113484/",
       "filmPageUrl": "https://ifi.ie/films/lesbian-lines-2",
       "director": "Cara Holmes",
-      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/"
+      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/",
+      "poster": "posters/lesbian-lines.webp"
     },
     {
       "cinema": "lighthouse",
@@ -123,7 +129,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41970&showtimeId=1001-41970&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/lesbian-lines",
       "director": "Cara Holmes",
-      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/"
+      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/",
+      "poster": "posters/lesbian-lines.webp"
     },
     {
       "cinema": "lighthouse",
@@ -142,7 +149,8 @@
       ],
       "originalTitle": "호프",
       "director": "Na Hong-jin",
-      "letterboxdUrl": "https://letterboxd.com/film/hope-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/hope-2026/",
+      "poster": "posters/hope-2026.webp"
     },
     {
       "cinema": "ifi",
@@ -161,7 +169,8 @@
       ],
       "originalTitle": "La Bataille de Gaulle : J’écris ton nom",
       "director": "Antonin Baudry",
-      "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-liberte/"
+      "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-liberte/",
+      "poster": "posters/de-gaulle-liberte.webp"
     },
     {
       "cinema": "lighthouse",
@@ -175,7 +184,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40928&showtimeId=1001-40928&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-social-reckoning",
       "director": "Aaron Sorkin",
-      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/",
+      "poster": "posters/the-social-reckoning.webp"
     },
     {
       "cinema": "lighthouse",
@@ -189,7 +199,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41924&showtimeId=1001-41924&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/resident-evil",
       "director": "Zach Cregger",
-      "letterboxdUrl": "https://letterboxd.com/film/resident-evil-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/resident-evil-2026/",
+      "poster": "posters/resident-evil-2026.webp"
     },
     {
       "cinema": "ifi",
@@ -203,7 +214,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/113481/",
       "filmPageUrl": "https://ifi.ie/films/the-uprising-2",
       "director": "Paul Greengrass",
-      "letterboxdUrl": "https://letterboxd.com/film/the-uprising-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-uprising-2026/",
+      "poster": "posters/the-uprising-2026.webp"
     },
     {
       "cinema": "ifi",
@@ -217,7 +229,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114337/",
       "filmPageUrl": "https://ifi.ie/films/sense-and-sensibility-2",
       "director": "Georgia Oakley",
-      "letterboxdUrl": "https://letterboxd.com/film/sense-and-sensibility-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/sense-and-sensibility-2026/",
+      "poster": "posters/sense-and-sensibility-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -231,7 +244,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41817&showtimeId=1001-41817&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-lost-children-of-tuam",
       "director": "Frank Berry",
-      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
+      "poster": "posters/the-lost-children-of-tuam.webp"
     },
     {
       "cinema": "lighthouse",
@@ -245,7 +259,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40943&showtimeId=1001-40943&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/digger",
       "director": "Alejandro G. Iñárritu",
-      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/",
+      "poster": "posters/digger-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -259,7 +274,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40926&showtimeId=1001-40926&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-social-reckoning",
       "director": "Aaron Sorkin",
-      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/",
+      "poster": "posters/the-social-reckoning.webp"
     },
     {
       "cinema": "lighthouse",
@@ -273,7 +289,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41821&showtimeId=1001-41821&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/sense-and-sensibility",
       "director": "Georgia Oakley",
-      "letterboxdUrl": "https://letterboxd.com/film/sense-and-sensibility-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/sense-and-sensibility-2026/",
+      "poster": "posters/sense-and-sensibility-2026.webp"
     },
     {
       "cinema": "ifi",
@@ -287,7 +304,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114230/",
       "filmPageUrl": "https://ifi.ie/films/bad-apples-2",
       "director": "Talon Mundo",
-      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2026/",
+      "poster": "posters/bad-apples-2026.webp"
     },
     {
       "cinema": "ifi",
@@ -301,7 +319,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114226/",
       "filmPageUrl": "https://ifi.ie/films/the-weight-2",
       "director": "Padraic McKinley",
-      "letterboxdUrl": "https://letterboxd.com/film/the-weight-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-weight-2026/",
+      "poster": "posters/the-weight-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -315,7 +334,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41813&showtimeId=1001-41813&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/lesbian-lines",
       "director": "Cara Holmes",
-      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/"
+      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/",
+      "poster": "posters/lesbian-lines.webp"
     },
     {
       "cinema": "ifi",
@@ -334,7 +354,8 @@
       ],
       "originalTitle": "De la Comédie-Française",
       "director": "Bertrand Usclat, Martin Darondeau",
-      "letterboxdUrl": "https://letterboxd.com/film/comedie-francaise/"
+      "letterboxdUrl": "https://letterboxd.com/film/comedie-francaise/",
+      "poster": "posters/comedie-francaise.webp"
     },
     {
       "cinema": "lighthouse",
@@ -348,7 +369,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40942&showtimeId=1001-40942&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/digger",
       "director": "Alejandro G. Iñárritu",
-      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/",
+      "poster": "posters/digger-2026.webp"
     },
     {
       "cinema": "ifi",
@@ -362,7 +384,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114126/",
       "filmPageUrl": "https://ifi.ie/films/digger-2",
       "director": "Alejandro G. Iñárritu",
-      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/",
+      "poster": "posters/digger-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -376,7 +399,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41816&showtimeId=1001-41816&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-lost-children-of-tuam",
       "director": "Frank Berry",
-      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
+      "poster": "posters/the-lost-children-of-tuam.webp"
     },
     {
       "cinema": "lighthouse",
@@ -390,7 +414,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40925&showtimeId=1001-40925&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-social-reckoning",
       "director": "Aaron Sorkin",
-      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/",
+      "poster": "posters/the-social-reckoning.webp"
     },
     {
       "cinema": "ifi",
@@ -404,7 +429,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/113480/",
       "filmPageUrl": "https://ifi.ie/films/the-uprising-2",
       "director": "Paul Greengrass",
-      "letterboxdUrl": "https://letterboxd.com/film/the-uprising-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-uprising-2026/",
+      "poster": "posters/the-uprising-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -418,7 +444,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41820&showtimeId=1001-41820&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/resident-evil",
       "director": "Zach Cregger",
-      "letterboxdUrl": "https://letterboxd.com/film/resident-evil-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/resident-evil-2026/",
+      "poster": "posters/resident-evil-2026.webp"
     },
     {
       "cinema": "ifi",
@@ -432,7 +459,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/113483/",
       "filmPageUrl": "https://ifi.ie/films/lesbian-lines-2",
       "director": "Cara Holmes",
-      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/"
+      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/",
+      "poster": "posters/lesbian-lines.webp"
     },
     {
       "cinema": "lighthouse",
@@ -446,7 +474,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41928&showtimeId=1001-41928&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-lost-children-of-tuam",
       "director": "Frank Berry",
-      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
+      "poster": "posters/the-lost-children-of-tuam.webp"
     },
     {
       "cinema": "lighthouse",
@@ -463,7 +492,8 @@
         "Parent and Baby"
       ],
       "director": "Aaron Sorkin",
-      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/",
+      "poster": "posters/the-social-reckoning.webp"
     },
     {
       "cinema": "ifi",
@@ -477,7 +507,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114343/",
       "filmPageUrl": "https://ifi.ie/films/digger-2",
       "director": "Alejandro G. Iñárritu",
-      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/",
+      "poster": "posters/digger-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -491,7 +522,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41923&showtimeId=1001-41923&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/lesbian-lines",
       "director": "Cara Holmes",
-      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/"
+      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/",
+      "poster": "posters/lesbian-lines.webp"
     },
     {
       "cinema": "lighthouse",
@@ -505,7 +537,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41825&showtimeId=1001-41825&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-lost-children-of-tuam",
       "director": "Frank Berry",
-      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
+      "poster": "posters/the-lost-children-of-tuam.webp"
     },
     {
       "cinema": "lighthouse",
@@ -519,7 +552,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41926&showtimeId=1001-41926&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/sense-and-sensibility",
       "director": "Georgia Oakley",
-      "letterboxdUrl": "https://letterboxd.com/film/sense-and-sensibility-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/sense-and-sensibility-2026/",
+      "poster": "posters/sense-and-sensibility-2026.webp"
     },
     {
       "cinema": "ifi",
@@ -538,7 +572,8 @@
       ],
       "originalTitle": "De la Comédie-Française",
       "director": "Bertrand Usclat, Martin Darondeau",
-      "letterboxdUrl": "https://letterboxd.com/film/comedie-francaise/"
+      "letterboxdUrl": "https://letterboxd.com/film/comedie-francaise/",
+      "poster": "posters/comedie-francaise.webp"
     },
     {
       "cinema": "ifi",
@@ -552,7 +587,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114342/",
       "filmPageUrl": "https://ifi.ie/films/bad-apples-2",
       "director": "Talon Mundo",
-      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2026/",
+      "poster": "posters/bad-apples-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -566,7 +602,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40946&showtimeId=1001-40946&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/digger",
       "director": "Alejandro G. Iñárritu",
-      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/",
+      "poster": "posters/digger-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -585,7 +622,8 @@
       ],
       "originalTitle": "호프",
       "director": "Na Hong-jin",
-      "letterboxdUrl": "https://letterboxd.com/film/hope-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/hope-2026/",
+      "poster": "posters/hope-2026.webp"
     },
     {
       "cinema": "ifi",
@@ -599,7 +637,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/113887/",
       "filmPageUrl": "https://ifi.ie/films/the-uprising-2",
       "director": "Paul Greengrass",
-      "letterboxdUrl": "https://letterboxd.com/film/the-uprising-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-uprising-2026/",
+      "poster": "posters/the-uprising-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -613,7 +652,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40957&showtimeId=1001-40957&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-social-reckoning",
       "director": "Aaron Sorkin",
-      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/",
+      "poster": "posters/the-social-reckoning.webp"
     },
     {
       "cinema": "ifi",
@@ -627,7 +667,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/113892/",
       "filmPageUrl": "https://ifi.ie/films/lesbian-lines-2",
       "director": "Cara Holmes",
-      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/"
+      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/",
+      "poster": "posters/lesbian-lines.webp"
     },
     {
       "cinema": "ifi",
@@ -641,7 +682,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114341/",
       "filmPageUrl": "https://ifi.ie/films/the-weight-2",
       "director": "Padraic McKinley",
-      "letterboxdUrl": "https://letterboxd.com/film/the-weight-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-weight-2026/",
+      "poster": "posters/the-weight-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -655,7 +697,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41915&showtimeId=1001-41915&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/resident-evil",
       "director": "Zach Cregger",
-      "letterboxdUrl": "https://letterboxd.com/film/resident-evil-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/resident-evil-2026/",
+      "poster": "posters/resident-evil-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -669,7 +712,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41823&showtimeId=1001-41823&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-lost-children-of-tuam",
       "director": "Frank Berry",
-      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
+      "poster": "posters/the-lost-children-of-tuam.webp"
     },
     {
       "cinema": "ifi",
@@ -683,7 +727,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114338/",
       "filmPageUrl": "https://ifi.ie/films/the-lost-children-of-tuam-2",
       "director": "Frank Berry",
-      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
+      "poster": "posters/the-lost-children-of-tuam.webp"
     },
     {
       "cinema": "ifi",
@@ -702,7 +747,8 @@
       ],
       "originalTitle": "La Bataille de Gaulle : J’écris ton nom",
       "director": "Antonin Baudry",
-      "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-liberte/"
+      "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-liberte/",
+      "poster": "posters/de-gaulle-liberte.webp"
     },
     {
       "cinema": "ifi",
@@ -716,7 +762,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/113893/",
       "filmPageUrl": "https://ifi.ie/films/digger-2",
       "director": "Alejandro G. Iñárritu",
-      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/",
+      "poster": "posters/digger-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -730,7 +777,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41170&showtimeId=1001-41170&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-craft",
       "director": "Andrew Fleming",
-      "letterboxdUrl": "https://letterboxd.com/film/the-craft/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-craft/",
+      "poster": "posters/the-craft.webp"
     },
     {
       "cinema": "lighthouse",
@@ -744,7 +792,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41824&showtimeId=1001-41824&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-lost-children-of-tuam",
       "director": "Frank Berry",
-      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
+      "poster": "posters/the-lost-children-of-tuam.webp"
     },
     {
       "cinema": "lighthouse",
@@ -758,7 +807,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40955&showtimeId=1001-40955&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-social-reckoning",
       "director": "Aaron Sorkin",
-      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/",
+      "poster": "posters/the-social-reckoning.webp"
     },
     {
       "cinema": "lighthouse",
@@ -772,7 +822,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41814&showtimeId=1001-41814&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/lesbian-lines",
       "director": "Cara Holmes",
-      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/"
+      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/",
+      "poster": "posters/lesbian-lines.webp"
     },
     {
       "cinema": "ifi",
@@ -789,7 +840,8 @@
         "Open Captioned"
       ],
       "director": "Cara Holmes",
-      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/"
+      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/",
+      "poster": "posters/lesbian-lines.webp"
     },
     {
       "cinema": "lighthouse",
@@ -803,7 +855,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41929&showtimeId=1001-41929&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/extra-geography",
       "director": "Molly Manners",
-      "letterboxdUrl": "https://letterboxd.com/film/extra-geography/"
+      "letterboxdUrl": "https://letterboxd.com/film/extra-geography/",
+      "poster": "posters/extra-geography.webp"
     },
     {
       "cinema": "lighthouse",
@@ -817,7 +870,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40949&showtimeId=1001-40949&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/digger",
       "director": "Alejandro G. Iñárritu",
-      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/",
+      "poster": "posters/digger-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -831,7 +885,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40954&showtimeId=1001-40954&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-social-reckoning",
       "director": "Aaron Sorkin",
-      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/",
+      "poster": "posters/the-social-reckoning.webp"
     },
     {
       "cinema": "ifi",
@@ -845,7 +900,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/113888/",
       "filmPageUrl": "https://ifi.ie/films/the-uprising-2",
       "director": "Paul Greengrass",
-      "letterboxdUrl": "https://letterboxd.com/film/the-uprising-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-uprising-2026/",
+      "poster": "posters/the-uprising-2026.webp"
     },
     {
       "cinema": "ifi",
@@ -859,7 +915,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114340/",
       "filmPageUrl": "https://ifi.ie/films/sense-and-sensibility-2",
       "director": "Georgia Oakley",
-      "letterboxdUrl": "https://letterboxd.com/film/sense-and-sensibility-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/sense-and-sensibility-2026/",
+      "poster": "posters/sense-and-sensibility-2026.webp"
     },
     {
       "cinema": "ifi",
@@ -878,7 +935,8 @@
       ],
       "originalTitle": "De la Comédie-Française",
       "director": "Bertrand Usclat, Martin Darondeau",
-      "letterboxdUrl": "https://letterboxd.com/film/comedie-francaise/"
+      "letterboxdUrl": "https://letterboxd.com/film/comedie-francaise/",
+      "poster": "posters/comedie-francaise.webp"
     },
     {
       "cinema": "lighthouse",
@@ -898,7 +956,8 @@
       "context": "Emmy Shigeta & Jack Reynor Present",
       "originalTitle": "回路",
       "director": "Kiyoshi Kurosawa",
-      "letterboxdUrl": "https://letterboxd.com/film/pulse-2001/"
+      "letterboxdUrl": "https://letterboxd.com/film/pulse-2001/",
+      "poster": "posters/pulse-2001.webp"
     },
     {
       "cinema": "ifi",
@@ -912,7 +971,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114354/",
       "filmPageUrl": "https://ifi.ie/films/sense-and-sensibility-2",
       "director": "Georgia Oakley",
-      "letterboxdUrl": "https://letterboxd.com/film/sense-and-sensibility-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/sense-and-sensibility-2026/",
+      "poster": "posters/sense-and-sensibility-2026.webp"
     },
     {
       "cinema": "ifi",
@@ -926,7 +986,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114352/",
       "filmPageUrl": "https://ifi.ie/films/lesbian-lines-2",
       "director": "Cara Holmes",
-      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/"
+      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/",
+      "poster": "posters/lesbian-lines.webp"
     },
     {
       "cinema": "ifi",
@@ -940,7 +1001,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114344/",
       "filmPageUrl": "https://ifi.ie/films/bad-apples-2",
       "director": "Talon Mundo",
-      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2026/",
+      "poster": "posters/bad-apples-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -954,7 +1016,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41918&showtimeId=1001-41918&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-lost-children-of-tuam",
       "director": "Frank Berry",
-      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
+      "poster": "posters/the-lost-children-of-tuam.webp"
     },
     {
       "cinema": "lighthouse",
@@ -968,7 +1031,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40959&showtimeId=1001-40959&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-social-reckoning",
       "director": "Aaron Sorkin",
-      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/",
+      "poster": "posters/the-social-reckoning.webp"
     },
     {
       "cinema": "lighthouse",
@@ -982,7 +1046,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41815&showtimeId=1001-41815&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/lesbian-lines",
       "director": "Cara Holmes",
-      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/"
+      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/",
+      "poster": "posters/lesbian-lines.webp"
     },
     {
       "cinema": "ifi",
@@ -996,7 +1061,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114346/",
       "filmPageUrl": "https://ifi.ie/films/digger-2",
       "director": "Alejandro G. Iñárritu",
-      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/",
+      "poster": "posters/digger-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1010,7 +1076,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41983&showtimeId=1001-41983&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/try-director-qa",
       "director": "Oisín Mistéil",
-      "letterboxdUrl": "https://letterboxd.com/film/try-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/try-2026/",
+      "poster": "posters/try-2026.webp"
     },
     {
       "cinema": "ifi",
@@ -1024,7 +1091,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114356/",
       "filmPageUrl": "https://ifi.ie/films/the-uprising-2",
       "director": "Paul Greengrass",
-      "letterboxdUrl": "https://letterboxd.com/film/the-uprising-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-uprising-2026/",
+      "poster": "posters/the-uprising-2026.webp"
     },
     {
       "cinema": "ifi",
@@ -1043,7 +1111,8 @@
       ],
       "originalTitle": "De la Comédie-Française",
       "director": "Bertrand Usclat, Martin Darondeau",
-      "letterboxdUrl": "https://letterboxd.com/film/comedie-francaise/"
+      "letterboxdUrl": "https://letterboxd.com/film/comedie-francaise/",
+      "poster": "posters/comedie-francaise.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1057,7 +1126,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40952&showtimeId=1001-40952&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/digger",
       "director": "Alejandro G. Iñárritu",
-      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/",
+      "poster": "posters/digger-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1071,7 +1141,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41919&showtimeId=1001-41919&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/resident-evil",
       "director": "Zach Cregger",
-      "letterboxdUrl": "https://letterboxd.com/film/resident-evil-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/resident-evil-2026/",
+      "poster": "posters/resident-evil-2026.webp"
     },
     {
       "cinema": "ifi",
@@ -1090,7 +1161,8 @@
       ],
       "originalTitle": "La Bataille de Gaulle : J’écris ton nom",
       "director": "Antonin Baudry",
-      "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-liberte/"
+      "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-liberte/",
+      "poster": "posters/de-gaulle-liberte.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1104,7 +1176,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41714&showtimeId=1001-41714&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-lost-children-of-tuam",
       "director": "Frank Berry",
-      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
+      "poster": "posters/the-lost-children-of-tuam.webp"
     },
     {
       "cinema": "ifi",
@@ -1118,7 +1191,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114353/",
       "filmPageUrl": "https://ifi.ie/films/sense-and-sensibility-2",
       "director": "Georgia Oakley",
-      "letterboxdUrl": "https://letterboxd.com/film/sense-and-sensibility-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/sense-and-sensibility-2026/",
+      "poster": "posters/sense-and-sensibility-2026.webp"
     },
     {
       "cinema": "ifi",
@@ -1132,7 +1206,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114355/",
       "filmPageUrl": "https://ifi.ie/films/the-lost-children-of-tuam-2",
       "director": "Frank Berry",
-      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
+      "poster": "posters/the-lost-children-of-tuam.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1146,7 +1221,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40960&showtimeId=1001-40960&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-social-reckoning",
       "director": "Aaron Sorkin",
-      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/",
+      "poster": "posters/the-social-reckoning.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1160,7 +1236,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41827&showtimeId=1001-41827&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/24-hour-party-people-24th-anniversary",
       "director": "Michael Winterbottom",
-      "letterboxdUrl": "https://letterboxd.com/film/24-hour-party-people/"
+      "letterboxdUrl": "https://letterboxd.com/film/24-hour-party-people/",
+      "poster": "posters/24-hour-party-people.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1174,7 +1251,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41917&showtimeId=1001-41917&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-lost-children-of-tuam",
       "director": "Frank Berry",
-      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
+      "poster": "posters/the-lost-children-of-tuam.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1188,7 +1266,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41171&showtimeId=1001-41171&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-craft",
       "director": "Andrew Fleming",
-      "letterboxdUrl": "https://letterboxd.com/film/the-craft/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-craft/",
+      "poster": "posters/the-craft.webp"
     },
     {
       "cinema": "ifi",
@@ -1207,7 +1286,8 @@
       ],
       "originalTitle": "De la Comédie-Française",
       "director": "Bertrand Usclat, Martin Darondeau",
-      "letterboxdUrl": "https://letterboxd.com/film/comedie-francaise/"
+      "letterboxdUrl": "https://letterboxd.com/film/comedie-francaise/",
+      "poster": "posters/comedie-francaise.webp"
     },
     {
       "cinema": "ifi",
@@ -1221,7 +1301,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114351/",
       "filmPageUrl": "https://ifi.ie/films/lesbian-lines-2",
       "director": "Cara Holmes",
-      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/"
+      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/",
+      "poster": "posters/lesbian-lines.webp"
     },
     {
       "cinema": "ifi",
@@ -1235,7 +1316,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114345/",
       "filmPageUrl": "https://ifi.ie/films/bad-apples-2",
       "director": "Talon Mundo",
-      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2026/",
+      "poster": "posters/bad-apples-2026.webp"
     },
     {
       "cinema": "ifi",
@@ -1249,7 +1331,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114357/",
       "filmPageUrl": "https://ifi.ie/films/the-uprising-2",
       "director": "Paul Greengrass",
-      "letterboxdUrl": "https://letterboxd.com/film/the-uprising-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-uprising-2026/",
+      "poster": "posters/the-uprising-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1263,7 +1346,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40961&showtimeId=1001-40961&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-social-reckoning",
       "director": "Aaron Sorkin",
-      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/",
+      "poster": "posters/the-social-reckoning.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1277,7 +1361,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41946&showtimeId=1001-41946&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/lesbian-lines",
       "director": "Cara Holmes",
-      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/"
+      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/",
+      "poster": "posters/lesbian-lines.webp"
     },
     {
       "cinema": "ifi",
@@ -1291,7 +1376,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114347/",
       "filmPageUrl": "https://ifi.ie/films/digger-2",
       "director": "Alejandro G. Iñárritu",
-      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/",
+      "poster": "posters/digger-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1305,7 +1391,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40950&showtimeId=1001-40950&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/digger",
       "director": "Alejandro G. Iñárritu",
-      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/",
+      "poster": "posters/digger-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1330,7 +1417,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114358/",
       "filmPageUrl": "https://ifi.ie/films/the-weight-2",
       "director": "Padraic McKinley",
-      "letterboxdUrl": "https://letterboxd.com/film/the-weight-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-weight-2026/",
+      "poster": "posters/the-weight-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1344,7 +1432,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41943&showtimeId=1001-41943&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-lost-children-of-tuam",
       "director": "Frank Berry",
-      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
+      "poster": "posters/the-lost-children-of-tuam.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1358,7 +1447,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41932&showtimeId=1001-41932&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-social-reckoning",
       "director": "Aaron Sorkin",
-      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/",
+      "poster": "posters/the-social-reckoning.webp"
     },
     {
       "cinema": "ifi",
@@ -1372,7 +1462,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114364/",
       "filmPageUrl": "https://ifi.ie/films/lesbian-lines-2",
       "director": "Cara Holmes",
-      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/"
+      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/",
+      "poster": "posters/lesbian-lines.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1386,7 +1477,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41744&showtimeId=1001-41744&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/digger",
       "director": "Alejandro G. Iñárritu",
-      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/",
+      "poster": "posters/digger-2026.webp"
     },
     {
       "cinema": "ifi",
@@ -1403,7 +1495,8 @@
         "Open Captioned"
       ],
       "director": "Paul Greengrass",
-      "letterboxdUrl": "https://letterboxd.com/film/the-uprising-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-uprising-2026/",
+      "poster": "posters/the-uprising-2026.webp"
     },
     {
       "cinema": "ifi",
@@ -1417,7 +1510,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114366/",
       "filmPageUrl": "https://ifi.ie/films/the-lost-children-of-tuam-2",
       "director": "Frank Berry",
-      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
+      "poster": "posters/the-lost-children-of-tuam.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1431,7 +1525,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41947&showtimeId=1001-41947&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/sense-and-sensibility",
       "director": "Georgia Oakley",
-      "letterboxdUrl": "https://letterboxd.com/film/sense-and-sensibility-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/sense-and-sensibility-2026/",
+      "poster": "posters/sense-and-sensibility-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1445,7 +1540,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41988&showtimeId=1001-41988&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/extra-geography",
       "director": "Molly Manners",
-      "letterboxdUrl": "https://letterboxd.com/film/extra-geography/"
+      "letterboxdUrl": "https://letterboxd.com/film/extra-geography/",
+      "poster": "posters/extra-geography.webp"
     },
     {
       "cinema": "ifi",
@@ -1464,7 +1560,8 @@
       ],
       "originalTitle": "De la Comédie-Française",
       "director": "Bertrand Usclat, Martin Darondeau",
-      "letterboxdUrl": "https://letterboxd.com/film/comedie-francaise/"
+      "letterboxdUrl": "https://letterboxd.com/film/comedie-francaise/",
+      "poster": "posters/comedie-francaise.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1483,7 +1580,8 @@
       ],
       "originalTitle": "호프",
       "director": "Na Hong-jin",
-      "letterboxdUrl": "https://letterboxd.com/film/hope-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/hope-2026/",
+      "poster": "posters/hope-2026.webp"
     },
     {
       "cinema": "ifi",
@@ -1497,7 +1595,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114368/",
       "filmPageUrl": "https://ifi.ie/films/the-uprising-2",
       "director": "Paul Greengrass",
-      "letterboxdUrl": "https://letterboxd.com/film/the-uprising-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-uprising-2026/",
+      "poster": "posters/the-uprising-2026.webp"
     },
     {
       "cinema": "ifi",
@@ -1511,7 +1610,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114362/",
       "filmPageUrl": "https://ifi.ie/films/digger-2",
       "director": "Alejandro G. Iñárritu",
-      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/",
+      "poster": "posters/digger-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1525,7 +1625,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41934&showtimeId=1001-41934&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/resident-evil",
       "director": "Zach Cregger",
-      "letterboxdUrl": "https://letterboxd.com/film/resident-evil-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/resident-evil-2026/",
+      "poster": "posters/resident-evil-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1539,7 +1640,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41942&showtimeId=1001-41942&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-lost-children-of-tuam",
       "director": "Frank Berry",
-      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
+      "poster": "posters/the-lost-children-of-tuam.webp"
     },
     {
       "cinema": "ifi",
@@ -1553,7 +1655,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114363/",
       "filmPageUrl": "https://ifi.ie/films/lesbian-lines-2",
       "director": "Cara Holmes",
-      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/"
+      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/",
+      "poster": "posters/lesbian-lines.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1567,7 +1670,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41945&showtimeId=1001-41945&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/lesbian-lines",
       "director": "Cara Holmes",
-      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/"
+      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/",
+      "poster": "posters/lesbian-lines.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1584,7 +1688,8 @@
         "Open Captioned"
       ],
       "director": "Aaron Sorkin",
-      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/",
+      "poster": "posters/the-social-reckoning.webp"
     },
     {
       "cinema": "ifi",
@@ -1598,7 +1703,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114369/",
       "filmPageUrl": "https://ifi.ie/films/the-weight-2",
       "director": "Padraic McKinley",
-      "letterboxdUrl": "https://letterboxd.com/film/the-weight-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-weight-2026/",
+      "poster": "posters/the-weight-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1612,7 +1718,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41940&showtimeId=1001-41940&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-lost-children-of-tuam",
       "director": "Frank Berry",
-      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
+      "poster": "posters/the-lost-children-of-tuam.webp"
     },
     {
       "cinema": "ifi",
@@ -1626,7 +1733,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114359/",
       "filmPageUrl": "https://ifi.ie/films/bad-apples-2",
       "director": "Talon Mundo",
-      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2026/",
+      "poster": "posters/bad-apples-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1640,7 +1748,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41933&showtimeId=1001-41933&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/resident-evil",
       "director": "Zach Cregger",
-      "letterboxdUrl": "https://letterboxd.com/film/resident-evil-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/resident-evil-2026/",
+      "poster": "posters/resident-evil-2026.webp"
     },
     {
       "cinema": "ifi",
@@ -1659,7 +1768,8 @@
       ],
       "originalTitle": "De la Comédie-Française",
       "director": "Bertrand Usclat, Martin Darondeau",
-      "letterboxdUrl": "https://letterboxd.com/film/comedie-francaise/"
+      "letterboxdUrl": "https://letterboxd.com/film/comedie-francaise/",
+      "poster": "posters/comedie-francaise.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1673,7 +1783,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41939&showtimeId=1001-41939&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/everybody-digs-bill-evans",
       "director": "Grant Gee",
-      "letterboxdUrl": "https://letterboxd.com/film/everybody-digs-bill-evans/"
+      "letterboxdUrl": "https://letterboxd.com/film/everybody-digs-bill-evans/",
+      "poster": "posters/everybody-digs-bill-evans.webp"
     },
     {
       "cinema": "ifi",
@@ -1692,7 +1803,8 @@
       ],
       "originalTitle": "La Bataille de Gaulle : J’écris ton nom",
       "director": "Antonin Baudry",
-      "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-liberte/"
+      "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-liberte/",
+      "poster": "posters/de-gaulle-liberte.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1706,7 +1818,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41743&showtimeId=1001-41743&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/digger",
       "director": "Alejandro G. Iñárritu",
-      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/",
+      "poster": "posters/digger-2026.webp"
     },
     {
       "cinema": "ifi",
@@ -1720,7 +1833,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114365/",
       "filmPageUrl": "https://ifi.ie/films/sense-and-sensibility-2",
       "director": "Georgia Oakley",
-      "letterboxdUrl": "https://letterboxd.com/film/sense-and-sensibility-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/sense-and-sensibility-2026/",
+      "poster": "posters/sense-and-sensibility-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1734,7 +1848,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41716&showtimeId=1001-41716&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-social-reckoning",
       "director": "Aaron Sorkin",
-      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/",
+      "poster": "posters/the-social-reckoning.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1748,7 +1863,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41938&showtimeId=1001-41938&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/sense-and-sensibility",
       "director": "Georgia Oakley",
-      "letterboxdUrl": "https://letterboxd.com/film/sense-and-sensibility-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/sense-and-sensibility-2026/",
+      "poster": "posters/sense-and-sensibility-2026.webp"
     },
     {
       "cinema": "ifi",
@@ -1762,7 +1878,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114367/",
       "filmPageUrl": "https://ifi.ie/films/the-uprising-2",
       "director": "Paul Greengrass",
-      "letterboxdUrl": "https://letterboxd.com/film/the-uprising-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-uprising-2026/",
+      "poster": "posters/the-uprising-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1776,7 +1893,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41944&showtimeId=1001-41944&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/lesbian-lines",
       "director": "Cara Holmes",
-      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/"
+      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/",
+      "poster": "posters/lesbian-lines.webp"
     },
     {
       "cinema": "ifi",
@@ -1790,7 +1908,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/113584/",
       "filmPageUrl": "https://ifi.ie/films/lesbian-lines-2",
       "director": "Cara Holmes",
-      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/"
+      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/",
+      "poster": "posters/lesbian-lines.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1809,7 +1928,8 @@
       ],
       "originalTitle": "호프",
       "director": "Na Hong-jin",
-      "letterboxdUrl": "https://letterboxd.com/film/hope-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/hope-2026/",
+      "poster": "posters/hope-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1823,7 +1943,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41951&showtimeId=1001-41951&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/digger",
       "director": "Alejandro G. Iñárritu",
-      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/",
+      "poster": "posters/digger-2026.webp"
     },
     {
       "cinema": "ifi",
@@ -1837,7 +1958,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114370/",
       "filmPageUrl": "https://ifi.ie/films/the-weight-2",
       "director": "Padraic McKinley",
-      "letterboxdUrl": "https://letterboxd.com/film/the-weight-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-weight-2026/",
+      "poster": "posters/the-weight-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1851,7 +1973,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41959&showtimeId=1001-41959&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/sense-and-sensibility",
       "director": "Georgia Oakley",
-      "letterboxdUrl": "https://letterboxd.com/film/sense-and-sensibility-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/sense-and-sensibility-2026/",
+      "poster": "posters/sense-and-sensibility-2026.webp"
     },
     {
       "cinema": "ifi",
@@ -1865,7 +1988,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114371/",
       "filmPageUrl": "https://ifi.ie/films/bad-apples-2",
       "director": "Talon Mundo",
-      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2026/",
+      "poster": "posters/bad-apples-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1879,7 +2003,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41956&showtimeId=1001-41956&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-lost-children-of-tuam",
       "director": "Frank Berry",
-      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
+      "poster": "posters/the-lost-children-of-tuam.webp"
     },
     {
       "cinema": "ifi",
@@ -1893,7 +2018,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114375/",
       "filmPageUrl": "https://ifi.ie/films/the-lost-children-of-tuam-2",
       "director": "Frank Berry",
-      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
+      "poster": "posters/the-lost-children-of-tuam.webp"
     },
     {
       "cinema": "ifi",
@@ -1907,7 +2033,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114373/",
       "filmPageUrl": "https://ifi.ie/films/digger-2",
       "director": "Alejandro G. Iñárritu",
-      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/",
+      "poster": "posters/digger-2026.webp"
     },
     {
       "cinema": "ifi",
@@ -1921,7 +2048,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/113582/",
       "filmPageUrl": "https://ifi.ie/films/the-uprising-2",
       "director": "Paul Greengrass",
-      "letterboxdUrl": "https://letterboxd.com/film/the-uprising-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-uprising-2026/",
+      "poster": "posters/the-uprising-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1935,7 +2063,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41950&showtimeId=1001-41950&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-social-reckoning",
       "director": "Aaron Sorkin",
-      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/",
+      "poster": "posters/the-social-reckoning.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1949,7 +2078,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41961&showtimeId=1001-41961&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/take-it-or-leave-it",
       "director": "Dave Robinson",
-      "letterboxdUrl": "https://letterboxd.com/film/take-it-or-leave-it/"
+      "letterboxdUrl": "https://letterboxd.com/film/take-it-or-leave-it/",
+      "poster": "posters/take-it-or-leave-it.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1963,7 +2093,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41957&showtimeId=1001-41957&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-lost-children-of-tuam",
       "director": "Frank Berry",
-      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
+      "poster": "posters/the-lost-children-of-tuam.webp"
     },
     {
       "cinema": "lighthouse",
@@ -1977,7 +2108,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41954&showtimeId=1001-41954&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/lesbian-lines",
       "director": "Cara Holmes",
-      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/"
+      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/",
+      "poster": "posters/lesbian-lines.webp"
     },
     {
       "cinema": "ifi",
@@ -1996,7 +2128,8 @@
       ],
       "originalTitle": "De la Comédie-Française",
       "director": "Bertrand Usclat, Martin Darondeau",
-      "letterboxdUrl": "https://letterboxd.com/film/comedie-francaise/"
+      "letterboxdUrl": "https://letterboxd.com/film/comedie-francaise/",
+      "poster": "posters/comedie-francaise.webp"
     },
     {
       "cinema": "lighthouse",
@@ -2010,7 +2143,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41949&showtimeId=1001-41949&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-social-reckoning",
       "director": "Aaron Sorkin",
-      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/",
+      "poster": "posters/the-social-reckoning.webp"
     },
     {
       "cinema": "ifi",
@@ -2029,7 +2163,8 @@
       ],
       "originalTitle": "De la Comédie-Française",
       "director": "Bertrand Usclat, Martin Darondeau",
-      "letterboxdUrl": "https://letterboxd.com/film/comedie-francaise/"
+      "letterboxdUrl": "https://letterboxd.com/film/comedie-francaise/",
+      "poster": "posters/comedie-francaise.webp"
     },
     {
       "cinema": "lighthouse",
@@ -2043,7 +2178,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41958&showtimeId=1001-41958&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/resident-evil",
       "director": "Zach Cregger",
-      "letterboxdUrl": "https://letterboxd.com/film/resident-evil-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/resident-evil-2026/",
+      "poster": "posters/resident-evil-2026.webp"
     },
     {
       "cinema": "ifi",
@@ -2057,7 +2193,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/113585/",
       "filmPageUrl": "https://ifi.ie/films/lesbian-lines-2",
       "director": "Cara Holmes",
-      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/"
+      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/",
+      "poster": "posters/lesbian-lines.webp"
     },
     {
       "cinema": "lighthouse",
@@ -2071,7 +2208,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=40409&showtimeId=1001-40409&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/frankenhooker",
       "director": "Frank Henenlotter",
-      "letterboxdUrl": "https://letterboxd.com/film/frankenhooker/"
+      "letterboxdUrl": "https://letterboxd.com/film/frankenhooker/",
+      "poster": "posters/frankenhooker.webp"
     },
     {
       "cinema": "ifi",
@@ -2084,7 +2222,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/113189/",
       "filmPageUrl": "https://ifi.ie/films/the-bigger-picture-the-stuff-2",
       "director": "Larry Cohen",
-      "letterboxdUrl": "https://letterboxd.com/film/the-stuff/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-stuff/",
+      "poster": "posters/the-stuff.webp"
     },
     {
       "cinema": "ifi",
@@ -2103,7 +2242,8 @@
       ],
       "originalTitle": "La Bataille de Gaulle : J’écris ton nom",
       "director": "Antonin Baudry",
-      "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-liberte/"
+      "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-liberte/",
+      "poster": "posters/de-gaulle-liberte.webp"
     },
     {
       "cinema": "ifi",
@@ -2117,7 +2257,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114374/",
       "filmPageUrl": "https://ifi.ie/films/sense-and-sensibility-2",
       "director": "Georgia Oakley",
-      "letterboxdUrl": "https://letterboxd.com/film/sense-and-sensibility-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/sense-and-sensibility-2026/",
+      "poster": "posters/sense-and-sensibility-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -2131,7 +2272,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41953&showtimeId=1001-41953&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/lesbian-lines",
       "director": "Cara Holmes",
-      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/"
+      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/",
+      "poster": "posters/lesbian-lines.webp"
     },
     {
       "cinema": "ifi",
@@ -2145,7 +2287,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/113581/",
       "filmPageUrl": "https://ifi.ie/films/the-uprising-2",
       "director": "Paul Greengrass",
-      "letterboxdUrl": "https://letterboxd.com/film/the-uprising-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-uprising-2026/",
+      "poster": "posters/the-uprising-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -2159,7 +2302,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41948&showtimeId=1001-41948&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-social-reckoning",
       "director": "Aaron Sorkin",
-      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/",
+      "poster": "posters/the-social-reckoning.webp"
     },
     {
       "cinema": "lighthouse",
@@ -2173,7 +2317,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41955&showtimeId=1001-41955&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-lost-children-of-tuam",
       "director": "Frank Berry",
-      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
+      "poster": "posters/the-lost-children-of-tuam.webp"
     },
     {
       "cinema": "lighthouse",
@@ -2187,7 +2332,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41952&showtimeId=1001-41952&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/digger",
       "director": "Alejandro G. Iñárritu",
-      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/",
+      "poster": "posters/digger-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -2204,7 +2350,8 @@
         "Parent and Baby"
       ],
       "director": "Aaron Sorkin",
-      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/",
+      "poster": "posters/the-social-reckoning.webp"
     },
     {
       "cinema": "lighthouse",
@@ -2218,7 +2365,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41994&showtimeId=1001-41994&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-lost-children-of-tuam",
       "director": "Frank Berry",
-      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
+      "poster": "posters/the-lost-children-of-tuam.webp"
     },
     {
       "cinema": "lighthouse",
@@ -2232,7 +2380,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41964&showtimeId=1001-41964&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/everybody-digs-bill-evans",
       "director": "Grant Gee",
-      "letterboxdUrl": "https://letterboxd.com/film/everybody-digs-bill-evans/"
+      "letterboxdUrl": "https://letterboxd.com/film/everybody-digs-bill-evans/",
+      "poster": "posters/everybody-digs-bill-evans.webp"
     },
     {
       "cinema": "ifi",
@@ -2246,7 +2395,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114383/",
       "filmPageUrl": "https://ifi.ie/films/the-uprising-2",
       "director": "Paul Greengrass",
-      "letterboxdUrl": "https://letterboxd.com/film/the-uprising-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-uprising-2026/",
+      "poster": "posters/the-uprising-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -2260,7 +2410,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41990&showtimeId=1001-41990&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/sense-and-sensibility",
       "director": "Georgia Oakley",
-      "letterboxdUrl": "https://letterboxd.com/film/sense-and-sensibility-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/sense-and-sensibility-2026/",
+      "poster": "posters/sense-and-sensibility-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -2274,7 +2425,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41963&showtimeId=1001-41963&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/lesbian-lines",
       "director": "Cara Holmes",
-      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/"
+      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/",
+      "poster": "posters/lesbian-lines.webp"
     },
     {
       "cinema": "ifi",
@@ -2293,7 +2445,8 @@
       ],
       "originalTitle": "De la Comédie-Française",
       "director": "Bertrand Usclat, Martin Darondeau",
-      "letterboxdUrl": "https://letterboxd.com/film/comedie-francaise/"
+      "letterboxdUrl": "https://letterboxd.com/film/comedie-francaise/",
+      "poster": "posters/comedie-francaise.webp"
     },
     {
       "cinema": "lighthouse",
@@ -2307,7 +2460,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41984&showtimeId=1001-41984&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/try-director-qa",
       "director": "Oisín Mistéil",
-      "letterboxdUrl": "https://letterboxd.com/film/try-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/try-2026/",
+      "poster": "posters/try-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -2321,7 +2475,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41500&showtimeId=1001-41500&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/digger",
       "director": "Alejandro G. Iñárritu",
-      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/",
+      "poster": "posters/digger-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -2335,7 +2490,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41504&showtimeId=1001-41504&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-social-reckoning",
       "director": "Aaron Sorkin",
-      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/",
+      "poster": "posters/the-social-reckoning.webp"
     },
     {
       "cinema": "ifi",
@@ -2349,7 +2505,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114381/",
       "filmPageUrl": "https://ifi.ie/films/sense-and-sensibility-2",
       "director": "Georgia Oakley",
-      "letterboxdUrl": "https://letterboxd.com/film/sense-and-sensibility-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/sense-and-sensibility-2026/",
+      "poster": "posters/sense-and-sensibility-2026.webp"
     },
     {
       "cinema": "ifi",
@@ -2368,7 +2525,8 @@
       ],
       "originalTitle": "La Bataille de Gaulle : J’écris ton nom",
       "director": "Antonin Baudry",
-      "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-liberte/"
+      "letterboxdUrl": "https://letterboxd.com/film/de-gaulle-liberte/",
+      "poster": "posters/de-gaulle-liberte.webp"
     },
     {
       "cinema": "lighthouse",
@@ -2382,7 +2540,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41967&showtimeId=1001-41967&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-lost-children-of-tuam",
       "director": "Frank Berry",
-      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
+      "poster": "posters/the-lost-children-of-tuam.webp"
     },
     {
       "cinema": "ifi",
@@ -2396,7 +2555,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114382/",
       "filmPageUrl": "https://ifi.ie/films/the-lost-children-of-tuam-2",
       "director": "Frank Berry",
-      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
+      "poster": "posters/the-lost-children-of-tuam.webp"
     },
     {
       "cinema": "lighthouse",
@@ -2410,7 +2570,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41966&showtimeId=1001-41966&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/resident-evil",
       "director": "Zach Cregger",
-      "letterboxdUrl": "https://letterboxd.com/film/resident-evil-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/resident-evil-2026/",
+      "poster": "posters/resident-evil-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -2424,7 +2585,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=42124&showtimeId=1001-42124&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/extra-geography",
       "director": "Molly Manners",
-      "letterboxdUrl": "https://letterboxd.com/film/extra-geography/"
+      "letterboxdUrl": "https://letterboxd.com/film/extra-geography/",
+      "poster": "posters/extra-geography.webp"
     },
     {
       "cinema": "lighthouse",
@@ -2438,7 +2600,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41965&showtimeId=1001-41965&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/lesbian-lines",
       "director": "Cara Holmes",
-      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/"
+      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/",
+      "poster": "posters/lesbian-lines.webp"
     },
     {
       "cinema": "ifi",
@@ -2457,7 +2620,8 @@
       ],
       "originalTitle": "De la Comédie-Française",
       "director": "Bertrand Usclat, Martin Darondeau",
-      "letterboxdUrl": "https://letterboxd.com/film/comedie-francaise/"
+      "letterboxdUrl": "https://letterboxd.com/film/comedie-francaise/",
+      "poster": "posters/comedie-francaise.webp"
     },
     {
       "cinema": "ifi",
@@ -2482,7 +2646,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41502&showtimeId=1001-41502&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-lost-children-of-tuam",
       "director": "Frank Berry",
-      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-lost-children-of-tuam/",
+      "poster": "posters/the-lost-children-of-tuam.webp"
     },
     {
       "cinema": "ifi",
@@ -2496,7 +2661,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114380/",
       "filmPageUrl": "https://ifi.ie/films/lesbian-lines-2",
       "director": "Cara Holmes",
-      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/"
+      "letterboxdUrl": "https://letterboxd.com/film/lesbian-lines/",
+      "poster": "posters/lesbian-lines.webp"
     },
     {
       "cinema": "ifi",
@@ -2513,7 +2679,8 @@
         "Open Captioned"
       ],
       "director": "Paul Greengrass",
-      "letterboxdUrl": "https://letterboxd.com/film/the-uprising-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-uprising-2026/",
+      "poster": "posters/the-uprising-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -2527,7 +2694,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41986&showtimeId=1001-41986&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/manhunter",
       "director": "Michael Mann",
-      "letterboxdUrl": "https://letterboxd.com/film/manhunter/"
+      "letterboxdUrl": "https://letterboxd.com/film/manhunter/",
+      "poster": "posters/manhunter.webp"
     },
     {
       "cinema": "ifi",
@@ -2541,7 +2709,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114379/",
       "filmPageUrl": "https://ifi.ie/films/digger-2",
       "director": "Alejandro G. Iñárritu",
-      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/",
+      "poster": "posters/digger-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -2555,7 +2724,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41498&showtimeId=1001-41498&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/digger",
       "director": "Alejandro G. Iñárritu",
-      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/digger-2026/",
+      "poster": "posters/digger-2026.webp"
     },
     {
       "cinema": "ifi",
@@ -2569,7 +2739,8 @@
       "bookingUrl": "https://shop.ifi.ie/performance/114377/",
       "filmPageUrl": "https://ifi.ie/films/bad-apples-2",
       "director": "Talon Mundo",
-      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2026/"
+      "letterboxdUrl": "https://letterboxd.com/film/bad-apples-2026/",
+      "poster": "posters/bad-apples-2026.webp"
     },
     {
       "cinema": "lighthouse",
@@ -2583,7 +2754,8 @@
       "bookingUrl": "https://web-booking.lighthousegroup.ie/Ticketing/visSelectTickets.aspx?cinemacode=1001\n&txtSessionId=41497&showtimeId=1001-41497&visLang=1",
       "filmPageUrl": "https://www.lighthousecinema.ie/film/the-social-reckoning",
       "director": "Aaron Sorkin",
-      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/"
+      "letterboxdUrl": "https://letterboxd.com/film/the-social-reckoning/",
+      "poster": "posters/the-social-reckoning.webp"
     }
   ]
 }

@@ -131,6 +131,16 @@ export function parseOriginalTitle(html: string): string | undefined {
   return text || undefined;
 }
 
+// The poster, from the page's JSON-LD block — `{"image":"https://a.ltrbxd.com/resized/…-0-600-0-900-crop.jpg?v=…",
+// "@type":"Movie",…}`. (`og:image` is the landscape backdrop, not the poster.) A film with no
+// poster uploaded has no `image` key. lib/posters.ts downloads it at fetch time.
+export function parsePoster(html: string): string | undefined {
+  const block = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+  if (!block) return undefined;
+  const image = block[1].match(/"image":"([^"]+)"/);
+  return image ? image[1].replace(/\\\//g, "/") : undefined;
+}
+
 async function fetchFilmPage(
   slug: string,
 ): Promise<{
@@ -141,6 +151,7 @@ async function fetchFilmPage(
   director?: string;
   animated?: boolean;
   runtime?: number;
+  poster?: string;
 }> {
   try {
     const res = await fetch(`https://letterboxd.com/film/${slug}/`, {
@@ -157,6 +168,7 @@ async function fetchFilmPage(
       director: parseDirector(html),
       animated: parseIsAnimated(html),
       runtime: parseRuntime(html),
+      poster: parsePoster(html),
     };
   } catch {
     return { ok: false };
@@ -185,6 +197,9 @@ export interface LetterboxdMatch {
   // Whether Letterboxd files the film under "Animation" — lib/aggregate.ts uses this to decide
   // whether to assume a non-English session is subtitled (decision #17). Not shown in the UI.
   animated?: boolean;
+  // The page's poster image URL (Letterboxd's CDN) — lib/aggregate.ts hands it to
+  // lib/posters.ts, which downloads a local copy; the remote URL never reaches the UI.
+  poster?: string;
 }
 
 // A cache entry is the resolved URL plus what's read off that page (year, primary language,
@@ -198,6 +213,7 @@ type CacheEntry = {
   originalTitle?: string | null;
   director?: string | null;
   animated?: boolean | null;
+  poster?: string | null;
 };
 type LetterboxdCache = Record<string, CacheEntry | string | null>;
 type LetterboxdOverrides = Record<string, string | null>;
@@ -216,19 +232,21 @@ function entryToMatch(entry: CacheEntry): LetterboxdMatch {
     originalTitle: entry.originalTitle ?? undefined,
     director: entry.director ?? undefined,
     animated: entry.animated ?? undefined,
+    poster: entry.poster ?? undefined,
   };
 }
 
 // True once an entry has been fully resolved against a real page — year, language and original
 // title all recorded. A `year: null` (page had no `og:title` year) or a missing `language` /
-// `originalTitle` / `director` / `animated` key forces a re-resolve.
+// `originalTitle` / `director` / `animated` / `poster` key forces a re-resolve.
 function isResolved(entry: CacheEntry): boolean {
   return (
     entry.year !== null &&
     entry.language !== undefined &&
     entry.originalTitle !== undefined &&
     entry.director !== undefined &&
-    entry.animated !== undefined
+    entry.animated !== undefined &&
+    entry.poster !== undefined
   );
 }
 
@@ -302,6 +320,7 @@ export async function resolveLetterboxd(
       originalTitle: page?.originalTitle ?? null,
       director: page?.director ?? null,
       animated: page?.animated ?? null,
+      poster: page?.poster ?? null,
     };
     cache[storeKey] = entry;
     await saveCache(cache);
@@ -339,6 +358,7 @@ export async function resolveLetterboxd(
         originalTitle: page.originalTitle,
         director: page.director,
         animated: page.animated,
+        poster: page.poster,
       };
     }
   }
@@ -355,6 +375,7 @@ export async function resolveLetterboxd(
       originalTitle: page.originalTitle,
       director: page.director,
       animated: page.animated,
+      poster: page.poster,
     };
     break;
   }
@@ -367,6 +388,7 @@ export async function resolveLetterboxd(
         originalTitle: match.originalTitle ?? null,
         director: match.director ?? null,
         animated: match.animated ?? null,
+        poster: match.poster ?? null,
       }
     : null;
   await saveCache(cache);

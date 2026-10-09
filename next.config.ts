@@ -14,6 +14,9 @@ const nextConfig: NextConfig = {
   output: "export",
   basePath: repoBasePath,
   assetPrefix: repoBasePath,
+  // basePath isn't applied to a plain <img src> (nor to next/image's), so FilmCard's poster
+  // thumbnail puts this in front of its site-relative `posters/…` path itself.
+  env: { NEXT_PUBLIC_BASE_PATH: repoBasePath },
 };
 
 export default nextConfig;

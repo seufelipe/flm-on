@@ -65,7 +65,7 @@ later re-confirm **a browser reload is enough** — never restart the server.
 | --- | --- |
 | `Errors:` | Any adapter erroring — that cinema fell back to cached data. Don't review blind; find out why. |
 | `Since the last published week` | A long `GONE` list on a **mid-week** run (a cinema silently broke); `PREVIEWED BUT ABSENT` entries; a `NEW` film that's really a held-over one under a changed title |
-| unique-films list | `NOT FOUND`; `[CASING DIFFERS]`; a repertory title carrying **this** year; a re-release whose link resolved to a same-name *new* film |
+| unique-films list | `NOT FOUND`; `[CASING DIFFERS]`; a repertory title carrying **this** year; a re-release whose link resolved to a same-name *new* film; `[NO POSTER]` (Letterboxd has none, or the download failed — a re-fetch retries) |
 | Pre-filled `film-labels.json` | A pre-fill that reads wrong — `classic!` on an ordinary wide release |
 | `Labels` | A film that deserves an editorial label and shows `—` |
 | `Programmes` | `NO LIST PARSED` on a programme whose IFI page *does* list its films (the parser missed a new layout — fix `parseProgrammeFilms`, don't curate around it), or a list with a stray line in it |
@@ -150,7 +150,8 @@ Apply the approved edits. If any **re-fetch** file changed: `npm run fetch:batch
 
 ## Step 8 — trim `data/upcoming.json`
 
-**Always the last thing before the final confirm.** `fetch:batch` rewrites this file whole, so
+**Always the last thing before the final confirm** — the confirm also prunes `public/posters/` to
+what's still shown, so a film cut after it would leave its poster behind. `fetch:batch` rewrites this file whole, so
 any re-fetch in Step 7 wipes the trim and it has to be redone. `git diff data/upcoming.json`
 shows what the last trim removed.
 

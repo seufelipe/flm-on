@@ -23,6 +23,7 @@ export interface UpcomingFilm {
   director?: string;
   originalTitle?: string;
   letterboxdUrl?: string;
+  poster?: string;
   cinemas: CinemaId[];
   // One per cinema the film plays at that has a film page. Carries the cinema id so the UI can
   // drop a link for a cinema the viewer has turned off (matching how regular film cards work).
@@ -90,6 +91,7 @@ export function selectUpcomingFilms(
       director: g.director,
       originalTitle: g.originalTitle,
       letterboxdUrl: g.letterboxdUrl,
+      poster: g.poster,
       cinemas: Array.from(cinemas.keys()),
       cinemaLinks: Array.from(cinemas.values()).filter((v): v is Link => v !== null),
       screeningTags: Array.from(new Set(g.screenings.flatMap((s) => s.screeningTags ?? []))),

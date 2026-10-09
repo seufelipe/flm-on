@@ -132,7 +132,8 @@ you've opened its code, read the file first.**
   `preferred`); #20 a screening lingers ten minutes past its start; #21 the `.ics` export.
 - `strands.md` — #12 Mystery Matinee; #13 strand marks and tag-description house style; #15 film
   formats; #17 languages and captions; #25 marathons; #27 festival sections; #28 shorts programmes
-  and "no Letterboxd link, no year"; #29 a cinema's context prefix as a kicker above the title.
+  and "no Letterboxd link, no year"; #29 a cinema's context prefix as a kicker above the title;
+  #30 the poster thumbnail (downloaded, never hotlinked; never on a Mystery Matinee).
   Plus the `FilmCard` pill-strip and `MarqueeSticker` gotchas.
 - `browsing.md` — #14 persisted preferences; #18 the Next-week preview; #26 "New this week".
 - `ui-primitives.md` — #22 the vendored Radix primitives and their landmines; #23 lucide icons;
@@ -202,7 +203,8 @@ you've opened its code, read the file first.**
 
 ## Data files (`data/`)
 
-Three are **read at build time**, and they're the only ones a UI change ever touches:
+Three are **read at build time**, and they're the only ones a UI change ever touches (plus the
+poster images in `public/posters/`, written by the fetch and pruned by the confirm, #30):
 `showtimes.json` (the published week — screenings may carry `screeningTags: string[]`, shared vocab
 per decisions #13/#15/#17, plus `originalTitle` (#16) and `director` (#4); alongside them a
 top-level `newFilms: string[]`, #26), `upcoming.json` (the
