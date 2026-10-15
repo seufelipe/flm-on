@@ -101,6 +101,11 @@ function stripTrailingAnnotations(
   return { title: out, annotation: annotation || undefined };
 }
 
+// What joins a prefix to the title: usually a colon, but Light House also uses a spaced dash
+// ("Oscariana: Wilde Festival - An Ideal Husband"). A dash only counts with space around it, so a
+// hyphenated title ("Re-Animator") is never cut.
+const PREFIX_SEPARATOR = /^(?:\s*[-–—](?=\s)|[\s:])+/;
+
 // Removes a leading `strandPrefixes` entry, reporting the strand it names. Runs before everything
 // else in `cleanTitleParts`, so the remainder still gets corrections / stripPrefixes / annotations
 // exactly as an unprefixed title would.
@@ -108,7 +113,7 @@ function splitStrandPrefix(raw: string, overrides: TitleOverrides): { rest: stri
   const trimmed = raw.trim();
   for (const [prefix, strand] of Object.entries(overrides.strandPrefixes ?? {})) {
     if (!trimmed.toLowerCase().startsWith(prefix.toLowerCase())) continue;
-    const rest = trimmed.slice(prefix.length).replace(/^[\s:]+/, "").trim();
+    const rest = trimmed.slice(prefix.length).replace(PREFIX_SEPARATOR, "").trim();
     if (rest) return { rest, strand };
   }
   return { rest: trimmed };
@@ -154,7 +159,7 @@ function cleanUnprefixed(
     matched = false;
     for (const prefix of [...overrides.stripPrefixes, ...(overrides.contextPrefixes ?? [])]) {
       if (title.toLowerCase().startsWith(prefix.toLowerCase())) {
-        const stripped = title.slice(prefix.length).replace(/^[\s:]+/, "").trim();
+        const stripped = title.slice(prefix.length).replace(PREFIX_SEPARATOR, "").trim();
         if (stripped) {
           // The cinema's own words for it, as they appear in this title — not the override's.
           if (contextPrefixes.has(prefix.toLowerCase())) {

@@ -12,7 +12,7 @@ import {
 const overrides: TitleOverrides = {
   stripPrefixes: ["ARCHIVE AT LUNCHTIME:", "CINEMA BOOK CLUB:", "From the Vaults:"],
   strandPrefixes: { "IFI Documentary Festival 2026:": "IFI Documentary Festival" },
-  contextPrefixes: ["Black History Month:", "Emmy Shigeta & Jack Reynor Present:"],
+  contextPrefixes: ["Black History Month:", "Emmy Shigeta & Jack Reynor Present:", "Oscariana: Wilde Festival"],
   strandSuffixes: { "\\+\\s*Q\\s*[&+]\\s*A": "In-Person QandA" },
   stripAnnotations: [
     "\\d{1,3}(?:st|nd|rd|th)\\s+anniversary",
@@ -195,6 +195,14 @@ describe("titleContext", () => {
       "Black History Month",
     );
     expect(titleContext("From the Vaults: Mother Ireland", overrides)).toBeUndefined();
+  });
+
+  it("takes a spaced dash as the separator, but never a hyphen inside the title", () => {
+    const raw = "Oscariana: Wilde Festival - An Ideal Husband";
+    expect(cleanFilmTitle(raw, overrides)).toBe("An Ideal Husband");
+    expect(titleContext(raw, overrides)).toBe("Oscariana: Wilde Festival");
+    expect(cleanFilmTitle("From the Vaults: Re-Animator", overrides)).toBe("Re-Animator");
+    expect(cleanFilmTitle("From the Vaults:-Animator", overrides)).toBe("-Animator");
   });
 });
 

@@ -94,6 +94,12 @@ name, `IFI Documentary Festival`, at the user's request. `STRAND_MARKS` is keyed
 
 **Mark:** lucide `Clapperboard`.
 
+**Second use: IFI Horrorthon (Oct 2026).** Same shape — `IFI Horrorthon 2026:` → `IFI Horrorthon`,
+label in the festival's own capitals, mark lucide `Skull`. Its cabaret nights carry a longer
+prefix (`IFI Horrorthon 2026 x EGG Cabaret - Prom Night:`), mapped to the same tag as a second
+`strandPrefixes` entry rather than a regex: `strandPrefixes` is matched literally, and the short
+prefix can't swallow the long one because the long one continues with ` x`, not a colon.
+
 ---
 
 ## Decision #28 — A shorts programme lists its films, and has no year

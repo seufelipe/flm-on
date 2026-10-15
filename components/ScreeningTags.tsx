@@ -1,4 +1,4 @@
-import { Baby, Clapperboard, Coffee, FaceGrinning, MicVocal, Spool, type LucideIcon } from "lucide-react";
+import { Baby, Clapperboard, Coffee, FaceGrinning, MicVocal, Skull, Spool, type LucideIcon } from "lucide-react";
 
 import { displayScreeningTags } from "@/lib/screeningTags";
 import { cn } from "@/lib/utils";
@@ -33,6 +33,7 @@ const STRAND_MARKS: Record<string, LucideIcon> = {
   "q&a": MicVocal,
   "knit-along": Spool,
   "IFI Documentary Festival": Clapperboard,
+  "IFI Horrorthon": Skull,
 };
 
 // A strand's icon on its own — also what a `section` strand's heading wears (decision #27).

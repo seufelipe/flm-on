@@ -124,6 +124,14 @@ const KNOWN: Record<string, KnownTag> = {
     description: "Part of the IFI's annual festival of documentary film.",
     section: true,
   },
+  // The IFI's Halloween horror festival, the same mechanism as the Documentary Festival above:
+  // "IFI Horrorthon 2026: …" (and its "x EGG Cabaret - Prom Night:" nights) via `strandPrefixes`.
+  "ifi horrorthon": {
+    label: "IFI Horrorthon",
+    title: "IFI Horrorthon",
+    description: "Part of the IFI's annual Halloween horror festival.",
+    section: true,
+  },
   // A whole-day booking of several films. Like the Mystery Matinee this isn't scraped —
   // lib/marathon.ts detects it from the title and ScreeningBrowser attaches the tag — but it
   // keeps the mark: the card has no other treatment saying the session is out of the ordinary.

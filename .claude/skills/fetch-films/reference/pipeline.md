@@ -45,9 +45,13 @@ festival silently goes back to showing its prefix in every title. Then three pas
 `+ Q&A` → `In-Person QandA` — and is stripped first. `titleStrands()` reports both.
 (`contextPrefixes` — a list, decision #29 — are matched in the `stripPrefixes` pass alongside
 them; the one that matched is reported by `titleContext()` in the cinema's own words, and
-`aggregate` keeps it on the session as `context`, shown as a kicker above the card's title.)
+`aggregate` keeps it on the session as `context`, shown as a kicker above the card's title.) A prefix is joined to the title by a colon or a **spaced** dash (Light House's
+`Oscariana: Wilde Festival - An Ideal Husband`); a hyphen inside a word never separates.
 
-1. exact `corrections` — the escape hatch for a mistitled strand session
+1. exact `corrections` — the escape hatch for a mistitled strand session. Keyed on the title
+   **as it reaches this pass** — a `strandPrefixes` prefix is already gone, but a `stripPrefixes`
+   one is not, so `Wild Strawberries: 9 To 5` needs that whole string as its key (and exact case:
+   `9 to 5` didn't catch it)
 2. `stripPrefixes` — programme strands (`CINEMA BOOK CLUB:` …), repeated until none matches, since they stack (`From the Vaults: IFI & ESB & DFOH: …`)
 3. `stripAnnotations` — regex sources for trailing junk that isn't part of the name
    (`4K Restoration`, `Nth Anniversary`, a `Month YYYY` suffix), matched at the end, bare or

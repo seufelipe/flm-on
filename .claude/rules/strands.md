@@ -77,7 +77,7 @@ synthetic `Mystery Matinee` at render time (#12).
     tags we recognise and choose not to show. Reasoning: `docs/decisions/screening-tags.md`.
     - **A strand's mark is `<StrandMark>`, its own icon or the generic smiley.** `STRAND_MARKS`
       in `components/ScreeningTags.tsx` maps a `label` to an icon — `parent & baby` → `Baby`,
-      `silver screen` → `Coffee`, `q&a` → `MicVocal`, `knit-along` → `Spool`; everything else falls back to `<SpecialsMark>`, lucide's
+      `silver screen` → `Coffee`, `q&a` → `MicVocal`, `knit-along` → `Spool`, `IFI Documentary Festival` → `Clapperboard`, `IFI Horrorthon` → `Skull`; everything else falls back to `<SpecialsMark>`, lucide's
       `FaceGrinning`. **The map lives in the renderer, not in `lib/screeningTags.ts`** — which
       glyph a strand wears is a rendering decision, and that module stays data-only and
       React-free. Adding a mark is one line and is never required.
@@ -161,7 +161,8 @@ synthetic `Mystery Matinee` at render time (#12).
 
 27. **A festival is a strand with its own section** (`strandPrefixes` in
     `data/title-overrides.json`, `section: true` in `lib/screeningTags.ts` `KNOWN`, the strand
-    sections in `partitionFilmSections`). First use: the **IFI Documentary Festival**, Sept 2026.
+    sections in `partitionFilmSections`). First use: the **IFI Documentary Festival**, Sept 2026;
+    second, the **IFI Horrorthon**, Oct 2026 (`Skull`, plus a second prefix for its cabaret nights).
     Reasoning: `docs/decisions/screening-tags.md`.
     - **The signal is the cinema's own title prefix, turned into a per-session tag at fetch
       time.** `strandPrefixes` maps a prefix to a tag: stripped like `stripPrefixes`, and the
