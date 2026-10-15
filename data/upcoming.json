@@ -1,65 +1,16 @@
 {
-  "generatedAt": "2026-10-09T12:07:14.642Z",
+  "generatedAt": "2026-10-15T10:09:18.851Z",
   "week": {
-    "from": "2026-10-15",
-    "to": "2026-10-21"
+    "from": "2026-10-22",
+    "to": "2026-10-28"
   },
   "films": [
     {
-      "title": "Whalefall",
-      "year": 2026,
-      "cert": "15A",
-      "director": "Brian Duffield",
-      "letterboxdUrl": "https://letterboxd.com/film/whalefall/",
-      "cinemas": [
-        "lighthouse"
-      ],
-      "cinemaLinks": [
-        {
-          "cinema": "lighthouse",
-          "label": "Light House",
-          "url": "https://www.lighthousecinema.ie/film/whalefall"
-        }
-      ],
-      "screeningTags": [
-        "Silver Screen"
-      ],
-      "firstDate": "2026-10-16",
-      "reason": "special",
-      "poster": "posters/whalefall.webp"
-    },
-    {
-      "title": "Arrietty",
-      "year": 2010,
-      "cert": "G",
-      "director": "Hiromasa Yonebayashi",
-      "originalTitle": "借りぐらしのアリエッティ",
-      "letterboxdUrl": "https://letterboxd.com/film/arrietty/",
-      "cinemas": [
-        "lighthouse"
-      ],
-      "cinemaLinks": [
-        {
-          "cinema": "lighthouse",
-          "label": "Light House",
-          "url": "https://www.lighthousecinema.ie/film/arrietty"
-        }
-      ],
-      "screeningTags": [
-        "Subtitled",
-        "Japanese",
-        "Dubbed"
-      ],
-      "firstDate": "2026-10-16",
-      "reason": "special",
-      "poster": "posters/arrietty.webp"
-    },
-    {
-      "title": "Cotton Queen",
-      "year": 2025,
-      "director": "Suzannah Mirghani",
-      "originalTitle": "ملكة القطن",
-      "letterboxdUrl": "https://letterboxd.com/film/cotton-queen-2025/",
+      "title": "Dracula",
+      "year": 1958,
+      "director": "Terence Fisher",
+      "letterboxdUrl": "https://letterboxd.com/film/dracula-1958/",
+      "poster": "posters/dracula-1958.webp",
       "cinemas": [
         "ifi"
       ],
@@ -67,184 +18,255 @@
         {
           "cinema": "ifi",
           "label": "IFI",
-          "url": "https://ifi.ie/films/black-history-month-cotton-queen-2"
+          "url": "https://ifi.ie/films/ht26-dracula-1958"
         }
       ],
       "screeningTags": [
-        "Arabic",
+        "IFI Horrorthon"
+      ],
+      "firstDate": "2026-10-22",
+      "reason": "special"
+    },
+    {
+      "title": "Wildwood",
+      "year": 2026,
+      "cert": "12A",
+      "director": "Travis Knight",
+      "letterboxdUrl": "https://letterboxd.com/film/wildwood-2026/",
+      "poster": "posters/wildwood-2026.webp",
+      "cinemas": [
+        "lighthouse"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "lighthouse",
+          "label": "Light House",
+          "url": "https://www.lighthousecinema.ie/film/wildwood"
+        }
+      ],
+      "screeningTags": [
+        "Parent and Baby"
+      ],
+      "firstDate": "2026-10-23",
+      "reason": "special"
+    },
+    {
+      "title": "Possible Love",
+      "year": 2026,
+      "cert": "TBC",
+      "director": "Lee Chang-dong",
+      "originalTitle": "가능한 사랑",
+      "letterboxdUrl": "https://letterboxd.com/film/possible-love/",
+      "poster": "posters/possible-love.webp",
+      "cinemas": [
+        "lighthouse"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "lighthouse",
+          "label": "Light House",
+          "url": "https://www.lighthousecinema.ie/film/possible-love"
+        }
+      ],
+      "screeningTags": [
+        "Korean",
         "Subtitled"
       ],
+      "firstDate": "2026-10-23",
+      "reason": "special"
+    },
+    {
+      "title": "Witchfinder General",
+      "year": 1968,
+      "director": "Michael Reeves",
+      "letterboxdUrl": "https://letterboxd.com/film/witchfinder-general/",
+      "poster": "posters/witchfinder-general.webp",
+      "cinemas": [
+        "ifi"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "ifi",
+          "label": "IFI",
+          "url": "https://ifi.ie/films/ht26-witchfinder-general"
+        }
+      ],
+      "screeningTags": [
+        "IFI Horrorthon"
+      ],
+      "firstDate": "2026-10-24",
+      "reason": "special"
+    },
+    {
+      "title": "Jennifer's Body",
+      "year": 2009,
+      "director": "Karyn Kusama",
+      "letterboxdUrl": "https://letterboxd.com/film/jennifers-body/",
+      "poster": "posters/jennifers-body.webp",
+      "cinemas": [
+        "ifi"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "ifi",
+          "label": "IFI",
+          "url": "https://ifi.ie/films/ht26-jennifers-body"
+        }
+      ],
+      "screeningTags": [
+        "IFI Horrorthon"
+      ],
+      "firstDate": "2026-10-24",
+      "reason": "special"
+    },
+    {
+      "title": "The Wicker Man",
+      "year": 1973,
+      "director": "Robin Hardy",
+      "letterboxdUrl": "https://letterboxd.com/film/the-wicker-man/",
+      "poster": "posters/the-wicker-man.webp",
+      "cinemas": [
+        "ifi"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "ifi",
+          "label": "IFI",
+          "url": "https://ifi.ie/films/ht26-wicker-man"
+        }
+      ],
+      "screeningTags": [
+        "IFI Horrorthon"
+      ],
+      "firstDate": "2026-10-26",
+      "reason": "special"
+    },
+    {
+      "title": "La Bola Negra",
+      "year": 2026,
+      "director": "Javier Ambrossi, Javier Calvo",
+      "letterboxdUrl": "https://letterboxd.com/film/la-bola-negra/",
+      "poster": "posters/la-bola-negra.webp",
+      "cinemas": [
+        "ifi"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "ifi",
+          "label": "IFI",
+          "url": "https://ifi.ie/films/la-bola-negra"
+        }
+      ],
+      "screeningTags": [
+        "Spanish",
+        "Subtitled"
+      ],
+      "firstDate": "2026-10-27",
+      "reason": "special"
+    },
+    {
+      "title": "Nine to Five",
+      "year": 1980,
+      "director": "Colin Higgins",
+      "letterboxdUrl": "https://letterboxd.com/film/nine-to-five/",
+      "poster": "posters/nine-to-five.webp",
+      "cinemas": [
+        "ifi"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "ifi",
+          "label": "IFI",
+          "url": "https://ifi.ie/films/wild-strawberries-9-to-5"
+        }
+      ],
+      "screeningTags": [],
+      "label": "RIP Dolly",
+      "firstDate": "2026-10-28",
+      "reason": "special"
+    },
+    {
+      "title": "Phantom of the Opera + Live Score",
+      "cert": "PG",
+      "cinemas": [
+        "lighthouse"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "lighthouse",
+          "label": "Light House",
+          "url": "https://www.lighthousecinema.ie/film/phantom-of-the-opera-live-score"
+        }
+      ],
+      "screeningTags": [],
+      "firstDate": "2026-10-24",
+      "reason": "new"
+    },
+    {
+      "title": "Re-Animator",
+      "year": 1985,
+      "cert": "18",
+      "director": "Stuart Gordon",
+      "letterboxdUrl": "https://letterboxd.com/film/re-animator/",
+      "poster": "posters/re-animator.webp",
+      "cinemas": [
+        "lighthouse"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "lighthouse",
+          "label": "Light House",
+          "url": "https://www.lighthousecinema.ie/film/re-animator"
+        }
+      ],
+      "screeningTags": [],
+      "firstDate": "2026-10-24",
+      "reason": "new"
+    },
+    {
+      "title": "All Rivers Spill their Stories to the Sea",
+      "year": 2026,
+      "director": "Jeanie Finlay",
+      "letterboxdUrl": "https://letterboxd.com/film/all-rivers-spill-their-stories-to-the-sea/",
+      "poster": "posters/all-rivers-spill-their-stories-to-the-sea.webp",
+      "cinemas": [
+        "ifi"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "ifi",
+          "label": "IFI",
+          "url": "https://ifi.ie/films/all-rivers-spill-their-stories-to-the-sea-2"
+        }
+      ],
+      "screeningTags": [],
+      "firstDate": "2026-10-27",
+      "reason": "new"
+    },
+    {
+      "title": "Kikuyu Land",
+      "year": 2026,
+      "director": "Andrew H. Brown, Bea Wangondu",
+      "letterboxdUrl": "https://letterboxd.com/film/kikuyu-land/",
+      "poster": "posters/kikuyu-land.webp",
+      "cinemas": [
+        "ifi"
+      ],
+      "cinemaLinks": [
+        {
+          "cinema": "ifi",
+          "label": "IFI",
+          "url": "https://ifi.ie/films/black-history-month-kikuyu-land-2"
+        }
+      ],
+      "screeningTags": [],
       "contexts": [
         {
           "text": "Black History Month"
         }
       ],
-      "firstDate": "2026-10-18",
-      "reason": "special",
-      "poster": "posters/cotton-queen-2025.webp"
-    },
-    {
-      "title": "Fatherland",
-      "year": 2026,
-      "cert": "12A",
-      "director": "Paweł Pawlikowski",
-      "originalTitle": "Ojczyzna",
-      "letterboxdUrl": "https://letterboxd.com/film/fatherland-2026/",
-      "cinemas": [
-        "ifi"
-      ],
-      "cinemaLinks": [
-        {
-          "cinema": "ifi",
-          "label": "IFI",
-          "url": "https://ifi.ie/films/fatherland-2"
-        }
-      ],
-      "screeningTags": [
-        "Polish",
-        "Subtitled"
-      ],
-      "firstDate": "2026-10-20",
-      "reason": "special",
-      "poster": "posters/fatherland-2026.webp"
-    },
-    {
-      "title": "Naza",
-      "year": 2026,
-      "cert": "15A",
-      "director": "Yuval Abraham, Rachel Szor",
-      "letterboxdUrl": "https://letterboxd.com/film/naza/",
-      "cinemas": [
-        "lighthouse",
-        "ifi"
-      ],
-      "cinemaLinks": [
-        {
-          "cinema": "lighthouse",
-          "label": "Light House",
-          "url": "https://www.lighthousecinema.ie/film/naza"
-        },
-        {
-          "cinema": "ifi",
-          "label": "IFI",
-          "url": "https://ifi.ie/films/naza"
-        }
-      ],
-      "screeningTags": [
-        "Satellite QandA"
-      ],
-      "firstDate": "2026-10-15",
-      "reason": "new",
-      "poster": "posters/naza.webp"
-    },
-    {
-      "title": "Forever Is Now",
-      "year": 2025,
-      "cert": "12A",
-      "director": "Neasa Ní Chianáin",
-      "letterboxdUrl": "https://letterboxd.com/film/forever-is-now/",
-      "cinemas": [
-        "ifi"
-      ],
-      "cinemaLinks": [
-        {
-          "cinema": "ifi",
-          "label": "IFI",
-          "url": "https://ifi.ie/films/forever-is-now-2"
-        }
-      ],
-      "screeningTags": [],
-      "firstDate": "2026-10-16",
-      "reason": "new",
-      "poster": "posters/forever-is-now.webp"
-    },
-    {
-      "title": "A Man Of No Importance",
-      "year": 1994,
-      "cert": "15A",
-      "director": "Suri Krishnamma",
-      "letterboxdUrl": "https://letterboxd.com/film/a-man-of-no-importance/",
-      "cinemas": [
-        "ifi"
-      ],
-      "cinemaLinks": [
-        {
-          "cinema": "ifi",
-          "label": "IFI",
-          "url": "https://ifi.ie/films/from-the-vaults-ifi-oscariana-a-man-of-no-importance"
-        }
-      ],
-      "screeningTags": [],
-      "contexts": [
-        {
-          "text": "IFI + Oscariana"
-        }
-      ],
-      "firstDate": "2026-10-17",
-      "reason": "new",
-      "poster": "posters/a-man-of-no-importance.webp"
-    },
-    {
-      "title": "Videodrome",
-      "year": 1983,
-      "cert": "18",
-      "director": "David Cronenberg",
-      "letterboxdUrl": "https://letterboxd.com/film/videodrome/",
-      "cinemas": [
-        "lighthouse"
-      ],
-      "cinemaLinks": [
-        {
-          "cinema": "lighthouse",
-          "label": "Light House",
-          "url": "https://www.lighthousecinema.ie/film/videodrome"
-        }
-      ],
-      "screeningTags": [],
-      "firstDate": "2026-10-17",
-      "reason": "new",
-      "poster": "posters/videodrome.webp"
-    },
-    {
-      "title": "Possession",
-      "year": 1981,
-      "cert": "18",
-      "director": "Andrzej Żuławski",
-      "letterboxdUrl": "https://letterboxd.com/film/possession/",
-      "cinemas": [
-        "lighthouse"
-      ],
-      "cinemaLinks": [
-        {
-          "cinema": "lighthouse",
-          "label": "Light House",
-          "url": "https://www.lighthousecinema.ie/film/possession"
-        }
-      ],
-      "screeningTags": [],
-      "firstDate": "2026-10-18",
-      "reason": "new",
-      "poster": "posters/possession.webp"
-    },
-    {
-      "title": "The Commitments",
-      "year": 1991,
-      "director": "Alan Parker",
-      "letterboxdUrl": "https://letterboxd.com/film/the-commitments/",
-      "cinemas": [
-        "ifi"
-      ],
-      "cinemaLinks": [
-        {
-          "cinema": "ifi",
-          "label": "IFI",
-          "url": "https://ifi.ie/films/the-commitments"
-        }
-      ],
-      "screeningTags": [],
-      "firstDate": "2026-10-19",
-      "reason": "new",
-      "poster": "posters/the-commitments.webp"
+      "firstDate": "2026-10-28",
+      "reason": "new"
     }
   ]
 }

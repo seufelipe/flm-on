@@ -22,10 +22,13 @@
     "IFI & Culture Night 2026:",
     "Emmy Shigeta & Jack Reynor Present:",
     "HLG Presents:",
-    "IFI + Oscariana:"
+    "IFI + Oscariana:",
+    "Oscariana: Wilde Festival"
   ],
   "strandPrefixes": {
-    "IFI Documentary Festival 2026:": "IFI Documentary Festival"
+    "IFI Documentary Festival 2026:": "IFI Documentary Festival",
+    "IFI Horrorthon 2026 x EGG Cabaret - Prom Night:": "IFI Horrorthon",
+    "IFI Horrorthon 2026:": "IFI Horrorthon"
   },
   "strandSuffixes": {
     "\\+\\s*Q\\s*[&+]\\s*A": "In-Person QandA"
@@ -41,8 +44,12 @@
     "Avengers: Endgame (Re-Release)": "Avengers Endgame: Encore",
     "Coyote vs Acme": "Coyote vs. Acme",
     "De Gaulle: Résistance": "De Gaulle Part One: Résistance",
+    "Dracula (1958)": "Dracula",
+    "Driller Killer": "The Driller Killer",
     "I (Ai)": "I",
+    "IFI Family: The Secret World Of Arrietty": "Arrietty",
     "Terminator 2: Judgement Day": "Terminator 2: Judgment Day",
-    "Whisper Of The Heart 4K": "Whisper of the Heart"
+    "Whisper Of The Heart 4K": "Whisper of the Heart",
+    "Wild Strawberries: 9 To 5": "Nine to Five"
   }
 }
